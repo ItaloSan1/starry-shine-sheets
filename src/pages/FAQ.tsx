@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
+import { useSEO } from '@/hooks/useSEO';
+import { FAQSchema } from '@/components/seo/SchemaMarkup';
 
 const faqs = [
   { q: 'Do your used parts come with a warranty?', a: 'Yes. All parts come with a warranty — terms vary by part category. Specific warranty details are provided at the time of purchase.' },
@@ -17,9 +19,12 @@ const faqs = [
 ];
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  useSEO({
+    title: 'FAQ | Eskimo Auto & Truck Parts Edmonton',
+    description: `Common questions about buying used auto parts in Edmonton. Warranty info, shipping, fitment, and more. Call ${BUSINESS.phone}.`,
+  });
 
-  useEffect(() => { document.title = 'FAQ | Eskimo Auto & Truck Parts Edmonton'; }, []);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <div className="pb-20 lg:pb-0">
