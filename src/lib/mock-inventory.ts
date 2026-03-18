@@ -68,7 +68,11 @@ export class MockInventoryProvider implements InventoryProvider {
     if (filters.minPrice) results = results.filter(p => p.price >= filters.minPrice!);
     if (filters.maxPrice) results = results.filter(p => p.price <= filters.maxPrice!);
 
-    results = results.filter(p => p.availability === 'In Stock');
+    if (filters.availability) {
+      results = results.filter(p => p.availability === filters.availability);
+    } else {
+      results = results.filter(p => p.availability === 'In Stock');
+    }
 
     const total = results.length;
     const start = (page - 1) * pageSize;
