@@ -61,7 +61,7 @@ export function RequestPartForm() {
   if (submitted) {
     return (
       <div className="bg-card border border-border rounded-lg p-8 text-center">
-        <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
+        <CheckCircle className="w-12 h-12 text-accent mx-auto mb-3" />
         <h3 className="font-bold text-xl mb-2">Request Received!</h3>
         <p className="text-muted-foreground mb-1">We'll check our inventory and get back to you shortly.</p>
         <p className="text-sm text-muted-foreground">Typical response time: within 1 business day.</p>

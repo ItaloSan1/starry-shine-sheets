@@ -7,6 +7,7 @@ import PartDetailPage from './pages/PartDetailPage';
 import LatestArrivals from './pages/LatestArrivals';
 import VehicleDetailPage from './pages/VehicleDetailPage';
 import SellYourVehicle from './pages/SellYourVehicle';
+import RequestPart from './pages/RequestPart';
 import UsedAutoParts from './pages/UsedAutoParts';
 import UsedTruckParts from './pages/UsedTruckParts';
 import UsedEngines from './pages/UsedEngines';
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/latest-arrivals" element={<LatestArrivals />} />
           <Route path="/latest-arrivals/:id" element={<VehicleDetailPage />} />
           <Route path="/sell-your-vehicle" element={<SellYourVehicle />} />
+          <Route path="/request-a-part" element={<RequestPart />} />
           <Route path="/used-auto-parts-edmonton" element={<UsedAutoParts />} />
           <Route path="/used-truck-parts-edmonton" element={<UsedTruckParts />} />
           <Route path="/used-engines-edmonton" element={<UsedEngines />} />
