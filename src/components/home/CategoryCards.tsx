@@ -12,22 +12,22 @@ const categories = [
 
 export function CategoryCards() {
   return (
-    <section className="py-16 bg-background">
+    <section className="py-12 bg-background">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-3">Shop by Part Category</h2>
-        <p className="text-center text-muted-foreground mb-10">Find the exact part you need from our Edmonton inventory</p>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <h2 className="text-xl md:text-2xl font-bold text-center mb-2">Shop by Part Category</h2>
+        <p className="text-center text-muted-foreground mb-8 text-sm">Find the exact part you need from our Edmonton inventory</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           {categories.map(cat => (
             <Link
               key={cat.to}
               to={cat.to}
-              className="group border border-border rounded-lg p-5 hover:border-accent hover:shadow-md transition-all"
+              className="group border border-border rounded-lg p-4 hover:border-accent hover:shadow-md transition-all"
             >
-              <div className="w-12 h-12 rounded-lg bg-primary/5 flex items-center justify-center mb-3 group-hover:bg-accent/10 transition-colors">
-                <cat.icon className="w-6 h-6 text-primary group-hover:text-accent transition-colors" />
+              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-2 group-hover:bg-accent/20 transition-colors">
+                <cat.icon className="w-5 h-5 text-accent" />
               </div>
-              <h3 className="font-bold text-base mb-1">{cat.label}</h3>
-              <p className="text-sm text-muted-foreground">{cat.desc}</p>
+              <h3 className="font-bold text-sm mb-0.5">{cat.label}</h3>
+              <p className="text-xs text-muted-foreground">{cat.desc}</p>
             </Link>
           ))}
         </div>

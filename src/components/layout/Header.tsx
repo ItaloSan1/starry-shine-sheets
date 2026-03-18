@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-
-const PHONE = '780-555-0199';
+import { BUSINESS } from '@/lib/constants';
 
 const navLinks = [
   { to: '/search-inventory', label: 'Search Inventory', highlight: true },
@@ -20,15 +18,15 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-primary text-primary-foreground shadow-md">
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 font-extrabold text-xl tracking-tight shrink-0">
+        <Link to="/" className="flex items-center gap-2 font-extrabold text-lg tracking-tight shrink-0">
           <span className="text-accent">ESKIMO</span>
-          <span className="hidden sm:inline text-primary-foreground/90 text-sm font-semibold">Auto & Truck Parts</span>
+          <span className="hidden sm:inline text-primary-foreground/90 text-xs font-semibold uppercase tracking-wider">Auto & Truck Parts</span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-0.5">
           {navLinks.map(link => (
             <Link
               key={link.to}
@@ -36,10 +34,10 @@ export function Header() {
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 location.pathname === link.to
                   ? 'bg-primary-foreground/20 text-primary-foreground'
-                  : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10'
+                  : 'text-primary-foreground/75 hover:text-primary-foreground hover:bg-primary-foreground/10'
               } ${link.highlight ? 'flex items-center gap-1.5' : ''}`}
             >
-              {link.highlight && <Search className="w-4 h-4" />}
+              {link.highlight && <Search className="w-3.5 h-3.5" />}
               {link.label}
             </Link>
           ))}
@@ -47,11 +45,11 @@ export function Header() {
 
         {/* Desktop Phone CTA */}
         <a
-          href={`tel:${PHONE}`}
+          href={`tel:${BUSINESS.phoneRaw}`}
           className="hidden lg:flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"
         >
           <Phone className="w-4 h-4" />
-          {PHONE}
+          {BUSINESS.phone}
         </a>
 
         {/* Mobile menu button */}
@@ -85,11 +83,11 @@ export function Header() {
           </nav>
           <div className="px-4 pb-4">
             <a
-              href={`tel:${PHONE}`}
+              href={`tel:${BUSINESS.phoneRaw}`}
               className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-4 py-3 rounded-md text-sm font-bold w-full"
             >
               <Phone className="w-4 h-4" />
-              Call {PHONE}
+              Call {BUSINESS.phone}
             </a>
           </div>
         </div>

@@ -7,45 +7,45 @@
 :root {
   --font-size: 16px;
 
-  /* Primary - Deep Navy */
-  --primary: 217 46% 20%;
-  --primary-foreground: 0 0% 100%;
+  /* Primary - Dark Charcoal */
+  --primary: 222 30% 15%;
+  --primary-foreground: 0 0% 98%;
 
-  /* Accent - Bold Orange */
-  --accent: 18 82% 51%;
+  /* Accent - Warm Bold Orange */
+  --accent: 20 85% 50%;
   --accent-foreground: 0 0% 100%;
 
-  /* Background */
-  --background: 0 0% 100%;
-  --foreground: 217 46% 12%;
+  /* Background - Warm Off-White */
+  --background: 40 20% 98%;
+  --foreground: 222 30% 12%;
 
   /* Card */
   --card: 0 0% 100%;
-  --card-foreground: 217 46% 12%;
+  --card-foreground: 222 30% 12%;
 
   /* Popover */
   --popover: 0 0% 100%;
-  --popover-foreground: 217 46% 12%;
+  --popover-foreground: 222 30% 12%;
 
-  /* Secondary - Steel Gray */
-  --secondary: 220 27% 98%;
-  --secondary-foreground: 218 11% 35%;
+  /* Secondary - Warm Steel */
+  --secondary: 40 10% 95%;
+  --secondary-foreground: 220 10% 35%;
 
   /* Muted */
-  --muted: 220 14% 96%;
-  --muted-foreground: 218 11% 45%;
+  --muted: 40 8% 93%;
+  --muted-foreground: 220 10% 45%;
 
   /* Destructive */
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
   /* Border */
-  --border: 220 13% 91%;
-  --input: 220 13% 91%;
-  --ring: 217 46% 20%;
+  --border: 220 10% 88%;
+  --input: 220 10% 88%;
+  --ring: 222 30% 15%;
 
   /* Success */
-  --success: 142 71% 45%;
+  --success: 142 71% 40%;
   --success-foreground: 0 0% 100%;
 
   --radius: 0.5rem;
@@ -98,13 +98,13 @@
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    color: hsl(var(--primary));
+    color: hsl(var(--foreground));
   }
 
-  h1 { font-size: 2.5rem; }
-  h2 { font-size: 2rem; }
-  h3 { font-size: 1.5rem; }
-  h4 { font-size: 1.25rem; }
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.375rem; }
+  h4 { font-size: 1.125rem; }
 }
 
 html {
@@ -127,6 +127,6 @@ html {
 
 @media (max-width: 768px) {
   html, body { overflow-x: hidden !important; }
-  h1 { font-size: 1.875rem; }
-  h2 { font-size: 1.5rem; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.375rem; }
 }
