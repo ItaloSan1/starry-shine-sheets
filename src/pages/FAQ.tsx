@@ -47,6 +47,7 @@ export default function FAQ() {
           ))}
         </div>
       </div>
+      <FAQSchema items={faqs.map(f => ({ question: f.q, answer: f.a }))} />
       <CallToAction title="Still Have Questions?" description="Call or text us — we're happy to help." />
     </div>
   );

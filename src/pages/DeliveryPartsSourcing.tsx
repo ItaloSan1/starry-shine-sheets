@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { Truck, Search, Globe } from 'lucide-react';
+import { useSEO } from '@/hooks/useSEO';
 
 export default function DeliveryPartsSourcing() {
-  useEffect(() => { document.title = 'Delivery & Parts Sourcing | Eskimo Auto & Truck Parts Edmonton'; }, []);
+  useSEO({
+    title: 'Delivery & Parts Sourcing | Eskimo Auto & Truck Parts Edmonton',
+    description: 'Local delivery across Edmonton and parts sourcing from our recycler network across Western Canada. Call (780) 473-2424.',
+  });
 
   return (
     <div className="pb-20 lg:pb-0">

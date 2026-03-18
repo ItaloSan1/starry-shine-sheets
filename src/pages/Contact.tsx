@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
 import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { BUSINESS } from '@/lib/constants';
+import { useSEO } from '@/hooks/useSEO';
 
 export default function Contact() {
-  useEffect(() => { document.title = 'Contact Eskimo Auto & Truck Parts | Edmonton Used Auto Parts'; }, []);
+  useSEO({
+    title: 'Contact Us | Eskimo Auto & Truck Parts Edmonton',
+    description: `Call ${BUSINESS.phone} or visit us at ${BUSINESS.address}. Edmonton's trusted auto recycler since ${BUSINESS.established}.`,
+  });
 
   return (
     <div className="pb-20 lg:pb-0">

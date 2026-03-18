@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
 import { SellVehicleForm } from '@/components/forms/SellVehicleForm';
 import { Phone, MessageCircle, Car, Truck, MapPin } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
+import { useSEO } from '@/hooks/useSEO';
 
 export default function SellYourVehicle() {
-  useEffect(() => { document.title = 'Sell Your Vehicle in Edmonton | Eskimo Auto & Truck Parts'; }, []);
+  useSEO({
+    title: 'Sell Your Vehicle in Edmonton | Eskimo Auto & Truck Parts',
+    description: `Sell your car, truck, or SUV to Edmonton's trusted recycler. Running or not. Fair cash offers. Call ${BUSINESS.phone}.`,
+  });
 
   return (
     <div className="pb-20 lg:pb-0">
