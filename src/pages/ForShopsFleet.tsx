@@ -1,11 +1,14 @@
-import { useEffect } from 'react';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { Wrench, Building2, Truck, Percent, Clock, Users } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
+import { useSEO } from '@/hooks/useSEO';
 
 export default function ForShopsFleet() {
-  useEffect(() => { document.title = 'For Shops, Mechanics & Fleet | Eskimo Auto & Truck Parts Edmonton'; }, []);
+  useSEO({
+    title: 'For Shops, Mechanics & Fleet | Eskimo Auto & Truck Parts Edmonton',
+    description: `Competitive pricing and priority sourcing for repair shops, body shops, and fleet operators in Edmonton. Call ${BUSINESS.phone}.`,
+  });
 
   return (
     <div className="pb-20 lg:pb-0">

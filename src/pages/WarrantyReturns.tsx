@@ -1,11 +1,14 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
 import { Shield, RotateCcw, AlertTriangle, Phone, ListChecks } from 'lucide-react';
+import { useSEO } from '@/hooks/useSEO';
 
 export default function WarrantyReturns() {
-  useEffect(() => { document.title = 'Warranty & Returns Policy | Eskimo Auto & Truck Parts Edmonton'; }, []);
+  useSEO({
+    title: 'Warranty & Returns | Eskimo Auto & Truck Parts Edmonton',
+    description: `Our warranty and return policy for used auto parts. We stand behind every part we sell. Call ${BUSINESS.phone}.`,
+  });
 
   return (
     <div className="pb-20 lg:pb-0">

@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { MapPin, Clock, Users, Award } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
+import { useSEO } from '@/hooks/useSEO';
 
 export default function About() {
-  useEffect(() => { document.title = 'About Eskimo Auto & Truck Parts | Edmonton Auto Recycler Since 1984'; }, []);
+  useSEO({
+    title: 'About | Eskimo Auto & Truck Parts Edmonton',
+    description: `Edmonton's trusted auto recycler since ${BUSINESS.established}. Over four decades of quality used auto parts. Visit us at ${BUSINESS.address}.`,
+  });
 
   return (
     <div className="pb-20 lg:pb-0">

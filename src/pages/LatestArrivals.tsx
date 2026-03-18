@@ -4,12 +4,17 @@ import { inventoryProvider } from '@/lib/mock-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
 import { Car } from 'lucide-react';
 import { CallToAction } from '@/components/layout/CallToAction';
+import { useSEO } from '@/hooks/useSEO';
 
 export default function LatestArrivals() {
+  useSEO({
+    title: 'Latest Vehicle Arrivals | Eskimo Auto & Truck Parts Edmonton',
+    description: 'See the latest vehicles arriving at our Edmonton yard. Fresh parts being pulled now. Call (780) 473-2424.',
+  });
+
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
   useEffect(() => {
-    document.title = 'Latest Vehicle Arrivals | Eskimo Auto & Truck Parts Edmonton';
     inventoryProvider.getLatestArrivals(20).then(setVehicles);
   }, []);
 

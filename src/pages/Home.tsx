@@ -1,35 +1,35 @@
-import { useEffect } from 'react';
+import { useSEO } from '@/hooks/useSEO';
+import { FAQSchema } from '@/components/seo/SchemaMarkup';
 import { HeroSection } from '@/components/home/HeroSection';
 import { TrustBar } from '@/components/home/TrustBar';
 import { CategoryCards } from '@/components/home/CategoryCards';
 import { LatestArrivals } from '@/components/home/LatestArrivals';
 import { WhyEskimo } from '@/components/home/WhyEskimo';
-import { SellVehicleCTA } from '@/components/home/SellVehicleCTA';
 import { ShopsFleetSection } from '@/components/home/ShopsFleetSection';
+import { SellVehicleCTA } from '@/components/home/SellVehicleCTA';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
-import { HomeFAQ } from '@/components/home/HomeFAQ';
+import { HomeFAQ, homeFaqData } from '@/components/home/HomeFAQ';
 import { CallToAction } from '@/components/layout/CallToAction';
 
 export default function Home() {
-  useEffect(() => { document.title = 'Eskimo Auto & Truck Parts | Used Auto Parts Edmonton | Since 1984'; }, []);
+  useSEO({
+    title: 'Eskimo Auto & Truck Parts | Used Auto Parts Edmonton | Since 1984',
+    description: "Edmonton's trusted auto recycler since 1984. Quality used auto and truck parts — engines, transmissions, body parts, tires & rims. Warranty-backed. Call (780) 473-2424.",
+  });
 
   return (
-    <>
+    <div className="pb-20 lg:pb-0">
       <HeroSection />
       <TrustBar />
       <CategoryCards />
       <LatestArrivals />
       <WhyEskimo />
-      <SellVehicleCTA />
       <ShopsFleetSection />
+      <SellVehicleCTA />
       <TestimonialsSection />
       <HomeFAQ />
-      <CallToAction
-        title="Need a Part? We're Here to Help."
-        description="Call, text, or search our inventory. Edmonton's trusted auto recycler since 1984."
-        linkTo="/search-inventory"
-        linkLabel="Search Inventory"
-      />
-    </>
+      <FAQSchema items={homeFaqData} />
+      <CallToAction title="Need a Part? We're Here to Help." description="Call, text, or search our inventory. Edmonton's trusted auto recycler since 1984." linkTo="/search-inventory" linkLabel="Search Inventory" />
+    </div>
   );
 }

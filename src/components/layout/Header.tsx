@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Search } from 'lucide-react';
+import { Menu, X, Phone, Search, ClipboardList } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 
 const navLinks = [
   { to: '/search-inventory', label: 'Search Inventory', highlight: true },
+  { to: '/request-a-part', label: 'Request a Part' },
   { to: '/latest-arrivals', label: 'Latest Arrivals' },
   { to: '/sell-your-vehicle', label: 'Sell Your Vehicle' },
   { to: '/warranty-returns', label: 'Warranty' },
@@ -19,8 +20,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-primary text-primary-foreground shadow-md">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
-        {/* Logo */}
+        {/* Logo — replace with <img> when logo file is available */}
         <Link to="/" className="flex items-center gap-2 font-extrabold text-lg tracking-tight shrink-0">
+          {/* TODO: Replace with: <img src="/logo.png" alt="Eskimo Auto & Truck Parts" className="h-8" /> */}
           <span className="text-accent">ESKIMO</span>
           <span className="hidden sm:inline text-primary-foreground/90 text-xs font-semibold uppercase tracking-wider">Auto & Truck Parts</span>
         </Link>

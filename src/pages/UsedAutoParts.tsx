@@ -1,43 +1,68 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { CallToAction } from '@/components/layout/CallToAction';
+import { Phone, MessageSquare, Shield, Building2, Search, Wrench } from 'lucide-react';
+import { useSEO } from '@/hooks/useSEO';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
+import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { CallToAction } from '@/components/layout/CallToAction';
+import { BUSINESS } from '@/lib/constants';
+
+const breadcrumbs = [{ label: 'Home', to: '/' }, { label: 'Used Auto Parts Edmonton' }];
+const categories = [
+  { to: '/used-engines-edmonton', label: 'Used Engines' },
+  { to: '/used-transmissions-edmonton', label: 'Used Transmissions' },
+  { to: '/used-body-parts-edmonton', label: 'Body Parts' },
+  { to: '/used-tires-rims-edmonton', label: 'Tires & Rims' },
+  { to: '/used-truck-parts-edmonton', label: 'Truck Parts' },
+];
 
 export default function UsedAutoParts() {
-  useEffect(() => { document.title = 'Used Auto Parts Edmonton | Eskimo Auto & Truck Parts'; }, []);
+  useSEO({
+    title: 'Used Auto Parts Edmonton | Eskimo Auto & Truck Parts',
+    description: `Quality used car parts at recycler prices in Edmonton. Engines, transmissions, body panels, electrical, and more. Warranty-backed. Since ${BUSINESS.established}. Call ${BUSINESS.phone}.`,
+  });
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="bg-primary text-primary-foreground py-8">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-xl md:text-3xl font-bold text-primary-foreground">Used Auto Parts in Edmonton</h1>
-          <p className="text-primary-foreground/80 mt-2 text-sm md:text-base">Quality recycled car parts at a fraction of the cost — tested, warrantied, and ready for pickup or delivery.</p>
+      <section className="bg-primary text-primary-foreground py-10">
+        <div className="max-w-5xl mx-auto px-4">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">Used Auto Parts in Edmonton</h1>
+          <p className="text-primary-foreground/70 max-w-2xl">Quality used car parts at recycler prices. Every part inspected and warranty-backed.</p>
         </div>
-      </div>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <section className="mb-8">
-          <h2 className="text-lg font-bold mb-3">Save Money with Quality Used Auto Parts</h2>
-          <p className="text-sm text-muted-foreground leading-relaxed mb-3">Whether you're a DIY mechanic, a repair shop, or just looking to fix your daily driver without breaking the bank, Eskimo Auto & Truck Parts has the used car parts you need. We stock thousands of tested components from popular makes like Ford, Chevrolet, Toyota, Honda, and Dodge — all pulled from late-model vehicles at our Edmonton recycling facility.</p>
-          <p className="text-sm text-muted-foreground leading-relaxed">Every part we sell is inspected for quality and comes with a warranty. From engines and transmissions to doors, bumpers, headlights, and electrical components — we carry a full range of replacement parts. Serving Edmonton since 1984.</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-lg font-bold mb-3">Parts We Carry</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {['Engines', 'Transmissions', 'Body Panels', 'Doors', 'Bumpers', 'Headlights & Taillights', 'Wheels & Tires', 'Mirrors', 'Starters & Alternators', 'Radiators', 'Suspension Parts', 'Interior Parts'].map(p => (
-              <div key={p} className="bg-secondary rounded-md px-3 py-2.5 text-sm font-medium">{p}</div>
-            ))}
+      </section>
+      <section className="bg-card border-b border-border py-4">
+        <div className="max-w-5xl mx-auto px-4 flex flex-wrap gap-6 text-sm">
+          <span className="flex items-center gap-1.5"><Building2 className="w-4 h-4 text-accent" /> Since {BUSINESS.established}</span>
+          <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-accent" /> Warranty-Backed</span>
+          <span className="flex items-center gap-1.5"><Wrench className="w-4 h-4 text-accent" /> Parts Sourcing Available</span>
+        </div>
+      </section>
+      <div className="max-w-5xl mx-auto px-4 py-6">
+        <Breadcrumbs items={breadcrumbs} />
+        <BreadcrumbSchema items={breadcrumbs} />
+        <div className="prose prose-sm max-w-none mb-8">
+          <h2 className="text-lg font-bold mb-3">Edmonton's Trusted Source for Used Car Parts</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Eskimo Auto & Truck Parts has been providing quality used auto parts to Edmonton drivers, mechanics, and shops since {BUSINESS.established}. Our yard carries a wide selection of parts from late-model vehicles — including <Link to="/used-engines-edmonton" className="text-accent hover:underline">engines</Link>, <Link to="/used-transmissions-edmonton" className="text-accent hover:underline">transmissions</Link>, <Link to="/used-body-parts-edmonton" className="text-accent hover:underline">body panels</Link>, electrical components, suspension, interior parts, and more.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Every part we sell is inspected and comes with a warranty — terms vary by part category and are provided at the time of purchase. We serve individual vehicle owners, <Link to="/for-shops-fleet" className="text-accent hover:underline">repair shops, and fleet managers</Link> across Edmonton and surrounding areas.</p>
+          <h2 className="text-lg font-bold mb-3 mt-8">What We Carry</h2>
+          <ul className="text-muted-foreground space-y-1 mb-4 list-disc pl-5">
+            <li>Engines and engine components</li><li>Automatic and manual transmissions</li><li>Body panels — doors, fenders, hoods, bumpers, mirrors</li><li>Lighting — headlights, taillights, fog lights</li><li>Electrical — alternators, starters, modules</li><li>Suspension — struts, control arms, steering racks</li><li>Interior — seats, dashboards, consoles</li><li><Link to="/used-tires-rims-edmonton" className="text-accent hover:underline">Tires and rims</Link></li>
+          </ul>
+        </div>
+        <div className="bg-muted/50 border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div><p className="font-bold text-sm">Looking for a specific part?</p><p className="text-xs text-muted-foreground">Search our inventory or call us — we check fitment before every sale.</p></div>
+          <div className="flex gap-2 shrink-0">
+            <Link to="/search-inventory" className="flex items-center gap-1.5 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"><Search className="w-3.5 h-3.5" /> Search Inventory</Link>
+            <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center gap-1.5 border border-border px-4 py-2 rounded-md text-sm font-semibold hover:bg-muted transition-colors"><Phone className="w-3.5 h-3.5" /> Call</a>
           </div>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-lg font-bold mb-3">Popular Makes in Stock</h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">We regularly dismantle Ford, Chevrolet, GMC, Toyota, Honda, Dodge, Ram, Hyundai, Kia, Nissan, Subaru, Volkswagen, and more. <Link to="/search-inventory" className="text-accent font-semibold hover:underline">Search our current inventory</Link> to see what's available today.</p>
-        </section>
-
+        </div>
+        <div className="mb-8">
+          <h3 className="font-bold text-sm mb-3">Browse by Category</h3>
+          <div className="flex flex-wrap gap-2">{categories.map(cat => (<Link key={cat.to} to={cat.to} className="text-sm bg-muted hover:bg-accent/10 hover:text-accent px-4 py-2 rounded-md transition-colors">{cat.label}</Link>))}</div>
+        </div>
         <PartRequestForm />
       </div>
-      <CallToAction title="Need a Specific Part?" description="Call or text us — if we don't have it, we can source it from our network." linkTo="/search-inventory" linkLabel="Search Inventory" />
+      <CallToAction title="Need a Used Auto Part in Edmonton?" description={`Call or text ${BUSINESS.phone}. Serving Edmonton since ${BUSINESS.established}.`} linkTo="/request-a-part" linkLabel="Request a Part" />
     </div>
   );
 }

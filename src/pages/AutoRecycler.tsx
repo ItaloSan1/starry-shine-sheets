@@ -1,49 +1,55 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Phone, Shield, Building2, Recycle, Search } from 'lucide-react';
+import { useSEO } from '@/hooks/useSEO';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
+import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
+import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { CallToAction } from '@/components/layout/CallToAction';
-import { Recycle, Leaf, Award, MapPin } from 'lucide-react';
+import { BUSINESS } from '@/lib/constants';
+
+const breadcrumbs = [{ label: 'Home', to: '/' }, { label: 'Auto Recycler Edmonton' }];
 
 export default function AutoRecycler() {
-  useEffect(() => { document.title = 'Auto Recycler Edmonton | Eskimo Auto & Truck Parts'; }, []);
+  useSEO({
+    title: 'Auto Recycler Edmonton | Eskimo Auto & Truck Parts',
+    description: `Edmonton's trusted auto recycler since ${BUSINESS.established}. We buy vehicles, recycle responsibly, and sell quality used parts. Call ${BUSINESS.phone}.`,
+  });
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="bg-primary text-primary-foreground py-8">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-xl md:text-3xl font-bold text-primary-foreground">Edmonton Auto Recycler</h1>
-          <p className="text-primary-foreground/80 mt-2 text-sm md:text-base">Responsible vehicle recycling that puts quality used parts back on the road and keeps waste out of landfills.</p>
+      <section className="bg-primary text-primary-foreground py-10">
+        <div className="max-w-5xl mx-auto px-4">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">Auto Recycler in Edmonton</h1>
+          <p className="text-primary-foreground/70 max-w-2xl">Edmonton's trusted auto recycler since {BUSINESS.established}. We buy vehicles, recycle responsibly, and sell quality used parts.</p>
         </div>
-      </div>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <section className="mb-8">
-          <h2 className="text-lg font-bold mb-3">Professional Auto Recycling in Edmonton</h2>
-          <p className="text-sm text-muted-foreground leading-relaxed mb-3">Eskimo Auto & Truck Parts is a full-service auto recycler serving Edmonton and surrounding communities since 1984. We acquire end-of-life and salvage vehicles, carefully dismantle them, and make quality parts available for reuse. Fluids are drained and recycled responsibly, metals go to certified processors, and usable parts get a second life.</p>
-          <p className="text-sm text-muted-foreground leading-relaxed">Auto recycling is good for the environment and good for your wallet. By choosing a recycled part, you're saving money and reducing the environmental impact of manufacturing new components.</p>
-        </section>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
-          {[
-            { icon: Recycle, title: 'Responsible Recycling', desc: 'All fluids, metals, and hazardous materials handled according to Alberta environmental regulations.' },
-            { icon: Leaf, title: 'Environmental Impact', desc: 'Every reused part reduces the energy, water, and raw materials needed to manufacture a new one.' },
-            { icon: Award, title: 'Licensed & Insured', desc: 'Fully licensed auto recycler operating under Alberta regulations since 1984.' },
-            { icon: MapPin, title: 'Local Operation', desc: 'Edmonton-based. We know this community and we serve it with integrity.' },
-          ].map(item => (
-            <div key={item.title} className="flex gap-3">
-              <item.icon className="w-7 h-7 text-accent shrink-0" />
-              <div>
-                <h3 className="font-bold text-sm mb-1">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </div>
-            </div>
-          ))}
+      </section>
+      <section className="bg-card border-b border-border py-4">
+        <div className="max-w-5xl mx-auto px-4 flex flex-wrap gap-6 text-sm">
+          <span className="flex items-center gap-1.5"><Building2 className="w-4 h-4 text-accent" /> Since {BUSINESS.established}</span>
+          <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-accent" /> Warranty-Backed Parts</span>
+          <span className="flex items-center gap-1.5"><Recycle className="w-4 h-4 text-accent" /> Responsible Recycling</span>
         </div>
-
-        <section>
-          <h2 className="text-lg font-bold mb-3">Have a Vehicle to Recycle?</h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">We buy cars, trucks, and SUVs in any condition. Running, not running, accident-damaged, or end-of-life — we'll give you a fair cash offer. <Link to="/sell-your-vehicle" className="text-accent font-semibold hover:underline">Get a quote now</Link>.</p>
-        </section>
+      </section>
+      <div className="max-w-5xl mx-auto px-4 py-6">
+        <Breadcrumbs items={breadcrumbs} />
+        <BreadcrumbSchema items={breadcrumbs} />
+        <div className="prose prose-sm max-w-none mb-8">
+          <h2 className="text-lg font-bold mb-3">Full-Service Auto Recycling</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Eskimo Auto & Truck Parts is a full-service auto recycling facility in Edmonton. We purchase end-of-life vehicles, carefully dismantle them, and make quality used parts available to the public, repair shops, and fleet operators.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Our recycling process follows environmental best practices — fluids are drained and disposed of properly, hazardous materials are handled according to regulations, and recyclable metals are processed responsibly.</p>
+          <h2 className="text-lg font-bold mb-3 mt-8">Want to sell your vehicle?</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">We buy cars, trucks, and SUVs in any condition — running or not. <Link to="/sell-your-vehicle" className="text-accent hover:underline">Get a quote →</Link></p>
+        </div>
+        <div className="bg-muted/50 border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div><p className="font-bold text-sm">Looking for used parts?</p><p className="text-xs text-muted-foreground">Search our inventory or request the part you need.</p></div>
+          <div className="flex gap-2 shrink-0">
+            <Link to="/search-inventory" className="flex items-center gap-1.5 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"><Search className="w-3.5 h-3.5" /> Search Parts</Link>
+            <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center gap-1.5 border border-border px-4 py-2 rounded-md text-sm font-semibold hover:bg-muted transition-colors"><Phone className="w-3.5 h-3.5" /> Call</a>
+          </div>
+        </div>
+        <PartRequestForm />
       </div>
-      <CallToAction title="Edmonton's Trusted Auto Recycler Since 1984" description="Whether you need a part or want to sell a vehicle, Eskimo is here to help." linkTo="/sell-your-vehicle" linkLabel="Sell Your Vehicle" />
+      <CallToAction title="Edmonton's Trusted Auto Recycler" description={`Serving Edmonton since ${BUSINESS.established}. Call ${BUSINESS.phone}.`} linkTo="/sell-your-vehicle" linkLabel="Sell Your Vehicle" />
     </div>
   );
 }
