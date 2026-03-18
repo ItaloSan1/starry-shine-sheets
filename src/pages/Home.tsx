@@ -29,7 +29,7 @@ export default function Home() {
       <TestimonialsSection />
       <HomeFAQ />
       <FAQSchema items={homeFaqData} />
-      <CallToAction />
+      <CallToAction title="Need a Part? We're Here to Help." description="Call, text, or search our inventory. Edmonton's trusted auto recycler since 1984." linkTo="/search-inventory" linkLabel="Search Inventory" />
     </div>
   );
 }

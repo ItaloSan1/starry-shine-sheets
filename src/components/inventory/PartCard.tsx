@@ -38,10 +38,7 @@ export function PartCard({ part }: { part: Part }) {
         </Link>
         <p className="text-xs text-muted-foreground mb-1">{part.year} {part.make} {part.model}</p>
 
-        {/* Donor vehicle if available */}
-        {part.donorVehicle && (
-          <p className="text-[11px] text-muted-foreground mb-1">Donor: {part.donorVehicle}</p>
-        )}
+        {/* Donor vehicle info could be added to Part interface later */}
 
         <div className="flex flex-wrap gap-1.5 mb-2 text-[11px]">
           <span className={`font-semibold ${conditionColor}`}>{part.condition}</span>
