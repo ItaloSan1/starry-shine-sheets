@@ -1,39 +1,55 @@
-import { Hero } from './components/Hero'
-import { Portfolio } from './components/Portfolio'
-import { Awards } from './components/Awards'
-import { About } from './components/About'
-import { Services } from './components/Services'
-import { Team } from './components/Team'
-import { Contact } from './components/Contact'
-import { Footer } from './components/Footer'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Layout } from './components/layout/Layout';
+import { Toaster } from '@/components/ui/sonner';
+import Home from './pages/Home';
+import SearchInventory from './pages/SearchInventory';
+import PartDetailPage from './pages/PartDetailPage';
+import LatestArrivals from './pages/LatestArrivals';
+import VehicleDetailPage from './pages/VehicleDetailPage';
+import SellYourVehicle from './pages/SellYourVehicle';
+import UsedAutoParts from './pages/UsedAutoParts';
+import UsedTruckParts from './pages/UsedTruckParts';
+import UsedEngines from './pages/UsedEngines';
+import UsedTransmissions from './pages/UsedTransmissions';
+import UsedBodyParts from './pages/UsedBodyParts';
+import UsedTiresRims from './pages/UsedTiresRims';
+import AutoRecycler from './pages/AutoRecycler';
+import WarrantyReturns from './pages/WarrantyReturns';
+import DeliveryPartsSourcing from './pages/DeliveryPartsSourcing';
+import ForShopsFleet from './pages/ForShopsFleet';
+import About from './pages/About';
+import FAQ from './pages/FAQ';
+import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-background text-foreground" style={{ overflow: 'visible' }}>
-      <main className="relative" role="main" style={{ overflow: 'visible' }}>
-        <section id="hero" aria-label="Hero section">
-          <Hero />
-        </section>
-        <section id="portfolio" aria-label="Portfolio section">
-          <Portfolio />
-        </section>
-        <section id="awards" aria-label="Awards section">
-          <Awards />
-        </section>
-        <section id="about" aria-label="About section">
-          <About />
-        </section>
-        <section id="services" aria-label="Services section">
-          <Services />
-        </section>
-        <section id="team" aria-label="Team section" style={{ overflow: 'visible', height: 'auto', minHeight: '0', maxHeight: 'none' }}>
-          <Team />
-        </section>
-        <section id="contact" aria-label="Contact section">
-          <Contact />
-        </section>
-      </main>
-      <Footer />
-    </div>
-  )
+    <BrowserRouter>
+      <Toaster />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/search-inventory" element={<SearchInventory />} />
+          <Route path="/search-inventory/:id" element={<PartDetailPage />} />
+          <Route path="/latest-arrivals" element={<LatestArrivals />} />
+          <Route path="/latest-arrivals/:id" element={<VehicleDetailPage />} />
+          <Route path="/sell-your-vehicle" element={<SellYourVehicle />} />
+          <Route path="/used-auto-parts-edmonton" element={<UsedAutoParts />} />
+          <Route path="/used-truck-parts-edmonton" element={<UsedTruckParts />} />
+          <Route path="/used-engines-edmonton" element={<UsedEngines />} />
+          <Route path="/used-transmissions-edmonton" element={<UsedTransmissions />} />
+          <Route path="/used-body-parts-edmonton" element={<UsedBodyParts />} />
+          <Route path="/used-tires-rims-edmonton" element={<UsedTiresRims />} />
+          <Route path="/auto-recycler-edmonton" element={<AutoRecycler />} />
+          <Route path="/warranty-returns" element={<WarrantyReturns />} />
+          <Route path="/delivery-parts-sourcing" element={<DeliveryPartsSourcing />} />
+          <Route path="/for-shops-fleet" element={<ForShopsFleet />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
