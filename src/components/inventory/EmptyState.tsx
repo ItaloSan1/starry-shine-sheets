@@ -1,28 +1,36 @@
-import { Search, Phone, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, Phone, MessageSquare } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 
-interface EmptyStateProps {
-  title?: string;
-  message?: string;
-}
-
-export function EmptyState({ title = 'No Parts Found', message = 'Try adjusting your filters or search terms.' }: EmptyStateProps) {
+export function EmptyState() {
   return (
-    <div className="text-center py-14 px-4">
-      <Search className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-      <h3 className="text-lg font-bold mb-2">{title}</h3>
-      <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">{message}</p>
-      <p className="text-sm font-medium text-foreground mb-4">
-        Don't see it? We can source many parts from our network.
+    <div className="text-center py-12 bg-card border border-border rounded-lg">
+      <Search className="w-12 h-12 text-muted-foreground/40 mx-auto mb-4" />
+      <h3 className="font-bold text-lg mb-2">No parts found for this search</h3>
+      <p className="text-muted-foreground text-sm max-w-md mx-auto mb-2">
+        Don't see what you need? We can source many parts from our recycler network across Western Canada.
       </p>
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-md font-bold text-sm hover:opacity-90 transition-opacity">
-          <Phone className="w-4 h-4" />
-          Call {BUSINESS.phone}
+      <p className="text-muted-foreground text-sm mb-6">
+        Call or text us at <a href={`tel:${BUSINESS.phoneRaw}`} className="text-accent font-semibold hover:underline">{BUSINESS.phone}</a> — or submit a request online.
+      </p>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <Link
+          to="/request-a-part"
+          className="bg-accent text-accent-foreground px-6 py-2.5 rounded-md font-bold text-sm hover:opacity-90 transition-opacity"
+        >
+          Request a Part
+        </Link>
+        <a
+          href={`tel:${BUSINESS.phoneRaw}`}
+          className="flex items-center justify-center gap-2 border border-border px-6 py-2.5 rounded-md font-semibold text-sm hover:bg-muted transition-colors"
+        >
+          <Phone className="w-4 h-4" /> Call Us
         </a>
-        <a href={`sms:${BUSINESS.phoneRaw}`} className="flex items-center gap-2 border border-border px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-muted transition-colors">
-          <MessageCircle className="w-4 h-4" />
-          Text Us
+        <a
+          href={`sms:${BUSINESS.phoneRaw}`}
+          className="flex items-center justify-center gap-2 border border-border px-6 py-2.5 rounded-md font-semibold text-sm hover:bg-muted transition-colors"
+        >
+          <MessageSquare className="w-4 h-4" /> Text Us
         </a>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import type { Part } from '@/lib/inventory-adapter';
 import { PartCard } from './PartCard';
+import { BUSINESS } from '@/lib/constants';
 
 interface SearchResultsProps {
   parts: Part[];
@@ -27,10 +28,15 @@ export function SearchResults({ parts, total, loading, sortBy = 'newest', onSort
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-sm font-medium text-foreground">
-          Showing {parts.length} of {total} part{total !== 1 ? 's' : ''}
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div>
+          <p className="text-sm font-medium text-foreground">
+            Showing {parts.length} of {total} part{total !== 1 ? 's' : ''}
+          </p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Need fitment help? Call <a href={`tel:${BUSINESS.phoneRaw}`} className="text-accent hover:underline">{BUSINESS.phone}</a> or <a href={`sms:${BUSINESS.phoneRaw}`} className="text-accent hover:underline">text us</a>.
+          </p>
+        </div>
         {onSortChange && (
           <select
             value={sortBy}
