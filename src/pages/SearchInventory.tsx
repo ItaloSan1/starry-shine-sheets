@@ -4,11 +4,24 @@ import { SearchForm } from '@/components/inventory/SearchForm';
 import { SearchResults } from '@/components/inventory/SearchResults';
 import { EmptyState } from '@/components/inventory/EmptyState';
 import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
+import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
+import { useSEO } from '@/hooks/useSEO';
 import { inventoryProvider } from '@/lib/mock-inventory';
 import type { Part, SearchFilters } from '@/lib/inventory-adapter';
 import { X } from 'lucide-react';
 
+const breadcrumbs = [
+  { label: 'Home', to: '/' },
+  { label: 'Search Inventory' },
+];
+
 export default function SearchInventory() {
+  useSEO({
+    title: 'Search Used Auto Parts Inventory | Eskimo Auto & Truck Parts',
+    description: 'Search thousands of quality used auto and truck parts in Edmonton. Engines, transmissions, body parts, tires & rims. Warranty-backed. Call (780) 473-2424.',
+  });
+
   const [searchParams] = useSearchParams();
   const [filters, setFilters] = useState<SearchFilters>(() => {
     const q = searchParams.get('q');
@@ -33,19 +46,13 @@ export default function SearchInventory() {
 
   useEffect(() => { doSearch(); }, [sortBy]);
 
-  // Active filter chips
   const activeFilters = Object.entries(filters)
     .filter(([, v]) => v !== undefined && v !== '')
     .map(([k, v]) => ({ key: k as keyof SearchFilters, label: `${k}: ${v}` }));
 
   const removeFilter = (key: keyof SearchFilters) => {
-    const next = { ...filters, [key]: undefined };
-    setFilters(next);
+    setFilters(prev => ({ ...prev, [key]: undefined }));
   };
-
-  useEffect(() => {
-    document.title = 'Search Used Auto Parts Inventory | Eskimo Auto & Truck Parts Edmonton';
-  }, []);
 
   return (
     <div className="pb-20 lg:pb-0">
@@ -56,17 +63,14 @@ export default function SearchInventory() {
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-4 py-5">
+        <Breadcrumbs items={breadcrumbs} />
+        <BreadcrumbSchema items={breadcrumbs} />
         <SearchForm filters={filters} onFilterChange={setFilters} onSearch={doSearch} />
 
-        {/* Active filter chips */}
         {activeFilters.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-3">
             {activeFilters.map(f => (
-              <button
-                key={f.key}
-                onClick={() => removeFilter(f.key)}
-                className="inline-flex items-center gap-1 text-xs bg-accent/10 text-accent px-2.5 py-1 rounded-full hover:bg-accent/20 transition-colors"
-              >
+              <button key={f.key} onClick={() => removeFilter(f.key)} className="inline-flex items-center gap-1 text-xs bg-accent/10 text-accent px-2.5 py-1 rounded-full hover:bg-accent/20 transition-colors">
                 {f.label}
                 <X className="w-3 h-3" />
               </button>
