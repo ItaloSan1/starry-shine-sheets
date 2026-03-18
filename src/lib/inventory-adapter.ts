@@ -58,6 +58,7 @@ export interface SearchFilters {
   maxPrice?: number;
   condition?: string;
   stockNumber?: string;
+  availability?: string;
   query?: string;
 }
 
