@@ -10,6 +10,7 @@ import { useSEO } from '@/hooks/useSEO';
 import { inventoryProvider } from '@/lib/mock-inventory';
 import type { Part, SearchFilters } from '@/lib/inventory-adapter';
 import { X } from 'lucide-react';
+import partsWarehouse from '@/assets/parts-warehouse.jpg';
 
 const breadcrumbs = [
   { label: 'Home', to: '/' },
@@ -56,8 +57,11 @@ export default function SearchInventory() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="bg-primary text-primary-foreground py-6">
-        <div className="max-w-6xl mx-auto px-4">
+      <div className="relative bg-primary text-primary-foreground py-6 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={partsWarehouse} alt="Eskimo Auto Parts inventory warehouse" className="w-full h-full object-cover opacity-20" />
+        </div>
+        <div className="relative max-w-6xl mx-auto px-4">
           <h1 className="text-xl md:text-2xl font-bold text-primary-foreground">Search Our Inventory</h1>
           <p className="text-primary-foreground/70 mt-1 text-sm">Find quality used auto and truck parts in Edmonton</p>
         </div>

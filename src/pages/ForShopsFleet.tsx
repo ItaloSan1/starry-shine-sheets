@@ -3,6 +3,7 @@ import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { Wrench, Building2, Truck, Percent, Clock, Users } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { useSEO } from '@/hooks/useSEO';
+import mechanicShop from '@/assets/mechanic-shop.jpg';
 
 export default function ForShopsFleet() {
   useSEO({
@@ -12,8 +13,11 @@ export default function ForShopsFleet() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="bg-primary text-primary-foreground py-8">
-        <div className="max-w-4xl mx-auto px-4">
+      <div className="relative bg-primary text-primary-foreground py-8 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={mechanicShop} alt="Auto mechanic shop partner" className="w-full h-full object-cover opacity-20" />
+        </div>
+        <div className="relative max-w-4xl mx-auto px-4">
           <h1 className="text-xl md:text-3xl font-bold text-primary-foreground">For Shops, Mechanics & Fleet Buyers</h1>
           <p className="text-primary-foreground/80 mt-2 text-sm md:text-base">Reliable parts, competitive pricing, and fast turnaround for automotive professionals.</p>
         </div>

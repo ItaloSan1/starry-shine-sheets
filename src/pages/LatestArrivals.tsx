@@ -5,6 +5,7 @@ import type { Vehicle } from '@/lib/inventory-adapter';
 import { Car } from 'lucide-react';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { useSEO } from '@/hooks/useSEO';
+import recyclerYard from '@/assets/recycler-yard.jpg';
 
 export default function LatestArrivals() {
   useSEO({
@@ -20,8 +21,11 @@ export default function LatestArrivals() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="bg-primary text-primary-foreground py-6">
-        <div className="max-w-6xl mx-auto px-4">
+      <div className="relative bg-primary text-primary-foreground py-6 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={recyclerYard} alt="Eskimo Auto recycler yard latest arrivals" className="w-full h-full object-cover opacity-20" />
+        </div>
+        <div className="relative max-w-6xl mx-auto px-4">
           <h1 className="text-xl md:text-2xl font-bold text-primary-foreground">Latest Arrivals</h1>
           <p className="text-primary-foreground/70 mt-1 text-sm">Fresh vehicles recently arrived at our Edmonton yard — parts are being pulled now</p>
         </div>

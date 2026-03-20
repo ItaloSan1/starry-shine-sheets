@@ -2,6 +2,7 @@ import { SellVehicleForm } from '@/components/forms/SellVehicleForm';
 import { Phone, MessageCircle, Car, Truck, MapPin } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { useSEO } from '@/hooks/useSEO';
+import sellVehicle from '@/assets/sell-vehicle.jpg';
 
 export default function SellYourVehicle() {
   useSEO({
@@ -11,8 +12,11 @@ export default function SellYourVehicle() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="bg-primary text-primary-foreground py-8">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+      <div className="relative bg-primary text-primary-foreground py-8 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={sellVehicle} alt="Sell your vehicle for cash Edmonton" className="w-full h-full object-cover opacity-20" />
+        </div>
+        <div className="relative max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-xl md:text-3xl font-bold text-primary-foreground mb-2">Sell Your Vehicle in Edmonton</h1>
           <p className="text-primary-foreground/80 text-sm md:text-base">We buy cars, trucks, and SUVs — running or not. Get a fair cash offer.</p>
         </div>

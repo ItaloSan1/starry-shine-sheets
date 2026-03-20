@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
+import bodyParts from '@/assets/body-parts.jpg';
 
 const breadcrumbs = [{ label: 'Home', to: '/' }, { label: 'Used Body Parts Edmonton' }];
 
@@ -17,8 +18,11 @@ export default function UsedBodyParts() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <section className="bg-primary text-primary-foreground py-10">
-        <div className="max-w-5xl mx-auto px-4">
+      <section className="relative bg-primary text-primary-foreground py-10 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={bodyParts} alt="Used body parts warehouse Eskimo Auto Parts Edmonton" className="w-full h-full object-cover opacity-20" />
+        </div>
+        <div className="relative max-w-5xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold mb-2">Used Body Parts in Edmonton</h1>
           <p className="text-primary-foreground/70 max-w-2xl">Doors, fenders, hoods, bumpers, mirrors, headlights, and more. Quality recycled parts at fair prices.</p>
         </div>
