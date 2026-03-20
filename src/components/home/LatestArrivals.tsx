@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { inventoryProvider } from '@/lib/mock-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
-import { Car, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import heroYard from '@/assets/hero-yard.jpg';
 
 export function LatestArrivals() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
