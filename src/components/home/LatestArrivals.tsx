@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { inventoryProvider } from '@/lib/mock-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
-import { Car, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import heroYard from '@/assets/hero-yard.jpg';
 
 export function LatestArrivals() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -30,8 +31,8 @@ export function LatestArrivals() {
               to={`/latest-arrivals/${v.id}`}
               className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow"
             >
-              <div className="aspect-[16/10] bg-muted flex items-center justify-center">
-                <Car className="w-10 h-10 text-muted-foreground/30" />
+              <div className="aspect-[16/10] bg-muted overflow-hidden">
+                <img src={heroYard} alt={`${v.year} ${v.make} ${v.model}`} className="w-full h-full object-cover" />
               </div>
               <div className="p-3">
                 <p className="font-bold text-sm">{v.year} {v.make} {v.model}</p>

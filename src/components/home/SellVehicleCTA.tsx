@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import { DollarSign } from 'lucide-react';
+import yardAerial from '@/assets/yard-aerial.jpg';
 
 export function SellVehicleCTA() {
   return (
-    <section className="bg-accent py-10">
-      <div className="max-w-4xl mx-auto px-4 text-center">
+    <section className="relative overflow-hidden">
+      <div className="absolute inset-0">
+        <img src={yardAerial} alt="Eskimo Auto Parts yard aerial view" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-accent/90" />
+      </div>
+      <div className="relative max-w-4xl mx-auto px-4 py-10 text-center">
         <DollarSign className="w-10 h-10 text-accent-foreground mx-auto mb-3" />
         <h2 className="text-xl md:text-2xl font-bold text-accent-foreground mb-2">Got a Vehicle to Sell?</h2>
         <p className="text-accent-foreground/90 text-sm md:text-base mb-5 max-w-xl mx-auto">

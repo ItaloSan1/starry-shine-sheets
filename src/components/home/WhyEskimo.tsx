@@ -1,4 +1,5 @@
 import { Recycle, Search, DollarSign, Users, MapPin, Shield } from 'lucide-react';
+import partsWarehouse from '@/assets/parts-warehouse.jpg';
 
 const reasons = [
   { icon: Search, title: 'Huge Inventory', desc: 'Thousands of quality-tested parts in stock from popular makes — Ford, Chevy, Toyota, Honda, Dodge, and more.' },
@@ -13,20 +14,32 @@ export function WhyEskimo() {
   return (
     <section className="py-12 bg-background">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-xl md:text-2xl font-bold text-center mb-2">Why Choose Eskimo Auto & Truck Parts?</h2>
-        <p className="text-center text-muted-foreground mb-8 text-sm">Edmonton's trusted auto recycler for over 40 years</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {reasons.map(r => (
-            <div key={r.title} className="flex gap-3">
-              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                <r.icon className="w-5 h-5 text-accent" />
-              </div>
-              <div>
-                <h3 className="font-bold text-sm mb-1">{r.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Image */}
+          <div className="hidden lg:block">
+            <div className="rounded-lg overflow-hidden shadow-lg">
+              <img src={partsWarehouse} alt="Eskimo Auto Parts warehouse with organized shelving" className="w-full h-80 object-cover" />
             </div>
-          ))}
+          </div>
+
+          {/* Content */}
+          <div>
+            <h2 className="text-xl md:text-2xl font-bold mb-2">Why Choose Eskimo Auto & Truck Parts?</h2>
+            <p className="text-muted-foreground mb-6 text-sm">Edmonton's trusted auto recycler for over 40 years</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {reasons.map(r => (
+                <div key={r.title} className="flex gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <r.icon className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm mb-0.5">{r.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{r.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

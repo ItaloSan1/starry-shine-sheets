@@ -1,13 +1,18 @@
 import { Link } from 'react-router-dom';
-import { Settings, Cog, PanelTop, CircleDot, Zap, Wrench } from 'lucide-react';
+import engineParts from '@/assets/engine-parts.jpg';
+import partsWarehouse from '@/assets/parts-warehouse.jpg';
+import tiresRims from '@/assets/tires-rims.jpg';
+import partsCounter from '@/assets/parts-counter.jpg';
+import heroYard from '@/assets/hero-yard.jpg';
+import yardAerial from '@/assets/yard-aerial.jpg';
 
 const categories = [
-  { icon: Settings, label: 'Engines', desc: 'Gas & diesel engines for cars and trucks', to: '/used-engines-edmonton' },
-  { icon: Cog, label: 'Transmissions', desc: 'Automatic & manual transmissions', to: '/used-transmissions-edmonton' },
-  { icon: PanelTop, label: 'Body Parts', desc: 'Doors, bumpers, hoods, fenders, lights', to: '/used-body-parts-edmonton' },
-  { icon: CircleDot, label: 'Tires & Rims', desc: 'OEM wheels and quality used tires', to: '/used-tires-rims-edmonton' },
-  { icon: Zap, label: 'Auto Parts', desc: 'Full range of used car parts', to: '/used-auto-parts-edmonton' },
-  { icon: Wrench, label: 'Truck Parts', desc: 'Light & heavy truck parts', to: '/used-truck-parts-edmonton' },
+  { img: engineParts, label: 'Engines', desc: 'Gas & diesel engines for cars and trucks', to: '/used-engines-edmonton' },
+  { img: partsWarehouse, label: 'Transmissions', desc: 'Automatic & manual transmissions', to: '/used-transmissions-edmonton' },
+  { img: partsCounter, label: 'Body Parts', desc: 'Doors, bumpers, hoods, fenders, lights', to: '/used-body-parts-edmonton' },
+  { img: tiresRims, label: 'Tires & Rims', desc: 'OEM wheels and quality used tires', to: '/used-tires-rims-edmonton' },
+  { img: heroYard, label: 'Auto Parts', desc: 'Full range of used car parts', to: '/used-auto-parts-edmonton' },
+  { img: yardAerial, label: 'Truck Parts', desc: 'Light & heavy truck parts', to: '/used-truck-parts-edmonton' },
 ];
 
 export function CategoryCards() {
@@ -21,13 +26,14 @@ export function CategoryCards() {
             <Link
               key={cat.to}
               to={cat.to}
-              className="group border border-border rounded-lg p-4 hover:border-accent hover:shadow-md transition-all"
+              className="group relative rounded-lg overflow-hidden border border-border hover:border-accent hover:shadow-lg transition-all aspect-[4/3]"
             >
-              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-2 group-hover:bg-accent/20 transition-colors">
-                <cat.icon className="w-5 h-5 text-accent" />
+              <img src={cat.img} alt={cat.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
+                <h3 className="font-bold text-sm md:text-base text-primary-foreground mb-0.5">{cat.label}</h3>
+                <p className="text-[11px] md:text-xs text-primary-foreground/70">{cat.desc}</p>
               </div>
-              <h3 className="font-bold text-sm mb-0.5">{cat.label}</h3>
-              <p className="text-xs text-muted-foreground">{cat.desc}</p>
             </Link>
           ))}
         </div>
