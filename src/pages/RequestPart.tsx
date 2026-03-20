@@ -24,8 +24,11 @@ export default function RequestPart() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="bg-primary text-primary-foreground py-8">
-        <div className="max-w-5xl mx-auto px-4">
+      <div className="relative bg-primary text-primary-foreground py-8 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={partsCounter} alt="Eskimo Auto Parts counter" className="w-full h-full object-cover opacity-20" />
+        </div>
+        <div className="relative max-w-5xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold">Request a Part</h1>
           <p className="text-primary-foreground/70 mt-1">Can't find what you're looking for? Let us track it down.</p>
         </div>
