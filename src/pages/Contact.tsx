@@ -2,6 +2,7 @@ import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { BUSINESS } from '@/lib/constants';
 import { useSEO } from '@/hooks/useSEO';
+import storefront from '@/assets/storefront.jpg';
 
 export default function Contact() {
   useSEO({

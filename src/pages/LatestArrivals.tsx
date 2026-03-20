@@ -5,6 +5,7 @@ import type { Vehicle } from '@/lib/inventory-adapter';
 import { Car } from 'lucide-react';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { useSEO } from '@/hooks/useSEO';
+import recyclerYard from '@/assets/recycler-yard.jpg';
 
 export default function LatestArrivals() {
   useSEO({

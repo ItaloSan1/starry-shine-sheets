@@ -10,6 +10,7 @@ import { useSEO } from '@/hooks/useSEO';
 import { inventoryProvider } from '@/lib/mock-inventory';
 import type { Part, SearchFilters } from '@/lib/inventory-adapter';
 import { X } from 'lucide-react';
+import partsWarehouse from '@/assets/parts-warehouse.jpg';
 
 const breadcrumbs = [
   { label: 'Home', to: '/' },

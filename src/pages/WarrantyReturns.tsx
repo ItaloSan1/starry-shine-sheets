@@ -3,6 +3,7 @@ import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
 import { Shield, RotateCcw, AlertTriangle, Phone, ListChecks } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
+import warranty from '@/assets/warranty.jpg';
 
 export default function WarrantyReturns() {
   useSEO({

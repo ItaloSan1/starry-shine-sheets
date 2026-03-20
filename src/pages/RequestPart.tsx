@@ -4,6 +4,7 @@ import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { BUSINESS } from '@/lib/constants';
+import partsCounter from '@/assets/parts-counter.jpg';
 
 const breadcrumbs = [
   { label: 'Home', to: '/' },

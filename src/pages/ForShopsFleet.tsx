@@ -3,6 +3,7 @@ import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { Wrench, Building2, Truck, Percent, Clock, Users } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { useSEO } from '@/hooks/useSEO';
+import mechanicShop from '@/assets/mechanic-shop.jpg';
 
 export default function ForShopsFleet() {
   useSEO({

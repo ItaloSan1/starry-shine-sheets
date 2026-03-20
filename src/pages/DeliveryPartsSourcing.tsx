@@ -1,6 +1,7 @@
 import { CallToAction } from '@/components/layout/CallToAction';
 import { Truck, Search, Globe } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
+import deliveryTruck from '@/assets/delivery-truck.jpg';
 
 export default function DeliveryPartsSourcing() {
   useSEO({

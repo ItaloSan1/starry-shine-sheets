@@ -4,6 +4,7 @@ import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
 import { useSEO } from '@/hooks/useSEO';
 import { FAQSchema } from '@/components/seo/SchemaMarkup';
+import partsWarehouse from '@/assets/parts-warehouse.jpg';
 
 const faqs = [
   { q: 'Do your used parts come with a warranty?', a: 'Yes. All parts come with a warranty — terms vary by part category. Specific warranty details are provided at the time of purchase.' },

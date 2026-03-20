@@ -2,6 +2,7 @@ import { SellVehicleForm } from '@/components/forms/SellVehicleForm';
 import { Phone, MessageCircle, Car, Truck, MapPin } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { useSEO } from '@/hooks/useSEO';
+import sellVehicle from '@/assets/sell-vehicle.jpg';
 
 export default function SellYourVehicle() {
   useSEO({

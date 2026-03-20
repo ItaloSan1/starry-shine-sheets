@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
+import tiresRims from '@/assets/tires-rims.jpg';
 
 const breadcrumbs = [{ label: 'Home', to: '/' }, { label: 'Used Tires & Rims Edmonton' }];
 
