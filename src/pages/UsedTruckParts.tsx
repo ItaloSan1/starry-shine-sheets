@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { PartRequestForm } from '@/components/forms/PartRequestForm';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
+import heroYard from '@/assets/hero-yard.jpg';
 
 const breadcrumbs = [{ label: 'Home', to: '/' }, { label: 'Used Truck Parts Edmonton' }];
 const categories = [
