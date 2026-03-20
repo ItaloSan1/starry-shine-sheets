@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Search, Phone, MessageCircle, Shield, Clock, Wrench, MapPin } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
+import heroYard from '@/assets/hero-yard.jpg';
 
 const trustChips = [
   { icon: Clock, label: BUSINESS.establishedText },
@@ -35,15 +36,21 @@ export function HeroSection() {
   const inputClass = "px-3 py-2.5 bg-background text-foreground text-sm rounded-md border border-border focus:outline-none focus:ring-2 focus:ring-accent placeholder:text-muted-foreground";
 
   return (
-    <section className="bg-primary text-primary-foreground">
-      <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
+    <section className="relative bg-primary text-primary-foreground overflow-hidden">
+      {/* Background image with overlay */}
+      <div className="absolute inset-0">
+        <img src={heroYard} alt="Eskimo Auto & Truck Parts yard in Edmonton" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-primary/85" />
+      </div>
+
+      <div className="relative max-w-6xl mx-auto px-4 py-10 md:py-14">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
           {/* Left content — spans 3 cols */}
           <div className="lg:col-span-3">
             {/* Trust chips */}
             <div className="flex flex-wrap gap-2 mb-4">
               {trustChips.map(chip => (
-                <span key={chip.label} className="inline-flex items-center gap-1.5 text-xs font-medium text-primary-foreground/80 bg-primary-foreground/10 px-2.5 py-1 rounded-full">
+                <span key={chip.label} className="inline-flex items-center gap-1.5 text-xs font-medium text-primary-foreground/80 bg-primary-foreground/10 px-2.5 py-1 rounded-full backdrop-blur-sm">
                   <chip.icon className="w-3 h-3" />
                   {chip.label}
                 </span>
@@ -93,14 +100,14 @@ export function HeroSection() {
               </a>
               <a
                 href={`sms:${BUSINESS.phoneRaw}`}
-                className="flex items-center gap-2 border border-primary-foreground/30 text-primary-foreground px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-primary-foreground/10 transition-colors"
+                className="flex items-center gap-2 border border-primary-foreground/30 text-primary-foreground px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-primary-foreground/10 transition-colors backdrop-blur-sm"
               >
                 <MessageCircle className="w-4 h-4" />
                 Text Us for a Part
               </a>
               <Link
                 to="/search-inventory"
-                className="flex items-center gap-2 border border-primary-foreground/30 text-primary-foreground px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-primary-foreground/10 transition-colors"
+                className="flex items-center gap-2 border border-primary-foreground/30 text-primary-foreground px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-primary-foreground/10 transition-colors backdrop-blur-sm"
               >
                 <Search className="w-4 h-4" />
                 Browse Inventory
@@ -110,15 +117,12 @@ export function HeroSection() {
 
           {/* Right visual panel — spans 2 cols */}
           <div className="hidden lg:block lg:col-span-2">
-            <div className="relative rounded-lg overflow-hidden bg-primary-foreground/5 border border-primary-foreground/10 aspect-[4/3]">
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-primary-foreground/5 to-primary-foreground/10" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mb-3">
-                  <Wrench className="w-8 h-8 text-accent" />
-                </div>
+            <div className="relative rounded-lg overflow-hidden border border-primary-foreground/10 aspect-[4/3] shadow-2xl">
+              <img src={heroYard} alt="Eskimo Auto Parts recycling yard, Edmonton Alberta" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-5">
                 <p className="text-primary-foreground font-bold text-lg mb-1">40+ Years in Edmonton</p>
-                <p className="text-primary-foreground/60 text-sm">Quality parts · Fair prices · Real warranty</p>
-                {/* TODO: Replace with real yard/facility photo */}
+                <p className="text-primary-foreground/70 text-sm">Quality parts · Fair prices · Real warranty</p>
               </div>
             </div>
           </div>
