@@ -1,4 +1,6 @@
 import { Recycle, Search, DollarSign, Users, MapPin, Shield } from 'lucide-react';
+import { ScrollReveal, StaggerChildren, staggerItem } from '@/components/ui/ScrollReveal';
+import { motion } from 'framer-motion';
 import partsWarehouse from '@/assets/parts-warehouse.jpg';
 
 const reasons = [
@@ -12,33 +14,36 @@ const reasons = [
 
 export function WhyEskimo() {
   return (
-    <section className="py-12 bg-background">
+    <section className="py-14 bg-background">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           {/* Image */}
-          <div className="hidden lg:block">
-            <div className="rounded-lg overflow-hidden shadow-lg">
-              <img src={partsWarehouse} alt="Eskimo Auto Parts warehouse with organized shelving" className="w-full h-80 object-cover" />
+          <ScrollReveal direction="left" className="hidden lg:block">
+            <div className="rounded-2xl overflow-hidden shadow-lg relative group">
+              <img src={partsWarehouse} alt="Eskimo Auto Parts warehouse with organized shelving" className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent" />
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Content */}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold mb-2">Why Choose Eskimo Auto & Truck Parts?</h2>
-            <p className="text-muted-foreground mb-6 text-sm">Edmonton's trusted auto recycler for over 40 years</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ScrollReveal>
+              <h2 className="text-2xl md:text-3xl font-extrabold mb-2">Why Choose Eskimo Auto & Truck Parts?</h2>
+              <p className="text-muted-foreground mb-8 text-sm">Edmonton's trusted auto recycler for over 40 years</p>
+            </ScrollReveal>
+            <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 gap-5" staggerDelay={0.08}>
               {reasons.map(r => (
-                <div key={r.title} className="flex gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <r.icon className="w-4 h-4 text-accent" />
+                <motion.div key={r.title} variants={staggerItem} className="flex gap-3 group">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-accent/20 transition-colors">
+                    <r.icon className="w-4.5 h-4.5 text-accent" />
                   </div>
                   <div>
                     <h3 className="font-bold text-sm mb-0.5">{r.title}</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed">{r.desc}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </StaggerChildren>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BUSINESS } from '@/lib/constants';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const homeFaqData = [
   {
@@ -35,21 +36,25 @@ export const homeFaqData = [
 
 export function HomeFAQ() {
   return (
-    <section className="py-10 bg-muted/30">
+    <section className="py-14 bg-muted/30">
       <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-xl md:text-2xl font-bold text-center mb-6">Frequently Asked Questions</h2>
-        <Accordion type="single" collapsible className="space-y-2">
-          {homeFaqData.map((item, i) => (
-            <AccordionItem key={i} value={`faq-${i}`} className="bg-card border border-border rounded-lg px-4">
-              <AccordionTrigger className="text-sm font-semibold text-left py-3 hover:no-underline">
-                {item.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-sm text-muted-foreground pb-3">
-                {item.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <ScrollReveal>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-8">Frequently Asked Questions</h2>
+        </ScrollReveal>
+        <ScrollReveal delay={0.15}>
+          <Accordion type="single" collapsible className="space-y-2">
+            {homeFaqData.map((item, i) => (
+              <AccordionItem key={i} value={`faq-${i}`} className="bg-card border border-border rounded-xl px-5">
+                <AccordionTrigger className="text-sm font-bold text-left py-4 hover:no-underline">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </ScrollReveal>
       </div>
     </section>
   );

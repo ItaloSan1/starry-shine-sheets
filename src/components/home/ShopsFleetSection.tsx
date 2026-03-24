@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Wrench, Building2, Truck } from 'lucide-react';
+import { ScrollReveal, StaggerChildren, staggerItem } from '@/components/ui/ScrollReveal';
+import { motion } from 'framer-motion';
 import partsCounter from '@/assets/parts-counter.jpg';
 
 const audiences = [
@@ -10,32 +12,36 @@ const audiences = [
 
 export function ShopsFleetSection() {
   return (
-    <section className="py-12 bg-secondary">
+    <section className="py-14 bg-secondary">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
           <div className="lg:col-span-3">
-            <h2 className="text-xl md:text-2xl font-bold mb-2">For Shops, Mechanics & Fleet Buyers</h2>
-            <p className="text-muted-foreground mb-6 text-sm">We're the parts supplier Edmonton pros rely on</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <ScrollReveal>
+              <h2 className="text-2xl md:text-3xl font-extrabold mb-2">For Shops, Mechanics & Fleet Buyers</h2>
+              <p className="text-muted-foreground mb-8 text-sm">We're the parts supplier Edmonton pros rely on</p>
+            </ScrollReveal>
+            <StaggerChildren className="grid grid-cols-1 sm:grid-cols-3 gap-4" staggerDelay={0.1}>
               {audiences.map(a => (
-                <div key={a.title} className="bg-card border border-border rounded-lg p-4">
-                  <a.icon className="w-6 h-6 text-accent mb-2" />
+                <motion.div key={a.title} variants={staggerItem} className="bg-card border border-border rounded-xl p-5 card-hover">
+                  <a.icon className="w-7 h-7 text-accent mb-3" />
                   <h3 className="font-bold text-sm mb-1">{a.title}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">{a.desc}</p>
-                </div>
+                </motion.div>
               ))}
-            </div>
-            <div className="mt-5">
-              <Link to="/for-shops-fleet" className="text-accent font-semibold text-sm hover:underline">
-                Learn about our shop & fleet programs →
-              </Link>
-            </div>
+            </StaggerChildren>
+            <ScrollReveal delay={0.3}>
+              <div className="mt-6">
+                <Link to="/for-shops-fleet" className="text-accent font-bold text-sm hover:underline">
+                  Learn about our shop & fleet programs →
+                </Link>
+              </div>
+            </ScrollReveal>
           </div>
-          <div className="hidden lg:block lg:col-span-2">
-            <div className="rounded-lg overflow-hidden shadow-lg">
-              <img src={partsCounter} alt="Technician inspecting parts at Eskimo Auto counter" className="w-full h-72 object-cover" />
+          <ScrollReveal direction="right" className="hidden lg:block lg:col-span-2">
+            <div className="rounded-2xl overflow-hidden shadow-lg group">
+              <img src={partsCounter} alt="Technician inspecting parts at Eskimo Auto counter" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-700" />
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
