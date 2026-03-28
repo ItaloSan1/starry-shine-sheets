@@ -1,4 +1,5 @@
 import { Phone, MessageSquare, ClipboardList, Search, PhoneCall } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { useSEO } from '@/hooks/useSEO';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
@@ -18,6 +19,12 @@ const steps = [
 ];
 
 export default function RequestPart() {
+  const [searchParams] = useSearchParams();
+  const prefillYear = searchParams.get('year') || undefined;
+  const prefillMake = searchParams.get('make') || undefined;
+  const prefillModel = searchParams.get('model') || undefined;
+  const prefillStock = searchParams.get('stock') || undefined;
+
   useSEO({
     title: 'Request a Part | Eskimo Auto & Truck Parts Edmonton',
     description: `Can't find the used auto part you need? Submit a request and we'll search our inventory and recycler network. Call ${BUSINESS.phone}.`,
@@ -38,7 +45,6 @@ export default function RequestPart() {
         <Breadcrumbs items={breadcrumbs} />
         <BreadcrumbSchema items={breadcrumbs} />
 
-        {/* How it works */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {steps.map((step, i) => (
             <div key={i} className="bg-card border border-border rounded-lg p-5 text-center">
@@ -54,7 +60,12 @@ export default function RequestPart() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <RequestPartForm />
+            <RequestPartForm
+              prefillYear={prefillYear}
+              prefillMake={prefillMake}
+              prefillModel={prefillModel}
+              prefillStockNumber={prefillStock}
+            />
           </div>
           <div className="space-y-4">
             <div className="bg-card border border-border rounded-lg p-5">
