@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { Phone, MessageSquare, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { BUSINESS } from '@/lib/constants';
+import { supabase } from '@/integrations/supabase/client';
+
+interface RequestPartFormProps {
+  prefillYear?: string;
+  prefillMake?: string;
+  prefillModel?: string;
+  prefillStockNumber?: string;
+}
 
 interface FormData {
   year: string;
@@ -17,13 +25,20 @@ interface FormData {
   honeypot: string;
 }
 
-const initialForm: FormData = {
-  year: '', make: '', model: '', partNeeded: '', vin: '',
-  contactMethod: 'call', name: '', phone: '', email: '', notes: '', honeypot: '',
-};
-
-export function RequestPartForm() {
-  const [form, setForm] = useState<FormData>(initialForm);
+export function RequestPartForm({ prefillYear, prefillMake, prefillModel, prefillStockNumber }: RequestPartFormProps = {}) {
+  const [form, setForm] = useState<FormData>({
+    year: prefillYear || '',
+    make: prefillMake || '',
+    model: prefillModel || '',
+    partNeeded: '',
+    vin: '',
+    contactMethod: 'call',
+    name: '',
+    phone: '',
+    email: '',
+    notes: prefillStockNumber ? `From vehicle stock #${prefillStockNumber}` : '',
+    honeypot: '',
+  });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -38,16 +53,46 @@ export function RequestPartForm() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.honeypot) return; // anti-spam
+    if (form.honeypot) return;
     if (!validate()) return;
     setSubmitting(true);
-    // TODO: Connect to backend (email/webhook/Supabase)
-    setTimeout(() => {
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/submit-part-request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email || undefined,
+          year: form.year || undefined,
+          make: form.make || undefined,
+          model: form.model || undefined,
+          partNeeded: form.partNeeded,
+          vin: form.vin || undefined,
+          contactMethod: form.contactMethod,
+          notes: form.notes || undefined,
+          stockNumber: prefillStockNumber || undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to submit request');
+      }
+
       setSubmitted(true);
+    } catch (error) {
+      console.error('Submit error:', error);
+      toast.error('Something went wrong. Please try calling us instead.');
+    } finally {
       setSubmitting(false);
-    }, 800);
+    }
   };
 
   const set = (field: keyof FormData, value: string) => {
@@ -65,7 +110,6 @@ export function RequestPartForm() {
         <h3 className="font-bold text-xl mb-2">Request Received!</h3>
         <p className="text-muted-foreground mb-1">We'll check our inventory and get back to you shortly.</p>
         <p className="text-sm text-muted-foreground">Typical response time: within 1 business day.</p>
-        {/* TODO: Confirm response time with business */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
           <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-md font-bold text-sm">
             <Phone className="w-4 h-4" /> Call Now
@@ -131,15 +175,6 @@ export function RequestPartForm() {
               <span className="capitalize">{method}</span>
             </label>
           ))}
-        </div>
-      </div>
-
-      {/* Photo upload placeholder */}
-      <div className="mb-3">
-        <label className="block text-sm font-medium mb-1">Photo (optional)</label>
-        <div className="border-2 border-dashed border-border rounded-md p-4 text-center text-sm text-muted-foreground">
-          {/* TODO: Implement file upload with backend storage */}
-          <p>Photo upload coming soon — for now, text or email your photos to us.</p>
         </div>
       </div>
 

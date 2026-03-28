@@ -44,8 +44,19 @@ export interface Vehicle {
   mileage?: number;
   dateArrived: string;
   imageUrl?: string;
+  images?: string[];
   status: 'Dismantling' | 'Available' | 'Sold';
   partsAvailable: string[];
+  // VIN-decoded fields
+  engineType?: string;
+  engineSize?: string;
+  engineCylinders?: string;
+  drivetrain?: string;
+  bodyStyle?: string;
+  fuelType?: string;
+  transmissionType?: string;
+  countryOfOrigin?: string;
+  vehicleType?: string;
 }
 
 export interface SearchFilters {

@@ -112,4 +112,6 @@ export class MockInventoryProvider implements InventoryProvider {
   }
 }
 
-export const inventoryProvider = new MockInventoryProvider();
+// Use Firebase as primary provider, mock as fallback for parts search
+import { firebaseInventoryProvider } from './firebase-inventory';
+export const inventoryProvider = firebaseInventoryProvider;
