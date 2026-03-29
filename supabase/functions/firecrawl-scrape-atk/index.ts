@@ -248,6 +248,94 @@ Deno.serve(async (req) => {
       );
     }
 
+    // ── ATK-API-SEARCH: call ATK Sales search API for cylinder heads ──
+    if (mode === 'atk-api-search') {
+      const body = await req.json();
+      const page = body.page || 1;
+      const pageSize = body.pageSize || 100;
+      const pcn = body.pcn || 'Cylinder Heads';
+      const make = body.make || '';
+
+      const payload = {
+        catalogSearchRequest: {
+          FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath'],
+          QueryModel: [
+            { AttributeName: 'pcn', Condition: 'eq', Values: [pcn] },
+            ...(make ? [{ AttributeName: 'make', Condition: 'eq', Values: [make] }] : []),
+          ],
+          SortCriteria: [{ Field: 'partNumber', Direction: 'asc' }],
+          CustomerGroup: 'retail',
+        },
+        page, pageSize,
+      };
+
+      console.log(`ATK API search: pcn=${pcn}, make=${make}, page=${page}, pageSize=${pageSize}`);
+      console.log('Payload:', JSON.stringify(payload));
+      const searchResp = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const text = await searchResp.text();
+      return new Response(
+        JSON.stringify({ success: searchResp.ok, status: searchResp.status, data: text.slice(0, 5000) }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── ATK-API-CATEGORIES: get full categories list ──
+    if (mode === 'atk-api-categories') {
+      const r = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/categories', { signal: AbortSignal.timeout(15000) });
+      const data = await r.json();
+      return new Response(
+        JSON.stringify({ success: true, data }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── ATK-API-PRODUCTS: fetch products by category from ATK API ──
+    if (mode === 'atk-api-products') {
+      const body = await req.json();
+      const category = body.category || 'Cylinder Heads';
+      const categoryId = body.categoryId || 2;
+      const make = body.make || '';
+      const page = body.page || 1;
+      const pageSize = body.pageSize || 100;
+
+      const endpoints = [
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/categories/${categoryId}/products?page=${page}&pageSize=${pageSize}` },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/category/${categoryId}/products?page=${page}&pageSize=${pageSize}` },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products/${categoryId}?page=${page}&pageSize=${pageSize}` },
+        { method: 'POST', url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/products', body: JSON.stringify({ categoryId, make, page, pageSize, pcn: category }) },
+        { method: 'POST', url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', body: JSON.stringify({ searchTerm: category, page, pageSize }) },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/search?q=${encodeURIComponent(category)}&page=${page}&pageSize=${pageSize}` },
+        { method: 'POST', url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/catalog', body: JSON.stringify({ pcn: category, make, page, pageSize }) },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/product-listing?pcn=${encodeURIComponent(category)}&make=${encodeURIComponent(make)}&page=${page}&pageSize=${pageSize}` },
+      ];
+
+      const results: any[] = [];
+      for (const ep of endpoints) {
+        try {
+          const opts: any = { method: ep.method, signal: AbortSignal.timeout(10000) };
+          if (ep.body) {
+            opts.headers = { 'Content-Type': 'application/json' };
+            opts.body = ep.body;
+          }
+          const r = await fetch(ep.url, opts);
+          const text = await r.text();
+          results.push({ method: ep.method, url: ep.url, status: r.status, body: text.slice(0, 2000) });
+          if (r.ok) break; // stop if we found a working endpoint
+        } catch (e) {
+          results.push({ method: ep.method, url: ep.url, error: e.message });
+        }
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, results }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // ── SCRAPE-BATCH (sequential, kept for backward compat) ──
     if (mode === 'scrape-batch') {
       const body = await req.json();
