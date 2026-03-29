@@ -256,39 +256,26 @@ Deno.serve(async (req) => {
       const pcn = body.pcn || 'Cylinder Heads';
       const make = body.make || '';
 
-      // Try multiple payload formats
-      const payloads = [
-        // Format 1: top-level arrays
-        {
-          FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath'],
-          QueryModel: [{ field: 'pcn', value: pcn, operator: 'eq' }],
-          SortCriteria: [{ field: 'partNumber', direction: 'asc' }],
-          CustomerGroup: 'retail',
-          page, pageSize,
-        },
-        // Format 2: flat QueryModel
-        {
-          FieldsList: ['partNumber', 'description', 'price'],
-          QueryModel: [{ pcn, make }],
-          SortCriteria: [{ sortBy: 'partNumber', sortOrder: 'asc' }],
-          CustomerGroup: 'retail',
-        },
-      ];
+      const payload = {
+        FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath'],
+        QueryModel: [
+          { AttributeName: 'pcn', Condition: 'eq', Values: [pcn] },
+          ...(make ? [{ AttributeName: 'make', Condition: 'eq', Values: [make] }] : []),
+        ],
+        SortCriteria: [{ Field: 'partNumber', Direction: 'asc' }],
+        CustomerGroup: 'retail',
+        page, pageSize,
+      };
 
-      const results: any[] = [];
-      for (const payload of payloads) {
-        const searchResp = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const text = await searchResp.text();
-        results.push({ status: searchResp.status, payload: JSON.stringify(payload).slice(0, 300), response: text.slice(0, 3000) });
-        if (searchResp.ok) break;
-      }
-
+      console.log(`ATK API search: pcn=${pcn}, make=${make}, page=${page}, pageSize=${pageSize}`);
+      const searchResp = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const text = await searchResp.text();
       return new Response(
-        JSON.stringify({ success: true, results }),
+        JSON.stringify({ success: searchResp.ok, status: searchResp.status, data: text.slice(0, 5000) }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
