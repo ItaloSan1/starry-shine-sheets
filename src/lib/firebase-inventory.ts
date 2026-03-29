@@ -1,7 +1,4 @@
 import type { InventoryProvider, Part, Vehicle, SearchFilters, SearchResult } from './inventory-adapter';
-import { supabase } from '@/integrations/supabase/client';
-
-const SUPABASE_PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID;
 
 interface FirebaseVehicle extends Vehicle {
   images: string[];
