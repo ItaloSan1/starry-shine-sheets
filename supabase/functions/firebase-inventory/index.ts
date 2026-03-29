@@ -326,6 +326,82 @@ serve(async (req) => {
     const url = new URL(req.url);
     const action = url.searchParams.get('action') || 'vehicles';
 
+    if (action === 'debug') {
+      // Debug: show raw data from both collections and RTDB
+      const results: any = { firestore: {}, rtdb: {} };
+      
+      // Sample from each Firestore collection
+      for (const col of ['shelf-pickup-orders', 'work-orders']) {
+        try {
+          const docs = await firestoreQuery(projectId, token, col, {
+            from: [{ collectionId: col }],
+            limit: 2,
+          });
+          results.firestore[col] = {
+            count: docs.length,
+            sample: docs.slice(0, 2).map(d => {
+              const parsed = parseFirestoreDoc(d);
+              return { id: parsed._id, keys: Object.keys(parsed), data: parsed };
+            }),
+          };
+        } catch (e) {
+          results.firestore[col] = { error: e.message };
+        }
+      }
+
+      // Check sub-collections of work-orders docs
+      try {
+        const woDocs = await firestoreQuery(projectId, token, 'work-orders', {
+          from: [{ collectionId: 'work-orders' }],
+          limit: 1,
+        });
+        if (woDocs.length > 0) {
+          const docPath = woDocs[0].name.replace(`projects/${projectId}/databases/(default)/documents/`, '');
+          const subColUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/${docPath}:listCollectionIds`;
+          const subRes = await fetch(subColUrl, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({}),
+          });
+          if (subRes.ok) {
+            const subData = await subRes.json();
+            results.firestore['work-orders-subcollections'] = subData.collectionIds || [];
+          }
+        }
+      } catch {}
+
+      // Try RTDB with OAuth token
+      for (const domain of [`${projectId}-default-rtdb.firebaseio.com`, `${projectId}.firebaseio.com`]) {
+        try {
+          const rtdbRes = await fetch(`https://${domain}/.json?shallow=true`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (rtdbRes.ok) {
+            const data = await rtdbRes.json();
+            results.rtdb[domain] = { keys: Object.keys(data || {}) };
+            // Sample first key
+            const firstKey = Object.keys(data || {})[0];
+            if (firstKey) {
+              const sampleRes = await fetch(`https://${domain}/${firstKey}.json?limitToFirst=1&orderBy="$key"`, {
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              if (sampleRes.ok) {
+                results.rtdb[`${domain}/${firstKey}_sample`] = await sampleRes.json();
+              }
+            }
+          } else {
+            results.rtdb[domain] = { status: rtdbRes.status, body: await rtdbRes.text() };
+          }
+        } catch (e) {
+          results.rtdb[domain] = { error: e.message };
+        }
+      }
+
+      return new Response(JSON.stringify(results, null, 2), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     if (action === 'vehicles') {
       const docs = await firestoreQuery(projectId, token, discoveredCollection);
       const vehicles = await Promise.all(
