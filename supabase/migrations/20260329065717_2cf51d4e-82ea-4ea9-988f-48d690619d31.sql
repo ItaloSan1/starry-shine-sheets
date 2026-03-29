@@ -1,0 +1,1 @@
+UPDATE remanufactured_engines SET image_url = 'https://www.jegs.com/images/photos/0/059/059-' || LOWER(vendor_part_number) || '.jpg' WHERE image_url IS NOT NULL;
