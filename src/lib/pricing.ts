@@ -7,13 +7,17 @@
  */
 
 const USD_TO_CAD = 1.38;
-const MARKUP = 1.10;
-const CONVERSION_FACTOR = USD_TO_CAD * MARKUP;
+const DEFAULT_MARKUP = 1.10;
+const CONVERSION_FACTOR = USD_TO_CAD * DEFAULT_MARKUP;
 
-export function usdToCad(usd: number): number {
-  return Math.round(usd * CONVERSION_FACTOR * 100) / 100;
+export function usdToCad(usd: number, markupPercent?: number): number {
+  const factor = markupPercent != null ? USD_TO_CAD * (1 + markupPercent / 100) : CONVERSION_FACTOR;
+  return Math.round(usd * factor * 100) / 100;
 }
 
-export function formatCad(usd: number): string {
-  return `$${usdToCad(usd).toLocaleString('en-CA', { minimumFractionDigits: 2 })} CAD`;
+export function formatCad(usd: number, markupPercent?: number): string {
+  return `$${usdToCad(usd, markupPercent).toLocaleString('en-CA', { minimumFractionDigits: 2 })} CAD`;
 }
+
+/** Cylinder heads use 15% markup */
+export const CYLINDER_HEAD_MARKUP = 15;

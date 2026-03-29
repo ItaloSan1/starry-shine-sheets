@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      cylinder_heads: {
+        Row: {
+          active: boolean | null
+          brand: string
+          config: string | null
+          created_at: string | null
+          displacement: string | null
+          engine_make_size: string | null
+          fits_vehicles: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price_usd: number
+          slug: string
+          vendor_part_number: string
+        }
+        Insert: {
+          active?: boolean | null
+          brand?: string
+          config?: string | null
+          created_at?: string | null
+          displacement?: string | null
+          engine_make_size?: string | null
+          fits_vehicles?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price_usd: number
+          slug: string
+          vendor_part_number: string
+        }
+        Update: {
+          active?: boolean | null
+          brand?: string
+          config?: string | null
+          created_at?: string | null
+          displacement?: string | null
+          engine_make_size?: string | null
+          fits_vehicles?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price_usd?: number
+          slug?: string
+          vendor_part_number?: string
+        }
+        Relationships: []
+      }
       part_requests: {
         Row: {
           contact_method: string
