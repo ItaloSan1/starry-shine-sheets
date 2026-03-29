@@ -162,13 +162,80 @@ function parseDisplayName(displayName: string): { stockNumber: string; year: num
   return result;
 }
 
-// Generate signed URL for Firebase Storage
-function getStorageUrl(projectId: string, path: string): string {
-  if (!path) return '';
-  if (path.startsWith('http')) return path;
-  // Firebase Storage public URL format
-  const encodedPath = encodeURIComponent(path);
-  return `https://firebasestorage.googleapis.com/v0/b/${projectId}.appspot.com/o/${encodedPath}?alt=media`;
+// Generate V4 signed URL for Google Cloud Storage
+async function generateSignedUrl(bucket: string, objectPath: string, serviceAccount: any): Promise<string> {
+  if (!objectPath) return '';
+  if (objectPath.startsWith('http')) return objectPath;
+
+  const now = new Date();
+  const datestamp = now.toISOString().replace(/[-:]/g, '').substring(0, 8);
+  const timestamp = datestamp + 'T' + now.toISOString().replace(/[-:]/g, '').substring(9, 15) + 'Z';
+  const expiration = 3600; // 1 hour
+
+  const credentialScope = `${datestamp}/auto/storage/goog4_request`;
+  const credential = `${serviceAccount.client_email}/${credentialScope}`;
+
+  const host = `storage.googleapis.com`;
+  const canonicalUri = `/${bucket}/${objectPath}`;
+
+  const params = new Map<string, string>([
+    ['X-Goog-Algorithm', 'GOOG4-RSA-SHA256'],
+    ['X-Goog-Credential', credential],
+    ['X-Goog-Date', timestamp],
+    ['X-Goog-Expires', String(expiration)],
+    ['X-Goog-SignedHeaders', 'host'],
+  ]);
+
+  const sortedParams = [...params.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  const canonicalQueryString = sortedParams.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
+
+  const canonicalRequest = [
+    'GET',
+    canonicalUri,
+    canonicalQueryString,
+    `host:${host}`,
+    '',
+    'host',
+    'UNSIGNED-PAYLOAD',
+  ].join('\n');
+
+  const stringToSign = [
+    'GOOG4-RSA-SHA256',
+    timestamp,
+    credentialScope,
+    await sha256Hex(canonicalRequest),
+  ].join('\n');
+
+  // Sign with service account private key
+  const pemContents = serviceAccount.private_key
+    .replace(/-----BEGIN PRIVATE KEY-----/, '')
+    .replace(/-----END PRIVATE KEY-----/, '')
+    .replace(/\n/g, '');
+  const binaryKey = Uint8Array.from(atob(pemContents), (c: string) => c.charCodeAt(0));
+
+  const key = await crypto.subtle.importKey(
+    'pkcs8',
+    binaryKey,
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+
+  const signature = await crypto.subtle.sign(
+    'RSASSA-PKCS1-v1_5',
+    key,
+    new TextEncoder().encode(stringToSign)
+  );
+
+  const signatureHex = [...new Uint8Array(signature)].map(b => b.toString(16).padStart(2, '0')).join('');
+
+  return `https://${host}${canonicalUri}?${canonicalQueryString}&X-Goog-Signature=${signatureHex}`;
+}
+
+async function sha256Hex(message: string): Promise<string> {
+  const data = new TextEncoder().encode(message);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 // NHTSA VIN Decode
@@ -199,15 +266,15 @@ async function decodeVIN(vin: string): Promise<any> {
 let vehiclesCache: { data: any[]; timestamp: number } | null = null;
 const CACHE_TTL = 5 * 60 * 1000;
 
-async function extractVehiclesFromTasks(projectId: string, token: string): Promise<any[]> {
+async function extractVehiclesFromTasks(projectId: string, token: string, serviceAccount: any): Promise<any[]> {
   if (vehiclesCache && Date.now() - vehiclesCache.timestamp < CACHE_TTL) {
     return vehiclesCache.data;
   }
 
+  const bucket = `${projectId}.appspot.com`;
   const { docs } = await queryAllTasks(projectId, token);
   console.log(`Found ${docs.length} task documents`);
 
-  // Extract unique vehicles from task inventory fields
   const vehicleMap = new Map<string, any>();
 
   for (const doc of docs) {
@@ -216,26 +283,22 @@ async function extractVehiclesFromTasks(projectId: string, token: string): Promi
     if (!inv || !inv.stockNumber) continue;
 
     const stockNum = inv.stockNumber;
-    // Only keep the first/best occurrence per stock number
     if (vehicleMap.has(stockNum)) continue;
 
     const parsed = parseDisplayName(inv.inventoryDisplayName || '');
 
-    // Build image URLs
     const images: string[] = [];
-    // Pre-dismantle images (from inventory field)
     if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
       for (const imgPath of inv.postDismantledImages) {
         if (typeof imgPath === 'string' && imgPath) {
-          images.push(getStorageUrl(projectId, imgPath));
+          images.push(await generateSignedUrl(bucket, imgPath, serviceAccount));
         }
       }
     }
-    // Post-disassembly images (from task)
     if (task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
       for (const imgPath of task.postDisassembly.partDisassembledImages) {
         if (typeof imgPath === 'string' && imgPath) {
-          images.push(getStorageUrl(projectId, imgPath));
+          images.push(await generateSignedUrl(bucket, imgPath, serviceAccount));
         }
       }
     }
@@ -255,12 +318,10 @@ async function extractVehiclesFromTasks(projectId: string, token: string): Promi
       images,
       imageUrl: images[0] || undefined,
       locationGroup: inv.inventoryLocationGroup || '',
-      // VIN is NEVER sent to client
     });
   }
 
   const vehicles = Array.from(vehicleMap.values());
-  // Sort newest year first
   vehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
 
   vehiclesCache = { data: vehicles, timestamp: Date.now() };
@@ -284,7 +345,7 @@ serve(async (req) => {
     const action = url.searchParams.get('action') || 'vehicles';
 
     if (action === 'vehicles') {
-      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicles = await extractVehiclesFromTasks(projectId, token, serviceAccount);
       return new Response(JSON.stringify({ vehicles, total: vehicles.length }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
@@ -298,7 +359,7 @@ serve(async (req) => {
         });
       }
 
-      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicles = await extractVehiclesFromTasks(projectId, token, serviceAccount);
       const vehicle = vehicles.find(v => v.id === id || v.stockNumber === id);
       if (!vehicle) {
         return new Response(JSON.stringify({ error: 'Vehicle not found' }), {
@@ -306,7 +367,7 @@ serve(async (req) => {
         });
       }
 
-      // For detail view, also collect ALL images from ALL tasks referencing this stock number
+      const bucket = `${projectId}.appspot.com`;
       const { docs } = await queryAllTasks(projectId, token);
       const allImages = new Set<string>(vehicle.images || []);
       let vinNumber = '';
@@ -320,12 +381,12 @@ serve(async (req) => {
 
         if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
           for (const p of inv.postDismantledImages) {
-            if (typeof p === 'string' && p) allImages.add(getStorageUrl(projectId, p));
+            if (typeof p === 'string' && p) allImages.add(await generateSignedUrl(bucket, p, serviceAccount));
           }
         }
         if (task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
           for (const p of task.postDisassembly.partDisassembledImages) {
-            if (typeof p === 'string' && p) allImages.add(getStorageUrl(projectId, p));
+            if (typeof p === 'string' && p) allImages.add(await generateSignedUrl(bucket, p, serviceAccount));
           }
         }
       }
@@ -357,7 +418,7 @@ serve(async (req) => {
     }
 
     if (action === 'makes') {
-      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicles = await extractVehiclesFromTasks(projectId, token, serviceAccount);
       const makeCounts: Record<string, number> = {};
       for (const v of vehicles) {
         if (v.make) makeCounts[v.make] = (makeCounts[v.make] || 0) + 1;
@@ -372,7 +433,7 @@ serve(async (req) => {
 
     if (action === 'models') {
       const make = url.searchParams.get('make');
-      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicles = await extractVehiclesFromTasks(projectId, token, serviceAccount);
       const filtered = make ? vehicles.filter(v => v.make === make) : vehicles;
       const models = [...new Set(filtered.map(v => v.model).filter(Boolean))].sort();
       return new Response(JSON.stringify({ models }), {
