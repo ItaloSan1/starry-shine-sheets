@@ -254,23 +254,48 @@ Deno.serve(async (req) => {
       const pcn = body.pcn || 'Cylinder Heads';
       const make = body.make || '';
 
-      const payload = {
-        FieldsList: ['partNumber', 'description', 'make', 'model', 'year', 'price', 'imagePath', 'displacement', 'engineSize', 'pcn'],
-        QueryModel: [
-          { AttributeName: 'pcn', Condition: 'equals', Values: [pcn] },
-          ...(make ? [{ AttributeName: 'make', Condition: 'equals', Values: [make] }] : []),
-        ],
-      };
+      // Try different value formats for the QueryModel
+      const payloads = [
+        // Format 1: Values as string (not array)
+        {
+          FieldsList: ['partNumber', 'description', 'make', 'price', 'imagePath'],
+          QueryModel: [
+            { AttributeName: 'pcn', Condition: 'equals', Values: pcn },
+            ...(make ? [{ AttributeName: 'make', Condition: 'equals', Values: make }] : []),
+          ],
+        },
+        // Format 2: Value (singular) as string
+        {
+          FieldsList: ['partNumber', 'description'],
+          QueryModel: [
+            { AttributeName: 'pcn', Condition: 'equals', Value: pcn },
+          ],
+        },
+        // Format 3: catalogAttributeRequest wrapper with Values as string
+        {
+          catalogAttributeRequest: {
+            FieldsList: ['partNumber', 'description', 'price'],
+            QueryModel: [
+              { AttributeName: 'pcn', Condition: 'equals', Values: pcn },
+            ],
+          },
+        },
+      ];
 
-      console.log('Payload:', JSON.stringify(payload));
-      const searchResp = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/attributes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const text = await searchResp.text();
+      const results: any[] = [];
+      for (const p of payloads) {
+        const r = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/attributes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(p),
+        });
+        const text = await r.text();
+        results.push({ status: r.status, bodyLen: text.length, preview: text.slice(0, 1500) });
+        if (r.ok && text.length > 100) break;
+      }
+
       return new Response(
-        JSON.stringify({ success: searchResp.ok, status: searchResp.status, bodyLength: text.length, data: text.slice(0, 5000) }),
+        JSON.stringify({ success: true, results }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
