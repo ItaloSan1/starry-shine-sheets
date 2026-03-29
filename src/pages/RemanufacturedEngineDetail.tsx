@@ -174,7 +174,7 @@ export default function RemanufacturedEngineDetail() {
             </div>
 
             <div className="text-3xl font-extrabold text-accent mb-4">
-              {formatCad(engine.price_usd)}
+              {engine.price_usd > 0 ? formatCad(engine.price_usd) : 'Call for Pricing'}
             </div>
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
