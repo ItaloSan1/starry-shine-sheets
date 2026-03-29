@@ -300,24 +300,39 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
   const vehicleMap = new Map<string, any>();
 
-  let fieldKeysLogged = 0;
+  // Collect ALL unique image-related field names across entire dataset
+  const allInvImageKeys = new Set<string>();
+  const allTaskImageKeys = new Set<string>();
+  const allTaskTopKeys = new Set<string>();
   
   for (const doc of docs) {
     const task = parseFirestoreDoc(doc);
     const inv = task.inventory;
     
-    // Temporary: dump inventory and task field keys for first 3 vehicles with images to discover pre-dismantled field name
-    if (inv && inv.stockNumber && fieldKeysLogged < 3) {
-      const invKeys = Object.keys(inv);
-      const taskKeys = Object.keys(task);
-      const imageRelatedKeys = invKeys.filter(k => k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl'));
-      const taskImageKeys = taskKeys.filter(k => k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl') || k.toLowerCase().includes('pre'));
-      console.log(`FIELD_DISCOVERY ${inv.stockNumber}: inv image-related keys: ${JSON.stringify(imageRelatedKeys)}, all inv keys: ${JSON.stringify(invKeys)}`);
-      console.log(`FIELD_DISCOVERY ${inv.stockNumber}: task image-related keys: ${JSON.stringify(taskImageKeys)}, task top-level keys: ${JSON.stringify(taskKeys)}`);
-      // Also check for nested objects that might contain pre-dismantled images
-      if (task.preDisassembly) console.log(`FIELD_DISCOVERY ${inv.stockNumber}: task.preDisassembly keys: ${JSON.stringify(Object.keys(task.preDisassembly))}`);
-      if (task.preDismantling) console.log(`FIELD_DISCOVERY ${inv.stockNumber}: task.preDismantling keys: ${JSON.stringify(Object.keys(task.preDismantling))}`);
-      fieldKeysLogged++;
+    if (inv) {
+      for (const k of Object.keys(inv)) {
+        if (k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl') || k.toLowerCase().includes('pre')) {
+          allInvImageKeys.add(k);
+        }
+      }
+    }
+    for (const k of Object.keys(task)) {
+      allTaskTopKeys.add(k);
+      if (k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl') || k.toLowerCase().includes('pre')) {
+        allTaskImageKeys.add(k);
+      }
+    }
+    
+    // Log specific vehicles ES1848-ES1851 in full detail
+    if (inv && ['ES1848','ES1849','ES1850','ES1851'].includes(inv.stockNumber)) {
+      console.log(`DETAIL ${inv.stockNumber}: ALL inv keys: ${JSON.stringify(Object.keys(inv))}`);
+      console.log(`DETAIL ${inv.stockNumber}: ALL task keys: ${JSON.stringify(Object.keys(task))}`);
+      // Log any nested objects
+      for (const k of Object.keys(task)) {
+        if (typeof task[k] === 'object' && task[k] !== null && !Array.isArray(task[k])) {
+          console.log(`DETAIL ${inv.stockNumber}: task.${k} keys: ${JSON.stringify(Object.keys(task[k]))}`);
+        }
+      }
     }
     
     if (!inv || !inv.stockNumber) continue;
