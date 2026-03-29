@@ -322,7 +322,7 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
   }
 
   const vehicles = Array.from(vehicleMap.values());
-  vehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
+  vehicles.sort((a, b) => (b.year || 0) - (a.year || 0) || new Date(b.dateArrived || 0).getTime() - new Date(a.dateArrived || 0).getTime());
 
   vehiclesCache = { data: vehicles, timestamp: Date.now() };
   console.log(`Extracted ${vehicles.length} unique vehicles`);

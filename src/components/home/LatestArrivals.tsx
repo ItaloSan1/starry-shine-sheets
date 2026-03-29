@@ -35,7 +35,7 @@ export function LatestArrivals() {
   // Auto-advance every 5 seconds
   useEffect(() => {
     if (isPaused || totalPages <= 1) return;
-    const interval = setInterval(nextPage, 5000);
+    const interval = setInterval(nextPage, 7000);
     return () => clearInterval(interval);
   }, [isPaused, totalPages, nextPage]);
 
