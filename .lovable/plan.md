@@ -1,32 +1,36 @@
 
 
-# Poll Batch + Continue Scraping All ATK Cylinder Heads
+# Locate and Add Missing ATK Engines via Catalog API
 
-## What we'll do
+## Problem
+We have 578 engines in the database. The ATK catalog likely has 800-1,000+ engines, same as the ~912 cylinder heads we found. The existing `atk-api-search` mode already works — we just used it with `pcn=Cylinder Heads`. We need to use it with engine categories.
 
-Use the existing edge function's `batch-poll` and `list-and-submit` modes to systematically process all 12,000+ ATK sitemap URLs in batches of 100, identifying and inserting cylinder heads.
+## Approach
 
-## Execution steps
+### Step 1: Discover engine category names
+The `atk-api-categories` mode already exists. Invoke it to get the full category list from ATK's API. Engine categories are likely named things like "Long Block Engines", "Short Block Engines", "Complete Engines", etc.
 
-1. **Poll batch `019d3b4c-d6ec-76d9-a17c-32df290bcdd1`** — call the edge function with `?mode=batch-poll&batchId=019d3b4c-d6ec-76d9-a17c-32df290bcdd1` to check status and process any completed results into the `cylinder_heads` table.
+### Step 2: Add an engine upsert path to the edge function
+The current `atk-api-search` mode hardcodes upserts to the `cylinder_heads` table. Add a `table` parameter so we can target `remanufactured_engines` instead. Map ATK API fields to the engine table schema (which has additional columns like `block_material`, `head_material`, `engine_code`).
 
-2. **Submit remaining batches via `list-and-submit`** — loop through the sitemap using `offset` increments of 100:
-   - Call `?mode=list-and-submit` with `{ offset: 100, batchSize: 100 }`, then `{ offset: 200 }`, etc.
-   - Each call returns a `batchId` for the submitted batch
-   - Poll each `batchId` until complete, then move to the next batch
+### Step 3: Run the API search for each engine category
+Paginate through all engine categories (likely "Long Block Engines" and possibly others), upserting into `remanufactured_engines` on `vendor_part_number` conflict. Include $0-price engines with the same "Call for Pricing" treatment.
 
-3. **Process results** — for each completed batch, the edge function automatically:
-   - Parses markdown from each scraped page
-   - Runs `isCylinderHead()` to identify cylinder heads
-   - Upserts matches into `cylinder_heads` with make/displacement/pricing/image data
+### Step 4: Update engine detail page for "Call for Pricing"
+Same pattern as cylinder heads — show "Call for Pricing" instead of $0.
 
-## Practical approach given edge function timeouts
+## Files Changed
 
-Since there are ~12,400 parts and each batch is 100 URLs, that's ~124 batches. Each batch-submit is fast (just sends URLs to Firecrawl). The polling takes longer but Firecrawl processes batches in parallel server-side.
+| File | Change |
+|------|--------|
+| `supabase/functions/firecrawl-scrape-atk/index.ts` | Add `table` param to `atk-api-search` mode; add engine-specific field mapping and upsert to `remanufactured_engines` |
+| `src/pages/RemanufacturedEngineDetail.tsx` | Handle $0 price with "Call for Pricing" label |
+| `src/pages/RemanufacturedEnginesATK.tsx` | Handle $0 price with "Call for Pricing" label |
 
-I'll invoke these calls sequentially — submit a batch, poll it, process results, then move to the next offset. I'll track cumulative cylinder heads found and report progress.
-
-## No file changes needed
-
-The edge function already has all the required modes (`batch-submit`, `batch-poll`, `list-and-submit`). This is purely execution — invoking the existing function repeatedly.
+## Execution Order
+1. Invoke `atk-api-categories` to discover exact engine category names
+2. Update edge function with engine upsert support
+3. Deploy and run for each engine category, paginating through all pages
+4. Update frontend for "Call for Pricing" on $0 engines
+5. Verify final engine count
 
