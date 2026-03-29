@@ -75,9 +75,7 @@ async function decodeVIN(vin: string): Promise<any> {
   }
 }
 
-// Server-side cache
-let vehiclesCache: { data: any[]; timestamp: number } | null = null;
-const CACHE_TTL = 5 * 60 * 1000;
+// Removed server-side full cache — was causing timeouts by signing 1,234 images
 
 function getMongoClient(): MongoClient {
   let connStr = Deno.env.get('MONGODB_CONNECTION_STRING');
