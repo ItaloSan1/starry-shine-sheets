@@ -503,61 +503,60 @@ serve(async (req) => {
       const results: any = {};
       
       // 1. List root collection IDs
-      const listColUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
-      const listColRes = await fetch(listColUrl, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}' });
-      if (listColRes.ok) {
-        results.rootCollectionIds = await listColRes.json();
-      }
+      try {
+        const listColUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
+        const listColRes = await fetch(listColUrl, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}' });
+        results.rootCollectionIds = listColRes.ok ? await listColRes.json() : await listColRes.text();
+      } catch(e) { results.rootError = String(e); }
       
-      // 2. List subcollections under a work-order
-      const woSamplePath = `projects/${projectId}/databases/(default)/documents/work-orders`;
-      // Get a recent work-order
-      const recentWoUrl = `${FIRESTORE_BASE}/${woSamplePath}?pageSize=3&orderBy=__name__ desc`;
-      const recentWoRes = await fetch(`${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'work-orders' }], orderBy: [{ field: { fieldPath: '__name__' }, direction: 'DESCENDING' }], limit: 3 } }),
-      });
-      if (recentWoRes.ok) {
-        const recentWos = await recentWoRes.json();
-        for (const wo of recentWos) {
-          if (!wo.document) continue;
-          const woName = wo.document.name;
-          // List subcollections
-          const subColUrl = `${FIRESTORE_BASE}/${woName}:listCollectionIds`;
-          const subColRes = await fetch(subColUrl, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}' });
-          if (subColRes.ok) {
-            const subColData = await subColRes.json();
-            results[`subcollections_${woName.split('/').pop()}`] = subColData;
+      // 2. Get first work-order and list its subcollections
+      try {
+        const woUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/work-orders?pageSize=1`;
+        const woRes = await fetch(woUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (woRes.ok) {
+          const woData = await woRes.json();
+          const woDoc = woData.documents?.[0];
+          if (woDoc) {
+            const subColUrl = `${FIRESTORE_BASE}/${woDoc.name}:listCollectionIds`;
+            const subColRes = await fetch(subColUrl, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}' });
+            results.workOrderSubcollections = subColRes.ok ? await subColRes.json() : await subColRes.text();
           }
         }
-      }
+      } catch(e) { results.subcolError = String(e); }
       
-      // 3. Search for ES1850 specifically using collectionGroup query on ALL collections
-      // Try querying work-orders for ones that might reference ES1850
-      const searchUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
-      // Search in the most recent 50 tasks for high stock numbers
-      const recentTasksRes = await fetch(searchUrl, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ structuredQuery: {
-          from: [{ collectionId: 'tasks', allDescendants: true }],
-          orderBy: [{ field: { fieldPath: '__name__' }, direction: 'DESCENDING' }],
-          limit: 20,
-        }}),
-      });
-      if (recentTasksRes.ok) {
-        const recentTasks = await recentTasksRes.json();
-        results.newestTasks = recentTasks.filter((r: any) => r.document).map((r: any) => {
-          const parsed = parseFirestoreDoc(r.document);
-          return {
-            docName: r.document.name,
-            stockNumber: parsed.inventory?.stockNumber,
-            displayName: parsed.inventory?.inventoryDisplayName,
-            invKeys: parsed.inventory ? Object.keys(parsed.inventory) : [],
-          };
+      // 3. Check shelf-pickup-orders
+      try {
+        const spoUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/shelf-pickup-orders?pageSize=2`;
+        const spoRes = await fetch(spoUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (spoRes.ok) {
+          const spoData = await spoRes.json();
+          results.shelfPickupOrders = (spoData.documents || []).map((d: any) => ({
+            keys: Object.keys(d.fields || {}),
+            parsed: parseFirestoreDoc(d),
+          }));
+        }
+      } catch(e) { results.spoError = String(e); }
+      
+      // 4. Get newest 20 tasks by __name__ DESC and show stock numbers
+      try {
+        const searchUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
+        const res = await fetch(searchUrl, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ structuredQuery: {
+            from: [{ collectionId: 'tasks', allDescendants: true }],
+            orderBy: [{ field: { fieldPath: '__name__' }, direction: 'DESCENDING' }],
+            limit: 20,
+          }}),
         });
-      }
+        if (res.ok) {
+          const data = await res.json();
+          results.newestTasks = data.filter((r: any) => r.document).map((r: any) => {
+            const p = parseFirestoreDoc(r.document);
+            return { docId: r.document.name.split('/').pop(), stockNumber: p.inventory?.stockNumber, displayName: p.inventory?.inventoryDisplayName, allInvKeys: p.inventory ? Object.keys(p.inventory) : [] };
+          });
+        }
+      } catch(e) { results.taskError = String(e); }
       
       return new Response(JSON.stringify(results, null, 2), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
