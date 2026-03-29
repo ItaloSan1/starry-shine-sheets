@@ -205,21 +205,6 @@ serve(async (req) => {
         vehicles.push(mapVehicleDoc(doc, thumbUrl ? [thumbUrl] : []));
       }
 
-      // Cache full unfiltered results
-      if (isUnfiltered && page === 1 && pageSize >= 50) {
-        // Fetch all for cache
-        const allDocs = await col.find({}).sort({ 'vehicleInfo.Year': -1, _id: -1 }).toArray();
-        const allVehicles = [];
-        for (const doc of allDocs) {
-          const preImages = doc.preDismantling?.images || [];
-          const postImages = doc.postDismantling?.images || [];
-          const firstImage = preImages[0] || postImages[0];
-          const thumbUrl = firstImage ? await generateSignedUrl(bucket, firstImage, serviceAccount) : undefined;
-          allVehicles.push(mapVehicleDoc(doc, thumbUrl ? [thumbUrl] : []));
-        }
-        vehiclesCache = { data: allVehicles, timestamp: Date.now() };
-      }
-
       await client.close();
 
       return new Response(JSON.stringify({
