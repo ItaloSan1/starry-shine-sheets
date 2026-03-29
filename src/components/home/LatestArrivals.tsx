@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { firebaseInventoryProvider } from '@/lib/firebase-inventory';
+import { mongoInventoryProvider } from '@/lib/mongo-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
@@ -14,7 +14,7 @@ export function LatestArrivals() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    firebaseInventoryProvider.getAllVehicles().then(v => {
+    mongoInventoryProvider.getAllVehicles().then(v => {
       setVehicles(v);
       setLoading(false);
     }).catch(() => setLoading(false));

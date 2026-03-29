@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { firebaseInventoryProvider } from '@/lib/firebase-inventory';
+import { mongoInventoryProvider } from '@/lib/mongo-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
 import { Phone, MessageCircle, ArrowLeft, Car, Tag, ChevronLeft, ChevronRight, X, Fuel, Cog, Gauge, Globe, Truck } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
@@ -16,10 +16,10 @@ export default function VehicleDetailPage() {
 
   useEffect(() => {
     if (id) {
-      firebaseInventoryProvider.getVehicleById(id).then(v => {
+      mongoInventoryProvider.getVehicleById(id).then(v => {
         setVehicle(v);
         setLoading(false);
-      });
+      }).catch(() => setLoading(false));
     }
   }, [id]);
 
