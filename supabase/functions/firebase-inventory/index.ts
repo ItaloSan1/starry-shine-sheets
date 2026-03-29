@@ -500,73 +500,63 @@ serve(async (req) => {
     }
 
     if (action === 'discover') {
-      // Probe: list root collections, check work-order parent docs, check inventory collection
       const results: any = {};
       
-      // 1. List root-level documents to find collection names
-      const listUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents`;
-      const listRes = await fetch(listUrl, { headers: { Authorization: `Bearer ${token}` } });
-      if (listRes.ok) {
-        const listData = await listRes.json();
-        results.rootCollections = listData.documents?.map((d: any) => d.name) || [];
+      // 1. List root collection IDs
+      const listColUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
+      const listColRes = await fetch(listColUrl, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}' });
+      if (listColRes.ok) {
+        results.rootCollectionIds = await listColRes.json();
       }
       
-      // 2. Try common collection names
-      for (const collName of ['inventory', 'vehicles', 'units', 'stock', 'assets']) {
-        const tryUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/${collName}?pageSize=2`;
-        const tryRes = await fetch(tryUrl, { headers: { Authorization: `Bearer ${token}` } });
-        if (tryRes.ok) {
-          const tryData = await tryRes.json();
-          if (tryData.documents && tryData.documents.length > 0) {
-            results[`collection_${collName}`] = {
-              count: tryData.documents.length,
-              sampleKeys: Object.keys(tryData.documents[0].fields || {}),
-            };
-          }
-        }
-      }
-      
-      // 3. Try to fetch a work-order parent document directly
-      // First get a work-order ID from tasks
-      const sampleUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
-      const sampleRes = await fetch(sampleUrl, {
+      // 2. List subcollections under a work-order
+      const woSamplePath = `projects/${projectId}/databases/(default)/documents/work-orders`;
+      // Get a recent work-order
+      const recentWoUrl = `${FIRESTORE_BASE}/${woSamplePath}?pageSize=3&orderBy=__name__ desc`;
+      const recentWoRes = await fetch(`${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'tasks', allDescendants: true }], limit: 1 } }),
+        body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'work-orders' }], orderBy: [{ field: { fieldPath: '__name__' }, direction: 'DESCENDING' }], limit: 3 } }),
       });
-      if (sampleRes.ok) {
-        const sampleData = await sampleRes.json();
-        if (sampleData[0]?.document?.name) {
-          const taskPath = sampleData[0].document.name;
-          // Extract work-order path (parent)
-          const woPath = taskPath.split('/tasks/')[0];
-          const woRes = await fetch(`${FIRESTORE_BASE}/${woPath}`, { headers: { Authorization: `Bearer ${token}` } });
-          if (woRes.ok) {
-            const woDoc = await woRes.json();
-            results.workOrderSample = {
-              path: woPath,
-              keys: Object.keys(woDoc.fields || {}),
-            };
-            // Check for image-related keys
-            const woKeys = Object.keys(woDoc.fields || {});
-            const imgKeys = woKeys.filter(k => k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('pre'));
-            results.workOrderImageKeys = imgKeys;
-            // Also dump the full parsed doc for inspection
-            const parsed = parseFirestoreDoc(woDoc);
-            results.workOrderParsed = parsed;
+      if (recentWoRes.ok) {
+        const recentWos = await recentWoRes.json();
+        for (const wo of recentWos) {
+          if (!wo.document) continue;
+          const woName = wo.document.name;
+          // List subcollections
+          const subColUrl = `${FIRESTORE_BASE}/${woName}:listCollectionIds`;
+          const subColRes = await fetch(subColUrl, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}' });
+          if (subColRes.ok) {
+            const subColData = await subColRes.json();
+            results[`subcollections_${woName.split('/').pop()}`] = subColData;
           }
         }
       }
       
-      // 4. Try querying work-orders collection directly 
-      const woQueryUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/work-orders?pageSize=3`;
-      const woQueryRes = await fetch(woQueryUrl, { headers: { Authorization: `Bearer ${token}` } });
-      if (woQueryRes.ok) {
-        const woQueryData = await woQueryRes.json();
-        results.workOrdersCollectionSample = (woQueryData.documents || []).map((d: any) => ({
-          name: d.name,
-          keys: Object.keys(d.fields || {}),
-        }));
+      // 3. Search for ES1850 specifically using collectionGroup query on ALL collections
+      // Try querying work-orders for ones that might reference ES1850
+      const searchUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
+      // Search in the most recent 50 tasks for high stock numbers
+      const recentTasksRes = await fetch(searchUrl, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ structuredQuery: {
+          from: [{ collectionId: 'tasks', allDescendants: true }],
+          orderBy: [{ field: { fieldPath: '__name__' }, direction: 'DESCENDING' }],
+          limit: 20,
+        }}),
+      });
+      if (recentTasksRes.ok) {
+        const recentTasks = await recentTasksRes.json();
+        results.newestTasks = recentTasks.filter((r: any) => r.document).map((r: any) => {
+          const parsed = parseFirestoreDoc(r.document);
+          return {
+            docName: r.document.name,
+            stockNumber: parsed.inventory?.stockNumber,
+            displayName: parsed.inventory?.inventoryDisplayName,
+            invKeys: parsed.inventory ? Object.keys(parsed.inventory) : [],
+          };
+        });
       }
       
       return new Response(JSON.stringify(results, null, 2), {
