@@ -156,7 +156,7 @@ export default function RemanufacturedEngines() {
         </div>
       </section>
 
-      <CallToAction />
+      <CallToAction title="Need a Part? We Can Help." linkTo="/request-a-part" linkLabel="Request a Part" />
     </>
   );
 }

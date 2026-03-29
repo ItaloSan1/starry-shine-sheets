@@ -266,7 +266,7 @@ export default function RemanufacturedEngineDetail() {
         </section>
       )}
 
-      <CallToAction />
+      <CallToAction title="Need Help With Your Engine Order?" linkTo="/request-a-part" linkLabel="Request a Quote" />
     </>
   );
 }

@@ -345,7 +345,7 @@ export default function RemanufacturedEnginesATK() {
         </div>
       </div>
 
-      <CallToAction />
+      <CallToAction title="Need Help Finding the Right Engine?" linkTo="/request-a-part" linkLabel="Request a Quote" />
     </>
   );
 }
