@@ -254,43 +254,34 @@ Deno.serve(async (req) => {
       const pcn = body.pcn || 'Cylinder Heads';
       const make = body.make || '';
 
-      // Try different value formats for the QueryModel
-      const payloads = [
-        // Format 1: Values as string (not array)
-        {
-          FieldsList: ['partNumber', 'description', 'make', 'price', 'imagePath'],
+      // Try different FieldsList options to find what returns product data
+      const fieldVariants = [
+        [],
+        ['partNumber'],
+        ['make'],
+        ['year'],
+        ['displacement'],
+        ['engineSize'],
+        ['model'],
+        ['price'],
+      ];
+
+      const results: any[] = [];
+      for (const fields of fieldVariants) {
+        const payload: any = {
+          FieldsList: fields,
           QueryModel: [
             { AttributeName: 'pcn', Condition: 'equals', Values: pcn },
             ...(make ? [{ AttributeName: 'make', Condition: 'equals', Values: make }] : []),
           ],
-        },
-        // Format 2: Value (singular) as string
-        {
-          FieldsList: ['partNumber', 'description'],
-          QueryModel: [
-            { AttributeName: 'pcn', Condition: 'equals', Value: pcn },
-          ],
-        },
-        // Format 3: catalogAttributeRequest wrapper with Values as string
-        {
-          catalogAttributeRequest: {
-            FieldsList: ['partNumber', 'description', 'price'],
-            QueryModel: [
-              { AttributeName: 'pcn', Condition: 'equals', Values: pcn },
-            ],
-          },
-        },
-      ];
-
-      const results: any[] = [];
-      for (const p of payloads) {
+        };
         const r = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/attributes', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(p),
+          body: JSON.stringify(payload),
         });
         const text = await r.text();
-        results.push({ status: r.status, bodyLen: text.length, preview: text.slice(0, 1500) });
+        results.push({ fields, status: r.status, bodyLen: text.length, preview: text.slice(0, 2000) });
         if (r.ok && text.length > 100) break;
       }
 
