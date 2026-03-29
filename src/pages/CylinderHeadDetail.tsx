@@ -207,7 +207,9 @@ export default function CylinderHeadDetail() {
                 </div>
                 <div className="p-3">
                   <h3 className="text-xs font-semibold line-clamp-2 group-hover:text-accent transition-colors">{rel.name}</h3>
-                  <span className="text-sm font-bold text-accent mt-1 block">{formatCad(rel.price_usd, CYLINDER_HEAD_MARKUP)}</span>
+                  <span className="text-sm font-bold text-accent mt-1 block">
+                    {rel.price_usd > 0 ? formatCad(rel.price_usd, CYLINDER_HEAD_MARKUP) : 'Call for Pricing'}
+                  </span>
                 </div>
               </Link>
             ))}
