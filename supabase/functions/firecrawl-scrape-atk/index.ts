@@ -66,7 +66,8 @@ function guessEngineMakeSize(name: string): string {
 
 function isCylinderHead(title: string, specs: string): boolean {
   const combined = (title + ' ' + specs).toLowerCase();
-  return combined.includes('head') && !combined.includes('header') && !combined.includes('headlight');
+  return (combined.includes('head') || combined.includes('cyl hd') || combined.includes('cyl. hd') || combined.includes('cylinder hd'))
+    && !combined.includes('header') && !combined.includes('headlight') && !combined.includes('headgasket');
 }
 
 function parseProductFromMarkdown(pno: string, md: string) {
