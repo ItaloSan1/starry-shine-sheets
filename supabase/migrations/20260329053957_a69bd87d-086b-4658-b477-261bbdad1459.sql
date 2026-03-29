@@ -1,0 +1,1 @@
+CREATE POLICY "Allow service inserts for remanufactured engines" ON public.remanufactured_engines FOR INSERT TO anon WITH CHECK (true);
