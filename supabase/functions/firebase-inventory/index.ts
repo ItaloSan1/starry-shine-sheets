@@ -503,7 +503,56 @@ serve(async (req) => {
       const results: any = {};
       const bucket = `${projectId}.appspot.com`;
       
-      // 1. List top-level collections
+      // 1. Check work-orders structure and inventory subcollections
+      try {
+        // Check work-orders top-level
+        const woUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/work-orders?pageSize=3`;
+        const woRes = await fetch(woUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (woRes.ok) {
+          const woData = await woRes.json();
+          if (woData.documents?.length > 0) {
+            results.workOrderKeys = Object.keys(woData.documents[0].fields || {});
+            const woId = woData.documents[0].name.split('/').pop();
+            results.workOrderSampleId = woId;
+            
+            // Check for inventory subcollection
+            const invUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/work-orders/${woId}/inventory?pageSize=3`;
+            const invRes = await fetch(invUrl, { headers: { Authorization: `Bearer ${token}` } });
+            if (invRes.ok) {
+              const invData = await invRes.json();
+              if (invData.documents?.length > 0) {
+                const invDoc = parseFirestoreDoc(invData.documents[0]);
+                results.inventorySubcollectionKeys = Object.keys(invDoc);
+                results.inventorySubcollectionSample = invDoc;
+              }
+            }
+          }
+        }
+      } catch(e) { results.woError = String(e); }
+      
+      // 1b. Use collectionGroup query for 'inventory' subcollection  
+      try {
+        const invGroupUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
+        const invGroupRes = await fetch(invGroupUrl, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ structuredQuery: {
+            from: [{ collectionId: 'inventory', allDescendants: true }],
+            limit: 5,
+          }}),
+        });
+        if (invGroupRes.ok) {
+          const invGroupData = await invGroupRes.json();
+          const invDocs = invGroupData.filter((r: any) => r.document);
+          if (invDocs.length > 0) {
+            const sample = parseFirestoreDoc(invDocs[0].document);
+            results.inventoryCollectionGroupKeys = Object.keys(sample);
+            results.inventoryCollectionGroupSample = sample;
+          }
+          results.inventoryCollectionGroupCount = invDocs.length;
+        }
+      } catch(e) { results.invGroupError = String(e); }
+      
       try {
         const colUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents`;
         const colRes = await fetch(colUrl, { headers: { Authorization: `Bearer ${token}` } });
