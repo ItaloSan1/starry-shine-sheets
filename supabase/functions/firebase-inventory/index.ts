@@ -300,24 +300,24 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
   const vehicleMap = new Map<string, any>();
 
-  // Debug: look for ES1850/ES1851 in all tasks
-  let debugFound1850 = false;
-  let debugFound1851 = false;
+  let fieldKeysLogged = 0;
   
   for (const doc of docs) {
     const task = parseFirestoreDoc(doc);
     const inv = task.inventory;
     
-    // Debug: check raw doc name for clues
-    const docName = doc.name || '';
-    if (docName.includes('1850') || docName.includes('1851')) {
-      console.log(`DEBUG doc with 1850/1851 in name: ${docName}, has inventory: ${!!inv}, stockNumber: ${inv?.stockNumber || 'none'}`);
-    }
-    if (inv?.stockNumber === 'ES1850') { debugFound1850 = true; console.log(`DEBUG ES1850 found! displayName: ${inv.inventoryDisplayName}`); }
-    if (inv?.stockNumber === 'ES1851') { debugFound1851 = true; console.log(`DEBUG ES1851 found! displayName: ${inv.inventoryDisplayName}`); }
-    // Also check inventoryDisplayName for these
-    if (inv?.inventoryDisplayName && (inv.inventoryDisplayName.includes('1850') || inv.inventoryDisplayName.includes('1851'))) {
-      console.log(`DEBUG displayName match: ${inv.inventoryDisplayName}, stockNumber: ${inv.stockNumber}`);
+    // Temporary: dump inventory and task field keys for first 3 vehicles with images to discover pre-dismantled field name
+    if (inv && inv.stockNumber && fieldKeysLogged < 3) {
+      const invKeys = Object.keys(inv);
+      const taskKeys = Object.keys(task);
+      const imageRelatedKeys = invKeys.filter(k => k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl'));
+      const taskImageKeys = taskKeys.filter(k => k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl') || k.toLowerCase().includes('pre'));
+      console.log(`FIELD_DISCOVERY ${inv.stockNumber}: inv image-related keys: ${JSON.stringify(imageRelatedKeys)}, all inv keys: ${JSON.stringify(invKeys)}`);
+      console.log(`FIELD_DISCOVERY ${inv.stockNumber}: task image-related keys: ${JSON.stringify(taskImageKeys)}, task top-level keys: ${JSON.stringify(taskKeys)}`);
+      // Also check for nested objects that might contain pre-dismantled images
+      if (task.preDisassembly) console.log(`FIELD_DISCOVERY ${inv.stockNumber}: task.preDisassembly keys: ${JSON.stringify(Object.keys(task.preDisassembly))}`);
+      if (task.preDismantling) console.log(`FIELD_DISCOVERY ${inv.stockNumber}: task.preDismantling keys: ${JSON.stringify(Object.keys(task.preDismantling))}`);
+      fieldKeysLogged++;
     }
     
     if (!inv || !inv.stockNumber) continue;
