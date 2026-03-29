@@ -114,190 +114,148 @@ Deno.serve(async (req) => {
     }
 
     const url = new URL(req.url);
+    const mode = url.searchParams.get('mode') || 'scrape';
     const page = parseInt(url.searchParams.get('page') || '1');
     const pageSize = parseInt(url.searchParams.get('pageSize') || '180');
 
-    const jegsUrl = `https://www.jegs.com/part-type/Engine?Brand=ATK+Engines&pageSize=${pageSize}&page=${page}`;
-    console.log(`Scraping page ${page}: ${jegsUrl}`);
-
-    // Use Firecrawl to scrape the page
-    const scrapeResponse = await fetch('https://api.firecrawl.dev/v1/scrape', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: jegsUrl,
-        formats: ['html', 'markdown'],
-        waitFor: 3000,
-      }),
-    });
-
-    if (!scrapeResponse.ok) {
-      const errData = await scrapeResponse.text();
-      throw new Error(`Firecrawl error ${scrapeResponse.status}: ${errData}`);
-    }
-
-    const scrapeData = await scrapeResponse.json();
-    const html = scrapeData.data?.html || scrapeData.html || '';
-    const markdown = scrapeData.data?.markdown || scrapeData.markdown || '';
-
-    console.log(`Got ${html.length} chars HTML, ${markdown.length} chars markdown`);
-
-    // Parse products from HTML
-    const engines: any[] = [];
-    const seen = new Set<string>();
-
-    // Pattern 1: Product links with ATK part numbers
-    const linkRegex = /href="(\/i\/[^"]*\/059\/(\d+)\/[^"]*)"/gi;
-    let match;
-    const partNumbers: { partNum: string; href: string }[] = [];
-    
-    while ((match = linkRegex.exec(html)) !== null) {
-      const [, href, partNum] = match;
-      if (!seen.has(partNum)) {
-        seen.add(partNum);
-        partNumbers.push({ partNum, href: `https://www.jegs.com${href}` });
-      }
-    }
-
-    // Extract names near part numbers
-    const nameRegex = /059-(\d+)[\s\S]{0,300}?(?:title|alt|>)\s*["']?([^"'<]{15,200}?)["'<]/gi;
-    const nameMap = new Map<string, string>();
-    while ((match = nameRegex.exec(html)) !== null) {
-      const [, partNum, rawName] = match;
-      const name = rawName.replace(/<[^>]*>/g, '').trim();
-      if (name.length > 10 && !nameMap.has(partNum)) {
-        nameMap.set(partNum, name);
-      }
-    }
-
-    // Also extract from anchor text
-    const anchorNameRegex = /<a[^>]*href="\/i\/[^"]*\/059\/(\d+)\/[^"]*"[^>]*>([\s\S]*?)<\/a>/gi;
-    while ((match = anchorNameRegex.exec(html)) !== null) {
-      const [, partNum, rawName] = match;
-      const name = rawName.replace(/<[^>]*>/g, '').trim();
-      if (name.length > 10 && !nameMap.has(partNum)) {
-        nameMap.set(partNum, name);
-      }
-    }
-
-    // Extract prices
-    const priceMap = new Map<string, number>();
-    const priceRegex1 = /059-(\d+)[\s\S]{0,500}?\$([0-9,]+\.\d{2})/gi;
-    while ((match = priceRegex1.exec(html)) !== null) {
-      const [, partNum, price] = match;
-      if (!priceMap.has(partNum)) {
-        priceMap.set(partNum, parseFloat(price.replace(/,/g, '')));
-      }
-    }
-    const priceRegex2 = /\$([0-9,]+\.\d{2})[\s\S]{0,300}?059-(\d+)/gi;
-    while ((match = priceRegex2.exec(html)) !== null) {
-      const [, price, partNum] = match;
-      if (!priceMap.has(partNum)) {
-        priceMap.set(partNum, parseFloat(price.replace(/,/g, '')));
-      }
-    }
-
-    // Also parse from markdown for names/prices
-    // Pattern: "ATK Engines Something Something | $1,234.56 | 059-12345"
-    const mdLineRegex = /ATK\s+Engines?\s+(.+?)\s*\|\s*\$([0-9,]+\.\d{2})\s*\|\s*059-(\d+)/gi;
-    while ((match = mdLineRegex.exec(markdown)) !== null) {
-      const [, rawName, price, partNum] = match;
-      const name = rawName.trim();
-      if (!nameMap.has(partNum) && name.length > 5) nameMap.set(partNum, `ATK Engines ${name}`);
-      if (!priceMap.has(partNum)) priceMap.set(partNum, parseFloat(price.replace(/,/g, '')));
-      if (!seen.has(partNum)) {
-        seen.add(partNum);
-        partNumbers.push({ partNum, href: `https://www.jegs.com/i/ATK-Engines/059/${partNum}/` });
-      }
-    }
-
-    // Also try markdown table rows or list items
-    const mdItemRegex = /(\d{3,6})\s*[-|]\s*(.+?ATK.+?)\s*[-|]\s*\$([0-9,]+\.\d{2})/gi;
-    while ((match = mdItemRegex.exec(markdown)) !== null) {
-      const [, partNum, rawName, price] = match;
-      if (!nameMap.has(partNum)) nameMap.set(partNum, rawName.trim());
-      if (!priceMap.has(partNum)) priceMap.set(partNum, parseFloat(price.replace(/,/g, '')));
-      if (!seen.has(partNum)) {
-        seen.add(partNum);
-        partNumbers.push({ partNum, href: `https://www.jegs.com/i/ATK-Engines/059/${partNum}/` });
-      }
-    }
-
-    // Build engine records
-    for (const { partNum, href } of partNumbers) {
-      const name = nameMap.get(partNum);
-      const price = priceMap.get(partNum);
-      if (!name) continue;
-
-      const engineMakeSize = guessEngineMakeSize(name);
-      const displacement = extractDisplacement(name);
-      const category = parseCategory(name);
-      const slug = slugify(`atk-${partNum}-${name}`);
-      const imageUrl = `https://www.jegs.com/images/photos/500/059/059-${partNum}.jpg`;
-
-      engines.push({
-        brand: 'ATK Engines',
-        vendor_part_number: partNum,
-        jegs_part_number: `059-${partNum}`,
-        name,
-        slug,
-        engine_make_size: engineMakeSize,
-        displacement,
-        fits_vehicles: name,
-        engine_code: null,
-        config: null,
-        block_material: null,
-        head_material: null,
-        category,
-        price_usd: price || 0,
-        image_url: imageUrl,
-        source_url: href,
-        active: true,
+    // Debug mode - return raw markdown to analyze format
+    if (mode === 'debug') {
+      const jegsUrl = `https://www.jegs.com/part-type/Engine?Brand=ATK+Engines&pageSize=${pageSize}&page=${page}`;
+      const scrapeResponse = await fetch('https://api.firecrawl.dev/v1/scrape', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: jegsUrl,
+          formats: ['markdown'],
+          waitFor: 3000,
+        }),
       });
+      const scrapeData = await scrapeResponse.json();
+      const md = scrapeData.data?.markdown || scrapeData.markdown || '';
+      // Return chunks of markdown to analyze format
+      const offset = parseInt(url.searchParams.get('offset') || '0');
+      const chunk = md.slice(offset, offset + 5000);
+      return new Response(
+        JSON.stringify({ totalLength: md.length, offset, chunkLength: chunk.length, chunk }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    console.log(`Parsed ${engines.length} engines from page ${page}`);
+    // JSON extraction mode - use Firecrawl's LLM extraction
+    if (mode === 'extract') {
+      const jegsUrl = `https://www.jegs.com/part-type/Engine?Brand=ATK+Engines&pageSize=${pageSize}&page=${page}`;
+      console.log(`Extracting engines from page ${page}`);
 
-    if (engines.length === 0) {
+      const scrapeResponse = await fetch('https://api.firecrawl.dev/v1/scrape', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: jegsUrl,
+          formats: [
+            {
+              type: 'json',
+              schema: {
+                type: 'object',
+                properties: {
+                  products: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        name: { type: 'string', description: 'Full product name' },
+                        part_number: { type: 'string', description: 'The vendor/ATK part number (just the numeric part, e.g. 2538)' },
+                        price: { type: 'number', description: 'Price in USD' },
+                      },
+                      required: ['name', 'part_number', 'price'],
+                    },
+                  },
+                },
+                required: ['products'],
+              },
+              prompt: 'Extract ALL product listings on this page. Each product has a name (like "ATK Engines Remanufactured Crate Engine..."), a part number (the numeric code like 2538), and a price. Return every single product visible on the page.',
+            },
+          ],
+          waitFor: 3000,
+        }),
+      });
+
+      if (!scrapeResponse.ok) {
+        const errText = await scrapeResponse.text();
+        throw new Error(`Firecrawl error ${scrapeResponse.status}: ${errText}`);
+      }
+
+      const scrapeData = await scrapeResponse.json();
+      const extracted = scrapeData.data?.json || scrapeData.json || {};
+      const products = extracted.products || [];
+      
+      console.log(`Extracted ${products.length} products from page ${page}`);
+
+      if (products.length === 0) {
+        return new Response(
+          JSON.stringify({ success: true, page, enginesFound: 0, raw: extracted }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Build engine records
+      const engines = products.map((p: any) => {
+        const partNum = String(p.part_number).replace(/^059-?/, '');
+        const name = p.name;
+        const price = p.price || 0;
+        return {
+          brand: 'ATK Engines',
+          vendor_part_number: partNum,
+          jegs_part_number: `059-${partNum}`,
+          name,
+          slug: slugify(`atk-${partNum}-${name}`),
+          engine_make_size: guessEngineMakeSize(name),
+          displacement: extractDisplacement(name),
+          fits_vehicles: name,
+          engine_code: null,
+          config: null,
+          block_material: null,
+          head_material: null,
+          category: parseCategory(name),
+          price_usd: price,
+          image_url: `https://www.jegs.com/images/photos/500/059/059-${partNum}.jpg`,
+          source_url: `https://www.jegs.com/i/ATK-Engines/059/${partNum}/`,
+          active: true,
+        };
+      }).filter((e: any) => e.name && e.vendor_part_number);
+
+      // Upsert into database
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      const { error } = await supabase
+        .from('remanufactured_engines')
+        .upsert(engines, { onConflict: 'vendor_part_number' });
+
+      if (error) {
+        throw new Error(`DB upsert failed: ${error.message}`);
+      }
+
       return new Response(
         JSON.stringify({
           success: true,
           page,
-          enginesFound: 0,
-          message: 'No engines parsed from this page',
-          htmlLength: html.length,
-          markdownLength: markdown.length,
-          markdownPreview: markdown.slice(0, 3000),
+          enginesProcessed: engines.length,
+          sampleEngines: engines.slice(0, 3),
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Upsert into database
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    const { error } = await supabase
-      .from('remanufactured_engines')
-      .upsert(engines, { onConflict: 'vendor_part_number' });
-
-    if (error) {
-      console.error('Upsert error:', error);
-      throw new Error(`DB upsert failed: ${error.message}`);
-    }
-
     return new Response(
-      JSON.stringify({
-        success: true,
-        page,
-        enginesProcessed: engines.length,
-        message: `Upserted ${engines.length} engines from page ${page}`,
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ error: 'Invalid mode. Use mode=debug, mode=extract' }),
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
