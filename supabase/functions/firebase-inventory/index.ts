@@ -248,7 +248,7 @@ async function transformVehicle(doc: any, includeImages = false, decodeVin = fal
 
 // Discover which collection name stores vehicles
 async function discoverCollection(projectId: string, token: string): Promise<string> {
-  // First try known candidates
+  // First try Firestore collections
   const candidates = ['vehicles', 'inventory', 'cars', 'units', 'stock', 'Vehicles', 'Inventory', 'Cars', 'Units', 'Stock', 'auto', 'Auto', 'trucks', 'Trucks', 'salvage', 'Salvage', 'parts', 'Parts'];
   for (const name of candidates) {
     try {
@@ -257,53 +257,51 @@ async function discoverCollection(projectId: string, token: string): Promise<str
         limit: 1,
       });
       if (docs.length > 0) {
-        console.log(`Discovered collection: ${name}`);
+        console.log(`Discovered Firestore collection: ${name}`);
         return name;
       }
-    } catch {
-      // collection doesn't exist, try next
-    }
+    } catch {}
   }
   
-  // List all root collections via REST
+  // List all root collections
   try {
     const listUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
     const res = await fetch(listUrl, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({}),
     });
     if (res.ok) {
       const data = await res.json();
-      const collectionIds = data.collectionIds || [];
-      console.log('Available collections:', collectionIds);
-      if (collectionIds.length > 0) {
-        // Return the first collection that has documents
-        for (const cid of collectionIds) {
-          try {
-            const docs = await firestoreQuery(projectId, token, cid, {
-              from: [{ collectionId: cid }],
-              limit: 1,
-            });
-            if (docs.length > 0) {
-              console.log(`Using collection: ${cid}`);
-              return cid;
-            }
-          } catch {}
-        }
-      }
+      console.log('Firestore collections:', data.collectionIds || []);
     } else {
-      const errText = await res.text();
-      console.error('listCollectionIds failed:', errText);
+      await res.text();
+    }
+  } catch {}
+
+  // Try Firebase Realtime Database
+  try {
+    const rtdbUrl = `https://${projectId}-default-rtdb.firebaseio.com/.json?shallow=true&auth=${token}`;
+    const res = await fetch(rtdbUrl);
+    if (res.ok) {
+      const data = await res.json();
+      console.log('RTDB root keys:', Object.keys(data || {}));
+    } else {
+      // Try without -default-rtdb suffix
+      const rtdbUrl2 = `https://${projectId}.firebaseio.com/.json?shallow=true&auth=${token}`;
+      const res2 = await fetch(rtdbUrl2);
+      if (res2.ok) {
+        const data2 = await res2.json();
+        console.log('RTDB root keys (alt):', Object.keys(data2 || {}));
+      } else {
+        await res2.text();
+      }
     }
   } catch (e) {
-    console.error('listCollectionIds error:', e);
+    console.log('RTDB check error:', e.message);
   }
-  
-  throw new Error('Could not discover vehicle collection in Firestore');
+
+  throw new Error('Could not discover vehicle collection. Firestore has: shelf-pickup-orders, work-orders. Check RTDB logs.');
 }
 
 let discoveredCollection: string | null = null;
