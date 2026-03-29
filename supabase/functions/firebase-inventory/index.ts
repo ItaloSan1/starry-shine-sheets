@@ -418,7 +418,7 @@ serve(async (req) => {
     }
 
     if (action === 'makes') {
-      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicles = await extractVehiclesFromTasks(projectId, token, serviceAccount);
       const makeCounts: Record<string, number> = {};
       for (const v of vehicles) {
         if (v.make) makeCounts[v.make] = (makeCounts[v.make] || 0) + 1;
