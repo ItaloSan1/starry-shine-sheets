@@ -12,6 +12,7 @@ const partsLinks = [
   { to: '/used-body-parts-edmonton', label: 'Used Body Parts' },
   { to: '/used-tires-rims-edmonton', label: 'Used Tires & Rims' },
   { to: '/remanufactured-engines', label: 'Remanufactured Engines' },
+  { to: '/remanufactured-cylinder-heads', label: 'Cylinder Heads' },
 ];
 
 const companyLinks = [

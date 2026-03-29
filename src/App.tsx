@@ -28,6 +28,9 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const RemanufacturedEngines = lazy(() => import('./pages/RemanufacturedEngines'));
 const RemanufacturedEnginesATK = lazy(() => import('./pages/RemanufacturedEnginesATK'));
 const RemanufacturedEngineDetail = lazy(() => import('./pages/RemanufacturedEngineDetail'));
+const CylinderHeads = lazy(() => import('./pages/CylinderHeads'));
+const CylinderHeadsATK = lazy(() => import('./pages/CylinderHeadsATK'));
+const CylinderHeadDetail = lazy(() => import('./pages/CylinderHeadDetail'));
 
 function PageLoader() {
   return (
@@ -66,6 +69,9 @@ export default function App() {
           <Route path="/remanufactured-engines" element={<Suspense fallback={<PageLoader />}><RemanufacturedEngines /></Suspense>} />
           <Route path="/remanufactured-engines/atk" element={<Suspense fallback={<PageLoader />}><RemanufacturedEnginesATK /></Suspense>} />
           <Route path="/remanufactured-engines/atk/:slug" element={<Suspense fallback={<PageLoader />}><RemanufacturedEngineDetail /></Suspense>} />
+          <Route path="/remanufactured-cylinder-heads" element={<Suspense fallback={<PageLoader />}><CylinderHeads /></Suspense>} />
+          <Route path="/remanufactured-cylinder-heads/atk" element={<Suspense fallback={<PageLoader />}><CylinderHeadsATK /></Suspense>} />
+          <Route path="/remanufactured-cylinder-heads/atk/:slug" element={<Suspense fallback={<PageLoader />}><CylinderHeadDetail /></Suspense>} />
           <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
         </Route>
       </Routes>
