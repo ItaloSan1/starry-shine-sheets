@@ -16,10 +16,10 @@ export default function VehicleDetailPage() {
 
   useEffect(() => {
     if (id) {
-      firebaseInventoryProvider.getVehicleById(id).then(v => {
+      mongoInventoryProvider.getVehicleById(id).then(v => {
         setVehicle(v);
         setLoading(false);
-      });
+      }).catch(() => setLoading(false));
     }
   }, [id]);
 

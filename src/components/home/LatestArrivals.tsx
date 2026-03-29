@@ -14,7 +14,7 @@ export function LatestArrivals() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    firebaseInventoryProvider.getAllVehicles().then(v => {
+    mongoInventoryProvider.getAllVehicles().then(v => {
       setVehicles(v);
       setLoading(false);
     }).catch(() => setLoading(false));
