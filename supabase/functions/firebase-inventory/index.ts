@@ -300,9 +300,26 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
   const vehicleMap = new Map<string, any>();
 
+  // Debug: look for ES1850/ES1851 in all tasks
+  let debugFound1850 = false;
+  let debugFound1851 = false;
+  
   for (const doc of docs) {
     const task = parseFirestoreDoc(doc);
     const inv = task.inventory;
+    
+    // Debug: check raw doc name for clues
+    const docName = doc.name || '';
+    if (docName.includes('1850') || docName.includes('1851')) {
+      console.log(`DEBUG doc with 1850/1851 in name: ${docName}, has inventory: ${!!inv}, stockNumber: ${inv?.stockNumber || 'none'}`);
+    }
+    if (inv?.stockNumber === 'ES1850') { debugFound1850 = true; console.log(`DEBUG ES1850 found! displayName: ${inv.inventoryDisplayName}`); }
+    if (inv?.stockNumber === 'ES1851') { debugFound1851 = true; console.log(`DEBUG ES1851 found! displayName: ${inv.inventoryDisplayName}`); }
+    // Also check inventoryDisplayName for these
+    if (inv?.inventoryDisplayName && (inv.inventoryDisplayName.includes('1850') || inv.inventoryDisplayName.includes('1851'))) {
+      console.log(`DEBUG displayName match: ${inv.inventoryDisplayName}, stockNumber: ${inv.stockNumber}`);
+    }
+    
     if (!inv || !inv.stockNumber) continue;
 
     const stockNum = inv.stockNumber;
