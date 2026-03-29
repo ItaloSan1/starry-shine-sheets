@@ -1,115 +1,45 @@
 
 
-# ATK Cylinder Heads Catalog + Engine Gap Fill
+# Populate ~900 Cylinder Heads from ATK Sales API
 
-## Summary
+## Problem
+Only 58 cylinder heads in the database (from JEGS search). The full ~900 catalog lives on atksales.com, which uses a backend API at `extservices.lkqcorp.com/api/atksales/catalog/v1/`. JEGS doesn't list ATK cylinder heads as a browsable category (returns 0 items).
 
-Use Firecrawl to scrape the ATK Sales website (atksales.com) for:
-1. All cylinder head products — new product category
-2. Any missing engine products not yet in the database
+## Discovery
+The ATK Sales API has a working `/categories` GET endpoint confirming Cylinder Heads = `categoryID: 2`. The `/search` endpoint requires **POST** (returns 405 on GET). Previous attempts to reverse-engineer the POST payload hit .NET deserialization errors.
 
-Then build a cylinder heads catalog page with 15% markup pricing, and update the pricing utility to support product-specific markup rates.
+## Approach: Edge Function with Direct API POST
 
-## Data Collection (Firecrawl)
+Create/update the `firecrawl-scrape-atk` edge function to call the ATK Sales search API directly (no Firecrawl needed for this). The search endpoint is `POST https://extservices.lkqcorp.com/api/atksales/catalog/v1/search`.
 
-The ATK Sales site is a JavaScript SPA hosted on `atksales.com`. Products are rendered client-side, so Firecrawl (which renders JS) is needed.
+### Step 1: Crack the POST payload
+The edge function will try multiple payload formats against the search endpoint, iterating through known .NET model binding patterns. Based on earlier research, the site sends:
+- `AttributeName: "pcn"`, `Values: ["Cylinder Heads"]`, `Condition: "eq"`
+- Pagination via `page` and `count` params
 
-### Scraping Strategy
+The function will attempt these payload shapes and log results until we find the one that returns product data.
 
-1. **Map the site** using Firecrawl map to discover all product URLs under `atksales.com/products/`
-2. **Scrape cylinder heads category page** — extract product names, part numbers, prices, and image URLs from `atksales.com/products/cylinder-heads`
-3. **Scrape engines category page** — compare against existing 578 engines in DB, identify missing ones
-4. **Scrape individual product pages** if listing pages truncate data
+### Step 2: Paginate and extract all products
+Once the correct payload works, paginate through all pages (count=100 per page, ~9 pages for 900 products). Extract:
+- `partNumber` → `vendor_part_number`
+- Product name → `name` (rewritten)
+- `listPrice` → `price_usd`
+- Image URL from CDN pattern: `https://cdn.lkqcorp.com/atk/catalog/cylinder-heads/{partnum}/atk{partnum}-1.jpg`
+- Make → `engine_make_size` (use the `make` field from the API directly)
+- Displacement extracted from name
 
-Image URLs on ATK Sales follow the pattern: `https://cdn.lkqcorp.com/atk/images/...` — these will be stored directly.
-
-### Edge Function
-
-Create/update `supabase/functions/firecrawl-scrape-atk/index.ts` to:
-- Accept a `category` parameter (engines or cylinder-heads)
-- Scrape the ATK Sales site via Firecrawl with `waitFor` for JS rendering
-- Parse product data from the rendered markdown/HTML
-- Upsert into the appropriate database table
-
-## Database Changes
-
-### New table: `cylinder_heads`
-
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK, auto-generated |
-| brand | text | Default 'ATK' |
-| vendor_part_number | text | Unique |
-| name | text | Product name (rewritten) |
-| slug | text | URL-friendly |
-| price_usd | numeric | Base price |
-| image_url | text | From cdn.lkqcorp.com |
-| displacement | text | Extracted |
-| engine_make_size | text | Categorized (GM, Ford, etc.) |
-| fits_vehicles | text | Vehicle compatibility |
-| config | text | Specs |
-| active | boolean | Default true |
-| created_at | timestamptz | Default now() |
-
-RLS: Public SELECT (same as remanufactured_engines).
-
-## Pricing Changes
-
-Update `src/lib/pricing.ts`:
-- Add a `formatCadWithMarkup(usd, markupPercent)` function
-- Cylinder heads use 15% markup: `1.38 * 1.15 = 1.587`
-- Engines keep existing 10% markup: `1.38 * 1.10 = 1.518`
-
-## Frontend Pages
-
-### 1. Cylinder Heads Hub: `/remanufactured-cylinder-heads`
-- New page `src/pages/CylinderHeads.tsx`
-- Similar layout to RemanufacturedEngines hub
-- Links to ATK cylinder heads catalog
-
-### 2. ATK Cylinder Heads Catalog: `/remanufactured-cylinder-heads/atk`
-- New page `src/pages/CylinderHeadsATK.tsx`
-- Reuse the same sidebar filter pattern from RemanufacturedEnginesATK
-- Filter by make, then displacement
-- Product cards with images, CAD prices (15% markup)
-- Pagination, search, sort
-
-### 3. Cylinder Head Detail: `/remanufactured-cylinder-heads/atk/:slug`
-- New page `src/pages/CylinderHeadDetail.tsx`
-- Same layout pattern as RemanufacturedEngineDetail
-- Specs table, related products, CTA
-- CAD pricing with 15% markup
-
-## Routing & Navigation
-
-- Add 3 new routes in `App.tsx`
-- Add "Cylinder Heads" link in Footer and any relevant navigation
-- Update the Remanufactured Engines hub page to cross-link to cylinder heads
-
-## Content
-
-All product text will be rewritten to be unique. No ATK Sales branding or references. Images will use `referrerPolicy="no-referrer"`.
+### Step 3: Upsert into `cylinder_heads` table
+Batch upsert all products using `ON CONFLICT (vendor_part_number) DO UPDATE`. This will update the existing 58 and add the remaining ~840.
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `src/lib/pricing.ts` | Add `formatCadWithMarkup()` for variable markup rates |
-| `supabase/functions/firecrawl-scrape-atk/index.ts` | Update to support cylinder heads + ATK Sales site |
-| New migration | Create `cylinder_heads` table with RLS |
-| `src/pages/CylinderHeads.tsx` | New hub page |
-| `src/pages/CylinderHeadsATK.tsx` | New catalog with sidebar filters |
-| `src/pages/CylinderHeadDetail.tsx` | New detail page |
-| `src/App.tsx` | Add 3 routes |
-| `src/components/layout/Footer.tsx` | Add nav link |
+| `supabase/functions/firecrawl-scrape-atk/index.ts` | Rewrite to call ATK Sales API directly via POST for cylinder heads; add pagination; upsert into `cylinder_heads` table |
 
-## Execution Order
-
-1. Create `cylinder_heads` table via migration
-2. Update pricing utility with variable markup support
-3. Update Firecrawl scraper to handle ATK Sales site for both engines and cylinder heads
-4. Run scraper to populate cylinder heads data
-5. Run scraper to find missing engines and fill gaps
-6. Build all 3 frontend pages
-7. Add routes and navigation links
+## Execution
+1. Deploy the updated edge function
+2. Invoke it to probe the search endpoint and find the correct payload format
+3. Once working, run it to paginate through all ~900 cylinder heads and insert them
+4. Verify count matches expectations
 
