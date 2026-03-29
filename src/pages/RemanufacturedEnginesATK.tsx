@@ -130,6 +130,10 @@ export default function RemanufacturedEnginesATK() {
       query = query.in('engine_make_size', MAKE_GROUPS[initialMakeGroup]);
     }
 
+    if (selectedDisplacement) {
+      query = query.eq('displacement', selectedDisplacement);
+    }
+
     if (debouncedSearch) {
       query = query.ilike('name', `%${debouncedSearch}%`);
     }
