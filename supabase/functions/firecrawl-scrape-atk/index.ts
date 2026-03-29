@@ -250,11 +250,12 @@ Deno.serve(async (req) => {
 
     // ── ATK-API-SEARCH: fetch cylinder heads from ATK catalog API ──
     if (mode === 'atk-api-search') {
-      const body = await req.json();
-      const pcn = body.pcn || 'Cylinder Heads';
-      const page = body.page || 1;
-      const pageSize = body.pageSize || 100;
-      const doUpsert = body.upsert !== false;
+      let body: any = {};
+      try { body = await req.json(); } catch {}
+      const pcn = url.searchParams.get('pcn') || body.pcn || 'Cylinder Heads';
+      const page = parseInt(url.searchParams.get('page') || '') || body.page || 1;
+      const pageSize = parseInt(url.searchParams.get('pageSize') || '') || body.pageSize || 100;
+      const doUpsert = url.searchParams.get('upsert') !== 'false';
 
       const payload = {
         FieldsList: [],
