@@ -25,6 +25,9 @@ const About = lazy(() => import('./pages/About'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const RemanufacturedEngines = lazy(() => import('./pages/RemanufacturedEngines'));
+const RemanufacturedEnginesATK = lazy(() => import('./pages/RemanufacturedEnginesATK'));
+const RemanufacturedEngineDetail = lazy(() => import('./pages/RemanufacturedEngineDetail'));
 
 function PageLoader() {
   return (
