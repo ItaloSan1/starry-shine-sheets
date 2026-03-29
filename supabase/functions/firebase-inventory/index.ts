@@ -185,15 +185,37 @@ function parseDisplayName(displayName: string): { stockNumber: string; year: num
   return result;
 }
 
+// Cached RSA key for signing
+let cachedSigningKey: CryptoKey | null = null;
+
+async function getSigningKey(serviceAccount: any): Promise<CryptoKey> {
+  if (cachedSigningKey) return cachedSigningKey;
+  const pemContents = serviceAccount.private_key
+    .replace(/-----BEGIN PRIVATE KEY-----/, '')
+    .replace(/-----END PRIVATE KEY-----/, '')
+    .replace(/\n/g, '');
+  const binaryKey = Uint8Array.from(atob(pemContents), (c: string) => c.charCodeAt(0));
+  cachedSigningKey = await crypto.subtle.importKey(
+    'pkcs8',
+    binaryKey,
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  return cachedSigningKey;
+}
+
 // Generate V4 signed URL for Google Cloud Storage
 async function generateSignedUrl(bucket: string, objectPath: string, serviceAccount: any): Promise<string> {
   if (!objectPath) return '';
   if (objectPath.startsWith('http')) return objectPath;
 
+  const signingKey = await getSigningKey(serviceAccount);
+
   const now = new Date();
   const datestamp = now.toISOString().replace(/[-:]/g, '').substring(0, 8);
   const timestamp = datestamp + 'T' + now.toISOString().replace(/[-:]/g, '').substring(9, 15) + 'Z';
-  const expiration = 3600; // 1 hour
+  const expiration = 3600;
 
   const credentialScope = `${datestamp}/auto/storage/goog4_request`;
   const credential = `${serviceAccount.client_email}/${credentialScope}`;
@@ -213,40 +235,16 @@ async function generateSignedUrl(bucket: string, objectPath: string, serviceAcco
   const canonicalQueryString = sortedParams.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
 
   const canonicalRequest = [
-    'GET',
-    canonicalUri,
-    canonicalQueryString,
-    `host:${host}`,
-    '',
-    'host',
-    'UNSIGNED-PAYLOAD',
+    'GET', canonicalUri, canonicalQueryString, `host:${host}`, '', 'host', 'UNSIGNED-PAYLOAD',
   ].join('\n');
 
   const stringToSign = [
-    'GOOG4-RSA-SHA256',
-    timestamp,
-    credentialScope,
-    await sha256Hex(canonicalRequest),
+    'GOOG4-RSA-SHA256', timestamp, credentialScope, await sha256Hex(canonicalRequest),
   ].join('\n');
-
-  // Sign with service account private key
-  const pemContents = serviceAccount.private_key
-    .replace(/-----BEGIN PRIVATE KEY-----/, '')
-    .replace(/-----END PRIVATE KEY-----/, '')
-    .replace(/\n/g, '');
-  const binaryKey = Uint8Array.from(atob(pemContents), (c: string) => c.charCodeAt(0));
-
-  const key = await crypto.subtle.importKey(
-    'pkcs8',
-    binaryKey,
-    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
 
   const signature = await crypto.subtle.sign(
     'RSASSA-PKCS1-v1_5',
-    key,
+    signingKey,
     new TextEncoder().encode(stringToSign)
   );
 
@@ -298,6 +296,7 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
   const { docs } = await queryAllTasks(projectId, token);
   console.log(`Found ${docs.length} task documents`);
 
+  // First pass: collect raw vehicle data with unsigned image paths (no crypto yet)
   const vehicleMap = new Map<string, any>();
 
   for (const doc of docs) {
@@ -310,21 +309,13 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
     const parsed = parseDisplayName(inv.inventoryDisplayName || '');
 
-    // Image priority: postDismantledImages first, then partDisassembledImages
-    const images: string[] = [];
+    // Collect only the FIRST raw image path (list view only needs 1 thumbnail)
+    let firstImagePath = '';
     if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
-      for (const imgPath of inv.postDismantledImages) {
-        if (typeof imgPath === 'string' && imgPath) {
-          images.push(await generateSignedUrl(bucket, imgPath, serviceAccount));
-        }
-      }
+      firstImagePath = inv.postDismantledImages.find((p: any) => typeof p === 'string' && p) || '';
     }
-    if (task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
-      for (const imgPath of task.postDisassembly.partDisassembledImages) {
-        if (typeof imgPath === 'string' && imgPath) {
-          images.push(await generateSignedUrl(bucket, imgPath, serviceAccount));
-        }
-      }
+    if (!firstImagePath && task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
+      firstImagePath = task.postDisassembly.partDisassembledImages.find((p: any) => typeof p === 'string' && p) || '';
     }
 
     vehicleMap.set(stockNum, {
@@ -339,13 +330,29 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
       dateArrived: task.createdAt?.timestamp ? new Date(task.createdAt.timestamp).toISOString() : new Date().toISOString(),
       status: 'Available',
       partsAvailable: [],
-      images,
-      imageUrl: images[0] || undefined,
+      _rawImagePath: firstImagePath,
+      images: [],
+      imageUrl: undefined,
       locationGroup: inv.inventoryLocationGroup || '',
     });
   }
 
+  // Second pass: sign all image URLs in parallel batches
   const vehicles = Array.from(vehicleMap.values());
+  const BATCH_SIZE = 50;
+  for (let i = 0; i < vehicles.length; i += BATCH_SIZE) {
+    const batch = vehicles.slice(i, i + BATCH_SIZE);
+    const signed = await Promise.all(
+      batch.map(v => v._rawImagePath ? generateSignedUrl(bucket, v._rawImagePath, serviceAccount) : Promise.resolve(''))
+    );
+    for (let j = 0; j < batch.length; j++) {
+      const url = signed[j];
+      batch[j].images = url ? [url] : [];
+      batch[j].imageUrl = url || undefined;
+      delete batch[j]._rawImagePath;
+    }
+  }
+
   vehicles.sort((a, b) => (b.year || 0) - (a.year || 0) || new Date(b.dateArrived || 0).getTime() - new Date(a.dateArrived || 0).getTime());
 
   vehiclesCache = { data: vehicles, timestamp: Date.now() };
