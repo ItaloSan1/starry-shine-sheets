@@ -28,6 +28,9 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const RemanufacturedEngines = lazy(() => import('./pages/RemanufacturedEngines'));
 const RemanufacturedEnginesATK = lazy(() => import('./pages/RemanufacturedEnginesATK'));
 const RemanufacturedEngineDetail = lazy(() => import('./pages/RemanufacturedEngineDetail'));
+const CylinderHeads = lazy(() => import('./pages/CylinderHeads'));
+const CylinderHeadsATK = lazy(() => import('./pages/CylinderHeadsATK'));
+const CylinderHeadDetail = lazy(() => import('./pages/CylinderHeadDetail'));
 
 function PageLoader() {
   return (
