@@ -75,9 +75,7 @@ async function decodeVIN(vin: string): Promise<any> {
   }
 }
 
-// Server-side cache
-let vehiclesCache: { data: any[]; timestamp: number } | null = null;
-const CACHE_TTL = 5 * 60 * 1000;
+// Removed server-side full cache — was causing timeouts by signing 1,234 images
 
 function getMongoClient(): MongoClient {
   let connStr = Deno.env.get('MONGODB_CONNECTION_STRING');
@@ -114,10 +112,10 @@ function mapVehicleDoc(doc: any, signedImages: string[]): any {
   return {
     id: doc._id?.toString() || '',
     stockNumber: doc.stockNumber || '',
-    year: parseInt(info.Year) || 0,
-    make: (info.Make || '').toUpperCase(),
-    model: info.Model || '',
-    trim: info.Trim || '',
+    year: parseInt(String(info.Year || doc.year || '0')) || 0,
+    make: String(info.Make || '').toUpperCase(),
+    model: String(info.Model || ''),
+    trim: String(info.Trim || ''),
     bodyStyle: info.BodyClass || '',
     vehicleType: info.VehicleType || '',
     color: '',
@@ -155,19 +153,7 @@ serve(async (req) => {
       const yearFilter = url.searchParams.get('year') || '';
       const search = url.searchParams.get('search') || '';
 
-      // Check cache for unfiltered full list
-      const isUnfiltered = !makeFilter && !modelFilter && !yearFilter && !search;
-      if (isUnfiltered && vehiclesCache && Date.now() - vehiclesCache.timestamp < CACHE_TTL) {
-        const cached = vehiclesCache.data;
-        const start = (page - 1) * pageSize;
-        return new Response(JSON.stringify({
-          vehicles: cached.slice(start, start + pageSize),
-          total: cached.length,
-          page,
-          pageSize,
-          totalPages: Math.ceil(cached.length / pageSize),
-        }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-      }
+      // No client-side full cache — use server-side pagination only
 
       client = getMongoClient();
       await client.connect();
@@ -177,7 +163,11 @@ serve(async (req) => {
       const filter: any = {};
       if (makeFilter) filter['vehicleInfo.Make'] = { $regex: new RegExp(`^${makeFilter}$`, 'i') };
       if (modelFilter) filter['vehicleInfo.Model'] = { $regex: new RegExp(`^${modelFilter}$`, 'i') };
-      if (yearFilter) filter['vehicleInfo.Year'] = yearFilter;
+      if (yearFilter) {
+        // Year may be stored as string or number in MongoDB
+        const yearNum = parseInt(yearFilter);
+        filter['vehicleInfo.Year'] = { $in: [yearFilter, yearNum] };
+      }
       if (search) {
         const q = search.trim();
         filter.$or = [
@@ -203,21 +193,6 @@ serve(async (req) => {
         const firstImage = preImages[0] || postImages[0];
         const thumbUrl = firstImage ? await generateSignedUrl(bucket, firstImage, serviceAccount) : undefined;
         vehicles.push(mapVehicleDoc(doc, thumbUrl ? [thumbUrl] : []));
-      }
-
-      // Cache full unfiltered results
-      if (isUnfiltered && page === 1 && pageSize >= 50) {
-        // Fetch all for cache
-        const allDocs = await col.find({}).sort({ 'vehicleInfo.Year': -1, _id: -1 }).toArray();
-        const allVehicles = [];
-        for (const doc of allDocs) {
-          const preImages = doc.preDismantling?.images || [];
-          const postImages = doc.postDismantling?.images || [];
-          const firstImage = preImages[0] || postImages[0];
-          const thumbUrl = firstImage ? await generateSignedUrl(bucket, firstImage, serviceAccount) : undefined;
-          allVehicles.push(mapVehicleDoc(doc, thumbUrl ? [thumbUrl] : []));
-        }
-        vehiclesCache = { data: allVehicles, timestamp: Date.now() };
       }
 
       await client.close();
