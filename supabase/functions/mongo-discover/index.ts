@@ -24,8 +24,13 @@ serve(async (req) => {
     }
 
     console.log('Connecting to MongoDB...', connStr.replace(/:[^@]+@/, ':***@'));
-    const client = new MongoClient(connStr);
+    console.log('Password encoded segment:', match ? encodeURIComponent(decodeURIComponent(match[2])) : 'no match');
+    const client = new MongoClient(connStr, {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+    });
     await client.connect();
+    console.log('Connected successfully!');
     
     const db = client.db('yard-app');
     const col = db.collection('vehicles-inventory');
