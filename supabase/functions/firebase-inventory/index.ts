@@ -318,13 +318,15 @@ serve(async (req) => {
     const projectId = serviceAccount.project_id;
     const token = await getAccessToken(serviceAccount);
 
-    // Discover collection on first call
-    if (!discoveredCollection) {
-      discoveredCollection = await discoverCollection(projectId, token);
-    }
-
     const url = new URL(req.url);
     const action = url.searchParams.get('action') || 'vehicles';
+
+    // Debug action bypasses collection discovery
+    if (action !== 'debug') {
+      if (!discoveredCollection) {
+        discoveredCollection = await discoverCollection(projectId, token);
+      }
+    }
 
     if (action === 'debug') {
       // Debug: show raw data from both collections and RTDB
