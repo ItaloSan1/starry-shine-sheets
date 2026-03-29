@@ -318,7 +318,7 @@ serve(async (req) => {
 
       return new Response(JSON.stringify({
         makes: makes.map((m: any) => ({ name: m._id, count: m.count })),
-      }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }), { headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } });
     }
 
     if (action === 'models') {
@@ -334,7 +334,28 @@ serve(async (req) => {
       await client.close();
 
       return new Response(JSON.stringify({ models: models.filter(Boolean).sort() }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' },
+      });
+    }
+
+    if (action === 'years') {
+      client = getMongoClient();
+      await client.connect();
+      const col = client.db('yard-app').collection('vehicles-inventory');
+
+      const yearDocs = await col.aggregate([
+        { $project: { y: { $ifNull: ['$vehicleInfo.Year', '$vehicleInfo.ModelYear'] } } },
+        { $group: { _id: '$y' } },
+        { $match: { _id: { $ne: null } } },
+        { $sort: { _id: -1 } },
+      ]).toArray();
+
+      await client.close();
+
+      const years = yearDocs.map((d: any) => Number(d._id)).filter(y => y > 0).sort((a, b) => b - a);
+
+      return new Response(JSON.stringify({ years }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' },
       });
     }
 
