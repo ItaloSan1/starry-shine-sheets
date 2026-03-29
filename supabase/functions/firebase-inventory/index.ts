@@ -329,75 +329,120 @@ serve(async (req) => {
     }
 
     if (action === 'debug') {
-      // Debug: show raw data from both collections and RTDB
-      const results: any = { firestore: {}, rtdb: {} };
+      const results: any = { collections_found: [], collection_samples: {} };
       
-      // Sample from each Firestore collection
-      for (const col of ['shelf-pickup-orders', 'work-orders']) {
+      // Try MANY collection name candidates
+      const candidates = [
+        'inventory', 'inventoryItems', 'inventory-items', 'inventory_items',
+        'vehicles', 'vehicle', 'cars', 'units', 'stock', 'stocks',
+        'Inventory', 'InventoryItems', 'Vehicles', 'Cars', 'Units', 'Stock',
+        'items', 'Items', 'products', 'Products', 'assets', 'Assets',
+        'yard', 'Yard', 'yard-inventory', 'yardInventory',
+        'salvage', 'Salvage', 'auto', 'Auto', 'trucks', 'Trucks',
+        'parts', 'Parts', 'dismantled', 'arrivals',
+        'shelf-pickup-orders', 'work-orders',
+        'users', 'locations', 'settings', 'config',
+        'inventoryLocations', 'inventory-locations', 'location-groups',
+        'locationGroups', 'tasks',
+      ];
+      
+      for (const name of candidates) {
         try {
-          const docs = await firestoreQuery(projectId, token, col, {
-            from: [{ collectionId: col }],
-            limit: 2,
+          const docs = await firestoreQuery(projectId, token, name, {
+            from: [{ collectionId: name }],
+            limit: 1,
           });
-          results.firestore[col] = {
-            count: docs.length,
-            sample: docs.slice(0, 2).map(d => {
-              const parsed = parseFirestoreDoc(d);
-              return { id: parsed._id, keys: Object.keys(parsed), data: parsed };
-            }),
-          };
-        } catch (e) {
-          results.firestore[col] = { error: e.message };
-        }
+          if (docs.length > 0) {
+            results.collections_found.push(name);
+            const parsed = parseFirestoreDoc(docs[0]);
+            results.collection_samples[name] = {
+              keys: Object.keys(parsed),
+              sample: parsed,
+            };
+          }
+        } catch {}
       }
 
-      // Check sub-collections of work-orders docs
+      // Also list ALL root collections
       try {
-        const woDocs = await firestoreQuery(projectId, token, 'work-orders', {
-          from: [{ collectionId: 'work-orders' }],
-          limit: 1,
+        const listUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
+        const res = await fetch(listUrl, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pageSize: 100 }),
         });
-        if (woDocs.length > 0) {
-          const docPath = woDocs[0].name.replace(`projects/${projectId}/databases/(default)/documents/`, '');
-          const subColUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/${docPath}:listCollectionIds`;
-          const subRes = await fetch(subColUrl, {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({}),
-          });
-          if (subRes.ok) {
-            const subData = await subRes.json();
-            results.firestore['work-orders-subcollections'] = subData.collectionIds || [];
+        if (res.ok) {
+          const data = await res.json();
+          results.all_root_collections = data.collectionIds || [];
+          
+          // Sample any collections we haven't already sampled
+          for (const cid of (data.collectionIds || [])) {
+            if (!results.collection_samples[cid]) {
+              try {
+                const docs = await firestoreQuery(projectId, token, cid, {
+                  from: [{ collectionId: cid }],
+                  limit: 1,
+                });
+                if (docs.length > 0) {
+                  results.collections_found.push(cid);
+                  const parsed = parseFirestoreDoc(docs[0]);
+                  results.collection_samples[cid] = {
+                    keys: Object.keys(parsed),
+                    sample: parsed,
+                  };
+                }
+              } catch {}
+            }
           }
         }
       } catch {}
 
-      // Try RTDB with OAuth token
-      for (const domain of [`${projectId}-default-rtdb.firebaseio.com`, `${projectId}.firebaseio.com`]) {
+      // Check subcollections of work-orders AND shelf-pickup-orders
+      for (const parentCol of ['work-orders', 'shelf-pickup-orders']) {
         try {
-          const rtdbRes = await fetch(`https://${domain}/.json?shallow=true`, {
-            headers: { Authorization: `Bearer ${token}` },
+          const docs = await firestoreQuery(projectId, token, parentCol, {
+            from: [{ collectionId: parentCol }],
+            limit: 1,
           });
-          if (rtdbRes.ok) {
-            const data = await rtdbRes.json();
-            results.rtdb[domain] = { keys: Object.keys(data || {}) };
-            // Sample first key
-            const firstKey = Object.keys(data || {})[0];
-            if (firstKey) {
-              const sampleRes = await fetch(`https://${domain}/${firstKey}.json?limitToFirst=1&orderBy="$key"`, {
-                headers: { Authorization: `Bearer ${token}` },
-              });
-              if (sampleRes.ok) {
-                results.rtdb[`${domain}/${firstKey}_sample`] = await sampleRes.json();
-              }
+          if (docs.length > 0) {
+            const docPath = docs[0].name.replace(`projects/${projectId}/databases/(default)/documents/`, '');
+            const subRes = await fetch(`${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/${docPath}:listCollectionIds`, {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({}),
+            });
+            if (subRes.ok) {
+              const subData = await subRes.json();
+              results[`${parentCol}_subcollections`] = subData.collectionIds || [];
             }
-          } else {
-            results.rtdb[domain] = { status: rtdbRes.status, body: await rtdbRes.text() };
           }
-        } catch (e) {
-          results.rtdb[domain] = { error: e.message };
-        }
+        } catch {}
       }
+
+      // Try collectionGroup query for 'tasks' subcollection
+      try {
+        const url = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            structuredQuery: {
+              from: [{ collectionId: 'tasks', allDescendants: true }],
+              limit: 2,
+            },
+          }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const taskDocs = data.filter((r: any) => r.document);
+          if (taskDocs.length > 0) {
+            results['tasks_collectionGroup'] = taskDocs.map((r: any) => {
+              const parsed = parseFirestoreDoc(r.document);
+              return { path: r.document.name, keys: Object.keys(parsed), sample: parsed };
+            });
+          }
+        }
+      } catch {}
 
       return new Response(JSON.stringify(results, null, 2), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
