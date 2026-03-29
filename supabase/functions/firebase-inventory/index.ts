@@ -359,7 +359,7 @@ serve(async (req) => {
         });
       }
 
-      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicles = await extractVehiclesFromTasks(projectId, token, serviceAccount);
       const vehicle = vehicles.find(v => v.id === id || v.stockNumber === id);
       if (!vehicle) {
         return new Response(JSON.stringify({ error: 'Vehicle not found' }), {
@@ -367,7 +367,7 @@ serve(async (req) => {
         });
       }
 
-      // For detail view, also collect ALL images from ALL tasks referencing this stock number
+      const bucket = `${projectId}.appspot.com`;
       const { docs } = await queryAllTasks(projectId, token);
       const allImages = new Set<string>(vehicle.images || []);
       let vinNumber = '';
@@ -381,12 +381,12 @@ serve(async (req) => {
 
         if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
           for (const p of inv.postDismantledImages) {
-            if (typeof p === 'string' && p) allImages.add(getStorageUrl(projectId, p));
+            if (typeof p === 'string' && p) allImages.add(await generateSignedUrl(bucket, p, serviceAccount));
           }
         }
         if (task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
           for (const p of task.postDisassembly.partDisassembledImages) {
-            if (typeof p === 'string' && p) allImages.add(getStorageUrl(projectId, p));
+            if (typeof p === 'string' && p) allImages.add(await generateSignedUrl(bucket, p, serviceAccount));
           }
         }
       }
