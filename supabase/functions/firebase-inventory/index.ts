@@ -345,7 +345,7 @@ serve(async (req) => {
     const action = url.searchParams.get('action') || 'vehicles';
 
     if (action === 'vehicles') {
-      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicles = await extractVehiclesFromTasks(projectId, token, serviceAccount);
       return new Response(JSON.stringify({ vehicles, total: vehicles.length }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
