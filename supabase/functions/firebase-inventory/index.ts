@@ -248,7 +248,8 @@ async function transformVehicle(doc: any, includeImages = false, decodeVin = fal
 
 // Discover which collection name stores vehicles
 async function discoverCollection(projectId: string, token: string): Promise<string> {
-  const candidates = ['vehicles', 'inventory', 'cars', 'units', 'stock', 'Vehicles', 'Inventory'];
+  // First try known candidates
+  const candidates = ['vehicles', 'inventory', 'cars', 'units', 'stock', 'Vehicles', 'Inventory', 'Cars', 'Units', 'Stock', 'auto', 'Auto', 'trucks', 'Trucks', 'salvage', 'Salvage', 'parts', 'Parts'];
   for (const name of candidates) {
     try {
       const docs = await firestoreQuery(projectId, token, name, {
@@ -263,6 +264,45 @@ async function discoverCollection(projectId: string, token: string): Promise<str
       // collection doesn't exist, try next
     }
   }
+  
+  // List all root collections via REST
+  try {
+    const listUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
+    const res = await fetch(listUrl, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const collectionIds = data.collectionIds || [];
+      console.log('Available collections:', collectionIds);
+      if (collectionIds.length > 0) {
+        // Return the first collection that has documents
+        for (const cid of collectionIds) {
+          try {
+            const docs = await firestoreQuery(projectId, token, cid, {
+              from: [{ collectionId: cid }],
+              limit: 1,
+            });
+            if (docs.length > 0) {
+              console.log(`Using collection: ${cid}`);
+              return cid;
+            }
+          } catch {}
+        }
+      }
+    } else {
+      const errText = await res.text();
+      console.error('listCollectionIds failed:', errText);
+    }
+  } catch (e) {
+    console.error('listCollectionIds error:', e);
+  }
+  
   throw new Error('Could not discover vehicle collection in Firestore');
 }
 
