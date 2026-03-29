@@ -503,46 +503,29 @@ serve(async (req) => {
       const results: any = {};
       const bucket = `${projectId}.appspot.com`;
       
-      // 1. List Firebase Storage objects to find pre-dismantled images
+      // 1. List vehicles-pre-dismantle subfolder structure
       try {
-        const storageUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=&delimiter=/&maxResults=20`;
-        const storageRes = await fetch(storageUrl, { headers: { Authorization: `Bearer ${token}` } });
-        if (storageRes.ok) {
-          const storageData = await storageRes.json();
-          results.storagePrefixes = storageData.prefixes || [];
-          results.storageItems = (storageData.items || []).map((i: any) => i.name);
+        const preUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/&delimiter=/&maxResults=20`;
+        const preRes = await fetch(preUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (preRes.ok) {
+          const preData = await preRes.json();
+          results.preDismantlePrefixes = preData.prefixes || [];
+          results.preDismantleItems = (preData.items || []).map((i: any) => i.name).slice(0, 10);
         }
-      } catch(e) { results.storageError = String(e); }
+      } catch(e) { results.preError = String(e); }
       
-      // 2. Look for storage items with "pre" or "dismantl" in path
+      // 2. List vehicles-post-dismantle subfolder structure
       try {
-        // Try common prefixes where pre-dismantled images might live
-        for (const prefix of ['preDismantled/', 'pre-dismantled/', 'preDisassembly/', 'inventory/']) {
-          const sUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=${encodeURIComponent(prefix)}&maxResults=5`;
-          const sRes = await fetch(sUrl, { headers: { Authorization: `Bearer ${token}` } });
-          if (sRes.ok) {
-            const sData = await sRes.json();
-            if (sData.items && sData.items.length > 0) {
-              results[`storage_${prefix}`] = sData.items.map((i: any) => i.name);
-            }
-            if (sData.prefixes && sData.prefixes.length > 0) {
-              results[`storagePrefixes_${prefix}`] = sData.prefixes;
-            }
-          }
+        const postUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-post-dismantle/&delimiter=/&maxResults=20`;
+        const postRes = await fetch(postUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (postRes.ok) {
+          const postData = await postRes.json();
+          results.postDismantlePrefixes = postData.prefixes || [];
+          results.postDismantleItems = (postData.items || []).map((i: any) => i.name).slice(0, 10);
         }
-      } catch(e) { results.storagePrefixError = String(e); }
+      } catch(e) { results.postError = String(e); }
       
-      // 3. Search for "ES1850" or "1850" in storage
-      try {
-        const sUrl1850 = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=ES1850&maxResults=10`;
-        const sRes1850 = await fetch(sUrl1850, { headers: { Authorization: `Bearer ${token}` } });
-        if (sRes1850.ok) {
-          const sData1850 = await sRes1850.json();
-          results.storage_ES1850 = (sData1850.items || []).map((i: any) => i.name);
-        }
-      } catch(e) { results.storage1850Error = String(e); }
-
-      // 4. List postDismantledImages paths (first 2 that have them) to see folder structure
+      // 3. Check what postDismantledImages paths look like (from Firestore)
       try {
         const searchUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
         const res = await fetch(searchUrl, {
@@ -550,28 +533,39 @@ serve(async (req) => {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ structuredQuery: {
             from: [{ collectionId: 'tasks', allDescendants: true }],
-            orderBy: [{ field: { fieldPath: '__name__' }, direction: 'DESCENDING' }],
-            limit: 50,
+            limit: 200,
           }}),
         });
         if (res.ok) {
           const data = await res.json();
-          let imagesFound = 0;
           for (const r of data) {
-            if (!r.document || imagesFound >= 3) continue;
+            if (!r.document) continue;
             const p = parseFirestoreDoc(r.document);
             if (p.inventory?.postDismantledImages?.length > 0) {
-              results[`imagePaths_${p.inventory.stockNumber}`] = p.inventory.postDismantledImages;
-              imagesFound++;
-            }
-            // Also show newest stock numbers
-            if (p.inventory?.stockNumber) {
-              if (!results.newestStockNumbers) results.newestStockNumbers = [];
-              results.newestStockNumbers.push(p.inventory.stockNumber);
+              results.sampleImagePaths = p.inventory.postDismantledImages.slice(0, 3);
+              results.sampleStockNumber = p.inventory.stockNumber;
+              break;
             }
           }
         }
-      } catch(e) { results.imagePathError = String(e); }
+      } catch(e) { results.pathError = String(e); }
+      
+      // 4. Check if ES1850 images exist in storage
+      try {
+        const esUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/ES1850&maxResults=10`;
+        const esRes = await fetch(esUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (esRes.ok) {
+          const esData = await esRes.json();
+          results.es1850PreImages = (esData.items || []).map((i: any) => i.name);
+        }
+        // Also try post
+        const esUrl2 = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-post-dismantle/ES1850&maxResults=10`;
+        const esRes2 = await fetch(esUrl2, { headers: { Authorization: `Bearer ${token}` } });
+        if (esRes2.ok) {
+          const esData2 = await esRes2.json();
+          results.es1850PostImages = (esData2.items || []).map((i: any) => i.name);
+        }
+      } catch(e) { results.es1850Error = String(e); }
       
       return new Response(JSON.stringify(results, null, 2), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
