@@ -177,7 +177,11 @@ serve(async (req) => {
       if (modelFilter) filter['vehicleInfo.Model'] = { $regex: new RegExp(`^${modelFilter}$`, 'i') };
       if (yearFilter) {
         const yearNum = parseInt(yearFilter);
-        filter['vehicleInfo.Year'] = { $in: [yearFilter, yearNum] };
+        filter.$or = [
+          ...(filter.$or || []),
+          { 'vehicleInfo.Year': { $in: [yearFilter, yearNum] } },
+          { 'vehicleInfo.ModelYear': { $in: [yearFilter, yearNum] } },
+        ];
       }
       if (search) {
         const q = search.trim();
