@@ -515,43 +515,50 @@ serve(async (req) => {
             const woId = woData.documents[0].name.split('/').pop();
             results.workOrderSampleId = woId;
             
-            // Check for inventory subcollection
-            const invUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/work-orders/${woId}/inventory?pageSize=3`;
-            const invRes = await fetch(invUrl, { headers: { Authorization: `Bearer ${token}` } });
-            if (invRes.ok) {
-              const invData = await invRes.json();
-              if (invData.documents?.length > 0) {
-                const invDoc = parseFirestoreDoc(invData.documents[0]);
-                results.inventorySubcollectionKeys = Object.keys(invDoc);
-                results.inventorySubcollectionSample = invDoc;
+            // Check for ALL subcollections under this work-order
+            for (const subCol of ['inventory', 'images', 'photos', 'pre-dismantle', 'preDismantle', 'vehicles']) {
+              const subUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/work-orders/${woId}/${subCol}?pageSize=3`;
+              const subRes = await fetch(subUrl, { headers: { Authorization: `Bearer ${token}` } });
+              if (subRes.ok) {
+                const subData = await subRes.json();
+                if (subData.documents?.length > 0) {
+                  const subDoc = parseFirestoreDoc(subData.documents[0]);
+                  results[`subcol_${subCol}`] = { keys: Object.keys(subDoc), sample: subDoc };
+                }
               }
             }
+            
+            // Parse the full work-order to see inventoryLocationGroups
+            const woDoc = parseFirestoreDoc(woData.documents[0]);
+            results.workOrderSample = woDoc;
           }
         }
       } catch(e) { results.woError = String(e); }
       
-      // 1b. Use collectionGroup query for 'inventory' subcollection  
-      try {
-        const invGroupUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
-        const invGroupRes = await fetch(invGroupUrl, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ structuredQuery: {
-            from: [{ collectionId: 'inventory', allDescendants: true }],
-            limit: 5,
-          }}),
-        });
-        if (invGroupRes.ok) {
-          const invGroupData = await invGroupRes.json();
-          const invDocs = invGroupData.filter((r: any) => r.document);
-          if (invDocs.length > 0) {
-            const sample = parseFirestoreDoc(invDocs[0].document);
-            results.inventoryCollectionGroupKeys = Object.keys(sample);
-            results.inventoryCollectionGroupSample = sample;
+      // 1b. CollectionGroup query for known collection names
+      for (const colName of ['images', 'photos', 'preDismantle', 'pre-dismantle', 'vehicles', 'inventory-images']) {
+        try {
+          const cgUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
+          const cgRes = await fetch(cgUrl, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ structuredQuery: {
+              from: [{ collectionId: colName, allDescendants: true }],
+              limit: 3,
+            }}),
+          });
+          if (cgRes.ok) {
+            const cgData = await cgRes.json();
+            const cgDocs = cgData.filter((r: any) => r.document);
+            if (cgDocs.length > 0) {
+              results[`colGroup_${colName}`] = {
+                count: cgDocs.length,
+                keys: Object.keys(parseFirestoreDoc(cgDocs[0].document)),
+              };
+            }
           }
-          results.inventoryCollectionGroupCount = invDocs.length;
-        }
-      } catch(e) { results.invGroupError = String(e); }
+        } catch(e) {}
+      }
       
       try {
         const colUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents`;
