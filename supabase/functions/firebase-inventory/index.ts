@@ -550,22 +550,35 @@ serve(async (req) => {
         }
       } catch(e) { results.pathError = String(e); }
       
-      // 4. Check if ES1850 images exist in storage
+      // 4. Check inventory _id to storage mapping
       try {
-        const esUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/ES1850&maxResults=10`;
-        const esRes = await fetch(esUrl, { headers: { Authorization: `Bearer ${token}` } });
-        if (esRes.ok) {
-          const esData = await esRes.json();
-          results.es1850PreImages = (esData.items || []).map((i: any) => i.name);
+        // Get a few inventory _ids and their stock numbers
+        const idMapping: any[] = [];
+        for (const r of data || []) {
+          if (!r.document) continue;
+          const p = parseFirestoreDoc(r.document);
+          if (p.inventory?._id && p.inventory?.stockNumber) {
+            idMapping.push({ stockNumber: p.inventory.stockNumber, _id: p.inventory._id });
+            if (idMapping.length >= 5) break;
+          }
         }
-        // Also try post
-        const esUrl2 = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-post-dismantle/ES1850&maxResults=10`;
-        const esRes2 = await fetch(esUrl2, { headers: { Authorization: `Bearer ${token}` } });
-        if (esRes2.ok) {
-          const esData2 = await esRes2.json();
-          results.es1850PostImages = (esData2.items || []).map((i: any) => i.name);
+        results.inventoryIdSamples = idMapping;
+        
+        // Check if first inventory _id exists as pre-dismantle storage path
+        if (idMapping.length > 0) {
+          const testId = idMapping[0]._id;
+          const testUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/${testId}&maxResults=5`;
+          const testRes = await fetch(testUrl, { headers: { Authorization: `Bearer ${token}` } });
+          if (testRes.ok) {
+            const testData = await testRes.json();
+            results.preImagesByInventoryId = {
+              stockNumber: idMapping[0].stockNumber,
+              inventoryId: testId,
+              found: (testData.items || []).map((i: any) => i.name),
+            };
+          }
         }
-      } catch(e) { results.es1850Error = String(e); }
+      } catch(e) { results.mappingError = String(e); }
       
       return new Response(JSON.stringify(results, null, 2), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
