@@ -525,7 +525,7 @@ serve(async (req) => {
         }
       } catch(e) { results.postError = String(e); }
       
-      // 3. Check what postDismantledImages paths look like (from Firestore)
+      // 3. Check postDismantledImages paths + inventory _id to storage mapping
       try {
         const searchUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
         const res = await fetch(searchUrl, {
@@ -547,38 +547,35 @@ serve(async (req) => {
               break;
             }
           }
+          
+          // Collect inventory _id samples
+          const idMapping: any[] = [];
+          for (const r of data) {
+            if (!r.document) continue;
+            const p = parseFirestoreDoc(r.document);
+            if (p.inventory?._id && p.inventory?.stockNumber) {
+              idMapping.push({ stockNumber: p.inventory.stockNumber, _id: p.inventory._id });
+              if (idMapping.length >= 5) break;
+            }
+          }
+          results.inventoryIdSamples = idMapping;
+          
+          // Check if first inventory _id exists as pre-dismantle storage path
+          if (idMapping.length > 0) {
+            const testId = idMapping[0]._id;
+            const testUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/${testId}&maxResults=5`;
+            const testRes = await fetch(testUrl, { headers: { Authorization: `Bearer ${token}` } });
+            if (testRes.ok) {
+              const testData = await testRes.json();
+              results.preImagesByInventoryId = {
+                stockNumber: idMapping[0].stockNumber,
+                inventoryId: testId,
+                found: (testData.items || []).map((i: any) => i.name),
+              };
+            }
+          }
         }
       } catch(e) { results.pathError = String(e); }
-      
-      // 4. Check inventory _id to storage mapping
-      try {
-        // Get a few inventory _ids and their stock numbers
-        const idMapping: any[] = [];
-        for (const r of data || []) {
-          if (!r.document) continue;
-          const p = parseFirestoreDoc(r.document);
-          if (p.inventory?._id && p.inventory?.stockNumber) {
-            idMapping.push({ stockNumber: p.inventory.stockNumber, _id: p.inventory._id });
-            if (idMapping.length >= 5) break;
-          }
-        }
-        results.inventoryIdSamples = idMapping;
-        
-        // Check if first inventory _id exists as pre-dismantle storage path
-        if (idMapping.length > 0) {
-          const testId = idMapping[0]._id;
-          const testUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/${testId}&maxResults=5`;
-          const testRes = await fetch(testUrl, { headers: { Authorization: `Bearer ${token}` } });
-          if (testRes.ok) {
-            const testData = await testRes.json();
-            results.preImagesByInventoryId = {
-              stockNumber: idMapping[0].stockNumber,
-              inventoryId: testId,
-              found: (testData.items || []).map((i: any) => i.name),
-            };
-          }
-        }
-      } catch(e) { results.mappingError = String(e); }
       
       return new Response(JSON.stringify(results, null, 2), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
