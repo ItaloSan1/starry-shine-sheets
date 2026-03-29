@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
+import { formatCad, usdToCad } from '@/lib/pricing';
 import { Shield, ArrowLeft } from 'lucide-react';
 
 interface EngineDetail {
