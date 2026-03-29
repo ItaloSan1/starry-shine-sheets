@@ -153,19 +153,7 @@ serve(async (req) => {
       const yearFilter = url.searchParams.get('year') || '';
       const search = url.searchParams.get('search') || '';
 
-      // Check cache for unfiltered full list
-      const isUnfiltered = !makeFilter && !modelFilter && !yearFilter && !search;
-      if (isUnfiltered && vehiclesCache && Date.now() - vehiclesCache.timestamp < CACHE_TTL) {
-        const cached = vehiclesCache.data;
-        const start = (page - 1) * pageSize;
-        return new Response(JSON.stringify({
-          vehicles: cached.slice(start, start + pageSize),
-          total: cached.length,
-          page,
-          pageSize,
-          totalPages: Math.ceil(cached.length / pageSize),
-        }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-      }
+      // No client-side full cache — use server-side pagination only
 
       client = getMongoClient();
       await client.connect();
