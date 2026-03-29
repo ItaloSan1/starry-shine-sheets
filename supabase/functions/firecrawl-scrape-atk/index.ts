@@ -132,117 +132,16 @@ Deno.serve(async (req) => {
       );
     }
 
-    // ── BATCH SCRAPE (Firecrawl Batch API) ──
-    if (mode === 'batch-scrape') {
+    // ── BATCH-SUBMIT: submit URLs, return batchId immediately ──
+    if (mode === 'batch-submit') {
       const body = await req.json();
       const partNumbers: string[] = body.partNumbers || [];
       if (partNumbers.length === 0) throw new Error('No part numbers provided');
       if (partNumbers.length > 100) throw new Error('Max 100 parts per batch');
 
       const urls = partNumbers.map(pno => `https://www.atksales.com/product-detail/?pno=${pno}`);
-
-      // Submit batch
       console.log(`Submitting batch of ${urls.length} URLs to Firecrawl...`);
-      const batchResp = await fetch('https://api.firecrawl.dev/v1/batch/scrape', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          urls,
-          formats: ['markdown'],
-          waitFor: 8000,
-        }),
-      });
 
-      if (!batchResp.ok) {
-        const errText = await batchResp.text();
-        throw new Error(`Firecrawl batch submit failed ${batchResp.status}: ${errText}`);
-      }
-
-      const batchData = await batchResp.json();
-      const batchId = batchData.id;
-      if (!batchId) throw new Error(`No batch ID returned: ${JSON.stringify(batchData)}`);
-      console.log(`Batch submitted: ${batchId}`);
-
-      // Poll for completion (up to 5 minutes)
-      let completed = false;
-      let resultData: any = null;
-      const maxPolls = 60;
-      for (let i = 0; i < maxPolls; i++) {
-        await new Promise(r => setTimeout(r, 5000));
-        const pollResp = await fetch(`https://api.firecrawl.dev/v1/batch/scrape/${batchId}`, {
-          headers: { 'Authorization': `Bearer ${firecrawlKey}` },
-        });
-        const pollData = await pollResp.json();
-        console.log(`Poll ${i + 1}: status=${pollData.status}, completed=${pollData.completed}/${pollData.total}`);
-
-        if (pollData.status === 'completed') {
-          completed = true;
-          resultData = pollData;
-          break;
-        }
-        if (pollData.status === 'failed') {
-          throw new Error(`Batch failed: ${JSON.stringify(pollData)}`);
-        }
-      }
-
-      if (!completed) {
-        return new Response(
-          JSON.stringify({ success: false, batchId, error: 'Batch timed out - still processing. Try polling manually.' }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Process results
-      const pages = resultData.data || [];
-      const cylinderHeads: any[] = [];
-      const results: any[] = [];
-
-      for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-        const md = page.markdown || '';
-        const sourceUrl = page.metadata?.sourceURL || '';
-        const pnoMatch = sourceUrl.match(/pno=([A-Za-z0-9]+)/);
-        const pno = pnoMatch ? pnoMatch[1] : partNumbers[i] || `unknown-${i}`;
-
-        const info = parseProductFromMarkdown(pno, md);
-        results.push({ pno: info.pno, title: info.title, price: info.price, isCH: info.isCH });
-
-        if (info.isCH && info.title) {
-          cylinderHeads.push(buildCylinderHeadRecord(info));
-        }
-      }
-
-      await upsertCylinderHeads(cylinderHeads);
-
-      return new Response(
-        JSON.stringify({ success: true, batchId, totalPages: pages.length, cylinderHeadsFound: cylinderHeads.length, results }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // ── LIST-AND-BATCH (orchestrator - processes one chunk) ──
-    if (mode === 'list-and-batch') {
-      const body = await req.json();
-      const offset = body.offset || 0;
-      const batchSize = Math.min(body.batchSize || 100, 100);
-
-      // Fetch sitemap
-      const resp = await fetch('https://www.atksales.com/sitemap.xml');
-      const xml = await resp.text();
-      const allParts = [...xml.matchAll(/pno=([A-Za-z0-9]+)/g)].map(m => m[1]);
-
-      const chunk = allParts.slice(offset, offset + batchSize);
-      if (chunk.length === 0) {
-        return new Response(
-          JSON.stringify({ success: true, done: true, total: allParts.length, offset, message: 'All parts processed' }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      const urls = chunk.map(pno => `https://www.atksales.com/product-detail/?pno=${pno}`);
-
-      // Submit batch
-      console.log(`list-and-batch: offset=${offset}, submitting ${urls.length} URLs...`);
       const batchResp = await fetch('https://api.firecrawl.dev/v1/batch/scrape', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
@@ -255,53 +154,92 @@ Deno.serve(async (req) => {
       }
 
       const batchData = await batchResp.json();
-      const batchId = batchData.id;
+      return new Response(
+        JSON.stringify({ success: true, batchId: batchData.id, urlCount: urls.length }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-      // Poll (up to 5 min)
-      let resultData: any = null;
-      for (let i = 0; i < 60; i++) {
-        await new Promise(r => setTimeout(r, 5000));
-        const pollResp = await fetch(`https://api.firecrawl.dev/v1/batch/scrape/${batchId}`, {
-          headers: { 'Authorization': `Bearer ${firecrawlKey}` },
-        });
-        const pollData = await pollResp.json();
-        console.log(`Poll ${i + 1}: status=${pollData.status}`);
-        if (pollData.status === 'completed') { resultData = pollData; break; }
-        if (pollData.status === 'failed') throw new Error('Batch failed');
-      }
+    // ── BATCH-POLL: check batch status, process + upsert if complete ──
+    if (mode === 'batch-poll') {
+      const batchId = url.searchParams.get('batchId');
+      if (!batchId) throw new Error('batchId parameter required');
 
-      if (!resultData) {
+      const pollResp = await fetch(`https://api.firecrawl.dev/v1/batch/scrape/${batchId}`, {
+        headers: { 'Authorization': `Bearer ${firecrawlKey}` },
+      });
+      const pollData = await pollResp.json();
+
+      if (pollData.status !== 'completed') {
         return new Response(
-          JSON.stringify({ success: false, batchId, error: 'Timed out', nextOffset: offset }),
+          JSON.stringify({ success: true, status: pollData.status, completed: pollData.completed, total: pollData.total }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
-      const pages = resultData.data || [];
+      // Process completed results
+      const pages = pollData.data || [];
       const cylinderHeads: any[] = [];
-      let chCount = 0;
+      const summary: any[] = [];
 
-      for (let i = 0; i < pages.length; i++) {
-        const md = pages[i].markdown || '';
-        const sourceUrl = pages[i].metadata?.sourceURL || '';
+      for (const page of pages) {
+        const md = page.markdown || '';
+        const sourceUrl = page.metadata?.sourceURL || '';
         const pnoMatch = sourceUrl.match(/pno=([A-Za-z0-9]+)/);
-        const pno = pnoMatch ? pnoMatch[1] : chunk[i] || `unknown-${i}`;
+        if (!pnoMatch) continue;
+        const pno = pnoMatch[1];
         const info = parseProductFromMarkdown(pno, md);
+        summary.push({ pno, title: info.title, price: info.price, isCH: info.isCH });
         if (info.isCH && info.title) {
           cylinderHeads.push(buildCylinderHeadRecord(info));
-          chCount++;
         }
       }
 
       await upsertCylinderHeads(cylinderHeads);
 
       return new Response(
+        JSON.stringify({ success: true, status: 'completed', totalPages: pages.length, cylinderHeadsFound: cylinderHeads.length, summary: summary.slice(0, 20) }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── LIST-AND-SUBMIT: fetch sitemap chunk + submit batch, return batchId ──
+    if (mode === 'list-and-submit') {
+      const body = await req.json();
+      const offset = body.offset || 0;
+      const batchSize = Math.min(body.batchSize || 100, 100);
+
+      const resp = await fetch('https://www.atksales.com/sitemap.xml');
+      const xml = await resp.text();
+      const allParts = [...xml.matchAll(/pno=([A-Za-z0-9]+)/g)].map(m => m[1]);
+
+      const chunk = allParts.slice(offset, offset + batchSize);
+      if (chunk.length === 0) {
+        return new Response(
+          JSON.stringify({ success: true, done: true, total: allParts.length, offset }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const urls = chunk.map(pno => `https://www.atksales.com/product-detail/?pno=${pno}`);
+      const batchResp = await fetch('https://api.firecrawl.dev/v1/batch/scrape', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls, formats: ['markdown'], waitFor: 8000 }),
+      });
+
+      if (!batchResp.ok) {
+        const errText = await batchResp.text();
+        throw new Error(`Firecrawl batch submit failed ${batchResp.status}: ${errText}`);
+      }
+
+      const batchData = await batchResp.json();
+      return new Response(
         JSON.stringify({
           success: true,
-          batchId,
+          batchId: batchData.id,
           offset,
-          processed: chunk.length,
-          cylinderHeadsFound: chCount,
+          batchSize: chunk.length,
           nextOffset: offset + batchSize,
           totalParts: allParts.length,
           done: offset + batchSize >= allParts.length,
