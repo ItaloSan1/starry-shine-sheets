@@ -296,23 +296,63 @@ Deno.serve(async (req) => {
       );
     }
 
-    // ── ATK-API-CATEGORIES: discover API structure ──
+    // ── ATK-API-CATEGORIES: get full categories list ──
     if (mode === 'atk-api-categories') {
+      const r = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/categories', { signal: AbortSignal.timeout(15000) });
+      const data = await r.json();
+      return new Response(
+        JSON.stringify({ success: true, data }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── ATK-API-PRODUCTS: fetch products by category from ATK API ──
+    if (mode === 'atk-api-products') {
+      const body = await req.json();
+      const category = body.category || 'Cylinder Heads';
+      const make = body.make || '';
+      const page = body.page || 1;
+      const pageSize = body.pageSize || 100;
+
+      // Try various endpoint patterns
       const endpoints = [
-        'https://extservices.lkqcorp.com/api/atksales/catalog/v1/categories',
-        'https://extservices.lkqcorp.com/api/atksales/catalog/v1/products/categories',
-        'https://extservices.lkqcorp.com/api/atksales/catalog/categories',
+        `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products?category=${encodeURIComponent(category)}&make=${encodeURIComponent(make)}&page=${page}&pageSize=${pageSize}`,
+        `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products?pcn=${encodeURIComponent(category)}&make=${encodeURIComponent(make)}&page=${page}&pageSize=${pageSize}`,
       ];
+
+      // Also try POST
+      const postEndpoints = [
+        { url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/products', body: { category, make, page, pageSize } },
+        { url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/products/search', body: { category, make, page, pageSize } },
+      ];
+
       const results: any[] = [];
+
       for (const ep of endpoints) {
         try {
           const r = await fetch(ep, { signal: AbortSignal.timeout(10000) });
           const text = await r.text();
-          results.push({ url: ep, status: r.status, body: text.slice(0, 1000) });
+          results.push({ method: 'GET', url: ep, status: r.status, body: text.slice(0, 2000) });
         } catch (e) {
-          results.push({ url: ep, error: e.message });
+          results.push({ method: 'GET', url: ep, error: e.message });
         }
       }
+
+      for (const ep of postEndpoints) {
+        try {
+          const r = await fetch(ep.url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(ep.body),
+            signal: AbortSignal.timeout(10000),
+          });
+          const text = await r.text();
+          results.push({ method: 'POST', url: ep.url, status: r.status, body: text.slice(0, 2000) });
+        } catch (e) {
+          results.push({ method: 'POST', url: ep.url, error: e.message });
+        }
+      }
+
       return new Response(
         JSON.stringify({ success: true, results }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
