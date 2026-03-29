@@ -380,6 +380,38 @@ Deno.serve(async (req) => {
       );
     }
 
+    // ── SCRAPE-LISTING: scrape rendered ATK product listing page ──
+    if (mode === 'scrape-listing') {
+      const body = await req.json();
+      const pcn = body.pcn || 'Cylinder Heads';
+      const make = body.make || '';
+      const listingUrl = `https://www.atksales.com/product-listing/?pcn=${encodeURIComponent(pcn)}${make ? '&make=' + encodeURIComponent(make) : ''}`;
+      console.log('Scraping listing page:', listingUrl);
+
+      const scrapeResp = await fetch('https://api.firecrawl.dev/v1/scrape', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: listingUrl, formats: ['markdown'], waitFor: 12000 }),
+      });
+      const scrapeData = await scrapeResp.json();
+      const md = scrapeData.data?.markdown || scrapeData.markdown || '';
+
+      // Extract product data from rendered listing
+      // ATK listing shows: part number, description, price, image
+      const products: any[] = [];
+      // Look for patterns like part numbers (e.g., 2CK2, DM2512, etc.)
+      const partRegex = /(?:####?\s*)?([A-Z0-9]{3,10})\s*\n+([^\n]+(?:Cyl|Head|CYL|HEAD|Cylinder)[^\n]*)/gi;
+      let match;
+      while ((match = partRegex.exec(md)) !== null) {
+        products.push({ pno: match[1], title: match[2].trim() });
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, markdown: md.slice(0, 8000), fullLength: md.length, productsFound: products.length, products: products.slice(0, 20) }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // ── DEFAULT: JEGS engine scraping ──
     const page = parseInt(url.searchParams.get('page') || '1');
     const pageSize = parseInt(url.searchParams.get('pageSize') || '180');
