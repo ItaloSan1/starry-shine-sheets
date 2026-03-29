@@ -257,17 +257,20 @@ Deno.serve(async (req) => {
       const make = body.make || '';
 
       const payload = {
-        FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath'],
-        QueryModel: [
-          { AttributeName: 'pcn', Condition: 'eq', Values: [pcn] },
-          ...(make ? [{ AttributeName: 'make', Condition: 'eq', Values: [make] }] : []),
-        ],
-        SortCriteria: [{ Field: 'partNumber', Direction: 'asc' }],
-        CustomerGroup: 'retail',
+        catalogSearchRequest: {
+          FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath'],
+          QueryModel: [
+            { AttributeName: 'pcn', Condition: 'eq', Values: [pcn] },
+            ...(make ? [{ AttributeName: 'make', Condition: 'eq', Values: [make] }] : []),
+          ],
+          SortCriteria: [{ Field: 'partNumber', Direction: 'asc' }],
+          CustomerGroup: 'retail',
+        },
         page, pageSize,
       };
 
       console.log(`ATK API search: pcn=${pcn}, make=${make}, page=${page}, pageSize=${pageSize}`);
+      console.log('Payload:', JSON.stringify(payload));
       const searchResp = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
