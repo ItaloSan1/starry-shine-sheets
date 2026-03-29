@@ -257,15 +257,17 @@ Deno.serve(async (req) => {
       const make = body.make || '';
 
       const searchBody = {
-        FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath', 'displacement', 'engineSize'],
-        QueryModel: {
-          pcn: pcn,
-          make: make,
+        catalogSearchRequest: {
+          FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath', 'displacement', 'engineSize'],
+          QueryModel: [
+            { field: 'pcn', value: pcn, operator: 'eq' },
+            ...(make ? [{ field: 'make', value: make, operator: 'eq' }] : []),
+          ],
+          SortCriteria: [{ field: 'partNumber', direction: 'asc' }],
+          CustomerGroup: 'retail',
           page: page,
           pageSize: pageSize,
         },
-        SortCriteria: { field: 'partNumber', direction: 'asc' },
-        CustomerGroup: 'retail',
       };
 
       console.log(`ATK API search: pcn=${pcn}, make=${make}, page=${page}`);
