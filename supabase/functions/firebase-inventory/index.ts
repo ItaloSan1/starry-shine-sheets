@@ -296,6 +296,7 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
   const { docs } = await queryAllTasks(projectId, token);
   console.log(`Found ${docs.length} task documents`);
 
+  // First pass: collect raw vehicle data with unsigned image paths (no crypto yet)
   const vehicleMap = new Map<string, any>();
 
   for (const doc of docs) {
@@ -308,21 +309,13 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
     const parsed = parseDisplayName(inv.inventoryDisplayName || '');
 
-    // Image priority: postDismantledImages first, then partDisassembledImages
-    const images: string[] = [];
+    // Collect only the FIRST raw image path (list view only needs 1 thumbnail)
+    let firstImagePath = '';
     if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
-      for (const imgPath of inv.postDismantledImages) {
-        if (typeof imgPath === 'string' && imgPath) {
-          images.push(await generateSignedUrl(bucket, imgPath, serviceAccount));
-        }
-      }
+      firstImagePath = inv.postDismantledImages.find((p: any) => typeof p === 'string' && p) || '';
     }
-    if (task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
-      for (const imgPath of task.postDisassembly.partDisassembledImages) {
-        if (typeof imgPath === 'string' && imgPath) {
-          images.push(await generateSignedUrl(bucket, imgPath, serviceAccount));
-        }
-      }
+    if (!firstImagePath && task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
+      firstImagePath = task.postDisassembly.partDisassembledImages.find((p: any) => typeof p === 'string' && p) || '';
     }
 
     vehicleMap.set(stockNum, {
@@ -337,13 +330,29 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
       dateArrived: task.createdAt?.timestamp ? new Date(task.createdAt.timestamp).toISOString() : new Date().toISOString(),
       status: 'Available',
       partsAvailable: [],
-      images,
-      imageUrl: images[0] || undefined,
+      _rawImagePath: firstImagePath,
+      images: [],
+      imageUrl: undefined,
       locationGroup: inv.inventoryLocationGroup || '',
     });
   }
 
+  // Second pass: sign all image URLs in parallel batches
   const vehicles = Array.from(vehicleMap.values());
+  const BATCH_SIZE = 50;
+  for (let i = 0; i < vehicles.length; i += BATCH_SIZE) {
+    const batch = vehicles.slice(i, i + BATCH_SIZE);
+    const signed = await Promise.all(
+      batch.map(v => v._rawImagePath ? generateSignedUrl(bucket, v._rawImagePath, serviceAccount) : Promise.resolve(''))
+    );
+    for (let j = 0; j < batch.length; j++) {
+      const url = signed[j];
+      batch[j].images = url ? [url] : [];
+      batch[j].imageUrl = url || undefined;
+      delete batch[j]._rawImagePath;
+    }
+  }
+
   vehicles.sort((a, b) => (b.year || 0) - (a.year || 0) || new Date(b.dateArrived || 0).getTime() - new Date(a.dateArrived || 0).getTime());
 
   vehiclesCache = { data: vehicles, timestamp: Date.now() };
