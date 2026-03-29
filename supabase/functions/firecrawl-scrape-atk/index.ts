@@ -310,46 +310,36 @@ Deno.serve(async (req) => {
     if (mode === 'atk-api-products') {
       const body = await req.json();
       const category = body.category || 'Cylinder Heads';
+      const categoryId = body.categoryId || 2;
       const make = body.make || '';
       const page = body.page || 1;
       const pageSize = body.pageSize || 100;
 
-      // Try various endpoint patterns
       const endpoints = [
-        `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products?category=${encodeURIComponent(category)}&make=${encodeURIComponent(make)}&page=${page}&pageSize=${pageSize}`,
-        `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products?pcn=${encodeURIComponent(category)}&make=${encodeURIComponent(make)}&page=${page}&pageSize=${pageSize}`,
-      ];
-
-      // Also try POST
-      const postEndpoints = [
-        { url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/products', body: { category, make, page, pageSize } },
-        { url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/products/search', body: { category, make, page, pageSize } },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/categories/${categoryId}/products?page=${page}&pageSize=${pageSize}` },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/category/${categoryId}/products?page=${page}&pageSize=${pageSize}` },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products/${categoryId}?page=${page}&pageSize=${pageSize}` },
+        { method: 'POST', url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/products', body: JSON.stringify({ categoryId, make, page, pageSize, pcn: category }) },
+        { method: 'POST', url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', body: JSON.stringify({ searchTerm: category, page, pageSize }) },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/search?q=${encodeURIComponent(category)}&page=${page}&pageSize=${pageSize}` },
+        { method: 'POST', url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/catalog', body: JSON.stringify({ pcn: category, make, page, pageSize }) },
+        { method: 'GET', url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/product-listing?pcn=${encodeURIComponent(category)}&make=${encodeURIComponent(make)}&page=${page}&pageSize=${pageSize}` },
       ];
 
       const results: any[] = [];
-
       for (const ep of endpoints) {
         try {
-          const r = await fetch(ep, { signal: AbortSignal.timeout(10000) });
+          const opts: any = { method: ep.method, signal: AbortSignal.timeout(10000) };
+          if (ep.body) {
+            opts.headers = { 'Content-Type': 'application/json' };
+            opts.body = ep.body;
+          }
+          const r = await fetch(ep.url, opts);
           const text = await r.text();
-          results.push({ method: 'GET', url: ep, status: r.status, body: text.slice(0, 2000) });
+          results.push({ method: ep.method, url: ep.url, status: r.status, body: text.slice(0, 2000) });
+          if (r.ok) break; // stop if we found a working endpoint
         } catch (e) {
-          results.push({ method: 'GET', url: ep, error: e.message });
-        }
-      }
-
-      for (const ep of postEndpoints) {
-        try {
-          const r = await fetch(ep.url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(ep.body),
-            signal: AbortSignal.timeout(10000),
-          });
-          const text = await r.text();
-          results.push({ method: 'POST', url: ep.url, status: r.status, body: text.slice(0, 2000) });
-        } catch (e) {
-          results.push({ method: 'POST', url: ep.url, error: e.message });
+          results.push({ method: ep.method, url: ep.url, error: e.message });
         }
       }
 
