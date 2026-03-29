@@ -248,7 +248,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    // ── ATK-API-SEARCH: fetch cylinder heads from ATK catalog API ──
+    // ── ATK-API-SEARCH: fetch products from ATK catalog API ──
     if (mode === 'atk-api-search') {
       let body: any = {};
       try { body = await req.json(); } catch {}
@@ -256,6 +256,7 @@ Deno.serve(async (req) => {
       const page = parseInt(url.searchParams.get('page') || '') || body.page || 1;
       const pageSize = parseInt(url.searchParams.get('pageSize') || '') || body.pageSize || 100;
       const doUpsert = url.searchParams.get('upsert') !== 'false';
+      const table = url.searchParams.get('table') || body.table || 'cylinder_heads';
 
       const payload = {
         FieldsList: [],
@@ -276,35 +277,72 @@ Deno.serve(async (req) => {
       const parts = apiData?.data?.partDetails || [];
       const paging = apiData?.data?.pagingMetadata || {};
 
-      // Build cylinder head records
-      const records = parts.map((p: any) => ({
-        brand: 'ATK',
-        vendor_part_number: p.partNumber,
-        name: `ATK ${p.partNumber} ${p.partTitle || ''}`.trim(),
-        slug: slugify(`atk-${p.partNumber}-${p.partTitle || ''}`),
-        engine_make_size: guessEngineMakeSize(p.partTitle || p.make || ''),
-        displacement: p.engineSize || extractDisplacement(p.partTitle || ''),
-        fits_vehicles: p.partTitle || '',
-        config: p.specialNotes || null,
-        price_usd: p.unitCost || 0,
-        image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
-        active: true,
-      }));
+      let upsertedCount = 0;
 
-      if (doUpsert && records.length > 0) {
-        await upsertCylinderHeads(records);
+      if (table === 'remanufactured_engines') {
+        // Build engine records
+        const records = parts.map((p: any) => ({
+          brand: 'ATK Engines',
+          vendor_part_number: p.partNumber,
+          name: `ATK Engines ${p.partNumber} ${p.partTitle || ''}`.trim(),
+          slug: slugify(`atk-${p.partNumber}-${p.partTitle || ''}`),
+          engine_make_size: guessEngineMakeSize(p.partTitle || p.make || ''),
+          displacement: p.engineSize || extractDisplacement(p.partTitle || ''),
+          fits_vehicles: p.partTitle || '',
+          engine_code: null,
+          config: p.specialNotes || null,
+          block_material: null,
+          head_material: null,
+          category: pcn,
+          price_usd: p.unitCost || 0,
+          image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
+          source_url: `https://www.atksales.com/product-detail/?pno=${p.partNumber}`,
+          active: true,
+        }));
+
+        if (doUpsert && records.length > 0) {
+          const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+          const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+          const sb = createClient(supabaseUrl, supabaseKey);
+          const { error } = await sb
+            .from('remanufactured_engines')
+            .upsert(records, { onConflict: 'vendor_part_number' });
+          if (error) throw new Error(`DB upsert failed: ${error.message}`);
+          upsertedCount = records.length;
+        }
+      } else {
+        // Build cylinder head records (default)
+        const records = parts.map((p: any) => ({
+          brand: 'ATK',
+          vendor_part_number: p.partNumber,
+          name: `ATK ${p.partNumber} ${p.partTitle || ''}`.trim(),
+          slug: slugify(`atk-${p.partNumber}-${p.partTitle || ''}`),
+          engine_make_size: guessEngineMakeSize(p.partTitle || p.make || ''),
+          displacement: p.engineSize || extractDisplacement(p.partTitle || ''),
+          fits_vehicles: p.partTitle || '',
+          config: p.specialNotes || null,
+          price_usd: p.unitCost || 0,
+          image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
+          active: true,
+        }));
+
+        if (doUpsert && records.length > 0) {
+          await upsertCylinderHeads(records);
+          upsertedCount = records.length;
+        }
       }
 
       return new Response(
         JSON.stringify({
           success: true,
+          table,
           page,
           pageSize,
           totalCount: paging.totalCount,
           totalPages: paging.totalPages,
           hasNext: paging.hasNext,
           partsOnPage: parts.length,
-          upserted: doUpsert ? records.length : 0,
+          upserted: upsertedCount,
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
