@@ -23,7 +23,6 @@ async function createJWT(serviceAccount: any): Promise<string> {
   const payloadB64 = encode(payload);
   const signingInput = `${headerB64}.${payloadB64}`;
 
-  // Import the private key
   const pemContents = serviceAccount.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/, '')
     .replace(/-----END PRIVATE KEY-----/, '')
@@ -50,27 +49,22 @@ async function createJWT(serviceAccount: any): Promise<string> {
   return `${signingInput}.${sigB64}`;
 }
 
-// Cache for access token
 let cachedToken: { token: string; expires: number } | null = null;
 
 async function getAccessToken(serviceAccount: any): Promise<string> {
   if (cachedToken && Date.now() < cachedToken.expires) {
     return cachedToken.token;
   }
-
   const jwt = await createJWT(serviceAccount);
-
   const res = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
   });
-
   if (!res.ok) {
     const err = await res.text();
     throw new Error(`Failed to get access token: ${err}`);
   }
-
   const data = await res.json();
   cachedToken = {
     token: data.access_token,
@@ -79,14 +73,14 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
   return data.access_token;
 }
 
-// Firestore REST API helpers
 const FIRESTORE_BASE = 'https://firestore.googleapis.com/v1';
 
-async function firestoreQuery(projectId: string, token: string, collectionId: string, structuredQuery?: any): Promise<any[]> {
+// CollectionGroup query to get all tasks across all work-orders
+async function queryAllTasks(projectId: string, token: string, pageToken?: string): Promise<{ docs: any[]; nextPageToken?: string }> {
   const url = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
-  const body = {
-    structuredQuery: structuredQuery || {
-      from: [{ collectionId }],
+  const body: any = {
+    structuredQuery: {
+      from: [{ collectionId: 'tasks', allDescendants: true }],
       limit: 500,
     },
   };
@@ -102,23 +96,16 @@ async function firestoreQuery(projectId: string, token: string, collectionId: st
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Firestore query failed for ${collectionId}: ${err}`);
+    throw new Error(`Tasks query failed: ${err}`);
   }
 
   const results = await res.json();
-  return results.filter((r: any) => r.document).map((r: any) => r.document);
+  return {
+    docs: results.filter((r: any) => r.document).map((r: any) => r.document),
+  };
 }
 
-async function firestoreGetDoc(projectId: string, token: string, path: string): Promise<any> {
-  const url = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/${path}`;
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) return null;
-  return res.json();
-}
-
-// Parse Firestore document fields
+// Parse Firestore value types
 function parseFirestoreValue(val: any): any {
   if (!val) return null;
   if (val.stringValue !== undefined) return val.stringValue;
@@ -144,167 +131,142 @@ function parseFirestoreDoc(doc: any): any {
   for (const [key, val] of Object.entries(fields)) {
     parsed[key] = parseFirestoreValue(val as any);
   }
-  // Extract document ID from name
   const nameParts = (doc.name || '').split('/');
-  parsed._id = nameParts[nameParts.length - 1];
+  parsed._docId = nameParts[nameParts.length - 1];
   return parsed;
 }
 
-// NHTSA VIN Decode (free API)
+// Parse "ES1204: 2010 MITSUBISHI Lancer" format
+function parseDisplayName(displayName: string): { stockNumber: string; year: number; make: string; model: string; trim: string } {
+  const result = { stockNumber: '', year: 0, make: '', model: '', trim: '' };
+  if (!displayName) return result;
+
+  // Format: "ES1204: 2010 MITSUBISHI Lancer"
+  const colonIdx = displayName.indexOf(':');
+  if (colonIdx > 0) {
+    result.stockNumber = displayName.substring(0, colonIdx).trim();
+    const rest = displayName.substring(colonIdx + 1).trim();
+    const parts = rest.split(/\s+/);
+    const yearMatch = parts[0]?.match(/^(19|20)\d{2}$/);
+    if (yearMatch) {
+      result.year = parseInt(parts[0]);
+      result.make = parts[1] || '';
+      result.model = parts[2] || '';
+      result.trim = parts.slice(3).join(' ') || '';
+    } else {
+      result.make = rest;
+    }
+  } else {
+    result.stockNumber = displayName;
+  }
+  return result;
+}
+
+// Generate signed URL for Firebase Storage
+function getStorageUrl(projectId: string, path: string): string {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  // Firebase Storage public URL format
+  const encodedPath = encodeURIComponent(path);
+  return `https://firebasestorage.googleapis.com/v0/b/${projectId}.appspot.com/o/${encodedPath}?alt=media`;
+}
+
+// NHTSA VIN Decode
 async function decodeVIN(vin: string): Promise<any> {
   if (!vin || vin.length < 11) return {};
   try {
     const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/${encodeURIComponent(vin)}?format=json`);
     if (!res.ok) return {};
     const data = await res.json();
-    const result = data.Results?.[0] || {};
+    const r = data.Results?.[0] || {};
     return {
-      engineType: [result.EngineModel, result.DisplacementL ? `${result.DisplacementL}L` : '', result.EngineCylinders ? `${result.EngineCylinders}-Cylinder` : ''].filter(Boolean).join(' ') || result.EngineModel || undefined,
-      engineSize: result.DisplacementL ? `${result.DisplacementL}L` : undefined,
-      engineCylinders: result.EngineCylinders || undefined,
-      drivetrain: result.DriveType || undefined,
-      bodyStyle: result.BodyClass || undefined,
-      fuelType: result.FuelTypePrimary || undefined,
-      transmissionType: result.TransmissionStyle || undefined,
-      countryOfOrigin: result.PlantCountry || undefined,
-      decodedMake: result.Make || undefined,
-      decodedModel: result.Model || undefined,
-      decodedYear: result.ModelYear ? parseInt(result.ModelYear) : undefined,
-      decodedTrim: result.Trim || undefined,
-      vehicleType: result.VehicleType || undefined,
-      gvwr: result.GVWR || undefined,
+      engineType: [r.EngineModel, r.DisplacementL ? `${r.DisplacementL}L` : '', r.EngineCylinders ? `${r.EngineCylinders}-Cylinder` : ''].filter(Boolean).join(' ') || undefined,
+      engineSize: r.DisplacementL ? `${r.DisplacementL}L` : undefined,
+      engineCylinders: r.EngineCylinders || undefined,
+      drivetrain: r.DriveType || undefined,
+      bodyStyle: r.BodyClass || undefined,
+      fuelType: r.FuelTypePrimary || undefined,
+      transmissionType: r.TransmissionStyle || undefined,
+      countryOfOrigin: r.PlantCountry || undefined,
+      vehicleType: r.VehicleType || undefined,
     };
   } catch {
     return {};
   }
 }
 
-// Parse title like "2019 Ford F-150 XLT" into year/make/model/trim
-function parseTitle(title: string): { year?: number; make?: string; model?: string; trim?: string } {
-  if (!title) return {};
-  const parts = title.trim().split(/\s+/);
-  const yearMatch = parts[0]?.match(/^(19|20)\d{2}$/);
-  if (!yearMatch) return { make: title };
-  const year = parseInt(parts[0]);
-  const make = parts[1] || undefined;
-  const model = parts[2] || undefined;
-  const trim = parts.slice(3).join(' ') || undefined;
-  return { year, make, model, trim };
-}
+// Vehicles cache
+let vehiclesCache: { data: any[]; timestamp: number } | null = null;
+const CACHE_TTL = 5 * 60 * 1000;
 
-// Transform Firebase doc into our Vehicle format
-async function transformVehicle(doc: any, includeImages = false, decodeVin = false): Promise<any> {
-  const parsed = parseFirestoreDoc(doc);
-  const titleInfo = parseTitle(parsed.title || parsed.name || '');
-
-  // Get images
-  let images: string[] = [];
-  if (parsed.image) {
-    if (Array.isArray(parsed.image)) {
-      images = parsed.image.filter((url: string) => typeof url === 'string' && url.startsWith('http'));
-    } else if (typeof parsed.image === 'string') {
-      images = [parsed.image];
-    }
-  }
-  if (parsed.images) {
-    if (Array.isArray(parsed.images)) {
-      images = [...images, ...parsed.images.filter((url: string) => typeof url === 'string' && url.startsWith('http'))];
-    }
+async function extractVehiclesFromTasks(projectId: string, token: string): Promise<any[]> {
+  if (vehiclesCache && Date.now() - vehiclesCache.timestamp < CACHE_TTL) {
+    return vehiclesCache.data;
   }
 
-  let vinDecoded: any = {};
-  if (decodeVin && parsed.vin) {
-    vinDecoded = await decodeVIN(parsed.vin);
-  }
+  const { docs } = await queryAllTasks(projectId, token);
+  console.log(`Found ${docs.length} task documents`);
 
-  const vehicle: any = {
-    id: parsed._id,
-    stockNumber: parsed.stockNumber || parsed.stock_number || parsed.stockNum || parsed._id?.slice(0, 8) || '',
-    year: vinDecoded.decodedYear || titleInfo.year || parsed.year || 0,
-    make: vinDecoded.decodedMake || titleInfo.make || parsed.make || '',
-    model: vinDecoded.decodedModel || titleInfo.model || parsed.model || '',
-    trim: vinDecoded.decodedTrim || titleInfo.trim || parsed.trim || '',
-    color: parsed.color || parsed.colour || '',
-    mileage: parsed.mileage || parsed.odometer || parsed.km || undefined,
-    dateArrived: parsed.dateArrived || parsed.date_arrived || parsed.createdAt || parsed.created_at || parsed.dateAdded || new Date().toISOString(),
-    status: parsed.status || 'Available',
-    partsAvailable: parsed.partsAvailable || parsed.parts_available || [],
-    images: includeImages ? images : images.slice(0, 1),
-    imageUrl: images[0] || undefined,
-    // VIN decoded fields (VIN itself is NEVER sent)
-    engineType: vinDecoded.engineType || parsed.engineType || undefined,
-    engineSize: vinDecoded.engineSize || undefined,
-    engineCylinders: vinDecoded.engineCylinders || undefined,
-    drivetrain: vinDecoded.drivetrain || parsed.drivetrain || undefined,
-    bodyStyle: vinDecoded.bodyStyle || parsed.bodyStyle || undefined,
-    fuelType: vinDecoded.fuelType || parsed.fuelType || undefined,
-    transmissionType: vinDecoded.transmissionType || undefined,
-    countryOfOrigin: vinDecoded.countryOfOrigin || undefined,
-    vehicleType: vinDecoded.vehicleType || undefined,
-  };
+  // Extract unique vehicles from task inventory fields
+  const vehicleMap = new Map<string, any>();
 
-  return vehicle;
-}
+  for (const doc of docs) {
+    const task = parseFirestoreDoc(doc);
+    const inv = task.inventory;
+    if (!inv || !inv.stockNumber) continue;
 
-// Discover which collection name stores vehicles
-async function discoverCollection(projectId: string, token: string): Promise<string> {
-  // First try Firestore collections
-  const candidates = ['vehicles', 'inventory', 'cars', 'units', 'stock', 'Vehicles', 'Inventory', 'Cars', 'Units', 'Stock', 'auto', 'Auto', 'trucks', 'Trucks', 'salvage', 'Salvage', 'parts', 'Parts'];
-  for (const name of candidates) {
-    try {
-      const docs = await firestoreQuery(projectId, token, name, {
-        from: [{ collectionId: name }],
-        limit: 1,
-      });
-      if (docs.length > 0) {
-        console.log(`Discovered Firestore collection: ${name}`);
-        return name;
+    const stockNum = inv.stockNumber;
+    // Only keep the first/best occurrence per stock number
+    if (vehicleMap.has(stockNum)) continue;
+
+    const parsed = parseDisplayName(inv.inventoryDisplayName || '');
+
+    // Build image URLs
+    const images: string[] = [];
+    // Pre-dismantle images (from inventory field)
+    if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
+      for (const imgPath of inv.postDismantledImages) {
+        if (typeof imgPath === 'string' && imgPath) {
+          images.push(getStorageUrl(projectId, imgPath));
+        }
       }
-    } catch {}
-  }
-  
-  // List all root collections
-  try {
-    const listUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
-    const res = await fetch(listUrl, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
+    }
+    // Post-disassembly images (from task)
+    if (task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
+      for (const imgPath of task.postDisassembly.partDisassembledImages) {
+        if (typeof imgPath === 'string' && imgPath) {
+          images.push(getStorageUrl(projectId, imgPath));
+        }
+      }
+    }
+
+    vehicleMap.set(stockNum, {
+      id: inv._id || stockNum,
+      stockNumber: stockNum,
+      year: parsed.year,
+      make: parsed.make,
+      model: parsed.model,
+      trim: parsed.trim,
+      color: '',
+      mileage: undefined,
+      dateArrived: task.createdAt?.timestamp ? new Date(task.createdAt.timestamp).toISOString() : new Date().toISOString(),
+      status: 'Available',
+      partsAvailable: [],
+      images,
+      imageUrl: images[0] || undefined,
+      locationGroup: inv.inventoryLocationGroup || '',
+      // VIN is NEVER sent to client
     });
-    if (res.ok) {
-      const data = await res.json();
-      console.log('Firestore collections:', data.collectionIds || []);
-    } else {
-      await res.text();
-    }
-  } catch {}
-
-  // Try Firebase Realtime Database
-  try {
-    const rtdbUrl = `https://${projectId}-default-rtdb.firebaseio.com/.json?shallow=true&auth=${token}`;
-    const res = await fetch(rtdbUrl);
-    if (res.ok) {
-      const data = await res.json();
-      console.log('RTDB root keys:', Object.keys(data || {}));
-    } else {
-      // Try without -default-rtdb suffix
-      const rtdbUrl2 = `https://${projectId}.firebaseio.com/.json?shallow=true&auth=${token}`;
-      const res2 = await fetch(rtdbUrl2);
-      if (res2.ok) {
-        const data2 = await res2.json();
-        console.log('RTDB root keys (alt):', Object.keys(data2 || {}));
-      } else {
-        await res2.text();
-      }
-    }
-  } catch (e) {
-    console.log('RTDB check error:', e.message);
   }
 
-  throw new Error('Could not discover vehicle collection. Firestore has: shelf-pickup-orders, work-orders. Check RTDB logs.');
-}
+  const vehicles = Array.from(vehicleMap.values());
+  // Sort newest year first
+  vehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
 
-let discoveredCollection: string | null = null;
+  vehiclesCache = { data: vehicles, timestamp: Date.now() };
+  console.log(`Extracted ${vehicles.length} unique vehicles`);
+  return vehicles;
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -321,98 +283,9 @@ serve(async (req) => {
     const url = new URL(req.url);
     const action = url.searchParams.get('action') || 'vehicles';
 
-    // Debug action bypasses collection discovery
-    if (action !== 'debug') {
-      if (!discoveredCollection) {
-        discoveredCollection = await discoverCollection(projectId, token);
-      }
-    }
-
-    if (action === 'debug') {
-      // Debug: show raw data from both collections and RTDB
-      const results: any = { firestore: {}, rtdb: {} };
-      
-      // Sample from each Firestore collection
-      for (const col of ['shelf-pickup-orders', 'work-orders']) {
-        try {
-          const docs = await firestoreQuery(projectId, token, col, {
-            from: [{ collectionId: col }],
-            limit: 2,
-          });
-          results.firestore[col] = {
-            count: docs.length,
-            sample: docs.slice(0, 2).map(d => {
-              const parsed = parseFirestoreDoc(d);
-              return { id: parsed._id, keys: Object.keys(parsed), data: parsed };
-            }),
-          };
-        } catch (e) {
-          results.firestore[col] = { error: e.message };
-        }
-      }
-
-      // Check sub-collections of work-orders docs
-      try {
-        const woDocs = await firestoreQuery(projectId, token, 'work-orders', {
-          from: [{ collectionId: 'work-orders' }],
-          limit: 1,
-        });
-        if (woDocs.length > 0) {
-          const docPath = woDocs[0].name.replace(`projects/${projectId}/databases/(default)/documents/`, '');
-          const subColUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/${docPath}:listCollectionIds`;
-          const subRes = await fetch(subColUrl, {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({}),
-          });
-          if (subRes.ok) {
-            const subData = await subRes.json();
-            results.firestore['work-orders-subcollections'] = subData.collectionIds || [];
-          }
-        }
-      } catch {}
-
-      // Try RTDB with OAuth token
-      for (const domain of [`${projectId}-default-rtdb.firebaseio.com`, `${projectId}.firebaseio.com`]) {
-        try {
-          const rtdbRes = await fetch(`https://${domain}/.json?shallow=true`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (rtdbRes.ok) {
-            const data = await rtdbRes.json();
-            results.rtdb[domain] = { keys: Object.keys(data || {}) };
-            // Sample first key
-            const firstKey = Object.keys(data || {})[0];
-            if (firstKey) {
-              const sampleRes = await fetch(`https://${domain}/${firstKey}.json?limitToFirst=1&orderBy="$key"`, {
-                headers: { Authorization: `Bearer ${token}` },
-              });
-              if (sampleRes.ok) {
-                results.rtdb[`${domain}/${firstKey}_sample`] = await sampleRes.json();
-              }
-            }
-          } else {
-            results.rtdb[domain] = { status: rtdbRes.status, body: await rtdbRes.text() };
-          }
-        } catch (e) {
-          results.rtdb[domain] = { error: e.message };
-        }
-      }
-
-      return new Response(JSON.stringify(results, null, 2), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
     if (action === 'vehicles') {
-      const docs = await firestoreQuery(projectId, token, discoveredCollection);
-      const vehicles = await Promise.all(
-        docs.map(doc => transformVehicle(doc, false, false))
-      );
-      // Sort by year descending (newest first)
-      vehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
-
-      return new Response(JSON.stringify({ vehicles, collection: discoveredCollection }), {
+      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      return new Response(JSON.stringify({ vehicles, total: vehicles.length }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -421,32 +294,73 @@ serve(async (req) => {
       const id = url.searchParams.get('id');
       if (!id) {
         return new Response(JSON.stringify({ error: 'Missing id parameter' }), {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
-      const doc = await firestoreGetDoc(projectId, token, `${discoveredCollection}/${id}`);
-      if (!doc) {
+
+      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicle = vehicles.find(v => v.id === id || v.stockNumber === id);
+      if (!vehicle) {
         return new Response(JSON.stringify({ error: 'Vehicle not found' }), {
-          status: 404,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
-      // Full detail with VIN decode and all images
-      const vehicle = await transformVehicle(doc, true, true);
-      return new Response(JSON.stringify({ vehicle }), {
+
+      // For detail view, also collect ALL images from ALL tasks referencing this stock number
+      const { docs } = await queryAllTasks(projectId, token);
+      const allImages = new Set<string>(vehicle.images || []);
+      let vinNumber = '';
+
+      for (const doc of docs) {
+        const task = parseFirestoreDoc(doc);
+        const inv = task.inventory;
+        if (!inv || inv.stockNumber !== vehicle.stockNumber) continue;
+
+        if (inv.vinNumber) vinNumber = inv.vinNumber;
+
+        if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
+          for (const p of inv.postDismantledImages) {
+            if (typeof p === 'string' && p) allImages.add(getStorageUrl(projectId, p));
+          }
+        }
+        if (task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
+          for (const p of task.postDisassembly.partDisassembledImages) {
+            if (typeof p === 'string' && p) allImages.add(getStorageUrl(projectId, p));
+          }
+        }
+      }
+
+      // VIN decode for specs (VIN itself not sent to client)
+      let vinDecoded: any = {};
+      if (vinNumber) {
+        vinDecoded = await decodeVIN(vinNumber);
+      }
+
+      const detailedVehicle = {
+        ...vehicle,
+        images: Array.from(allImages),
+        imageUrl: Array.from(allImages)[0] || undefined,
+        engineType: vinDecoded.engineType,
+        engineSize: vinDecoded.engineSize,
+        engineCylinders: vinDecoded.engineCylinders,
+        drivetrain: vinDecoded.drivetrain,
+        bodyStyle: vinDecoded.bodyStyle,
+        fuelType: vinDecoded.fuelType,
+        transmissionType: vinDecoded.transmissionType,
+        countryOfOrigin: vinDecoded.countryOfOrigin,
+        vehicleType: vinDecoded.vehicleType,
+      };
+
+      return new Response(JSON.stringify({ vehicle: detailedVehicle }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
     if (action === 'makes') {
-      const docs = await firestoreQuery(projectId, token, discoveredCollection);
-      const vehicles = await Promise.all(docs.map(doc => transformVehicle(doc, false, false)));
+      const vehicles = await extractVehiclesFromTasks(projectId, token);
       const makeCounts: Record<string, number> = {};
       for (const v of vehicles) {
-        if (v.make) {
-          makeCounts[v.make] = (makeCounts[v.make] || 0) + 1;
-        }
+        if (v.make) makeCounts[v.make] = (makeCounts[v.make] || 0) + 1;
       }
       const makes = Object.entries(makeCounts)
         .map(([name, count]) => ({ name, count }))
@@ -458,8 +372,7 @@ serve(async (req) => {
 
     if (action === 'models') {
       const make = url.searchParams.get('make');
-      const docs = await firestoreQuery(projectId, token, discoveredCollection);
-      const vehicles = await Promise.all(docs.map(doc => transformVehicle(doc, false, false)));
+      const vehicles = await extractVehiclesFromTasks(projectId, token);
       const filtered = make ? vehicles.filter(v => v.make === make) : vehicles;
       const models = [...new Set(filtered.map(v => v.model).filter(Boolean))].sort();
       return new Response(JSON.stringify({ models }), {
@@ -468,14 +381,12 @@ serve(async (req) => {
     }
 
     return new Response(JSON.stringify({ error: 'Unknown action' }), {
-      status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
     console.error('firebase-inventory error:', error);
     return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 });

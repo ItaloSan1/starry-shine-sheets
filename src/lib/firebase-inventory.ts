@@ -1,7 +1,4 @@
 import type { InventoryProvider, Part, Vehicle, SearchFilters, SearchResult } from './inventory-adapter';
-import { supabase } from '@/integrations/supabase/client';
-
-const SUPABASE_PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID;
 
 interface FirebaseVehicle extends Vehicle {
   images: string[];
@@ -22,13 +19,6 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 async function callFirebaseInventory(action: string, params: Record<string, string> = {}): Promise<any> {
   const queryParams = new URLSearchParams({ action, ...params });
-  
-  const { data, error } = await supabase.functions.invoke('firebase-inventory', {
-    body: null,
-    method: 'GET',
-  });
-
-  // Use direct fetch since supabase.functions.invoke doesn't support query params well for GET
   const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/firebase-inventory?${queryParams.toString()}`;
   const res = await fetch(url, {
     headers: {
