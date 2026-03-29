@@ -185,15 +185,37 @@ function parseDisplayName(displayName: string): { stockNumber: string; year: num
   return result;
 }
 
+// Cached RSA key for signing
+let cachedSigningKey: CryptoKey | null = null;
+
+async function getSigningKey(serviceAccount: any): Promise<CryptoKey> {
+  if (cachedSigningKey) return cachedSigningKey;
+  const pemContents = serviceAccount.private_key
+    .replace(/-----BEGIN PRIVATE KEY-----/, '')
+    .replace(/-----END PRIVATE KEY-----/, '')
+    .replace(/\n/g, '');
+  const binaryKey = Uint8Array.from(atob(pemContents), (c: string) => c.charCodeAt(0));
+  cachedSigningKey = await crypto.subtle.importKey(
+    'pkcs8',
+    binaryKey,
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  return cachedSigningKey;
+}
+
 // Generate V4 signed URL for Google Cloud Storage
 async function generateSignedUrl(bucket: string, objectPath: string, serviceAccount: any): Promise<string> {
   if (!objectPath) return '';
   if (objectPath.startsWith('http')) return objectPath;
 
+  const signingKey = await getSigningKey(serviceAccount);
+
   const now = new Date();
   const datestamp = now.toISOString().replace(/[-:]/g, '').substring(0, 8);
   const timestamp = datestamp + 'T' + now.toISOString().replace(/[-:]/g, '').substring(9, 15) + 'Z';
-  const expiration = 3600; // 1 hour
+  const expiration = 3600;
 
   const credentialScope = `${datestamp}/auto/storage/goog4_request`;
   const credential = `${serviceAccount.client_email}/${credentialScope}`;
@@ -213,40 +235,16 @@ async function generateSignedUrl(bucket: string, objectPath: string, serviceAcco
   const canonicalQueryString = sortedParams.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
 
   const canonicalRequest = [
-    'GET',
-    canonicalUri,
-    canonicalQueryString,
-    `host:${host}`,
-    '',
-    'host',
-    'UNSIGNED-PAYLOAD',
+    'GET', canonicalUri, canonicalQueryString, `host:${host}`, '', 'host', 'UNSIGNED-PAYLOAD',
   ].join('\n');
 
   const stringToSign = [
-    'GOOG4-RSA-SHA256',
-    timestamp,
-    credentialScope,
-    await sha256Hex(canonicalRequest),
+    'GOOG4-RSA-SHA256', timestamp, credentialScope, await sha256Hex(canonicalRequest),
   ].join('\n');
-
-  // Sign with service account private key
-  const pemContents = serviceAccount.private_key
-    .replace(/-----BEGIN PRIVATE KEY-----/, '')
-    .replace(/-----END PRIVATE KEY-----/, '')
-    .replace(/\n/g, '');
-  const binaryKey = Uint8Array.from(atob(pemContents), (c: string) => c.charCodeAt(0));
-
-  const key = await crypto.subtle.importKey(
-    'pkcs8',
-    binaryKey,
-    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
 
   const signature = await crypto.subtle.sign(
     'RSASSA-PKCS1-v1_5',
-    key,
+    signingKey,
     new TextEncoder().encode(stringToSign)
   );
 
