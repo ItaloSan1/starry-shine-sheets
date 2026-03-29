@@ -111,8 +111,8 @@ export default function RemanufacturedEngineDetail() {
     mpn: engine.vendor_part_number,
     offers: {
       '@type': 'Offer',
-      price: engine.price_usd,
-      priceCurrency: 'USD',
+      price: usdToCad(engine.price_usd),
+      priceCurrency: 'CAD',
       availability: 'https://schema.org/InStock',
       seller: { '@type': 'Organization', name: BUSINESS.name },
     },
