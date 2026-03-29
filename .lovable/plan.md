@@ -1,67 +1,46 @@
 
 
-# Implement Image Quality Toggle for Faster Loading
+# Reorganize "Browse by Make" into an Alphabetical Sidebar
 
-## Current Problem
+Yes — a sidebar is the right move. The current chip cloud takes up significant vertical space (5+ rows), pushes the actual vehicle grid below the fold, and becomes harder to scan as the list grows. An alphabetical sidebar keeps the makes organized and always accessible while giving the vehicle grid the full stage.
 
-Every image URL requires an RSA cryptographic signing operation (CPU-intensive) on the edge function. For the list page with 50 vehicles, that's 50 sign operations. For the detail page, it signs ALL images (4-8+ per vehicle). This is the primary cause of slow loading.
+## Design
 
-The "HD toggle" mentioned in the architecture memory was planned but never implemented.
-
-## Solution
-
-### 1. Edge Function: Add `quality` parameter
-
-Add a `quality` query parameter to the `mongo-inventory` edge function:
-
-- **`quality=thumb`** (default for list view): Return only the first pre-dismantled image URL, signed. Skip post-dismantled images entirely.
-- **`quality=standard`** (default for detail view): Return all images signed normally.
-- **`quality=hd`** (toggle on detail page): Same as standard but signals the frontend to render full-resolution (no CSS constraints).
-
-Additionally, **batch sign images in parallel** using `Promise.all()` instead of sequential `for` loops — this alone could cut detail page load time in half.
-
-### 2. Latest Arrivals List Page
-
-No visible change needed. Already loads 1 image per vehicle. The parallel signing improvement speeds this up automatically.
-
-### 3. Vehicle Detail Page: Add HD Toggle
-
-- Add a small toggle button (e.g., "HD" pill) in the image gallery area
-- **Default (off)**: Images render at standard container size with `object-cover` — browser only downloads what it needs
-- **HD (on)**: Opens lightbox-style full-resolution view
-- Lazy-load thumbnails strip images using `loading="lazy"`
-
-### 4. Home Page Carousel Optimization
-
-- Limit the carousel to 8 vehicles max (currently may load 50+)
-- Use the `thumb` quality level
-- Add `loading="lazy"` to non-visible carousel slides
-
-## Files Changed
-
-| File | Change |
-|------|--------|
-| `supabase/functions/mongo-inventory/index.ts` | Parallelize image signing with `Promise.all()`, add `quality` param |
-| `src/pages/VehicleDetailPage.tsx` | Add HD toggle button, lazy-load thumbnail strip |
-| `src/pages/LatestArrivals.tsx` | Minor — already optimized, just ensure `loading="lazy"` is on all images |
-| `src/components/home/LatestArrivals.tsx` | Limit to 8 vehicles, use lazy loading |
-
-## Technical Detail
-
-The biggest performance win comes from parallelizing the signing. Current code:
 ```text
-for (const doc of docs) {
-  const thumbUrl = await generateSignedUrl(...)  // sequential, blocking
-}
+┌─────────────────────────────────────────────────┐
+│  Hero Banner                                    │
+├──────────────┬──────────────────────────────────┤
+│  MAKES (A-Z) │  Search bar / Year / Per page    │
+│              │  1234 vehicles    Page 1 of 25   │
+│  A           │ ┌──────┐ ┌──────┐ ┌──────┐      │
+│  ACURA (37)  │ │ card │ │ card │ │ card │      │
+│  AUDI (26)   │ └──────┘ └──────┘ └──────┘      │
+│  AZURE D.(1) │ ┌──────┐ ┌──────┐ ┌──────┐      │
+│              │ │ card │ │ card │ │ card │      │
+│  B           │ └──────┘ └──────┘ └──────┘      │
+│  BMW (17)    │                                  │
+│  BUICK (15)  │                                  │
+│              │                                  │
+│  C           │                                  │
+│  CADILLAC    │                                  │
+│  ...         │                                  │
+└──────────────┴──────────────────────────────────┘
 ```
 
-Changed to:
-```text
-const vehicles = await Promise.all(docs.map(async doc => {
-  const thumbUrl = await generateSignedUrl(...)  // parallel
-  return mapVehicleDoc(doc, ...)
-}))
-```
+**Mobile**: Sidebar collapses into a horizontal scrollable strip or a collapsible accordion at the top (not a full sidebar, which would be awkward on mobile).
 
-For 50 vehicles, this could reduce edge function response time from ~5s to ~1-2s.
+## Changes
+
+### `src/pages/LatestArrivals.tsx`
+- Replace the flex-wrap chip cloud with a two-column layout: left sidebar (w-56, sticky) + right content area
+- Sort makes alphabetically and group by first letter with letter headings (A, B, C...)
+- Each make is a compact row: `ACURA (37)` — clickable, highlighted when selected
+- When a make is selected, show models indented underneath it
+- On mobile (below `lg`): render a collapsible `<details>` element or horizontal scroll strip instead of a sidebar
+- Vehicle grid changes from 3-col to 2-col on desktop (since sidebar takes space), stays 1-col on mobile
+
+### SEO considerations
+- No layout changes affect heading hierarchy or meta tags
+- Sidebar uses `<nav>` with `aria-label="Filter by make"` for accessibility
+- No new pages or routes — purely a UI reorganization
 
