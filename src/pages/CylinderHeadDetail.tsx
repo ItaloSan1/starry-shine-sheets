@@ -208,7 +208,15 @@ export default function CylinderHeadDetail() {
               <Link key={rel.id} to={`/remanufactured-cylinder-heads/atk/${rel.slug}`} className="group bg-card border border-border rounded-xl overflow-hidden hover:border-accent transition-all">
                 <div className="aspect-[4/3] bg-secondary/30 overflow-hidden">
                   {rel.image_url ? (
-                    <img src={rel.image_url} alt={rel.name} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                    <img src={rel.image_url} alt={rel.name} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-contain" onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      if (!img.dataset.fallback) {
+                        img.dataset.fallback = '1';
+                        const pno = rel.name.match(/ATK\s+(\S+)/i)?.[1];
+                        if (pno) { img.src = `https://atksales.com/Images/Parts/Medium/${pno}.jpg`; return; }
+                      }
+                      img.src = '/placeholder.svg';
+                    }} />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">No Image</div>
                   )}

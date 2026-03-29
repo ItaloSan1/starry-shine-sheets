@@ -288,7 +288,18 @@ export default function CylinderHeadsATK() {
                             loading="lazy"
                             referrerPolicy="no-referrer"
                             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                            onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
+                            onError={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              if (!img.dataset.fallback) {
+                                img.dataset.fallback = '1';
+                                const pno = head.name.match(/ATK\s+(\S+)/i)?.[1];
+                                if (pno) {
+                                  img.src = `https://atksales.com/Images/Parts/Medium/${pno}.jpg`;
+                                  return;
+                                }
+                              }
+                              img.src = '/placeholder.svg';
+                            }}
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No Image</div>
