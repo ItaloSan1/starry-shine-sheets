@@ -248,56 +248,63 @@ Deno.serve(async (req) => {
       );
     }
 
-    // ── ATK-API-SEARCH: call ATK Sales search API ──
+    // ── ATK-API-SEARCH: fetch cylinder heads from ATK catalog API ──
     if (mode === 'atk-api-search') {
       const body = await req.json();
       const pcn = body.pcn || 'Cylinder Heads';
       const page = body.page || 1;
-      const pageSize = body.pageSize || 20;
+      const pageSize = body.pageSize || 100;
+      const doUpsert = body.upsert !== false;
 
-      // Try different attribute names for the category filter
-      const attrNames = ['pcn', 'PCN', 'category', 'Category', 'ProductCategoryName', 'productCategoryName', 'categoryName', 'product_category'];
-      const results: any[] = [];
+      const payload = {
+        FieldsList: [],
+        QueryModel: [{ AttributeName: 'category', Condition: 'equals', Values: pcn }],
+        SortCriteria: [],
+        CustomerGroup: 'retail',
+        page,
+        pageSize,
+      };
 
-      for (const attr of attrNames) {
-        const payload = {
-          FieldsList: [],
-          QueryModel: [{ AttributeName: attr, Condition: 'equals', Values: pcn }],
-          SortCriteria: [],
-          CustomerGroup: 'retail',
-          page, pageSize,
-        };
-        const r = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          signal: AbortSignal.timeout(15000),
-        });
-        const text = await r.text();
-        let partCount = 0;
-        try { partCount = JSON.parse(text)?.data?.partDetails?.length || 0; } catch {}
-        results.push({ attr, status: r.status, partCount, bodyLen: text.length });
-        if (partCount > 0) {
-          results.push({ data: text.slice(0, 3000) });
-          break;
-        }
-      }
-
-      // Also try with empty QueryModel to get all products
-      const allPayload = { FieldsList: [], QueryModel: [], SortCriteria: [], CustomerGroup: 'retail', page: 1, pageSize: 5 };
-      const allR = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
+      const r = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(allPayload),
-        signal: AbortSignal.timeout(15000),
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(30000),
       });
-      const allText = await allR.text();
-      let allPartCount = 0;
-      try { allPartCount = JSON.parse(allText)?.data?.partDetails?.length || 0; } catch {}
-      results.push({ attr: 'NONE (all products)', status: allR.status, partCount: allPartCount, bodyLen: allText.length, preview: allText.slice(0, 2000) });
+      const apiData = await r.json();
+      const parts = apiData?.data?.partDetails || [];
+      const paging = apiData?.data?.pagingMetadata || {};
+
+      // Build cylinder head records
+      const records = parts.map((p: any) => ({
+        brand: 'ATK',
+        vendor_part_number: p.partNumber,
+        name: `ATK ${p.partNumber} ${p.partTitle || ''}`.trim(),
+        slug: slugify(`atk-${p.partNumber}-${p.partTitle || ''}`),
+        engine_make_size: guessEngineMakeSize(p.partTitle || p.make || ''),
+        displacement: p.engineSize || extractDisplacement(p.partTitle || ''),
+        fits_vehicles: p.partTitle || '',
+        config: p.specialNotes || null,
+        price_usd: p.unitCost || 0,
+        image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
+        active: true,
+      })).filter((r: any) => r.price_usd > 0);
+
+      if (doUpsert && records.length > 0) {
+        await upsertCylinderHeads(records);
+      }
 
       return new Response(
-        JSON.stringify({ success: true, results }),
+        JSON.stringify({
+          success: true,
+          page,
+          pageSize,
+          totalCount: paging.totalCount,
+          totalPages: paging.totalPages,
+          hasNext: paging.hasNext,
+          partsOnPage: parts.length,
+          upserted: doUpsert ? records.length : 0,
+        }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
