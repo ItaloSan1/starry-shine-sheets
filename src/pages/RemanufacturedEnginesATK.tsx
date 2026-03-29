@@ -155,7 +155,9 @@ export default function RemanufacturedEnginesATK() {
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
   function handleCategorySelect(cat: string) {
-    setSelectedCategory(cat === selectedCategory ? '' : cat);
+    const newCat = cat === selectedCategory ? '' : cat;
+    setSelectedCategory(newCat);
+    setSelectedDisplacement('');
     setCurrentPage(1);
     setMobileFilterOpen(false);
   }
