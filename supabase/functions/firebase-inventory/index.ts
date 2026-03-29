@@ -12,9 +12,10 @@ async function createJWT(serviceAccount: any): Promise<string> {
   const payload = {
     iss: serviceAccount.client_email,
     sub: serviceAccount.client_email,
-    aud: "https://firestore.googleapis.com/",
+    aud: "https://oauth2.googleapis.com/token",
     iat: now,
     exp: now + 3600,
+    scope: "https://www.googleapis.com/auth/datastore https://www.googleapis.com/auth/cloud-platform",
   };
 
   const encode = (obj: any) => btoa(JSON.stringify(obj)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
@@ -247,7 +248,8 @@ async function transformVehicle(doc: any, includeImages = false, decodeVin = fal
 
 // Discover which collection name stores vehicles
 async function discoverCollection(projectId: string, token: string): Promise<string> {
-  const candidates = ['vehicles', 'inventory', 'cars', 'units', 'stock', 'Vehicles', 'Inventory'];
+  // First try Firestore collections
+  const candidates = ['vehicles', 'inventory', 'cars', 'units', 'stock', 'Vehicles', 'Inventory', 'Cars', 'Units', 'Stock', 'auto', 'Auto', 'trucks', 'Trucks', 'salvage', 'Salvage', 'parts', 'Parts'];
   for (const name of candidates) {
     try {
       const docs = await firestoreQuery(projectId, token, name, {
@@ -255,14 +257,51 @@ async function discoverCollection(projectId: string, token: string): Promise<str
         limit: 1,
       });
       if (docs.length > 0) {
-        console.log(`Discovered collection: ${name}`);
+        console.log(`Discovered Firestore collection: ${name}`);
         return name;
       }
-    } catch {
-      // collection doesn't exist, try next
-    }
+    } catch {}
   }
-  throw new Error('Could not discover vehicle collection in Firestore');
+  
+  // List all root collections
+  try {
+    const listUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
+    const res = await fetch(listUrl, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      console.log('Firestore collections:', data.collectionIds || []);
+    } else {
+      await res.text();
+    }
+  } catch {}
+
+  // Try Firebase Realtime Database
+  try {
+    const rtdbUrl = `https://${projectId}-default-rtdb.firebaseio.com/.json?shallow=true&auth=${token}`;
+    const res = await fetch(rtdbUrl);
+    if (res.ok) {
+      const data = await res.json();
+      console.log('RTDB root keys:', Object.keys(data || {}));
+    } else {
+      // Try without -default-rtdb suffix
+      const rtdbUrl2 = `https://${projectId}.firebaseio.com/.json?shallow=true&auth=${token}`;
+      const res2 = await fetch(rtdbUrl2);
+      if (res2.ok) {
+        const data2 = await res2.json();
+        console.log('RTDB root keys (alt):', Object.keys(data2 || {}));
+      } else {
+        await res2.text();
+      }
+    }
+  } catch (e) {
+    console.log('RTDB check error:', e.message);
+  }
+
+  throw new Error('Could not discover vehicle collection. Firestore has: shelf-pickup-orders, work-orders. Check RTDB logs.');
 }
 
 let discoveredCollection: string | null = null;
@@ -279,13 +318,91 @@ serve(async (req) => {
     const projectId = serviceAccount.project_id;
     const token = await getAccessToken(serviceAccount);
 
-    // Discover collection on first call
-    if (!discoveredCollection) {
-      discoveredCollection = await discoverCollection(projectId, token);
-    }
-
     const url = new URL(req.url);
     const action = url.searchParams.get('action') || 'vehicles';
+
+    // Debug action bypasses collection discovery
+    if (action !== 'debug') {
+      if (!discoveredCollection) {
+        discoveredCollection = await discoverCollection(projectId, token);
+      }
+    }
+
+    if (action === 'debug') {
+      // Debug: show raw data from both collections and RTDB
+      const results: any = { firestore: {}, rtdb: {} };
+      
+      // Sample from each Firestore collection
+      for (const col of ['shelf-pickup-orders', 'work-orders']) {
+        try {
+          const docs = await firestoreQuery(projectId, token, col, {
+            from: [{ collectionId: col }],
+            limit: 2,
+          });
+          results.firestore[col] = {
+            count: docs.length,
+            sample: docs.slice(0, 2).map(d => {
+              const parsed = parseFirestoreDoc(d);
+              return { id: parsed._id, keys: Object.keys(parsed), data: parsed };
+            }),
+          };
+        } catch (e) {
+          results.firestore[col] = { error: e.message };
+        }
+      }
+
+      // Check sub-collections of work-orders docs
+      try {
+        const woDocs = await firestoreQuery(projectId, token, 'work-orders', {
+          from: [{ collectionId: 'work-orders' }],
+          limit: 1,
+        });
+        if (woDocs.length > 0) {
+          const docPath = woDocs[0].name.replace(`projects/${projectId}/databases/(default)/documents/`, '');
+          const subColUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/${docPath}:listCollectionIds`;
+          const subRes = await fetch(subColUrl, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({}),
+          });
+          if (subRes.ok) {
+            const subData = await subRes.json();
+            results.firestore['work-orders-subcollections'] = subData.collectionIds || [];
+          }
+        }
+      } catch {}
+
+      // Try RTDB with OAuth token
+      for (const domain of [`${projectId}-default-rtdb.firebaseio.com`, `${projectId}.firebaseio.com`]) {
+        try {
+          const rtdbRes = await fetch(`https://${domain}/.json?shallow=true`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (rtdbRes.ok) {
+            const data = await rtdbRes.json();
+            results.rtdb[domain] = { keys: Object.keys(data || {}) };
+            // Sample first key
+            const firstKey = Object.keys(data || {})[0];
+            if (firstKey) {
+              const sampleRes = await fetch(`https://${domain}/${firstKey}.json?limitToFirst=1&orderBy="$key"`, {
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              if (sampleRes.ok) {
+                results.rtdb[`${domain}/${firstKey}_sample`] = await sampleRes.json();
+              }
+            }
+          } else {
+            results.rtdb[domain] = { status: rtdbRes.status, body: await rtdbRes.text() };
+          }
+        } catch (e) {
+          results.rtdb[domain] = { error: e.message };
+        }
+      }
+
+      return new Response(JSON.stringify(results, null, 2), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     if (action === 'vehicles') {
       const docs = await firestoreQuery(projectId, token, discoveredCollection);
