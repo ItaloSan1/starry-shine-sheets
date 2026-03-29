@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { mongoInventoryProvider } from '@/lib/mongo-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
-import { Phone, MessageCircle, ArrowLeft, Car, Tag, ChevronLeft, ChevronRight, X, Fuel, Cog, Gauge, Globe, Truck, ImageIcon } from 'lucide-react';
+import { Phone, MessageCircle, ArrowLeft, Car, Tag, ChevronLeft, ChevronRight, X, Fuel, Cog, Gauge, Globe, Truck, ImageIcon, ZoomIn } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { RequestPartForm } from '@/components/forms/RequestPartForm';
+import { useSEO } from '@/hooks/useSEO';
+import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 
 interface ExtendedVehicle extends Vehicle {
   images?: string[];
@@ -22,7 +24,68 @@ function VehicleImageGallery({ images, alt }: { images: string[]; alt: string })
   const [selectedImage, setSelectedImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [hdMode, setHdMode] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const panStart = useRef({ x: 0, y: 0 });
+  const panOffset = useRef({ x: 0, y: 0 });
+  const imgRef = useRef<HTMLImageElement>(null);
   const hasImages = images.length > 0;
+
+  const resetZoom = useCallback(() => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+    panOffset.current = { x: 0, y: 0 };
+  }, []);
+
+  // Reset zoom when changing images
+  useEffect(() => { resetZoom(); }, [selectedImage, resetZoom]);
+
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setZoom(prev => {
+      const next = prev - e.deltaY * 0.002;
+      return Math.min(Math.max(next, 1), 5);
+    });
+  }, []);
+
+  const handleDoubleClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (zoom > 1) {
+      resetZoom();
+    } else {
+      // Zoom to 2.5x centered on click position
+      const rect = imgRef.current?.getBoundingClientRect();
+      if (rect) {
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * -rect.width;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * -rect.height;
+        setZoom(2.5);
+        setPan({ x, y });
+        panOffset.current = { x, y };
+      }
+    }
+  }, [zoom, resetZoom]);
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    if (zoom <= 1) return;
+    e.stopPropagation();
+    setIsPanning(true);
+    panStart.current = { x: e.clientX - panOffset.current.x, y: e.clientY - panOffset.current.y };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, [zoom]);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isPanning) return;
+    const x = e.clientX - panStart.current.x;
+    const y = e.clientY - panStart.current.y;
+    setPan({ x, y });
+    panOffset.current = { x, y };
+  }, [isPanning]);
+
+  const handlePointerUp = useCallback(() => {
+    setIsPanning(false);
+  }, []);
 
   return (
     <div>
@@ -47,6 +110,7 @@ function VehicleImageGallery({ images, alt }: { images: string[]; alt: string })
             className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full transition-colors ${
               hdMode ? 'bg-accent text-accent-foreground' : 'bg-black/50 text-white hover:bg-black/70'
             }`}
+            aria-label={hdMode ? 'Switch to standard quality' : 'Switch to HD quality'}
           >
             <ImageIcon className="w-3 h-3" />
             HD
@@ -57,12 +121,14 @@ function VehicleImageGallery({ images, alt }: { images: string[]; alt: string })
             <button
               onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev - 1 + images.length) % images.length); }}
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1 rounded-full hover:bg-black/70"
+              aria-label="Previous image"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev + 1) % images.length); }}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1 rounded-full hover:bg-black/70"
+              aria-label="Next image"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -81,6 +147,7 @@ function VehicleImageGallery({ images, alt }: { images: string[]; alt: string })
               className={`shrink-0 w-16 h-12 rounded-md overflow-hidden border-2 transition-colors ${
                 i === selectedImage ? 'border-accent' : 'border-transparent'
               }`}
+              aria-label={`View image ${i + 1}`}
             >
               <img src={img} alt={`View ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
             </button>
@@ -88,27 +155,77 @@ function VehicleImageGallery({ images, alt }: { images: string[]; alt: string })
         </div>
       )}
 
-      {/* Lightbox */}
+      {/* Lightbox with Magnification */}
       {lightboxOpen && hasImages && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
-          <button onClick={() => setLightboxOpen(false)} className="absolute top-4 right-4 text-white p-2 hover:bg-white/10 rounded-full z-10">
-            <X className="w-6 h-6" />
-          </button>
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          onClick={() => { setLightboxOpen(false); resetZoom(); }}
+        >
+          {/* Controls bar */}
+          <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
+            {zoom > 1 && (
+              <button
+                onClick={e => { e.stopPropagation(); resetZoom(); }}
+                className="text-white text-xs bg-white/10 px-3 py-1.5 rounded-full hover:bg-white/20"
+              >
+                Reset Zoom
+              </button>
+            )}
+            <span className="text-white/60 text-xs">
+              {zoom > 1 ? `${Math.round(zoom * 100)}%` : 'Double-click or scroll to zoom'}
+            </span>
+            <button
+              onClick={e => { e.stopPropagation(); setLightboxOpen(false); resetZoom(); }}
+              className="text-white p-2 hover:bg-white/10 rounded-full"
+              aria-label="Close lightbox"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Zoom hint icon */}
+          {zoom <= 1 && (
+            <div className="absolute top-4 left-4 flex items-center gap-1.5 text-white/50 text-xs z-10">
+              <ZoomIn className="w-4 h-4" />
+              <span>Scroll or double-click to magnify</span>
+            </div>
+          )}
+
           <button
             onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev - 1 + images.length) % images.length); }}
-            className="absolute left-4 text-white p-2 hover:bg-white/10 rounded-full"
+            className="absolute left-4 text-white p-2 hover:bg-white/10 rounded-full z-10"
+            aria-label="Previous image"
           >
             <ChevronLeft className="w-8 h-8" />
           </button>
-          <img
-            src={images[selectedImage]}
-            alt={alt}
-            className="max-w-[90vw] max-h-[85vh] object-contain"
+
+          <div
+            className="max-w-[90vw] max-h-[85vh] overflow-hidden"
+            style={{ cursor: zoom > 1 ? (isPanning ? 'grabbing' : 'grab') : 'zoom-in' }}
+            onWheel={handleWheel}
             onClick={e => e.stopPropagation()}
-          />
+            onDoubleClick={handleDoubleClick}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+          >
+            <img
+              ref={imgRef}
+              src={images[selectedImage]}
+              alt={alt}
+              className="max-w-[90vw] max-h-[85vh] object-contain select-none"
+              style={{
+                transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`,
+                transition: isPanning ? 'none' : 'transform 0.2s ease-out',
+              }}
+              draggable={false}
+            />
+          </div>
+
           <button
             onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev + 1) % images.length); }}
-            className="absolute right-4 text-white p-2 hover:bg-white/10 rounded-full"
+            className="absolute right-4 text-white p-2 hover:bg-white/10 rounded-full z-10"
+            aria-label="Next image"
           >
             <ChevronRight className="w-8 h-8" />
           </button>
@@ -139,6 +256,34 @@ function VehicleSpecs({ specs }: { specs: { icon: any; label: string; value: str
   );
 }
 
+function VehicleJsonLd({ vehicle }: { vehicle: ExtendedVehicle }) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `${vehicle.year} ${vehicle.make} ${vehicle.model} Used Parts`,
+    description: `Quality used parts from a ${vehicle.year} ${vehicle.make} ${vehicle.model}. Available at Eskimo Auto & Truck Parts Edmonton.`,
+    brand: { '@type': 'Brand', name: vehicle.make },
+    sku: vehicle.stockNumber,
+    offers: {
+      '@type': 'Offer',
+      availability: vehicle.status === 'Available' ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
+      seller: {
+        '@type': 'AutoPartsStore',
+        name: BUSINESS.name,
+        telephone: BUSINESS.phone,
+      },
+    },
+    ...(vehicle.images && vehicle.images.length > 0 ? { image: vehicle.images[0] } : {}),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export default function VehicleDetailPage() {
   const { id } = useParams();
   const [vehicle, setVehicle] = useState<ExtendedVehicle | null>(null);
@@ -153,9 +298,14 @@ export default function VehicleDetailPage() {
     }
   }, [id]);
 
-  useEffect(() => {
-    if (vehicle) document.title = `${vehicle.year} ${vehicle.make} ${vehicle.model} | Eskimo Auto & Truck Parts Edmonton`;
-  }, [vehicle]);
+  const pageTitle = vehicle
+    ? `${vehicle.year} ${vehicle.make} ${vehicle.model} Parts | Eskimo Auto Edmonton`
+    : 'Vehicle Details | Eskimo Auto & Truck Parts Edmonton';
+  const pageDesc = vehicle
+    ? `Used parts from a ${vehicle.year} ${vehicle.make} ${vehicle.model} at Eskimo Auto & Truck Parts Edmonton. Stock #${vehicle.stockNumber}. Warranty-backed. Call (780) 473-2424.`
+    : 'View vehicle details and available used parts at Eskimo Auto & Truck Parts Edmonton.';
+
+  useSEO({ title: pageTitle, description: pageDesc });
 
   if (loading) return <div className="max-w-4xl mx-auto px-4 py-16 text-center text-muted-foreground">Loading vehicle details...</div>;
   if (!vehicle) return <div className="max-w-4xl mx-auto px-4 py-16 text-center"><h2 className="text-xl font-bold mb-2">Vehicle Not Found</h2><Link to="/latest-arrivals" className="text-accent hover:underline">Back to Arrivals</Link></div>;
@@ -173,13 +323,22 @@ export default function VehicleDetailPage() {
 
   return (
     <div className="pb-20 lg:pb-0">
+      <VehicleJsonLd vehicle={vehicle} />
+      <BreadcrumbSchema items={[
+        { label: 'Home', to: '/' },
+        { label: 'Latest Arrivals', to: '/latest-arrivals' },
+        { label: `${vehicle.year} ${vehicle.make} ${vehicle.model}` },
+      ]} />
+
       <div className="max-w-5xl mx-auto px-4 py-5">
-        <Link to="/latest-arrivals" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-4">
-          <ArrowLeft className="w-4 h-4" /> Back to Latest Arrivals
-        </Link>
+        <nav aria-label="Breadcrumb">
+          <Link to="/latest-arrivals" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-4">
+            <ArrowLeft className="w-4 h-4" /> Back to Latest Arrivals
+          </Link>
+        </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <VehicleImageGallery images={images} alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`} />
+          <VehicleImageGallery images={images} alt={`${vehicle.year} ${vehicle.make} ${vehicle.model} used parts at Eskimo Auto Edmonton`} />
 
           <div>
             <h1 className="text-xl font-bold mb-1">{vehicle.year} {vehicle.make} {vehicle.model}</h1>
@@ -219,7 +378,7 @@ export default function VehicleDetailPage() {
           </div>
         </div>
 
-        <div className="mt-10">
+        <section className="mt-10" aria-label="Request parts form">
           <h2 className="text-lg font-bold mb-4">Request Parts from This Vehicle</h2>
           <RequestPartForm
             prefillYear={String(vehicle.year)}
@@ -227,7 +386,7 @@ export default function VehicleDetailPage() {
             prefillModel={vehicle.model}
             prefillStockNumber={vehicle.stockNumber}
           />
-        </div>
+        </section>
       </div>
     </div>
   );
