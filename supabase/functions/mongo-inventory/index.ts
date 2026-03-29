@@ -177,7 +177,11 @@ serve(async (req) => {
       const filter: any = {};
       if (makeFilter) filter['vehicleInfo.Make'] = { $regex: new RegExp(`^${makeFilter}$`, 'i') };
       if (modelFilter) filter['vehicleInfo.Model'] = { $regex: new RegExp(`^${modelFilter}$`, 'i') };
-      if (yearFilter) filter['vehicleInfo.Year'] = yearFilter;
+      if (yearFilter) {
+        // Year may be stored as string or number in MongoDB
+        const yearNum = parseInt(yearFilter);
+        filter['vehicleInfo.Year'] = { $in: [yearFilter, yearNum] };
+      }
       if (search) {
         const q = search.trim();
         filter.$or = [
