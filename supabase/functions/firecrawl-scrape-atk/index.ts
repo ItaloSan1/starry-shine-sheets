@@ -248,6 +248,77 @@ Deno.serve(async (req) => {
       );
     }
 
+    // ── ATK-API-SEARCH: call ATK Sales API directly for cylinder heads ──
+    if (mode === 'atk-api-search') {
+      const body = await req.json();
+      const page = body.page || 1;
+      const pageSize = body.pageSize || 100;
+      const searchTerm = body.searchTerm || 'cylinder head';
+
+      // Try the ATK Sales search API
+      const apiUrl = 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/search';
+      console.log(`Calling ATK API: page=${page}, pageSize=${pageSize}, search=${searchTerm}`);
+
+      const searchResp = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          searchTerm,
+          page,
+          pageSize,
+          sortBy: 'partNumber',
+          sortDirection: 'asc',
+        }),
+      });
+
+      if (!searchResp.ok) {
+        // Try alternate endpoint formats
+        const altUrl = `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products?search=${encodeURIComponent(searchTerm)}&page=${page}&pageSize=${pageSize}`;
+        const altResp = await fetch(altUrl);
+        if (!altResp.ok) {
+          const errText = await altResp.text();
+          return new Response(
+            JSON.stringify({ success: false, error: `ATK API error: ${altResp.status}`, body: errText.slice(0, 500) }),
+            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        const altData = await altResp.json();
+        return new Response(
+          JSON.stringify({ success: true, source: 'alt-endpoint', data: altData }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const searchData = await searchResp.json();
+      return new Response(
+        JSON.stringify({ success: true, source: 'search-endpoint', data: searchData }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── ATK-API-CATEGORIES: discover API structure ──
+    if (mode === 'atk-api-categories') {
+      const endpoints = [
+        'https://extservices.lkqcorp.com/api/atksales/catalog/v1/categories',
+        'https://extservices.lkqcorp.com/api/atksales/catalog/v1/products/categories',
+        'https://extservices.lkqcorp.com/api/atksales/catalog/categories',
+      ];
+      const results: any[] = [];
+      for (const ep of endpoints) {
+        try {
+          const r = await fetch(ep, { signal: AbortSignal.timeout(10000) });
+          const text = await r.text();
+          results.push({ url: ep, status: r.status, body: text.slice(0, 1000) });
+        } catch (e) {
+          results.push({ url: ep, error: e.message });
+        }
+      }
+      return new Response(
+        JSON.stringify({ success: true, results }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // ── SCRAPE-BATCH (sequential, kept for backward compat) ──
     if (mode === 'scrape-batch') {
       const body = await req.json();
