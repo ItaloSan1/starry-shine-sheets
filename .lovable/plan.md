@@ -1,39 +1,40 @@
 
 
-# Fix: Add Pre-Dismantled Image Support + Priority Order
+# Fix: Query the `vehicles` Collection Instead of (or in Addition to) `tasks`
 
 ## Problem
-The edge function (`firebase-inventory/index.ts`) only reads two image fields:
-- `inv.postDismantledImages`
-- `task.postDisassembly.partDisassembledImages`
+The edge function currently queries a `tasks` collectionGroup to extract vehicle data. But the actual vehicle records — including ES1850 and ES1851, and likely their pre-dismantled images — live in a separate **`vehicles`** collection in Firestore. This is why ES1850/ES1851 are missing and why pre-dismantled images aren't being found.
 
-It completely ignores **pre-dismantled images**. Vehicles like ES1850 and ES1851 that only have pre-dismantled photos appear with zero images and may effectively be "invisible."
+## Plan
 
-## Solution
-Update the edge function to also collect pre-dismantled images, and reorder the image priority so **pre-dismantled photos appear first** (showing the vehicle in better condition), with post-dismantled as fallback.
+### Step 1: Discovery — Query the `vehicles` collection and log its structure
+**File**: `supabase/functions/firebase-inventory/index.ts`
 
-### Changes to `supabase/functions/firebase-inventory/index.ts`
+- Add a new `discover-vehicles` action that queries the top-level `vehicles` collection (paginated, same approach as `queryAllTasks`)
+- Log: total document count, field names from 3-5 sample documents, and specifically look for any documents with stock numbers ES1850/ES1851
+- Log all field names containing "image", "photo", "pre", "dismantle" to find the correct pre-dismantled image field
+- Deploy and check logs to confirm collection structure
 
-**In `extractVehiclesFromTasks` (lines ~330-344)** — reorder image collection:
-1. First: `inv.preDismantledImages` (or similar field name — may need to check `preDisassemblyImages`, `preDismantleImages`)
-2. Second: `inv.postDismantledImages`
-3. Third: `task.postDisassembly.partDisassembledImages`
+### Step 2: Switch primary data source to `vehicles` collection
+Based on discovery results:
 
-**In the vehicle detail handler (lines ~415-431)** — same reordering for the detail page image gallery.
+- Add a `queryVehiclesCollection()` function that queries the `vehicles` collection directly
+- Extract vehicle data (stock number, year, make, model, VIN, images) from the `vehicles` documents
+- Use the correct field name for pre-dismantled images (discovered in Step 1)
+- Set image priority: **pre-dismantled first**, then post-dismantled, then part-disassembled
+- Optionally still cross-reference `tasks` for additional part-disassembled images
 
-**Add field discovery**: Since we don't know the exact Firestore field name for pre-dismantled images, add temporary logging that dumps all field keys from a few inventory objects to discover the correct field name. Likely candidates:
-- `preDismantledImages`
-- `preDisassemblyImages`
-- `images`
-- `vehicleImages`
+### Step 3: Update vehicle detail handler
+- Same image priority reordering for the detail page
+- Pull VIN from the vehicles collection document
+- Continue VIN decoding for specs display
 
-### Also remove debug logging
-Clean up the ES1850/ES1851 debug logging from the previous investigation (lines 303-321).
+### Step 4: Clean up
+- Remove discovery logging
+- Final deploy
 
-### Implementation steps
-1. Add temporary field-name discovery logging to find the pre-dismantled image field
-2. Deploy and check logs to confirm the field name
-3. Update image collection logic with correct field name and priority order (pre-dismantled first)
-4. Remove debug/discovery logging
-5. Redeploy final version
+## Technical Notes
+- The `vehicles` collection is likely a top-level collection (not a subcollection), so we use a standard collection query instead of `collectionGroup`
+- This should also resolve the "CPU Time exceeded" errors since the vehicles collection likely has ~1,300 documents vs 13,221 task documents — much faster to query
+- Image signing logic stays the same, just applied to the correct fields
 
