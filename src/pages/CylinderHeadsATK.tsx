@@ -303,7 +303,9 @@ export default function CylinderHeadsATK() {
                           {head.engine_make_size && <span className="bg-secondary px-2 py-0.5 rounded-full">{head.engine_make_size}</span>}
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-accent">{formatCad(head.price_usd, CYLINDER_HEAD_MARKUP)}</span>
+                          <span className="text-lg font-bold text-accent">
+                            {head.price_usd > 0 ? formatCad(head.price_usd, CYLINDER_HEAD_MARKUP) : 'Call for Pricing'}
+                          </span>
                           <span className="text-xs text-accent font-medium group-hover:underline">View Details →</span>
                         </div>
                       </div>

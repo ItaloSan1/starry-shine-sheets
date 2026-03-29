@@ -151,7 +151,9 @@ export default function CylinderHeadDetail() {
               {head.displacement && <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">{head.displacement}</span>}
               {head.engine_make_size && <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">{head.engine_make_size}</span>}
             </div>
-            <div className="text-3xl font-extrabold text-accent mb-4">{formatCad(head.price_usd, CYLINDER_HEAD_MARKUP)}</div>
+            <div className="text-3xl font-extrabold text-accent mb-4">
+              {head.price_usd > 0 ? formatCad(head.price_usd, CYLINDER_HEAD_MARKUP) : 'Call for Pricing'}
+            </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
               <Shield className="w-4 h-4 text-accent" />
               <span>Factory-spec remanufactured — pressure tested & warranted</span>
@@ -205,7 +207,9 @@ export default function CylinderHeadDetail() {
                 </div>
                 <div className="p-3">
                   <h3 className="text-xs font-semibold line-clamp-2 group-hover:text-accent transition-colors">{rel.name}</h3>
-                  <span className="text-sm font-bold text-accent mt-1 block">{formatCad(rel.price_usd, CYLINDER_HEAD_MARKUP)}</span>
+                  <span className="text-sm font-bold text-accent mt-1 block">
+                    {rel.price_usd > 0 ? formatCad(rel.price_usd, CYLINDER_HEAD_MARKUP) : 'Call for Pricing'}
+                  </span>
                 </div>
               </Link>
             ))}

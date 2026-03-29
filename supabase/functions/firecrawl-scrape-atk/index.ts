@@ -289,7 +289,7 @@ Deno.serve(async (req) => {
         price_usd: p.unitCost || 0,
         image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
         active: true,
-      })).filter((r: any) => r.price_usd > 0);
+      }));
 
       if (doUpsert && records.length > 0) {
         await upsertCylinderHeads(records);
