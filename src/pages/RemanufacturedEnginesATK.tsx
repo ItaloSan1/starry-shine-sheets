@@ -207,6 +207,27 @@ export default function RemanufacturedEnginesATK() {
                     {m} <span className="text-xs">({categoryCounts[m] || 0})</span>
                   </button>
                 ))}
+                {/* Displacement filter within selected category */}
+                {selectedCategory && makes.includes(selectedCategory) && displacementsByCategory[selectedCategory]?.length > 0 && (
+                  <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-accent/20 pl-2">
+                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-1">Displacement</span>
+                    <button
+                      onClick={() => { setSelectedDisplacement(''); setCurrentPage(1); }}
+                      className={`w-full text-left px-2 py-1 rounded text-xs transition-colors ${!selectedDisplacement ? 'bg-accent/20 text-accent font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-secondary'}`}
+                    >
+                      All
+                    </button>
+                    {displacementsByCategory[selectedCategory].map(d => (
+                      <button
+                        key={d}
+                        onClick={() => { setSelectedDisplacement(d === selectedDisplacement ? '' : d); setCurrentPage(1); }}
+                        className={`w-full text-left px-2 py-1 rounded text-xs transition-colors ${selectedDisplacement === d ? 'bg-accent/20 text-accent font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-secondary'}`}
+                      >
+                        {d}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
