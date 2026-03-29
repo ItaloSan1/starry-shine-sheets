@@ -12,9 +12,18 @@ serve(async (req) => {
   }
 
   try {
-    const connStr = Deno.env.get('MONGODB_CONNECTION_STRING');
+    let connStr = Deno.env.get('MONGODB_CONNECTION_STRING');
     if (!connStr) throw new Error('MONGODB_CONNECTION_STRING not set');
 
+    // URL-encode password if it contains special chars
+    // Format: mongodb+srv://user:password@host/...
+    const match = connStr.match(/^(mongodb\+srv:\/\/[^:]+:)([^@]+)(@.+)$/);
+    if (match) {
+      const encodedPassword = encodeURIComponent(decodeURIComponent(match[2]));
+      connStr = match[1] + encodedPassword + match[3];
+    }
+
+    console.log('Connecting to MongoDB...', connStr.replace(/:[^@]+@/, ':***@'));
     const client = new MongoClient(connStr);
     await client.connect();
     
