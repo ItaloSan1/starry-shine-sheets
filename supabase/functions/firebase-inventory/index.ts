@@ -381,6 +381,9 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
   vehiclesCache = { data: vehicles, timestamp: Date.now() };
   console.log(`Extracted ${vehicles.length} unique vehicles`);
+  console.log(`ALL_INV_IMAGE_KEYS: ${JSON.stringify([...allInvImageKeys])}`);
+  console.log(`ALL_TASK_IMAGE_KEYS: ${JSON.stringify([...allTaskImageKeys])}`);
+  console.log(`ALL_TASK_TOP_KEYS: ${JSON.stringify([...allTaskTopKeys])}`);
   return vehicles;
 }
 
