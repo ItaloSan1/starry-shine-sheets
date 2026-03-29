@@ -162,13 +162,80 @@ function parseDisplayName(displayName: string): { stockNumber: string; year: num
   return result;
 }
 
-// Generate signed URL for Firebase Storage
-function getStorageUrl(projectId: string, path: string): string {
-  if (!path) return '';
-  if (path.startsWith('http')) return path;
-  // Firebase Storage public URL format
-  const encodedPath = encodeURIComponent(path);
-  return `https://firebasestorage.googleapis.com/v0/b/${projectId}.appspot.com/o/${encodedPath}?alt=media`;
+// Generate V4 signed URL for Google Cloud Storage
+async function generateSignedUrl(bucket: string, objectPath: string, serviceAccount: any): Promise<string> {
+  if (!objectPath) return '';
+  if (objectPath.startsWith('http')) return objectPath;
+
+  const now = new Date();
+  const datestamp = now.toISOString().replace(/[-:]/g, '').substring(0, 8);
+  const timestamp = datestamp + 'T' + now.toISOString().replace(/[-:]/g, '').substring(9, 15) + 'Z';
+  const expiration = 3600; // 1 hour
+
+  const credentialScope = `${datestamp}/auto/storage/goog4_request`;
+  const credential = `${serviceAccount.client_email}/${credentialScope}`;
+
+  const host = `storage.googleapis.com`;
+  const canonicalUri = `/${bucket}/${objectPath}`;
+
+  const params = new Map<string, string>([
+    ['X-Goog-Algorithm', 'GOOG4-RSA-SHA256'],
+    ['X-Goog-Credential', credential],
+    ['X-Goog-Date', timestamp],
+    ['X-Goog-Expires', String(expiration)],
+    ['X-Goog-SignedHeaders', 'host'],
+  ]);
+
+  const sortedParams = [...params.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  const canonicalQueryString = sortedParams.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
+
+  const canonicalRequest = [
+    'GET',
+    canonicalUri,
+    canonicalQueryString,
+    `host:${host}`,
+    '',
+    'host',
+    'UNSIGNED-PAYLOAD',
+  ].join('\n');
+
+  const stringToSign = [
+    'GOOG4-RSA-SHA256',
+    timestamp,
+    credentialScope,
+    await sha256Hex(canonicalRequest),
+  ].join('\n');
+
+  // Sign with service account private key
+  const pemContents = serviceAccount.private_key
+    .replace(/-----BEGIN PRIVATE KEY-----/, '')
+    .replace(/-----END PRIVATE KEY-----/, '')
+    .replace(/\n/g, '');
+  const binaryKey = Uint8Array.from(atob(pemContents), (c: string) => c.charCodeAt(0));
+
+  const key = await crypto.subtle.importKey(
+    'pkcs8',
+    binaryKey,
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+
+  const signature = await crypto.subtle.sign(
+    'RSASSA-PKCS1-v1_5',
+    key,
+    new TextEncoder().encode(stringToSign)
+  );
+
+  const signatureHex = [...new Uint8Array(signature)].map(b => b.toString(16).padStart(2, '0')).join('');
+
+  return `https://${host}${canonicalUri}?${canonicalQueryString}&X-Goog-Signature=${signatureHex}`;
+}
+
+async function sha256Hex(message: string): Promise<string> {
+  const data = new TextEncoder().encode(message);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 // NHTSA VIN Decode
