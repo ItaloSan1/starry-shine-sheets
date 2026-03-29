@@ -248,37 +248,64 @@ Deno.serve(async (req) => {
       );
     }
 
-    // ── ATK-API-SEARCH: call ATK Sales search API for cylinder heads ──
+    // ── ATK-API-SEARCH: fetch cylinder heads from ATK catalog API ──
     if (mode === 'atk-api-search') {
-      const body = await req.json();
-      const page = body.page || 1;
-      const pageSize = body.pageSize || 100;
-      const pcn = body.pcn || 'Cylinder Heads';
-      const make = body.make || '';
+      let body: any = {};
+      try { body = await req.json(); } catch {}
+      const pcn = url.searchParams.get('pcn') || body.pcn || 'Cylinder Heads';
+      const page = parseInt(url.searchParams.get('page') || '') || body.page || 1;
+      const pageSize = parseInt(url.searchParams.get('pageSize') || '') || body.pageSize || 100;
+      const doUpsert = url.searchParams.get('upsert') !== 'false';
 
       const payload = {
-        catalogSearchRequest: {
-          FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath'],
-          QueryModel: [
-            { AttributeName: 'pcn', Condition: 'eq', Values: [pcn] },
-            ...(make ? [{ AttributeName: 'make', Condition: 'eq', Values: [make] }] : []),
-          ],
-          SortCriteria: [{ Field: 'partNumber', Direction: 'asc' }],
-          CustomerGroup: 'retail',
-        },
-        page, pageSize,
+        FieldsList: [],
+        QueryModel: [{ AttributeName: 'category', Condition: 'equals', Values: pcn }],
+        SortCriteria: [],
+        CustomerGroup: 'retail',
+        page,
+        pageSize,
       };
 
-      console.log(`ATK API search: pcn=${pcn}, make=${make}, page=${page}, pageSize=${pageSize}`);
-      console.log('Payload:', JSON.stringify(payload));
-      const searchResp = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
+      const r = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(30000),
       });
-      const text = await searchResp.text();
+      const apiData = await r.json();
+      const parts = apiData?.data?.partDetails || [];
+      const paging = apiData?.data?.pagingMetadata || {};
+
+      // Build cylinder head records
+      const records = parts.map((p: any) => ({
+        brand: 'ATK',
+        vendor_part_number: p.partNumber,
+        name: `ATK ${p.partNumber} ${p.partTitle || ''}`.trim(),
+        slug: slugify(`atk-${p.partNumber}-${p.partTitle || ''}`),
+        engine_make_size: guessEngineMakeSize(p.partTitle || p.make || ''),
+        displacement: p.engineSize || extractDisplacement(p.partTitle || ''),
+        fits_vehicles: p.partTitle || '',
+        config: p.specialNotes || null,
+        price_usd: p.unitCost || 0,
+        image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
+        active: true,
+      })).filter((r: any) => r.price_usd > 0);
+
+      if (doUpsert && records.length > 0) {
+        await upsertCylinderHeads(records);
+      }
+
       return new Response(
-        JSON.stringify({ success: searchResp.ok, status: searchResp.status, data: text.slice(0, 5000) }),
+        JSON.stringify({
+          success: true,
+          page,
+          pageSize,
+          totalCount: paging.totalCount,
+          totalPages: paging.totalPages,
+          hasNext: paging.hasNext,
+          partsOnPage: parts.length,
+          upserted: doUpsert ? records.length : 0,
+        }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -384,6 +411,38 @@ Deno.serve(async (req) => {
       const md = scrapeData.data?.markdown || '';
       return new Response(
         JSON.stringify({ success: true, markdown: md.slice(0, 5000), fullLength: md.length }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── SCRAPE-LISTING: scrape rendered ATK product listing page ──
+    if (mode === 'scrape-listing') {
+      const body = await req.json();
+      const pcn = body.pcn || 'Cylinder Heads';
+      const make = body.make || '';
+      const listingUrl = `https://www.atksales.com/product-listing/?pcn=${encodeURIComponent(pcn)}${make ? '&make=' + encodeURIComponent(make) : ''}`;
+      console.log('Scraping listing page:', listingUrl);
+
+      const scrapeResp = await fetch('https://api.firecrawl.dev/v1/scrape', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: listingUrl, formats: ['markdown'], waitFor: 12000 }),
+      });
+      const scrapeData = await scrapeResp.json();
+      const md = scrapeData.data?.markdown || scrapeData.markdown || '';
+
+      // Extract product data from rendered listing
+      // ATK listing shows: part number, description, price, image
+      const products: any[] = [];
+      // Look for patterns like part numbers (e.g., 2CK2, DM2512, etc.)
+      const partRegex = /(?:####?\s*)?([A-Z0-9]{3,10})\s*\n+([^\n]+(?:Cyl|Head|CYL|HEAD|Cylinder)[^\n]*)/gi;
+      let match;
+      while ((match = partRegex.exec(md)) !== null) {
+        products.push({ pno: match[1], title: match[2].trim() });
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, markdown: md.slice(0, 8000), fullLength: md.length, productsFound: products.length, products: products.slice(0, 20) }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
