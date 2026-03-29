@@ -63,6 +63,9 @@ export default function App() {
           <Route path="/about" element={<Suspense fallback={<PageLoader />}><About /></Suspense>} />
           <Route path="/faq" element={<Suspense fallback={<PageLoader />}><FAQ /></Suspense>} />
           <Route path="/contact" element={<Suspense fallback={<PageLoader />}><Contact /></Suspense>} />
+          <Route path="/remanufactured-engines" element={<Suspense fallback={<PageLoader />}><RemanufacturedEngines /></Suspense>} />
+          <Route path="/remanufactured-engines/atk" element={<Suspense fallback={<PageLoader />}><RemanufacturedEnginesATK /></Suspense>} />
+          <Route path="/remanufactured-engines/atk/:slug" element={<Suspense fallback={<PageLoader />}><RemanufacturedEngineDetail /></Suspense>} />
           <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
         </Route>
       </Routes>
