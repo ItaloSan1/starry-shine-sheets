@@ -156,7 +156,15 @@ export default function RemanufacturedEngineDetail() {
                   alt={engine.name}
                   className="max-w-full max-h-full object-contain"
                   referrerPolicy="no-referrer"
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    if (!img.dataset.fallback) {
+                      img.dataset.fallback = '1';
+                      img.src = `https://atksales.com/Images/Parts/Medium/${engine.vendor_part_number}.jpg`;
+                      return;
+                    }
+                    img.src = '/placeholder.svg';
+                  }}
                 />
               ) : (
                 <span className="text-muted-foreground">No Image Available</span>
