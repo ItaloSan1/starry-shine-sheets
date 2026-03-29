@@ -300,24 +300,39 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
   const vehicleMap = new Map<string, any>();
 
-  // Debug: look for ES1850/ES1851 in all tasks
-  let debugFound1850 = false;
-  let debugFound1851 = false;
+  // Collect ALL unique image-related field names across entire dataset
+  const allInvImageKeys = new Set<string>();
+  const allTaskImageKeys = new Set<string>();
+  const allTaskTopKeys = new Set<string>();
   
   for (const doc of docs) {
     const task = parseFirestoreDoc(doc);
     const inv = task.inventory;
     
-    // Debug: check raw doc name for clues
-    const docName = doc.name || '';
-    if (docName.includes('1850') || docName.includes('1851')) {
-      console.log(`DEBUG doc with 1850/1851 in name: ${docName}, has inventory: ${!!inv}, stockNumber: ${inv?.stockNumber || 'none'}`);
+    if (inv) {
+      for (const k of Object.keys(inv)) {
+        if (k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl') || k.toLowerCase().includes('pre')) {
+          allInvImageKeys.add(k);
+        }
+      }
     }
-    if (inv?.stockNumber === 'ES1850') { debugFound1850 = true; console.log(`DEBUG ES1850 found! displayName: ${inv.inventoryDisplayName}`); }
-    if (inv?.stockNumber === 'ES1851') { debugFound1851 = true; console.log(`DEBUG ES1851 found! displayName: ${inv.inventoryDisplayName}`); }
-    // Also check inventoryDisplayName for these
-    if (inv?.inventoryDisplayName && (inv.inventoryDisplayName.includes('1850') || inv.inventoryDisplayName.includes('1851'))) {
-      console.log(`DEBUG displayName match: ${inv.inventoryDisplayName}, stockNumber: ${inv.stockNumber}`);
+    for (const k of Object.keys(task)) {
+      allTaskTopKeys.add(k);
+      if (k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl') || k.toLowerCase().includes('pre')) {
+        allTaskImageKeys.add(k);
+      }
+    }
+    
+    // Log specific vehicles ES1848-ES1851 in full detail
+    if (inv && ['ES1848','ES1849','ES1850','ES1851'].includes(inv.stockNumber)) {
+      console.log(`DETAIL ${inv.stockNumber}: ALL inv keys: ${JSON.stringify(Object.keys(inv))}`);
+      console.log(`DETAIL ${inv.stockNumber}: ALL task keys: ${JSON.stringify(Object.keys(task))}`);
+      // Log any nested objects
+      for (const k of Object.keys(task)) {
+        if (typeof task[k] === 'object' && task[k] !== null && !Array.isArray(task[k])) {
+          console.log(`DETAIL ${inv.stockNumber}: task.${k} keys: ${JSON.stringify(Object.keys(task[k]))}`);
+        }
+      }
     }
     
     if (!inv || !inv.stockNumber) continue;
@@ -366,6 +381,9 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
   vehiclesCache = { data: vehicles, timestamp: Date.now() };
   console.log(`Extracted ${vehicles.length} unique vehicles`);
+  console.log(`ALL_INV_IMAGE_KEYS: ${JSON.stringify([...allInvImageKeys])}`);
+  console.log(`ALL_TASK_IMAGE_KEYS: ${JSON.stringify([...allTaskImageKeys])}`);
+  console.log(`ALL_TASK_TOP_KEYS: ${JSON.stringify([...allTaskTopKeys])}`);
   return vehicles;
 }
 
@@ -477,6 +495,79 @@ serve(async (req) => {
       const filtered = make ? vehicles.filter(v => v.make === make) : vehicles;
       const models = [...new Set(filtered.map(v => v.model).filter(Boolean))].sort();
       return new Response(JSON.stringify({ models }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (action === 'discover') {
+      const results: any = {};
+      const bucket = `${projectId}.appspot.com`;
+      
+      // 1. List vehicles-pre-dismantle subfolder structure
+      try {
+        const preUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/&delimiter=/&maxResults=20`;
+        const preRes = await fetch(preUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (preRes.ok) {
+          const preData = await preRes.json();
+          results.preDismantlePrefixes = preData.prefixes || [];
+          results.preDismantleItems = (preData.items || []).map((i: any) => i.name).slice(0, 10);
+        }
+      } catch(e) { results.preError = String(e); }
+      
+      // 2. List vehicles-post-dismantle subfolder structure
+      try {
+        const postUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-post-dismantle/&delimiter=/&maxResults=20`;
+        const postRes = await fetch(postUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (postRes.ok) {
+          const postData = await postRes.json();
+          results.postDismantlePrefixes = postData.prefixes || [];
+          results.postDismantleItems = (postData.items || []).map((i: any) => i.name).slice(0, 10);
+        }
+      } catch(e) { results.postError = String(e); }
+      
+      // 3. Check what postDismantledImages paths look like (from Firestore)
+      try {
+        const searchUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
+        const res = await fetch(searchUrl, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ structuredQuery: {
+            from: [{ collectionId: 'tasks', allDescendants: true }],
+            limit: 200,
+          }}),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          for (const r of data) {
+            if (!r.document) continue;
+            const p = parseFirestoreDoc(r.document);
+            if (p.inventory?.postDismantledImages?.length > 0) {
+              results.sampleImagePaths = p.inventory.postDismantledImages.slice(0, 3);
+              results.sampleStockNumber = p.inventory.stockNumber;
+              break;
+            }
+          }
+        }
+      } catch(e) { results.pathError = String(e); }
+      
+      // 4. Check if ES1850 images exist in storage
+      try {
+        const esUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/ES1850&maxResults=10`;
+        const esRes = await fetch(esUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (esRes.ok) {
+          const esData = await esRes.json();
+          results.es1850PreImages = (esData.items || []).map((i: any) => i.name);
+        }
+        // Also try post
+        const esUrl2 = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-post-dismantle/ES1850&maxResults=10`;
+        const esRes2 = await fetch(esUrl2, { headers: { Authorization: `Bearer ${token}` } });
+        if (esRes2.ok) {
+          const esData2 = await esRes2.json();
+          results.es1850PostImages = (esData2.items || []).map((i: any) => i.name);
+        }
+      } catch(e) { results.es1850Error = String(e); }
+      
+      return new Response(JSON.stringify(results, null, 2), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
