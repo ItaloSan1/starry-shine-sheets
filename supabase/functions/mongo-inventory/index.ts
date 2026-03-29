@@ -194,7 +194,7 @@ serve(async (req) => {
 
       const total = await col.countDocuments(filter);
       const docs = await col.find(filter)
-        .sort({ 'vehicleInfo.Year': -1, _id: -1 })
+        .sort({ 'vehicleInfo.ModelYear': -1, _id: -1 })
         .skip((page - 1) * pageSize)
         .limit(pageSize)
         .toArray();
