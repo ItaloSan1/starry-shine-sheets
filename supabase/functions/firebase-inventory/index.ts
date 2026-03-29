@@ -75,34 +75,57 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
 
 const FIRESTORE_BASE = 'https://firestore.googleapis.com/v1';
 
-// CollectionGroup query to get all tasks across all work-orders
-async function queryAllTasks(projectId: string, token: string, pageToken?: string): Promise<{ docs: any[]; nextPageToken?: string }> {
-  const url = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
-  const body: any = {
-    structuredQuery: {
+// CollectionGroup query to get all tasks across all work-orders (with pagination)
+async function queryAllTasks(projectId: string, token: string): Promise<{ docs: any[] }> {
+  const PAGE_SIZE = 500;
+  const allDocs: any[] = [];
+  let lastDocName: string | undefined;
+
+  while (true) {
+    const url = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
+    const structuredQuery: any = {
       from: [{ collectionId: 'tasks', allDescendants: true }],
-      limit: 500,
-    },
-  };
+      orderBy: [{ field: { fieldPath: '__name__' }, direction: 'ASCENDING' }],
+      limit: PAGE_SIZE,
+    };
 
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
+    if (lastDocName) {
+      structuredQuery.startAt = {
+        values: [{ referenceValue: lastDocName }],
+        before: false,
+      };
+    }
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Tasks query failed: ${err}`);
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ structuredQuery }),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Tasks query failed: ${err}`);
+    }
+
+    const results = await res.json();
+    const docs = results.filter((r: any) => r.document).map((r: any) => r.document);
+
+    if (docs.length === 0) break;
+
+    // If we used startAt (exclusive via before:false), the first result equals the cursor — skip it
+    const newDocs = lastDocName ? docs.filter((d: any) => d.name !== lastDocName) : docs;
+    allDocs.push(...newDocs);
+
+    lastDocName = docs[docs.length - 1].name;
+
+    // If we got fewer than PAGE_SIZE, we've reached the end
+    if (docs.length < PAGE_SIZE) break;
   }
 
-  const results = await res.json();
-  return {
-    docs: results.filter((r: any) => r.document).map((r: any) => r.document),
-  };
+  return { docs: allDocs };
 }
 
 // Parse Firestore value types
