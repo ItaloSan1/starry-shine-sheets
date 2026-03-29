@@ -41,20 +41,9 @@ export default function LatestArrivals() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Load makes on mount
+  // Load makes on mount (single cached call)
   useEffect(() => {
-    mongoInventoryProvider.getMakes().then(makes => {
-      fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/mongo-inventory?action=makes`, {
-        headers: {
-          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-      }).then(r => r.json()).then(data => {
-        setMakeCounts(data.makes || []);
-      }).catch(() => {
-        setMakeCounts(makes.map(m => ({ name: m, count: 0 })));
-      });
-    });
+    mongoInventoryProvider.getMakesWithCounts().then(setMakeCounts).catch(() => {});
   }, []);
 
   // Load models when make changes
