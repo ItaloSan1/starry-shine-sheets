@@ -1,36 +1,59 @@
 
 
-# Locate and Add Missing ATK Engines via Catalog API
+# Ensure All Engines and Cylinder Heads Have Working Pictures
 
 ## Problem
-We have 578 engines in the database. The ATK catalog likely has 800-1,000+ engines, same as the ~912 cylinder heads we found. The existing `atk-api-search` mode already works — we just used it with `pcn=Cylinder Heads`. We need to use it with engine categories.
 
-## Approach
+All 1,418 engines and 912 cylinder heads have `image_url` values stored, but many are likely broken:
 
-### Step 1: Discover engine category names
-The `atk-api-categories` mode already exists. Invoke it to get the full category list from ATK's API. Engine categories are likely named things like "Long Block Engines", "Short Block Engines", "Complete Engines", etc.
+1. **Guessed CDN URLs**: When the ATK API returned no `partImageUrl`, the scraper fell back to a pattern: `https://cdn.lkqcorp.com/atk/catalog/engines/{partnum}/atk{partnum}-1.jpg`. This path uses `/engines/` even for cylinder heads, and many part numbers may not have images at that exact path.
 
-### Step 2: Add an engine upsert path to the edge function
-The current `atk-api-search` mode hardcodes upserts to the `cylinder_heads` table. Add a `table` parameter so we can target `remanufactured_engines` instead. Map ATK API fields to the engine table schema (which has additional columns like `block_material`, `head_material`, `engine_code`).
+2. **JEGS URLs** (196 engines, 13 heads): These may hotlink-block or 404 since they're from a third-party retailer.
 
-### Step 3: Run the API search for each engine category
-Paginate through all engine categories (likely "Long Block Engines" and possibly others), upserting into `remanufactured_engines` on `vendor_part_number` conflict. Include $0-price engines with the same "Call for Pricing" treatment.
+3. **No validation**: Images were never checked for actual availability — the `onError` handler silently swaps to `placeholder.svg`, making it look like items have no pictures.
 
-### Step 4: Update engine detail page for "Call for Pricing"
-Same pattern as cylinder heads — show "Call for Pricing" instead of $0.
+## Solution
+
+### Step 1: Probe the ATK API for correct image URLs
+
+Re-run the ATK catalog API search and **update image_url** for every record where `partImageUrl` is available from the API response. The API returns the actual CDN image URL when one exists — we should trust that over guessed patterns.
+
+Also fix the cylinder head CDN fallback pattern. Currently it uses `/engines/` — try `/cylinderheads/` or `/cylinder-heads/` as the subfolder for heads.
+
+### Step 2: Add an image validation edge function mode
+
+Add an `image-check` mode to the existing `firecrawl-scrape-atk` edge function that:
+- Fetches batches of records with CDN/JEGS image URLs
+- Sends HEAD requests to each URL to check if it returns 200
+- For broken URLs, attempts alternative ATK CDN patterns:
+  - `https://cdn.lkqcorp.com/atk/catalog/engines/{PARTNUM}/atk{PARTNUM}-1.jpg` (uppercase)
+  - `https://cdn.lkqcorp.com/atk/catalog/cylinderheads/{partnum}/atk{partnum}-1.jpg`
+  - The `partImageUrl` from the ATK product detail page
+- Updates records with working URLs, or sets a known placeholder for truly missing images
+
+### Step 3: Re-scrape with image priority
+
+Re-invoke the `atk-api-search` mode for both engines and cylinder heads with `doUpsert=true`. Since the API returns `partImageUrl` when available, this will overwrite guessed URLs with real ones for any records the API has images for.
+
+### Step 4: Frontend fallback improvement
+
+Update the `onError` handlers in the listing and detail pages to try the ATK CDN pattern as a secondary fallback before showing `placeholder.svg`. This provides a client-side safety net.
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `supabase/functions/firecrawl-scrape-atk/index.ts` | Add `table` param to `atk-api-search` mode; add engine-specific field mapping and upsert to `remanufactured_engines` |
-| `src/pages/RemanufacturedEngineDetail.tsx` | Handle $0 price with "Call for Pricing" label |
-| `src/pages/RemanufacturedEnginesATK.tsx` | Handle $0 price with "Call for Pricing" label |
+| `supabase/functions/firecrawl-scrape-atk/index.ts` | Add `image-check` mode; fix cylinder head CDN path pattern from `/engines/` to proper subfolder |
+| `src/pages/RemanufacturedEnginesATK.tsx` | Improve `onError` to try ATK CDN fallback before placeholder |
+| `src/pages/CylinderHeadsATK.tsx` | Same `onError` improvement |
+| `src/pages/RemanufacturedEngineDetail.tsx` | Same `onError` improvement |
+| `src/pages/CylinderHeadDetail.tsx` | Same `onError` improvement |
 
 ## Execution Order
-1. Invoke `atk-api-categories` to discover exact engine category names
-2. Update edge function with engine upsert support
-3. Deploy and run for each engine category, paginating through all pages
-4. Update frontend for "Call for Pricing" on $0 engines
-5. Verify final engine count
+
+1. Update edge function with corrected CDN patterns and image-check mode
+2. Re-run `atk-api-search` for both tables to pull fresh `partImageUrl` values from the API
+3. Run `image-check` mode to validate remaining URLs and fix broken ones
+4. Update frontend with smarter fallback chain
+5. Verify images display correctly on both catalog pages
 
