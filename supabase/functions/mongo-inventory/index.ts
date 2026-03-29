@@ -6,7 +6,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-// GCS Signed URL generation (reused from firebase-inventory)
+// Helper to access fields from either plain objects or BSON Maps
+function getField(obj: any, ...keys: string[]): any {
+  if (!obj) return undefined;
+  for (const k of keys) {
+    const v = typeof obj.get === 'function' ? obj.get(k) : obj[k];
+    if (v !== undefined && v !== null && v !== '') return v;
+  }
+  return undefined;
+}
+
+// GCS Signed URL generation
 async function sha256Hex(message: string): Promise<string> {
   const data = new TextEncoder().encode(message);
   const hash = await crypto.subtle.digest('SHA-256', data);
@@ -75,8 +85,6 @@ async function decodeVIN(vin: string): Promise<any> {
   }
 }
 
-// Removed server-side full cache — was causing timeouts by signing 1,234 images
-
 function getMongoClient(): MongoClient {
   let connStr = Deno.env.get('MONGODB_CONNECTION_STRING');
   if (!connStr) throw new Error('MONGODB_CONNECTION_STRING not set');
@@ -109,15 +117,23 @@ async function signImages(imagePaths: string[], bucket: string, serviceAccount: 
 
 function mapVehicleDoc(doc: any, signedImages: string[]): any {
   const info = doc.vehicleInfo || {};
+
+  const year = Number(getField(info, 'Year', 'year', 'ModelYear') ?? doc.year ?? 0) || 0;
+  const make = String(getField(info, 'Make', 'make') ?? doc.make ?? '').toUpperCase();
+  const model = String(getField(info, 'Model', 'model') ?? doc.model ?? '');
+  const trim = String(getField(info, 'Trim', 'trim') ?? '');
+  const bodyStyle = String(getField(info, 'BodyClass', 'bodyClass', 'bodyStyle') ?? '');
+  const vehicleType = String(getField(info, 'VehicleType', 'vehicleType') ?? '');
+
   return {
     id: doc._id?.toString() || '',
     stockNumber: doc.stockNumber || '',
-    year: parseInt(String(info.Year || doc.year || '0')) || 0,
-    make: String(info.Make || '').toUpperCase(),
-    model: String(info.Model || ''),
-    trim: String(info.Trim || ''),
-    bodyStyle: info.BodyClass || '',
-    vehicleType: info.VehicleType || '',
+    year,
+    make,
+    model,
+    trim,
+    bodyStyle,
+    vehicleType,
     color: '',
     mileage: undefined,
     dateArrived: (() => { try { const d = new Date(doc.createdAt); return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString(); } catch { return new Date().toISOString(); } })(),
@@ -136,7 +152,6 @@ serve(async (req) => {
   let client: MongoClient | null = null;
 
   try {
-    // Get Firebase service account for GCS signing
     const saKeyRaw = Deno.env.get('FIREBASE_SERVICE_ACCOUNT_KEY');
     if (!saKeyRaw) throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY not configured');
     const serviceAccount = JSON.parse(saKeyRaw);
@@ -153,18 +168,14 @@ serve(async (req) => {
       const yearFilter = url.searchParams.get('year') || '';
       const search = url.searchParams.get('search') || '';
 
-      // No client-side full cache — use server-side pagination only
-
       client = getMongoClient();
       await client.connect();
       const col = client.db('yard-app').collection('vehicles-inventory');
 
-      // Build filter
       const filter: any = {};
       if (makeFilter) filter['vehicleInfo.Make'] = { $regex: new RegExp(`^${makeFilter}$`, 'i') };
       if (modelFilter) filter['vehicleInfo.Model'] = { $regex: new RegExp(`^${modelFilter}$`, 'i') };
       if (yearFilter) {
-        // Year may be stored as string or number in MongoDB
         const yearNum = parseInt(yearFilter);
         filter['vehicleInfo.Year'] = { $in: [yearFilter, yearNum] };
       }
@@ -184,12 +195,26 @@ serve(async (req) => {
         .limit(pageSize)
         .toArray();
 
-      // Sign images for each vehicle - use first pre-dismantled image as thumbnail
+      // Diagnostic: log first doc structure
+      if (docs.length > 0) {
+        const d = docs[0];
+        const vi = d.vehicleInfo;
+        console.log('DIAG first doc _id type:', typeof d._id, '_id:', String(d._id));
+        console.log('DIAG vehicleInfo type:', typeof vi, 'isMap:', typeof vi?.get === 'function');
+        if (typeof vi?.get === 'function') {
+          console.log('DIAG Map keys:', [...vi.keys()]);
+          console.log('DIAG Year from Map:', vi.get('Year'), 'Make:', vi.get('Make'));
+        } else if (vi) {
+          console.log('DIAG vehicleInfo keys:', Object.keys(vi));
+          console.log('DIAG Year:', vi.Year, 'Make:', vi.Make);
+        }
+      }
+
+      // Sign images for each vehicle
       const vehicles = [];
       for (const doc of docs) {
         const preImages = doc.preDismantling?.images || [];
         const postImages = doc.postDismantling?.images || [];
-        // For list view: sign only the first image as thumbnail
         const firstImage = preImages[0] || postImages[0];
         const thumbUrl = firstImage ? await generateSignedUrl(bucket, firstImage, serviceAccount) : undefined;
         vehicles.push(mapVehicleDoc(doc, thumbUrl ? [thumbUrl] : []));
@@ -218,15 +243,25 @@ serve(async (req) => {
       await client.connect();
       const col = client.db('yard-app').collection('vehicles-inventory');
 
+      console.log('DIAG vehicle lookup id:', id);
+
       let doc: any = null;
-      // Try ObjectId first, then stockNumber
+      // Try ObjectId first
       try {
         doc = await col.findOne({ _id: new ObjectId(id) });
-      } catch {
-        // Not a valid ObjectId
+        console.log('DIAG ObjectId lookup result:', doc ? 'found' : 'null');
+      } catch (e) {
+        console.log('DIAG ObjectId parse failed:', e.message);
       }
+      // Try as plain string _id
+      if (!doc) {
+        doc = await col.findOne({ _id: id as any });
+        console.log('DIAG string _id lookup result:', doc ? 'found' : 'null');
+      }
+      // Try stockNumber
       if (!doc) {
         doc = await col.findOne({ stockNumber: id });
+        console.log('DIAG stockNumber lookup result:', doc ? 'found' : 'null');
       }
 
       if (!doc) {
@@ -236,7 +271,16 @@ serve(async (req) => {
         });
       }
 
-      // Sign ALL images: pre-dismantled first, then post-dismantled
+      // Log the found doc's vehicleInfo structure
+      const vi = doc.vehicleInfo;
+      console.log('DIAG detail vehicleInfo type:', typeof vi, 'isMap:', typeof vi?.get === 'function');
+      if (typeof vi?.get === 'function') {
+        console.log('DIAG detail Map keys:', [...vi.keys()]);
+      } else if (vi) {
+        console.log('DIAG detail keys:', Object.keys(vi));
+      }
+
+      // Sign ALL images
       const preImages = doc.preDismantling?.images || [];
       const postImages = doc.postDismantling?.images || [];
       const allSignedImages = [
