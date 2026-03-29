@@ -122,7 +122,7 @@ function mapVehicleDoc(doc: any, signedImages: string[]): any {
     vehicleType: info.VehicleType || '',
     color: '',
     mileage: undefined,
-    dateArrived: doc.createdAt ? new Date(doc.createdAt).toISOString() : new Date().toISOString(),
+    dateArrived: (() => { try { const d = new Date(doc.createdAt); return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString(); } catch { return new Date().toISOString(); } })(),
     status: 'Available',
     partsAvailable: [],
     images: signedImages,
