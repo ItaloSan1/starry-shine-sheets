@@ -248,42 +248,29 @@ Deno.serve(async (req) => {
       );
     }
 
-    // ── ATK-API-SEARCH: probe ATK Sales API endpoints for product data ──
+    // ── ATK-API-SEARCH: call ATK Sales /attributes endpoint ──
     if (mode === 'atk-api-search') {
       const body = await req.json();
       const pcn = body.pcn || 'Cylinder Heads';
       const make = body.make || '';
-      const page = body.page || 1;
-      const pageSize = body.pageSize || 100;
 
-      // Try the /attributes endpoint (observed from ATK website traffic)
-      const endpoints = [
-        { url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/attributes', method: 'POST', body: { pcn, make } },
-        { url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/attributes', method: 'POST', body: { pcn, make, page, pageSize } },
-        { url: 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/attributes', method: 'POST', body: { ProductCategoryName: pcn, Make: make, Page: page, PageSize: pageSize } },
-        { url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/attributes?pcn=${encodeURIComponent(pcn)}&make=${encodeURIComponent(make)}`, method: 'GET' },
-        { url: `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products-listing?pcn=${encodeURIComponent(pcn)}&make=${encodeURIComponent(make)}&page=${page}&pageSize=${pageSize}`, method: 'GET' },
-      ];
+      const payload = {
+        FieldsList: ['partNumber', 'description', 'make', 'model', 'year', 'price', 'imagePath', 'displacement', 'engineSize', 'pcn'],
+        QueryModel: [
+          { AttributeName: 'pcn', Condition: 'equals', Values: [pcn] },
+          ...(make ? [{ AttributeName: 'make', Condition: 'equals', Values: [make] }] : []),
+        ],
+      };
 
-      const results: any[] = [];
-      for (const ep of endpoints) {
-        try {
-          const opts: any = { method: ep.method, signal: AbortSignal.timeout(15000) };
-          if (ep.method === 'POST' && ep.body) {
-            opts.headers = { 'Content-Type': 'application/json' };
-            opts.body = JSON.stringify(ep.body);
-          }
-          const r = await fetch(ep.url, opts);
-          const text = await r.text();
-          results.push({ method: ep.method, url: ep.url, status: r.status, bodyLength: text.length, preview: text.slice(0, 2000) });
-          if (r.ok && text.length > 100) break; // stop if we found a working endpoint with data
-        } catch (e) {
-          results.push({ method: ep.method, url: ep.url, error: e.message });
-        }
-      }
-
+      console.log('Payload:', JSON.stringify(payload));
+      const searchResp = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/attributes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const text = await searchResp.text();
       return new Response(
-        JSON.stringify({ success: true, results }),
+        JSON.stringify({ success: searchResp.ok, status: searchResp.status, bodyLength: text.length, data: text.slice(0, 5000) }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
