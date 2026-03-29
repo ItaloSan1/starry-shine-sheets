@@ -501,43 +501,48 @@ serve(async (req) => {
 
     if (action === 'discover') {
       const results: any = {};
+      const bucket = `${projectId}.appspot.com`;
       
-      // 1. List root collection IDs
+      // 1. List Firebase Storage objects to find pre-dismantled images
       try {
-        const listColUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:listCollectionIds`;
-        const listColRes = await fetch(listColUrl, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}' });
-        results.rootCollectionIds = listColRes.ok ? await listColRes.json() : await listColRes.text();
-      } catch(e) { results.rootError = String(e); }
+        const storageUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=&delimiter=/&maxResults=20`;
+        const storageRes = await fetch(storageUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (storageRes.ok) {
+          const storageData = await storageRes.json();
+          results.storagePrefixes = storageData.prefixes || [];
+          results.storageItems = (storageData.items || []).map((i: any) => i.name);
+        }
+      } catch(e) { results.storageError = String(e); }
       
-      // 2. Get first work-order and list its subcollections
+      // 2. Look for storage items with "pre" or "dismantl" in path
       try {
-        const woUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/work-orders?pageSize=1`;
-        const woRes = await fetch(woUrl, { headers: { Authorization: `Bearer ${token}` } });
-        if (woRes.ok) {
-          const woData = await woRes.json();
-          const woDoc = woData.documents?.[0];
-          if (woDoc) {
-            const subColUrl = `${FIRESTORE_BASE}/${woDoc.name}:listCollectionIds`;
-            const subColRes = await fetch(subColUrl, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}' });
-            results.workOrderSubcollections = subColRes.ok ? await subColRes.json() : await subColRes.text();
+        // Try common prefixes where pre-dismantled images might live
+        for (const prefix of ['preDismantled/', 'pre-dismantled/', 'preDisassembly/', 'inventory/']) {
+          const sUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=${encodeURIComponent(prefix)}&maxResults=5`;
+          const sRes = await fetch(sUrl, { headers: { Authorization: `Bearer ${token}` } });
+          if (sRes.ok) {
+            const sData = await sRes.json();
+            if (sData.items && sData.items.length > 0) {
+              results[`storage_${prefix}`] = sData.items.map((i: any) => i.name);
+            }
+            if (sData.prefixes && sData.prefixes.length > 0) {
+              results[`storagePrefixes_${prefix}`] = sData.prefixes;
+            }
           }
         }
-      } catch(e) { results.subcolError = String(e); }
+      } catch(e) { results.storagePrefixError = String(e); }
       
-      // 3. Check shelf-pickup-orders
+      // 3. Search for "ES1850" or "1850" in storage
       try {
-        const spoUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/shelf-pickup-orders?pageSize=2`;
-        const spoRes = await fetch(spoUrl, { headers: { Authorization: `Bearer ${token}` } });
-        if (spoRes.ok) {
-          const spoData = await spoRes.json();
-          results.shelfPickupOrders = (spoData.documents || []).map((d: any) => ({
-            keys: Object.keys(d.fields || {}),
-            parsed: parseFirestoreDoc(d),
-          }));
+        const sUrl1850 = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=ES1850&maxResults=10`;
+        const sRes1850 = await fetch(sUrl1850, { headers: { Authorization: `Bearer ${token}` } });
+        if (sRes1850.ok) {
+          const sData1850 = await sRes1850.json();
+          results.storage_ES1850 = (sData1850.items || []).map((i: any) => i.name);
         }
-      } catch(e) { results.spoError = String(e); }
-      
-      // 4. Get newest 20 tasks by __name__ DESC and show stock numbers
+      } catch(e) { results.storage1850Error = String(e); }
+
+      // 4. List postDismantledImages paths (first 2 that have them) to see folder structure
       try {
         const searchUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents:runQuery`;
         const res = await fetch(searchUrl, {
@@ -546,17 +551,27 @@ serve(async (req) => {
           body: JSON.stringify({ structuredQuery: {
             from: [{ collectionId: 'tasks', allDescendants: true }],
             orderBy: [{ field: { fieldPath: '__name__' }, direction: 'DESCENDING' }],
-            limit: 20,
+            limit: 50,
           }}),
         });
         if (res.ok) {
           const data = await res.json();
-          results.newestTasks = data.filter((r: any) => r.document).map((r: any) => {
+          let imagesFound = 0;
+          for (const r of data) {
+            if (!r.document || imagesFound >= 3) continue;
             const p = parseFirestoreDoc(r.document);
-            return { docId: r.document.name.split('/').pop(), stockNumber: p.inventory?.stockNumber, displayName: p.inventory?.inventoryDisplayName, allInvKeys: p.inventory ? Object.keys(p.inventory) : [] };
-          });
+            if (p.inventory?.postDismantledImages?.length > 0) {
+              results[`imagePaths_${p.inventory.stockNumber}`] = p.inventory.postDismantledImages;
+              imagesFound++;
+            }
+            // Also show newest stock numbers
+            if (p.inventory?.stockNumber) {
+              if (!results.newestStockNumbers) results.newestStockNumbers = [];
+              results.newestStockNumbers.push(p.inventory.stockNumber);
+            }
+          }
         }
-      } catch(e) { results.taskError = String(e); }
+      } catch(e) { results.imagePathError = String(e); }
       
       return new Response(JSON.stringify(results, null, 2), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
