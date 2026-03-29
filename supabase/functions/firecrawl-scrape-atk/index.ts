@@ -189,7 +189,7 @@ Deno.serve(async (req) => {
       }
 
       const scrapeData = await scrapeResponse.json();
-      const extracted = scrapeData.data?.json || scrapeData.json || {};
+      const extracted = scrapeData.data?.extract || scrapeData.extract || scrapeData.data?.json || scrapeData.json || {};
       const products = extracted.products || [];
       
       console.log(`Extracted ${products.length} products from page ${page}`);
