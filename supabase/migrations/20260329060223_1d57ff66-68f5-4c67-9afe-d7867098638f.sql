@@ -1,0 +1,1 @@
+CREATE POLICY "temp_insert_engines" ON public.remanufactured_engines FOR INSERT TO anon WITH CHECK (true);
