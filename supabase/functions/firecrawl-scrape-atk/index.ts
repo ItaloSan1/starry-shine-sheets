@@ -248,50 +248,36 @@ Deno.serve(async (req) => {
       );
     }
 
-    // ── ATK-API-SEARCH: call ATK Sales API directly for cylinder heads ──
+    // ── ATK-API-SEARCH: call ATK Sales search API for cylinder heads ──
     if (mode === 'atk-api-search') {
       const body = await req.json();
       const page = body.page || 1;
       const pageSize = body.pageSize || 100;
-      const searchTerm = body.searchTerm || 'cylinder head';
+      const pcn = body.pcn || 'Cylinder Heads';
+      const make = body.make || '';
 
-      // Try the ATK Sales search API
-      const apiUrl = 'https://extservices.lkqcorp.com/api/atksales/catalog/v1/search';
-      console.log(`Calling ATK API: page=${page}, pageSize=${pageSize}, search=${searchTerm}`);
+      const searchBody = {
+        FieldsList: ['partNumber', 'description', 'price', 'category', 'make', 'imagePath', 'displacement', 'engineSize'],
+        QueryModel: {
+          pcn: pcn,
+          make: make,
+          page: page,
+          pageSize: pageSize,
+        },
+        SortCriteria: { field: 'partNumber', direction: 'asc' },
+        CustomerGroup: 'retail',
+      };
 
-      const searchResp = await fetch(apiUrl, {
+      console.log(`ATK API search: pcn=${pcn}, make=${make}, page=${page}`);
+      const searchResp = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          searchTerm,
-          page,
-          pageSize,
-          sortBy: 'partNumber',
-          sortDirection: 'asc',
-        }),
+        body: JSON.stringify(searchBody),
       });
 
-      if (!searchResp.ok) {
-        // Try alternate endpoint formats
-        const altUrl = `https://extservices.lkqcorp.com/api/atksales/catalog/v1/products?search=${encodeURIComponent(searchTerm)}&page=${page}&pageSize=${pageSize}`;
-        const altResp = await fetch(altUrl);
-        if (!altResp.ok) {
-          const errText = await altResp.text();
-          return new Response(
-            JSON.stringify({ success: false, error: `ATK API error: ${altResp.status}`, body: errText.slice(0, 500) }),
-            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        const altData = await altResp.json();
-        return new Response(
-          JSON.stringify({ success: true, source: 'alt-endpoint', data: altData }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      const searchData = await searchResp.json();
+      const text = await searchResp.text();
       return new Response(
-        JSON.stringify({ success: true, source: 'search-endpoint', data: searchData }),
+        JSON.stringify({ success: searchResp.ok, status: searchResp.status, data: text.slice(0, 5000) }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
