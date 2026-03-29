@@ -1,88 +1,44 @@
 
 
-# Build MongoDB Inventory Integration
+# Fix Vehicle Data Display, Slow Carousel, and Detail Page Errors
 
-## Problem
-Three issues visible in your screenshots:
-1. **Vehicle detail page errors** — clicking ES1806 shows "Vehicle Not Found" / WORKER_LIMIT error because the Firebase edge function queries 13,000+ task documents, exceeding compute limits
-2. **Missing images** — some vehicles show broken images because the Firebase `tasks` collection doesn't map all images to stock numbers
-3. **Missing vehicles** — newer stock (ES1850+) not in Firebase tasks collection at all
+## Problems Identified
 
-MongoDB has all 1,234 vehicles with proper fields: `stockNumber`, `vinNumber`, `vehicleInfo`, `preDismantling.images`, `postDismantling.images`.
-
-## Solution
-
-Replace the Firebase-based vehicle data pipeline with MongoDB. Keep Firebase edge function for now (fallback) but route all vehicle queries through a new `mongo-inventory` edge function.
+1. **Year shows "0"** — `vehicleInfo.Year` is parsed with `parseInt()` but may be stored as a number (not string) or in a different field. Need to handle both cases.
+2. **Vehicle detail "Not Found"** — clicking a vehicle card navigates by MongoDB `_id`, but the edge function may still have the "Invalid time value" bug or the ObjectId lookup is failing.
+3. **Homepage carousel loads slow** — `getAllVehicles()` fetches 200 vehicles and the edge function signs an image URL for each one sequentially (200 GCS signing operations). Should fetch only ~30 for the carousel.
+4. **Missing images on some cards** — vehicles without `preDismantling` or `postDismantling` images show blank car icon. This is expected for some units but we should ensure the signing isn't silently failing.
 
 ## Steps
 
-### Step 1: Create `mongo-inventory` edge function
-New edge function at `supabase/functions/mongo-inventory/index.ts` that:
-- Connects to MongoDB `yard-app.vehicles-inventory` collection
-- Supports actions: `vehicles` (list with pagination), `vehicle` (single by ID), `makes`, `models`
-- For `vehicles`: returns paginated results (default 50), supports `page`, `pageSize`, `make`, `model`, `year`, `search` query params
-- For `vehicle`: returns single vehicle by MongoDB `_id`, includes VIN decoding via NHTSA API
-- Images: collects from `preDismantling.images` (priority) then `postDismantling.images`, generates signed URLs using existing Firebase service account for GCS bucket
-- Parses `vehicleInfo` map for Make/Model/Year/Trim/BodyClass/VehicleType
-- Server-side caching (5 min TTL) to avoid repeated MongoDB queries
-- Pagination support with `skip`/`limit` for the dropdown (50/100/150/200)
+### Step 1: Fix edge function — year parsing and performance
+In `supabase/functions/mongo-inventory/index.ts`:
+- Fix `mapVehicleDoc` to handle `Year` as both string and number: `parseInt(String(info.Year)) || 0`
+- Add a `vehiclesLight` action (or modify `vehicles` with a `light=true` param) that skips image signing entirely — returns just vehicle metadata + raw image paths. The client can show a placeholder or skip images for the carousel's non-visible pages.
+- **Remove the "cache all 1,234 vehicles" block** (lines 209-221) — this is what causes the massive slowdown. On the first unfiltered request it re-queries ALL docs and signs ALL images.
+- For the carousel specifically, only fetch `pageSize=30` and sign only those 30 thumbnails.
 
-### Step 2: Create `mongo-inventory` client adapter
-New file `src/lib/mongo-inventory.ts`:
-- Same `InventoryProvider` interface as Firebase adapter
-- Calls the new edge function
-- Client-side cache for vehicle list
-- `getAllVehicles` supports pagination params
-- `getVehicleById` returns full detail including VIN-decoded specs
+### Step 2: Fix homepage carousel — fetch only 30 units
+In `src/components/home/LatestArrivals.tsx`:
+- Change `getAllVehicles()` to `getLatestArrivals(30)` — fetch only 30 newest vehicles instead of 200.
+- This reduces the edge function from signing 200 images to 30.
 
-### Step 3: Update Latest Arrivals page
-Modify `src/pages/LatestArrivals.tsx`:
-- Switch from `firebaseInventoryProvider` to new MongoDB provider
-- Add pagination with page size dropdown (50, 100, 150, 200)
-- Add page navigation (prev/next)
-- Use lower-resolution thumbnail URLs for grid view (append resize param or use smaller image set)
-- Show loading skeleton during pagination
+### Step 3: Fix vehicle detail page
+In `supabase/functions/mongo-inventory/index.ts` (vehicle action):
+- Ensure ObjectId parsing doesn't silently fail
+- Add logging for the vehicle lookup to diagnose "not found" cases
+- Ensure VIN-decoded specs (engine, drivetrain, etc.) are properly merged into the response
 
-### Step 4: Update Vehicle Detail page
-Modify `src/pages/VehicleDetailPage.tsx`:
-- Switch to MongoDB provider
-- Show all images with thumbnail strip (low-res) and HD toggle
-- Display full VIN-decoded specs (engine, drivetrain, body, fuel, transmission, origin, vehicle type)
-- Add proper error handling with retry button instead of blank page
-- Fallback: if MongoDB fails, try cached vehicle list data
+### Step 4: Remove expensive full-cache block
+Delete lines 209-221 in the edge function that fetch ALL documents on the first unfiltered request. This single block is signing 1,234 images and causing timeouts / slow loads.
 
-### Step 5: Update Home page latest arrivals section
-Update `src/components/home/LatestArrivals.tsx` to use MongoDB provider.
-
-### Step 6: Clean up
-- Remove `mongo-discover` edge function (discovery complete)
-- Update memory notes
+### Step 5: Redeploy edge function
 
 ## Technical Details
 
-**MongoDB document structure** (from discovery):
-```text
-stockNumber: "ES1850"
-vinNumber: "1HGCV..."
-vehicleInfo: { Make, Model, Year, Trim, BodyClass, VehicleType }
-preDismantling: { images: ["vehicles-pre-dismantle/..."] }
-postDismantling: { images: ["vehicles-post-dismantle/..."] }
-```
+**Root cause of slow carousel**: Lines 209-221 fetch all 1,234 docs and sign every image on first request. GCS signing requires a crypto operation per image — 1,234 sequential crypto ops take 10+ seconds, causing the function to timeout or appear frozen.
 
-**Image resolution strategy**:
-- Grid/list view: serve images as-is (GCS signed URLs already work)
-- Detail page: show all images in thumbnail strip, click to view full size
-- HD toggle: future enhancement if GCS supports resize transforms
+**Root cause of "0" year**: `vehicleInfo.Year` may be stored as integer `2020` in MongoDB. `parseInt(2020)` works, but if it's `null` or `undefined`, it returns `NaN` → `|| 0` gives `0`. The real fix is to also check `doc.year` as a fallback field.
 
-**Pagination API**:
-```text
-GET /mongo-inventory?action=vehicles&page=1&pageSize=50&make=FORD&year=2020&search=bronco
-GET /mongo-inventory?action=vehicle&id=672d2d31ecbe757479b526c0
-```
-
-**Why this fixes the errors**:
-- MongoDB query for 1,234 docs is fast vs 13,000+ Firestore task docs
-- Single vehicle lookup is a direct `findOne` by `_id` — no full scan needed
-- Pre-dismantled images are properly linked in MongoDB
-- No more WORKER_LIMIT errors
+**Root cause of "Vehicle Not Found"**: Likely the edge function is timing out before reaching the vehicle lookup, or the previous "Invalid time value" fix wasn't deployed. Need to confirm deployment succeeded.
 
