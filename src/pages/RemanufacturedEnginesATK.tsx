@@ -150,7 +150,7 @@ export default function RemanufacturedEnginesATK() {
       setTotalCount(count || 0);
       setLoading(false);
     });
-  }, [currentPage, selectedCategory, debouncedSearch, sortBy, initialMakeGroup]);
+  }, [currentPage, selectedCategory, selectedDisplacement, debouncedSearch, sortBy, initialMakeGroup]);
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
