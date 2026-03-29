@@ -66,7 +66,47 @@ function guessEngineMakeSize(name: string): string {
 
 function isCylinderHead(title: string, specs: string): boolean {
   const combined = (title + ' ' + specs).toLowerCase();
-  return combined.includes('head') && !combined.includes('header') && !combined.includes('headlight');
+  return (combined.includes('head') || combined.includes('cyl hd') || combined.includes('cyl. hd') || combined.includes('cylinder hd'))
+    && !combined.includes('header') && !combined.includes('headlight') && !combined.includes('headgasket');
+}
+
+function parseProductFromMarkdown(pno: string, md: string) {
+  const titleMatch = md.match(new RegExp(`####\\s*${pno.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\n+([^\\n]+)`, 'i'));
+  const title = titleMatch ? titleMatch[1].trim() : '';
+  const priceMatch = md.match(/\*\*\$([0-9,]+\.\d{2})\s*USD\*\*/);
+  const price = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
+  const engineSizeMatch = md.match(/Engine Size:\s*\*\*([^*]+)\*\*/);
+  const engineSize = engineSizeMatch ? engineSizeMatch[1].trim() : null;
+  const imgMatch = md.match(/https:\/\/cdn\.lkqcorp\.com\/atk\/catalog\/[^)\s]+/);
+  const imageUrl = imgMatch ? imgMatch[0] : null;
+  return { pno, title, price, engineSize, imageUrl, isCH: isCylinderHead(title, md) };
+}
+
+function buildCylinderHeadRecord(info: any) {
+  return {
+    brand: 'ATK',
+    vendor_part_number: info.pno,
+    name: `ATK ${info.pno} ${info.title}`,
+    slug: slugify(`atk-${info.pno}-${info.title}`),
+    engine_make_size: guessEngineMakeSize(info.title),
+    displacement: info.engineSize || extractDisplacement(info.title),
+    fits_vehicles: info.title,
+    config: null,
+    price_usd: info.price,
+    image_url: info.imageUrl,
+    active: true,
+  };
+}
+
+async function upsertCylinderHeads(records: any[]) {
+  if (records.length === 0) return;
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  const { error } = await supabase
+    .from('cylinder_heads')
+    .upsert(records, { onConflict: 'vendor_part_number' });
+  if (error) throw new Error(`DB upsert failed: ${error.message}`);
 }
 
 Deno.serve(async (req) => {
@@ -81,8 +121,8 @@ Deno.serve(async (req) => {
     const url = new URL(req.url);
     const mode = url.searchParams.get('mode') || 'sitemap-scrape';
 
+    // ── LIST SITEMAP ──
     if (mode === 'list-sitemap') {
-      // Fetch sitemap and return all part numbers
       const resp = await fetch('https://www.atksales.com/sitemap.xml');
       const xml = await resp.text();
       const parts = [...xml.matchAll(/pno=([A-Za-z0-9]+)/g)].map(m => m[1]);
@@ -92,8 +132,124 @@ Deno.serve(async (req) => {
       );
     }
 
+    // ── BATCH-SUBMIT: submit URLs, return batchId immediately ──
+    if (mode === 'batch-submit') {
+      const body = await req.json();
+      const partNumbers: string[] = body.partNumbers || [];
+      if (partNumbers.length === 0) throw new Error('No part numbers provided');
+      if (partNumbers.length > 100) throw new Error('Max 100 parts per batch');
+
+      const urls = partNumbers.map(pno => `https://www.atksales.com/product-detail/?pno=${pno}`);
+      console.log(`Submitting batch of ${urls.length} URLs to Firecrawl...`);
+
+      const batchResp = await fetch('https://api.firecrawl.dev/v1/batch/scrape', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls, formats: ['markdown'], waitFor: 8000 }),
+      });
+
+      if (!batchResp.ok) {
+        const errText = await batchResp.text();
+        throw new Error(`Firecrawl batch submit failed ${batchResp.status}: ${errText}`);
+      }
+
+      const batchData = await batchResp.json();
+      return new Response(
+        JSON.stringify({ success: true, batchId: batchData.id, urlCount: urls.length }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── BATCH-POLL: check batch status, process + upsert if complete ──
+    if (mode === 'batch-poll') {
+      const batchId = url.searchParams.get('batchId');
+      if (!batchId) throw new Error('batchId parameter required');
+
+      const pollResp = await fetch(`https://api.firecrawl.dev/v1/batch/scrape/${batchId}`, {
+        headers: { 'Authorization': `Bearer ${firecrawlKey}` },
+      });
+      const pollData = await pollResp.json();
+
+      if (pollData.status !== 'completed') {
+        return new Response(
+          JSON.stringify({ success: true, status: pollData.status, completed: pollData.completed, total: pollData.total }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Process completed results
+      const pages = pollData.data || [];
+      const cylinderHeads: any[] = [];
+      const summary: any[] = [];
+
+      for (const page of pages) {
+        const md = page.markdown || '';
+        const sourceUrl = page.metadata?.sourceURL || '';
+        const pnoMatch = sourceUrl.match(/pno=([A-Za-z0-9]+)/);
+        if (!pnoMatch) continue;
+        const pno = pnoMatch[1];
+        const info = parseProductFromMarkdown(pno, md);
+        summary.push({ pno, title: info.title, price: info.price, isCH: info.isCH });
+        if (info.isCH && info.title) {
+          cylinderHeads.push(buildCylinderHeadRecord(info));
+        }
+      }
+
+      await upsertCylinderHeads(cylinderHeads);
+
+      return new Response(
+        JSON.stringify({ success: true, status: 'completed', totalPages: pages.length, cylinderHeadsFound: cylinderHeads.length, summary: summary.slice(0, 20) }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── LIST-AND-SUBMIT: fetch sitemap chunk + submit batch, return batchId ──
+    if (mode === 'list-and-submit') {
+      const body = await req.json();
+      const offset = body.offset || 0;
+      const batchSize = Math.min(body.batchSize || 100, 100);
+
+      const resp = await fetch('https://www.atksales.com/sitemap.xml');
+      const xml = await resp.text();
+      const allParts = [...xml.matchAll(/pno=([A-Za-z0-9]+)/g)].map(m => m[1]);
+
+      const chunk = allParts.slice(offset, offset + batchSize);
+      if (chunk.length === 0) {
+        return new Response(
+          JSON.stringify({ success: true, done: true, total: allParts.length, offset }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const urls = chunk.map(pno => `https://www.atksales.com/product-detail/?pno=${pno}`);
+      const batchResp = await fetch('https://api.firecrawl.dev/v1/batch/scrape', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls, formats: ['markdown'], waitFor: 8000 }),
+      });
+
+      if (!batchResp.ok) {
+        const errText = await batchResp.text();
+        throw new Error(`Firecrawl batch submit failed ${batchResp.status}: ${errText}`);
+      }
+
+      const batchData = await batchResp.json();
+      return new Response(
+        JSON.stringify({
+          success: true,
+          batchId: batchData.id,
+          offset,
+          batchSize: chunk.length,
+          nextOffset: offset + batchSize,
+          totalParts: allParts.length,
+          done: offset + batchSize >= allParts.length,
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── SCRAPE-BATCH (sequential, kept for backward compat) ──
     if (mode === 'scrape-batch') {
-      // Scrape a batch of product pages and identify + insert cylinder heads
       const body = await req.json();
       const partNumbers: string[] = body.partNumbers || [];
       if (partNumbers.length === 0) throw new Error('No part numbers provided');
@@ -107,67 +263,19 @@ Deno.serve(async (req) => {
           const scrapeResp = await fetch('https://api.firecrawl.dev/v1/scrape', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              url: `https://www.atksales.com/product-detail/?pno=${pno}`,
-              formats: ['markdown'],
-              waitFor: 8000,
-            }),
+            body: JSON.stringify({ url: `https://www.atksales.com/product-detail/?pno=${pno}`, formats: ['markdown'], waitFor: 8000 }),
           });
-
           const scrapeData = await scrapeResp.json();
           const md = scrapeData.data?.markdown || '';
-
-          // Extract title (after the part number heading)
-          const titleMatch = md.match(new RegExp(`####\\s*${pno.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\n+([^\\n]+)`, 'i'));
-          const title = titleMatch ? titleMatch[1].trim() : '';
-
-          // Extract price
-          const priceMatch = md.match(/\*\*\$([0-9,]+\.\d{2})\s*USD\*\*/);
-          const price = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
-
-          // Extract engine size
-          const engineSizeMatch = md.match(/Engine Size:\s*\*\*([^*]+)\*\*/);
-          const engineSize = engineSizeMatch ? engineSizeMatch[1].trim() : null;
-
-          // Extract image
-          const imgMatch = md.match(/https:\/\/cdn\.lkqcorp\.com\/atk\/catalog\/[^)\s]+/);
-          const imageUrl = imgMatch ? imgMatch[0] : null;
-
-          const info = { pno, title, price, engineSize, imageUrl, isCH: isCylinderHead(title, md) };
+          const info = parseProductFromMarkdown(pno, md);
           results.push(info);
-
-          if (info.isCH && title) {
-            cylinderHeads.push({
-              brand: 'ATK',
-              vendor_part_number: pno,
-              name: `ATK ${pno} ${title}`,
-              slug: slugify(`atk-${pno}-${title}`),
-              engine_make_size: guessEngineMakeSize(title),
-              displacement: engineSize || extractDisplacement(title),
-              fits_vehicles: title,
-              config: null,
-              price_usd: price,
-              image_url: imageUrl,
-              active: true,
-            });
-          }
+          if (info.isCH && info.title) cylinderHeads.push(buildCylinderHeadRecord(info));
         } catch (e) {
           results.push({ pno, error: e.message });
         }
       }
 
-      // Upsert cylinder heads
-      if (cylinderHeads.length > 0) {
-        const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-        const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-        const supabase = createClient(supabaseUrl, supabaseKey);
-
-        const { error } = await supabase
-          .from('cylinder_heads')
-          .upsert(cylinderHeads, { onConflict: 'vendor_part_number' });
-
-        if (error) throw new Error(`DB upsert failed: ${error.message}`);
-      }
+      await upsertCylinderHeads(cylinderHeads);
 
       return new Response(
         JSON.stringify({ success: true, total: partNumbers.length, cylinderHeadsFound: cylinderHeads.length, results }),
@@ -175,34 +283,26 @@ Deno.serve(async (req) => {
       );
     }
 
+    // ── SCRAPE-DIRECT (single page debug) ──
     if (mode === 'scrape-direct') {
-      // Scrape a single product page
       const pno = url.searchParams.get('pno');
       if (!pno) throw new Error('pno parameter required');
-
       const scrapeResp = await fetch('https://api.firecrawl.dev/v1/scrape', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${firecrawlKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          url: `https://www.atksales.com/product-detail/?pno=${pno}`,
-          formats: ['markdown'],
-          waitFor: 8000,
-        }),
+        body: JSON.stringify({ url: `https://www.atksales.com/product-detail/?pno=${pno}`, formats: ['markdown'], waitFor: 8000 }),
       });
-
       const scrapeData = await scrapeResp.json();
       const md = scrapeData.data?.markdown || '';
-
       return new Response(
         JSON.stringify({ success: true, markdown: md.slice(0, 5000), fullLength: md.length }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Default: JEGS engine scraping (preserved from original)
+    // ── DEFAULT: JEGS engine scraping ──
     const page = parseInt(url.searchParams.get('page') || '1');
     const pageSize = parseInt(url.searchParams.get('pageSize') || '180');
-
     const jegsUrl = `https://www.jegs.com/part-type/Engine?Brand=ATK+Engines&pageSize=${pageSize}&page=${page}`;
     console.log(`Scraping ATK engines page ${page}: ${jegsUrl}`);
 
@@ -225,17 +325,13 @@ Deno.serve(async (req) => {
     const partUrlRegex = /\/ATK-Engines\/059\/([A-Z0-9]+)\//gi;
     const allPartNumbers = new Set<string>();
     let m;
-    while ((m = partUrlRegex.exec(markdown)) !== null) {
-      allPartNumbers.add(m[1]);
-    }
+    while ((m = partUrlRegex.exec(markdown)) !== null) allPartNumbers.add(m[1]);
 
     for (const partNum of allPartNumbers) {
       if (seen.has(partNum)) continue;
       seen.add(partNum);
-
       const nameRegex = new RegExp(`\\*\\*ATK Engines ${partNum.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+(.+?)\\*\\*`, 'i');
       const nameMatch = markdown.match(nameRegex);
-
       let name = '';
       if (nameMatch) {
         name = `ATK Engines ${partNum} ${nameMatch[1]}`;
@@ -263,10 +359,7 @@ Deno.serve(async (req) => {
         engine_make_size: guessEngineMakeSize(name),
         displacement: extractDisplacement(name),
         fits_vehicles: name.replace(/\[|\]/g, ''),
-        engine_code: null,
-        config: null,
-        block_material: null,
-        head_material: null,
+        engine_code: null, config: null, block_material: null, head_material: null,
         category: 'Replacement Parts',
         price_usd: price,
         image_url: `https://www.jegs.com/images/photos/500/059/059-${partNum.toLowerCase()}.jpg`,
@@ -279,9 +372,7 @@ Deno.serve(async (req) => {
       const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
       const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
       const supabase = createClient(supabaseUrl, supabaseKey);
-      const { error } = await supabase
-        .from('remanufactured_engines')
-        .upsert(engines, { onConflict: 'vendor_part_number' });
+      const { error } = await supabase.from('remanufactured_engines').upsert(engines, { onConflict: 'vendor_part_number' });
       if (error) throw new Error(`DB upsert failed: ${error.message}`);
     }
 
