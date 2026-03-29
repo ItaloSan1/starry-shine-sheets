@@ -114,8 +114,8 @@ function mapVehicleDoc(doc: any, signedImages: string[]): any {
   return {
     id: doc._id?.toString() || '',
     stockNumber: doc.stockNumber || '',
-    year: parseInt(info.Year) || 0,
-    make: (info.Make || '').toUpperCase(),
+    year: parseInt(String(info.Year || doc.year || '0')) || 0,
+    make: String(info.Make || '').toUpperCase(),
     model: info.Model || '',
     trim: info.Trim || '',
     bodyStyle: info.BodyClass || '',
