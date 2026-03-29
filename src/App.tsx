@@ -25,6 +25,9 @@ const About = lazy(() => import('./pages/About'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const RemanufacturedEngines = lazy(() => import('./pages/RemanufacturedEngines'));
+const RemanufacturedEnginesATK = lazy(() => import('./pages/RemanufacturedEnginesATK'));
+const RemanufacturedEngineDetail = lazy(() => import('./pages/RemanufacturedEngineDetail'));
 
 function PageLoader() {
   return (
@@ -60,6 +63,9 @@ export default function App() {
           <Route path="/about" element={<Suspense fallback={<PageLoader />}><About /></Suspense>} />
           <Route path="/faq" element={<Suspense fallback={<PageLoader />}><FAQ /></Suspense>} />
           <Route path="/contact" element={<Suspense fallback={<PageLoader />}><Contact /></Suspense>} />
+          <Route path="/remanufactured-engines" element={<Suspense fallback={<PageLoader />}><RemanufacturedEngines /></Suspense>} />
+          <Route path="/remanufactured-engines/atk" element={<Suspense fallback={<PageLoader />}><RemanufacturedEnginesATK /></Suspense>} />
+          <Route path="/remanufactured-engines/atk/:slug" element={<Suspense fallback={<PageLoader />}><RemanufacturedEngineDetail /></Suspense>} />
           <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
         </Route>
       </Routes>
