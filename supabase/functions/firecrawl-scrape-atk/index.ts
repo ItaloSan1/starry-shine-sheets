@@ -252,20 +252,21 @@ Deno.serve(async (req) => {
     if (mode === 'atk-api-search') {
       const body = await req.json();
       const pcn = body.pcn || 'Cylinder Heads';
-      const make = body.make || '';
       const page = body.page || 1;
-      const pageSize = body.pageSize || 100;
+      const pageSize = body.pageSize || 20;
 
-      // Try different Condition values
-      const conditions = ['equals', 'eq', 'is', 'contains', 'in', '=', 'match'];
+      // Try different attribute names for the category filter
+      const attrNames = ['pcn', 'PCN', 'category', 'Category', 'ProductCategoryName', 'productCategoryName', 'categoryName', 'product_category'];
       const results: any[] = [];
 
-      for (const cond of conditions) {
-        const queryModel = [
-          { AttributeName: 'pcn', Condition: cond, Values: pcn },
-          ...(make ? [{ AttributeName: 'make', Condition: cond, Values: make }] : []),
-        ];
-        const payload = { FieldsList: [], QueryModel: queryModel, SortCriteria: [], CustomerGroup: 'retail', page, pageSize };
+      for (const attr of attrNames) {
+        const payload = {
+          FieldsList: [],
+          QueryModel: [{ AttributeName: attr, Condition: 'equals', Values: pcn }],
+          SortCriteria: [],
+          CustomerGroup: 'retail',
+          page, pageSize,
+        };
         const r = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -273,11 +274,27 @@ Deno.serve(async (req) => {
           signal: AbortSignal.timeout(15000),
         });
         const text = await r.text();
-        const parsed = JSON.parse(text);
-        const partCount = parsed?.data?.partDetails?.length || 0;
-        results.push({ condition: cond, status: r.status, partCount, bodyLen: text.length, preview: text.slice(0, 500) });
-        if (partCount > 0) break;
+        let partCount = 0;
+        try { partCount = JSON.parse(text)?.data?.partDetails?.length || 0; } catch {}
+        results.push({ attr, status: r.status, partCount, bodyLen: text.length });
+        if (partCount > 0) {
+          results.push({ data: text.slice(0, 3000) });
+          break;
+        }
       }
+
+      // Also try with empty QueryModel to get all products
+      const allPayload = { FieldsList: [], QueryModel: [], SortCriteria: [], CustomerGroup: 'retail', page: 1, pageSize: 5 };
+      const allR = await fetch('https://extservices.lkqcorp.com/api/atksales/catalog/v1/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(allPayload),
+        signal: AbortSignal.timeout(15000),
+      });
+      const allText = await allR.text();
+      let allPartCount = 0;
+      try { allPartCount = JSON.parse(allText)?.data?.partDetails?.length || 0; } catch {}
+      results.push({ attr: 'NONE (all products)', status: allR.status, partCount: allPartCount, bodyLen: allText.length, preview: allText.slice(0, 2000) });
 
       return new Response(
         JSON.stringify({ success: true, results }),
