@@ -73,13 +73,10 @@ export default function LatestArrivals() {
     }).catch(() => setLoading(false));
   }, [currentPage, pageSize, selectedMake, selectedModel, selectedYear, debouncedSearch]);
 
-  // Years for filter
+  // Years for filter (fast dedicated endpoint, cached)
   const [availableYears, setAvailableYears] = useState<number[]>([]);
   useEffect(() => {
-    mongoInventoryProvider.getVehiclesPaginated({ page: 1, pageSize: 200 }).then(result => {
-      const years = [...new Set(result.vehicles.map(v => v.year).filter(y => y > 0))].sort((a, b) => b - a);
-      setAvailableYears(years);
-    });
+    mongoInventoryProvider.getYears().then(setAvailableYears).catch(() => {});
   }, []);
 
   const clearFilters = () => {

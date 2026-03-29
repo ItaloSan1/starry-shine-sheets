@@ -244,7 +244,7 @@ serve(async (req) => {
         page,
         pageSize,
         totalPages: Math.ceil(total / pageSize),
-      }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }), { headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' } });
     }
 
     if (action === 'vehicle') {
