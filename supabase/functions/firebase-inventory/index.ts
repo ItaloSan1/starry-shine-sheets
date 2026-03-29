@@ -503,7 +503,35 @@ serve(async (req) => {
       const results: any = {};
       const bucket = `${projectId}.appspot.com`;
       
-      // 1. List vehicles-pre-dismantle subfolder structure
+      // 1. List top-level collections
+      try {
+        const colUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents`;
+        const colRes = await fetch(colUrl, { headers: { Authorization: `Bearer ${token}` } });
+        if (colRes.ok) {
+          const colData = await colRes.json();
+          results.topLevelDocs = (colData.documents || []).map((d: any) => d.name).slice(0, 20);
+        }
+      } catch(e) { results.colError = String(e); }
+      
+      // 1b. Try known collection names
+      for (const col of ['inventory', 'vehicles', 'inventories', 'units']) {
+        try {
+          const testUrl = `${FIRESTORE_BASE}/projects/${projectId}/databases/(default)/documents/${col}?pageSize=3`;
+          const testRes = await fetch(testUrl, { headers: { Authorization: `Bearer ${token}` } });
+          if (testRes.ok) {
+            const testData = await testRes.json();
+            if (testData.documents?.length > 0) {
+              results[`collection_${col}`] = {
+                count: testData.documents.length,
+                sampleKeys: Object.keys(testData.documents[0].fields || {}),
+                sampleId: testData.documents[0].name.split('/').pop(),
+              };
+            }
+          }
+        } catch(e) {}
+      }
+      
+      // 2. List storage prefixes
       try {
         const preUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-pre-dismantle/&delimiter=/&maxResults=20`;
         const preRes = await fetch(preUrl, { headers: { Authorization: `Bearer ${token}` } });
@@ -513,17 +541,6 @@ serve(async (req) => {
           results.preDismantleItems = (preData.items || []).map((i: any) => i.name).slice(0, 10);
         }
       } catch(e) { results.preError = String(e); }
-      
-      // 2. List vehicles-post-dismantle subfolder structure
-      try {
-        const postUrl = `https://storage.googleapis.com/storage/v1/b/${bucket}/o?prefix=vehicles-post-dismantle/&delimiter=/&maxResults=20`;
-        const postRes = await fetch(postUrl, { headers: { Authorization: `Bearer ${token}` } });
-        if (postRes.ok) {
-          const postData = await postRes.json();
-          results.postDismantlePrefixes = postData.prefixes || [];
-          results.postDismantleItems = (postData.items || []).map((i: any) => i.name).slice(0, 10);
-        }
-      } catch(e) { results.postError = String(e); }
       
       // 3. Check postDismantledImages paths + inventory _id to storage mapping
       try {
