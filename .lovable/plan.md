@@ -1,53 +1,32 @@
 
 
-# Use Firecrawl Batch Scrape API for Cylinder Heads
+# Poll Batch + Continue Scraping All ATK Cylinder Heads
 
-## Problem
-Currently scraping ATK product pages one at a time (sequential loop in `scrape-batch` mode), which is slow. The sitemap has 12,000+ part numbers and we need to identify ~900 cylinder heads among them.
+## What we'll do
 
-## Solution
-Use Firecrawl's **Batch Scrape API** (`POST /v1/batch/scrape`) which accepts an array of URLs and processes them in parallel. This is significantly faster than sequential single-page scrapes.
+Use the existing edge function's `batch-poll` and `list-and-submit` modes to systematically process all 12,000+ ATK sitemap URLs in batches of 100, identifying and inserting cylinder heads.
 
-The batch API works as follows:
-1. Submit a batch of URLs → returns a batch `id`
-2. Poll `GET /v1/batch/scrape/{id}` until status is `completed`
-3. Process all results at once
+## Execution steps
 
-## Approach
+1. **Poll batch `019d3b4c-d6ec-76d9-a17c-32df290bcdd1`** — call the edge function with `?mode=batch-poll&batchId=019d3b4c-d6ec-76d9-a17c-32df290bcdd1` to check status and process any completed results into the `cylinder_heads` table.
 
-### Step 1: Add `batch-scrape` mode to the edge function
-Update `firecrawl-scrape-atk/index.ts` with a new `batch-scrape` mode that:
-- Accepts up to 100 part numbers per call (Firecrawl batch limit)
-- Submits all URLs to `POST /v1/batch/scrape` in one request
-- Polls for completion (with timeout)
-- Parses each result to identify cylinder heads vs engines
-- Upserts cylinder heads into `cylinder_heads` table
+2. **Submit remaining batches via `list-and-submit`** — loop through the sitemap using `offset` increments of 100:
+   - Call `?mode=list-and-submit` with `{ offset: 100, batchSize: 100 }`, then `{ offset: 200 }`, etc.
+   - Each call returns a `batchId` for the submitted batch
+   - Poll each `batchId` until complete, then move to the next batch
 
-### Step 2: Add `list-and-batch` orchestration mode
-A higher-level mode that:
-1. Fetches the sitemap to get all 12,000+ part numbers
-2. Splits them into batches of 100
-3. Submits each batch via the Firecrawl batch API
-4. Returns progress (how many batches submitted, how many cylinder heads found)
+3. **Process results** — for each completed batch, the edge function automatically:
+   - Parses markdown from each scraped page
+   - Runs `isCylinderHead()` to identify cylinder heads
+   - Upserts matches into `cylinder_heads` with make/displacement/pricing/image data
 
-Since edge functions have a ~60s timeout, each invocation will process one batch of 100 URLs and return the next offset, so the caller can loop.
+## Practical approach given edge function timeouts
 
-## File Changes
+Since there are ~12,400 parts and each batch is 100 URLs, that's ~124 batches. Each batch-submit is fast (just sends URLs to Firecrawl). The polling takes longer but Firecrawl processes batches in parallel server-side.
 
-| File | Change |
-|------|--------|
-| `supabase/functions/firecrawl-scrape-atk/index.ts` | Add `batch-scrape` mode using Firecrawl batch API; add `list-and-batch` orchestration mode |
+I'll invoke these calls sequentially — submit a batch, poll it, process results, then move to the next offset. I'll track cumulative cylinder heads found and report progress.
 
-## Execution Flow
-1. Deploy updated edge function
-2. Call with `?mode=list-sitemap` to get all part numbers
-3. Call with `?mode=batch-scrape` + body `{ partNumbers: [...100 pnos] }` — submits batch, polls, parses, upserts
-4. Repeat for each batch of 100 until all 12,000+ are processed
-5. Cylinder heads are automatically identified and inserted
+## No file changes needed
 
-## Key Details
-- Firecrawl batch API: `POST https://api.firecrawl.dev/v1/batch/scrape` with `{ urls: [...], formats: ['markdown'], waitFor: 8000 }`
-- Poll: `GET https://api.firecrawl.dev/v1/batch/scrape/{id}` until `status === 'completed'`
-- Each batch of 100 URLs processes ~10x faster than sequential scraping
-- The `isCylinderHead()` function already exists and will filter cylinder heads from the results
+The edge function already has all the required modes (`batch-submit`, `batch-poll`, `list-and-submit`). This is purely execution — invoking the existing function repeatedly.
 
