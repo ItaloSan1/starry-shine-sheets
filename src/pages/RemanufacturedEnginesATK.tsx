@@ -79,20 +79,30 @@ export default function RemanufacturedEnginesATK() {
     return () => clearTimeout(t);
   }, [searchQuery]);
 
-  // Load category counts
+  // Load category counts and displacements per category
   useEffect(() => {
     supabase
       .from('remanufactured_engines')
-      .select('engine_make_size')
+      .select('engine_make_size, displacement')
       .eq('active', true)
       .then(({ data }) => {
         if (!data) return;
         const counts: Record<string, number> = {};
+        const dispMap: Record<string, Set<string>> = {};
         data.forEach((r: any) => {
           const cat = r.engine_make_size || 'Other';
           counts[cat] = (counts[cat] || 0) + 1;
+          if (r.displacement) {
+            if (!dispMap[cat]) dispMap[cat] = new Set();
+            dispMap[cat].add(r.displacement);
+          }
         });
         setCategoryCounts(counts);
+        const dispResult: Record<string, string[]> = {};
+        Object.entries(dispMap).forEach(([cat, set]) => {
+          dispResult[cat] = Array.from(set).sort();
+        });
+        setDisplacementsByCategory(dispResult);
       });
   }, []);
 
