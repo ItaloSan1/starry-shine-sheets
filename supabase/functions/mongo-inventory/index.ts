@@ -23,9 +23,26 @@ async function sha256Hex(message: string): Promise<string> {
   return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// Cache the imported key to avoid re-importing for every image
+let cachedKey: CryptoKey | null = null;
+let cachedEmail: string = '';
+
+async function getSigningKey(serviceAccount: any): Promise<{ key: CryptoKey; email: string }> {
+  if (cachedKey && cachedEmail === serviceAccount.client_email) {
+    return { key: cachedKey, email: cachedEmail };
+  }
+  const pemContents = serviceAccount.private_key.replace(/-----BEGIN PRIVATE KEY-----/, '').replace(/-----END PRIVATE KEY-----/, '').replace(/\n/g, '');
+  const binaryKey = Uint8Array.from(atob(pemContents), (c: string) => c.charCodeAt(0));
+  cachedKey = await crypto.subtle.importKey('pkcs8', binaryKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']);
+  cachedEmail = serviceAccount.client_email;
+  return { key: cachedKey, email: cachedEmail };
+}
+
 async function generateSignedUrl(bucket: string, objectPath: string, serviceAccount: any): Promise<string> {
   if (!objectPath) return '';
   if (objectPath.startsWith('http')) return objectPath;
+
+  const { key, email } = await getSigningKey(serviceAccount);
 
   const now = new Date();
   const datestamp = now.toISOString().replace(/[-:]/g, '').substring(0, 8);
@@ -33,7 +50,7 @@ async function generateSignedUrl(bucket: string, objectPath: string, serviceAcco
   const expiration = 3600;
 
   const credentialScope = `${datestamp}/auto/storage/goog4_request`;
-  const credential = `${serviceAccount.client_email}/${credentialScope}`;
+  const credential = `${email}/${credentialScope}`;
   const host = 'storage.googleapis.com';
   const canonicalUri = `/${bucket}/${objectPath}`;
 
@@ -51,10 +68,6 @@ async function generateSignedUrl(bucket: string, objectPath: string, serviceAcco
   const canonicalRequest = ['GET', canonicalUri, canonicalQueryString, `host:${host}`, '', 'host', 'UNSIGNED-PAYLOAD'].join('\n');
   const stringToSign = ['GOOG4-RSA-SHA256', timestamp, credentialScope, await sha256Hex(canonicalRequest)].join('\n');
 
-  const pemContents = serviceAccount.private_key.replace(/-----BEGIN PRIVATE KEY-----/, '').replace(/-----END PRIVATE KEY-----/, '').replace(/\n/g, '');
-  const binaryKey = Uint8Array.from(atob(pemContents), (c: string) => c.charCodeAt(0));
-
-  const key = await crypto.subtle.importKey('pkcs8', binaryKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']);
   const signature = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', key, new TextEncoder().encode(stringToSign));
   const signatureHex = [...new Uint8Array(signature)].map(b => b.toString(16).padStart(2, '0')).join('');
 
@@ -101,18 +114,20 @@ function getMongoClient(): MongoClient {
   });
 }
 
-async function signImages(imagePaths: string[], bucket: string, serviceAccount: any): Promise<string[]> {
-  const signed: string[] = [];
-  for (const p of imagePaths) {
-    if (typeof p === 'string' && p) {
-      try {
-        signed.push(await generateSignedUrl(bucket, p, serviceAccount));
-      } catch (e) {
-        console.error('Failed to sign image:', p, e);
-      }
-    }
-  }
-  return signed;
+async function signImagesParallel(imagePaths: string[], bucket: string, serviceAccount: any): Promise<string[]> {
+  const results = await Promise.all(
+    imagePaths
+      .filter(p => typeof p === 'string' && p)
+      .map(async (p) => {
+        try {
+          return await generateSignedUrl(bucket, p, serviceAccount);
+        } catch (e) {
+          console.error('Failed to sign image:', p, e);
+          return '';
+        }
+      })
+  );
+  return results.filter(Boolean);
 }
 
 function mapVehicleDoc(doc: any, signedImages: string[]): any {
@@ -157,8 +172,12 @@ serve(async (req) => {
     const serviceAccount = JSON.parse(saKeyRaw);
     const bucket = `${serviceAccount.project_id}.appspot.com`;
 
+    // Pre-warm the signing key so all parallel signs reuse it
+    await getSigningKey(serviceAccount);
+
     const url = new URL(req.url);
     const action = url.searchParams.get('action') || 'vehicles';
+    const quality = url.searchParams.get('quality') || 'thumb'; // thumb | standard | hd
 
     if (action === 'vehicles') {
       const page = parseInt(url.searchParams.get('page') || '1');
@@ -199,30 +218,23 @@ serve(async (req) => {
         .limit(pageSize)
         .toArray();
 
-      // Diagnostic: log first doc structure
-      if (docs.length > 0) {
-        const d = docs[0];
-        const vi = d.vehicleInfo;
-        console.log('DIAG first doc _id type:', typeof d._id, '_id:', String(d._id));
-        console.log('DIAG vehicleInfo type:', typeof vi, 'isMap:', typeof vi?.get === 'function');
-        if (typeof vi?.get === 'function') {
-          console.log('DIAG Map keys:', [...vi.keys()]);
-          console.log('DIAG Year from Map:', vi.get('Year'), 'Make:', vi.get('Make'));
-        } else if (vi) {
-          console.log('DIAG vehicleInfo keys:', Object.keys(vi));
-          console.log('DIAG Year:', vi.Year, 'Make:', vi.Make);
-        }
-      }
-
-      // Sign images for each vehicle
-      const vehicles = [];
-      for (const doc of docs) {
+      // Sign images in PARALLEL — the key performance improvement
+      const vehicles = await Promise.all(docs.map(async (doc) => {
         const preImages = doc.preDismantling?.images || [];
         const postImages = doc.postDismantling?.images || [];
         const firstImage = preImages[0] || postImages[0];
-        const thumbUrl = firstImage ? await generateSignedUrl(bucket, firstImage, serviceAccount) : undefined;
-        vehicles.push(mapVehicleDoc(doc, thumbUrl ? [thumbUrl] : []));
-      }
+        
+        if (quality === 'thumb') {
+          // Only sign the first image for list views
+          const thumbUrl = firstImage ? await generateSignedUrl(bucket, firstImage, serviceAccount) : undefined;
+          return mapVehicleDoc(doc, thumbUrl ? [thumbUrl] : []);
+        } else {
+          // Sign all images for detail/hd quality
+          const allImages = [...preImages, ...postImages];
+          const signed = await signImagesParallel(allImages, bucket, serviceAccount);
+          return mapVehicleDoc(doc, signed);
+        }
+      }));
 
       await client.close();
 
@@ -247,25 +259,20 @@ serve(async (req) => {
       await client.connect();
       const col = client.db('yard-app').collection('vehicles-inventory');
 
-      console.log('DIAG vehicle lookup id:', id);
-
       let doc: any = null;
       // Try ObjectId first
       try {
         doc = await col.findOne({ _id: new ObjectId(id) });
-        console.log('DIAG ObjectId lookup result:', doc ? 'found' : 'null');
-      } catch (e) {
-        console.log('DIAG ObjectId parse failed:', e.message);
+      } catch (_e) {
+        // ObjectId parse failed, try alternatives
       }
       // Try as plain string _id
       if (!doc) {
         doc = await col.findOne({ _id: id as any });
-        console.log('DIAG string _id lookup result:', doc ? 'found' : 'null');
       }
       // Try stockNumber
       if (!doc) {
         doc = await col.findOne({ stockNumber: id });
-        console.log('DIAG stockNumber lookup result:', doc ? 'found' : 'null');
       }
 
       if (!doc) {
@@ -275,22 +282,10 @@ serve(async (req) => {
         });
       }
 
-      // Log the found doc's vehicleInfo structure
-      const vi = doc.vehicleInfo;
-      console.log('DIAG detail vehicleInfo type:', typeof vi, 'isMap:', typeof vi?.get === 'function');
-      if (typeof vi?.get === 'function') {
-        console.log('DIAG detail Map keys:', [...vi.keys()]);
-      } else if (vi) {
-        console.log('DIAG detail keys:', Object.keys(vi));
-      }
-
-      // Sign ALL images
+      // Sign ALL images in parallel
       const preImages = doc.preDismantling?.images || [];
       const postImages = doc.postDismantling?.images || [];
-      const allSignedImages = [
-        ...await signImages(preImages, bucket, serviceAccount),
-        ...await signImages(postImages, bucket, serviceAccount),
-      ];
+      const allSignedImages = await signImagesParallel([...preImages, ...postImages], bucket, serviceAccount);
 
       const vehicle = mapVehicleDoc(doc, allSignedImages);
 

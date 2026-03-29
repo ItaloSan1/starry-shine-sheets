@@ -1,18 +1,148 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { mongoInventoryProvider } from '@/lib/mongo-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
-import { Phone, MessageCircle, ArrowLeft, Car, Tag, ChevronLeft, ChevronRight, X, Fuel, Cog, Gauge, Globe, Truck } from 'lucide-react';
+import { Phone, MessageCircle, ArrowLeft, Car, Tag, ChevronLeft, ChevronRight, X, Fuel, Cog, Gauge, Globe, Truck, ImageIcon } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { RequestPartForm } from '@/components/forms/RequestPartForm';
 
-export default function VehicleDetailPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [vehicle, setVehicle] = useState<(Vehicle & { images?: string[]; engineType?: string; engineSize?: string; drivetrain?: string; bodyStyle?: string; fuelType?: string; transmissionType?: string; countryOfOrigin?: string; vehicleType?: string }) | null>(null);
-  const [loading, setLoading] = useState(true);
+interface ExtendedVehicle extends Vehicle {
+  images?: string[];
+  engineType?: string;
+  engineSize?: string;
+  drivetrain?: string;
+  bodyStyle?: string;
+  fuelType?: string;
+  transmissionType?: string;
+  countryOfOrigin?: string;
+  vehicleType?: string;
+}
+
+function VehicleImageGallery({ images, alt }: { images: string[]; alt: string }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [hdMode, setHdMode] = useState(false);
+  const hasImages = images.length > 0;
+
+  return (
+    <div>
+      <div
+        className="aspect-video bg-muted rounded-lg overflow-hidden cursor-pointer relative"
+        onClick={() => hasImages && setLightboxOpen(true)}
+      >
+        {hasImages ? (
+          <img
+            src={images[selectedImage]}
+            alt={alt}
+            className={`w-full h-full ${hdMode ? 'object-contain' : 'object-cover'}`}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <Car className="w-16 h-16 text-muted-foreground/20" />
+          </div>
+        )}
+        {hasImages && (
+          <button
+            onClick={e => { e.stopPropagation(); setHdMode(!hdMode); }}
+            className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full transition-colors ${
+              hdMode ? 'bg-accent text-accent-foreground' : 'bg-black/50 text-white hover:bg-black/70'
+            }`}
+          >
+            <ImageIcon className="w-3 h-3" />
+            HD
+          </button>
+        )}
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev - 1 + images.length) % images.length); }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1 rounded-full hover:bg-black/70"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev + 1) % images.length); }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1 rounded-full hover:bg-black/70"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <span className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded">
+              {selectedImage + 1}/{images.length}
+            </span>
+          </>
+        )}
+      </div>
+      {images.length > 1 && (
+        <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
+          {images.map((img, i) => (
+            <button
+              key={i}
+              onClick={() => setSelectedImage(i)}
+              className={`shrink-0 w-16 h-12 rounded-md overflow-hidden border-2 transition-colors ${
+                i === selectedImage ? 'border-accent' : 'border-transparent'
+              }`}
+            >
+              <img src={img} alt={`View ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Lightbox */}
+      {lightboxOpen && hasImages && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
+          <button onClick={() => setLightboxOpen(false)} className="absolute top-4 right-4 text-white p-2 hover:bg-white/10 rounded-full z-10">
+            <X className="w-6 h-6" />
+          </button>
+          <button
+            onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev - 1 + images.length) % images.length); }}
+            className="absolute left-4 text-white p-2 hover:bg-white/10 rounded-full"
+          >
+            <ChevronLeft className="w-8 h-8" />
+          </button>
+          <img
+            src={images[selectedImage]}
+            alt={alt}
+            className="max-w-[90vw] max-h-[85vh] object-contain"
+            onClick={e => e.stopPropagation()}
+          />
+          <button
+            onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev + 1) % images.length); }}
+            className="absolute right-4 text-white p-2 hover:bg-white/10 rounded-full"
+          >
+            <ChevronRight className="w-8 h-8" />
+          </button>
+          <span className="absolute bottom-4 text-white text-sm">{selectedImage + 1} / {images.length}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function VehicleSpecs({ specs }: { specs: { icon: any; label: string; value: string }[] }) {
+  if (specs.length === 0) return null;
+  return (
+    <div className="mb-5">
+      <h3 className="font-bold text-sm mb-3">Vehicle Specifications</h3>
+      <div className="grid grid-cols-2 gap-2">
+        {specs.map(({ icon: Icon, label, value }) => (
+          <div key={label} className="flex items-start gap-2 bg-secondary rounded-md p-2.5">
+            <Icon className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+            <div>
+              <p className="text-[11px] text-muted-foreground">{label}</p>
+              <p className="text-xs font-medium">{value}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function VehicleDetailPage() {
+  const { id } = useParams();
+  const [vehicle, setVehicle] = useState<ExtendedVehicle | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (id) {
@@ -31,7 +161,6 @@ export default function VehicleDetailPage() {
   if (!vehicle) return <div className="max-w-4xl mx-auto px-4 py-16 text-center"><h2 className="text-xl font-bold mb-2">Vehicle Not Found</h2><Link to="/latest-arrivals" className="text-accent hover:underline">Back to Arrivals</Link></div>;
 
   const images = vehicle.images && vehicle.images.length > 0 ? vehicle.images : [];
-  const hasImages = images.length > 0;
 
   const specs = [
     vehicle.engineType && { icon: Cog, label: 'Engine', value: vehicle.engineType },
@@ -50,61 +179,8 @@ export default function VehicleDetailPage() {
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Image Gallery */}
-          <div>
-            <div
-              className="aspect-video bg-muted rounded-lg overflow-hidden cursor-pointer relative"
-              onClick={() => hasImages && setLightboxOpen(true)}
-            >
-              {hasImages ? (
-                <img
-                  src={images[selectedImage]}
-                  alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <Car className="w-16 h-16 text-muted-foreground/20" />
-                </div>
-              )}
-              {images.length > 1 && (
-                <>
-                  <button
-                    onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev - 1 + images.length) % images.length); }}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1 rounded-full hover:bg-black/70"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev + 1) % images.length); }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1 rounded-full hover:bg-black/70"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                  <span className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded">
-                    {selectedImage + 1}/{images.length}
-                  </span>
-                </>
-              )}
-            </div>
-            {images.length > 1 && (
-              <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
-                {images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedImage(i)}
-                    className={`shrink-0 w-16 h-12 rounded-md overflow-hidden border-2 transition-colors ${
-                      i === selectedImage ? 'border-accent' : 'border-transparent'
-                    }`}
-                  >
-                    <img src={img} alt={`View ${i + 1}`} className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <VehicleImageGallery images={images} alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`} />
 
-          {/* Vehicle Info */}
           <div>
             <h1 className="text-xl font-bold mb-1">{vehicle.year} {vehicle.make} {vehicle.model}</h1>
             {vehicle.trim && <p className="text-muted-foreground text-sm mb-3">{vehicle.trim}</p>}
@@ -119,23 +195,7 @@ export default function VehicleDetailPage() {
               <div className="flex justify-between py-2 border-b border-border"><span className="text-muted-foreground">Arrived</span><span className="font-medium">{new Date(vehicle.dateArrived).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span></div>
             </div>
 
-            {/* VIN-decoded specs */}
-            {specs.length > 0 && (
-              <div className="mb-5">
-                <h3 className="font-bold text-sm mb-3">Vehicle Specifications</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {specs.map(({ icon: Icon, label, value }) => (
-                    <div key={label} className="flex items-start gap-2 bg-secondary rounded-md p-2.5">
-                      <Icon className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-[11px] text-muted-foreground">{label}</p>
-                        <p className="text-xs font-medium">{value}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            <VehicleSpecs specs={specs} />
 
             {vehicle.partsAvailable && vehicle.partsAvailable.length > 0 && (
               <div className="mb-5">
@@ -159,7 +219,6 @@ export default function VehicleDetailPage() {
           </div>
         </div>
 
-        {/* Request Parts Form */}
         <div className="mt-10">
           <h2 className="text-lg font-bold mb-4">Request Parts from This Vehicle</h2>
           <RequestPartForm
@@ -170,37 +229,6 @@ export default function VehicleDetailPage() {
           />
         </div>
       </div>
-
-      {/* Lightbox */}
-      {lightboxOpen && hasImages && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
-          <button
-            onClick={() => setLightboxOpen(false)}
-            className="absolute top-4 right-4 text-white p-2 hover:bg-white/10 rounded-full z-10"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          <button
-            onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev - 1 + images.length) % images.length); }}
-            className="absolute left-4 text-white p-2 hover:bg-white/10 rounded-full"
-          >
-            <ChevronLeft className="w-8 h-8" />
-          </button>
-          <img
-            src={images[selectedImage]}
-            alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-            className="max-w-[90vw] max-h-[85vh] object-contain"
-            onClick={e => e.stopPropagation()}
-          />
-          <button
-            onClick={e => { e.stopPropagation(); setSelectedImage(prev => (prev + 1) % images.length); }}
-            className="absolute right-4 text-white p-2 hover:bg-white/10 rounded-full"
-          >
-            <ChevronRight className="w-8 h-8" />
-          </button>
-          <span className="absolute bottom-4 text-white text-sm">{selectedImage + 1} / {images.length}</span>
-        </div>
-      )}
     </div>
   );
 }
