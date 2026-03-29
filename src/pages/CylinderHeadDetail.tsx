@@ -151,7 +151,9 @@ export default function CylinderHeadDetail() {
               {head.displacement && <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">{head.displacement}</span>}
               {head.engine_make_size && <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">{head.engine_make_size}</span>}
             </div>
-            <div className="text-3xl font-extrabold text-accent mb-4">{formatCad(head.price_usd, CYLINDER_HEAD_MARKUP)}</div>
+            <div className="text-3xl font-extrabold text-accent mb-4">
+              {head.price_usd > 0 ? formatCad(head.price_usd, CYLINDER_HEAD_MARKUP) : 'Call for Pricing'}
+            </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
               <Shield className="w-4 h-4 text-accent" />
               <span>Factory-spec remanufactured — pressure tested & warranted</span>
