@@ -300,41 +300,9 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
   const vehicleMap = new Map<string, any>();
 
-  // Collect ALL unique image-related field names across entire dataset
-  const allInvImageKeys = new Set<string>();
-  const allTaskImageKeys = new Set<string>();
-  const allTaskTopKeys = new Set<string>();
-  
   for (const doc of docs) {
     const task = parseFirestoreDoc(doc);
     const inv = task.inventory;
-    
-    if (inv) {
-      for (const k of Object.keys(inv)) {
-        if (k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl') || k.toLowerCase().includes('pre')) {
-          allInvImageKeys.add(k);
-        }
-      }
-    }
-    for (const k of Object.keys(task)) {
-      allTaskTopKeys.add(k);
-      if (k.toLowerCase().includes('image') || k.toLowerCase().includes('photo') || k.toLowerCase().includes('dismantle') || k.toLowerCase().includes('disassembl') || k.toLowerCase().includes('pre')) {
-        allTaskImageKeys.add(k);
-      }
-    }
-    
-    // Log specific vehicles ES1848-ES1851 in full detail
-    if (inv && ['ES1848','ES1849','ES1850','ES1851'].includes(inv.stockNumber)) {
-      console.log(`DETAIL ${inv.stockNumber}: ALL inv keys: ${JSON.stringify(Object.keys(inv))}`);
-      console.log(`DETAIL ${inv.stockNumber}: ALL task keys: ${JSON.stringify(Object.keys(task))}`);
-      // Log any nested objects
-      for (const k of Object.keys(task)) {
-        if (typeof task[k] === 'object' && task[k] !== null && !Array.isArray(task[k])) {
-          console.log(`DETAIL ${inv.stockNumber}: task.${k} keys: ${JSON.stringify(Object.keys(task[k]))}`);
-        }
-      }
-    }
-    
     if (!inv || !inv.stockNumber) continue;
 
     const stockNum = inv.stockNumber;
@@ -342,6 +310,7 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
     const parsed = parseDisplayName(inv.inventoryDisplayName || '');
 
+    // Image priority: postDismantledImages first, then partDisassembledImages
     const images: string[] = [];
     if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
       for (const imgPath of inv.postDismantledImages) {
@@ -381,9 +350,6 @@ async function extractVehiclesFromTasks(projectId: string, token: string, servic
 
   vehiclesCache = { data: vehicles, timestamp: Date.now() };
   console.log(`Extracted ${vehicles.length} unique vehicles`);
-  console.log(`ALL_INV_IMAGE_KEYS: ${JSON.stringify([...allInvImageKeys])}`);
-  console.log(`ALL_TASK_IMAGE_KEYS: ${JSON.stringify([...allTaskImageKeys])}`);
-  console.log(`ALL_TASK_TOP_KEYS: ${JSON.stringify([...allTaskTopKeys])}`);
   return vehicles;
 }
 
