@@ -295,7 +295,7 @@ Deno.serve(async (req) => {
           head_material: null,
           category: pcn,
           price_usd: p.unitCost || 0,
-          image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
+          image_url: p.partImageUrl || `https://atksales.com/Images/Parts/Medium/${p.partNumber}.jpg`,
           source_url: `https://www.atksales.com/product-detail/?pno=${p.partNumber}`,
           active: true,
         }));
