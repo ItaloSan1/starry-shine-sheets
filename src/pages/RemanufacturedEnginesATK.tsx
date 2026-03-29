@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
+import { formatCad } from '@/lib/pricing';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Search, X, ChevronLeft, ChevronRight, ChevronDown, Filter } from 'lucide-react';
 
