@@ -433,7 +433,7 @@ serve(async (req) => {
 
     if (action === 'models') {
       const make = url.searchParams.get('make');
-      const vehicles = await extractVehiclesFromTasks(projectId, token);
+      const vehicles = await extractVehiclesFromTasks(projectId, token, serviceAccount);
       const filtered = make ? vehicles.filter(v => v.make === make) : vehicles;
       const models = [...new Set(filtered.map(v => v.model).filter(Boolean))].sort();
       return new Response(JSON.stringify({ models }), {
