@@ -63,6 +63,8 @@ export default function RemanufacturedEnginesATK() {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'price_asc' | 'price_desc'>('name');
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
+  const [displacementsByCategory, setDisplacementsByCategory] = useState<Record<string, string[]>>({});
+  const [selectedDisplacement, setSelectedDisplacement] = useState('');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(initialMakeGroup ? [initialMakeGroup] : []));
 
