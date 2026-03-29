@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
+import { formatCad, usdToCad } from '@/lib/pricing';
 import { Shield, ArrowLeft } from 'lucide-react';
 
 interface EngineDetail {
@@ -78,7 +79,7 @@ export default function RemanufacturedEngineDetail() {
 
   useSEO({
     title: engine ? `${engine.name} | ATK Remanufactured Engine | ${BUSINESS.name}` : `Remanufactured Engine | ${BUSINESS.name}`,
-    description: engine ? `${engine.name}. $${engine.price_usd.toLocaleString()}. ${engine.displacement || ''} remanufactured engine with warranty. ${BUSINESS.phone}` : 'Loading engine details...',
+    description: engine ? `${engine.name}. ${formatCad(engine.price_usd)}. ${engine.displacement || ''} remanufactured engine with warranty. ${BUSINESS.phone}` : 'Loading engine details...',
   });
 
   if (loading) {
@@ -110,8 +111,8 @@ export default function RemanufacturedEngineDetail() {
     mpn: engine.vendor_part_number,
     offers: {
       '@type': 'Offer',
-      price: engine.price_usd,
-      priceCurrency: 'USD',
+      price: usdToCad(engine.price_usd),
+      priceCurrency: 'CAD',
       availability: 'https://schema.org/InStock',
       seller: { '@type': 'Organization', name: BUSINESS.name },
     },
@@ -173,7 +174,7 @@ export default function RemanufacturedEngineDetail() {
             </div>
 
             <div className="text-3xl font-extrabold text-accent mb-4">
-              ${engine.price_usd.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              {formatCad(engine.price_usd)}
             </div>
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
@@ -243,7 +244,7 @@ export default function RemanufacturedEngineDetail() {
                 </div>
                 <div className="p-3">
                   <h3 className="text-xs font-semibold line-clamp-2 group-hover:text-accent transition-colors">{rel.name}</h3>
-                  <span className="text-sm font-bold text-accent mt-1 block">${rel.price_usd.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  <span className="text-sm font-bold text-accent mt-1 block">{formatCad(rel.price_usd)}</span>
                 </div>
               </Link>
             ))}

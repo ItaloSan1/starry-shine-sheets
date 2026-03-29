@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
+import { formatCad } from '@/lib/pricing';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Search, X, ChevronLeft, ChevronRight, ChevronDown, Filter } from 'lucide-react';
 
@@ -62,6 +63,8 @@ export default function RemanufacturedEnginesATK() {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'price_asc' | 'price_desc'>('name');
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
+  const [displacementsByCategory, setDisplacementsByCategory] = useState<Record<string, string[]>>({});
+  const [selectedDisplacement, setSelectedDisplacement] = useState('');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(initialMakeGroup ? [initialMakeGroup] : []));
 
@@ -76,20 +79,30 @@ export default function RemanufacturedEnginesATK() {
     return () => clearTimeout(t);
   }, [searchQuery]);
 
-  // Load category counts
+  // Load category counts and displacements per category
   useEffect(() => {
     supabase
       .from('remanufactured_engines')
-      .select('engine_make_size')
+      .select('engine_make_size, displacement')
       .eq('active', true)
       .then(({ data }) => {
         if (!data) return;
         const counts: Record<string, number> = {};
+        const dispMap: Record<string, Set<string>> = {};
         data.forEach((r: any) => {
           const cat = r.engine_make_size || 'Other';
           counts[cat] = (counts[cat] || 0) + 1;
+          if (r.displacement) {
+            if (!dispMap[cat]) dispMap[cat] = new Set();
+            dispMap[cat].add(r.displacement);
+          }
         });
         setCategoryCounts(counts);
+        const dispResult: Record<string, string[]> = {};
+        Object.entries(dispMap).forEach(([cat, set]) => {
+          dispResult[cat] = Array.from(set).sort();
+        });
+        setDisplacementsByCategory(dispResult);
       });
   }, []);
 
@@ -117,6 +130,10 @@ export default function RemanufacturedEnginesATK() {
       query = query.in('engine_make_size', MAKE_GROUPS[initialMakeGroup]);
     }
 
+    if (selectedDisplacement) {
+      query = query.eq('displacement', selectedDisplacement);
+    }
+
     if (debouncedSearch) {
       query = query.ilike('name', `%${debouncedSearch}%`);
     }
@@ -133,12 +150,14 @@ export default function RemanufacturedEnginesATK() {
       setTotalCount(count || 0);
       setLoading(false);
     });
-  }, [currentPage, selectedCategory, debouncedSearch, sortBy, initialMakeGroup]);
+  }, [currentPage, selectedCategory, selectedDisplacement, debouncedSearch, sortBy, initialMakeGroup]);
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
   function handleCategorySelect(cat: string) {
-    setSelectedCategory(cat === selectedCategory ? '' : cat);
+    const newCat = cat === selectedCategory ? '' : cat;
+    setSelectedCategory(newCat);
+    setSelectedDisplacement('');
     setCurrentPage(1);
     setMobileFilterOpen(false);
   }
@@ -188,6 +207,27 @@ export default function RemanufacturedEnginesATK() {
                     {m} <span className="text-xs">({categoryCounts[m] || 0})</span>
                   </button>
                 ))}
+                {/* Displacement filter within selected category */}
+                {selectedCategory && makes.includes(selectedCategory) && displacementsByCategory[selectedCategory]?.length > 0 && (
+                  <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-accent/20 pl-2">
+                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-1">Displacement</span>
+                    <button
+                      onClick={() => { setSelectedDisplacement(''); setCurrentPage(1); }}
+                      className={`w-full text-left px-2 py-1 rounded text-xs transition-colors ${!selectedDisplacement ? 'bg-accent/20 text-accent font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-secondary'}`}
+                    >
+                      All
+                    </button>
+                    {displacementsByCategory[selectedCategory].map(d => (
+                      <button
+                        key={d}
+                        onClick={() => { setSelectedDisplacement(d === selectedDisplacement ? '' : d); setCurrentPage(1); }}
+                        className={`w-full text-left px-2 py-1 rounded text-xs transition-colors ${selectedDisplacement === d ? 'bg-accent/20 text-accent font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-secondary'}`}
+                      >
+                        {d}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -310,7 +350,7 @@ export default function RemanufacturedEnginesATK() {
                           {engine.engine_make_size && <span className="bg-secondary px-2 py-0.5 rounded-full">{engine.engine_make_size}</span>}
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-accent">${engine.price_usd.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                          <span className="text-lg font-bold text-accent">{formatCad(engine.price_usd)}</span>
                           <span className="text-xs text-accent font-medium group-hover:underline">View Details →</span>
                         </div>
                       </div>
