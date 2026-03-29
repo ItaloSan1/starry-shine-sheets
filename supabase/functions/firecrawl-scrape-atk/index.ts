@@ -157,30 +157,28 @@ Deno.serve(async (req) => {
         },
         body: JSON.stringify({
           url: jegsUrl,
-          formats: [
-            {
-              type: 'json',
-              schema: {
-                type: 'object',
-                properties: {
-                  products: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      properties: {
-                        name: { type: 'string', description: 'Full product name' },
-                        part_number: { type: 'string', description: 'The vendor/ATK part number (just the numeric part, e.g. 2538)' },
-                        price: { type: 'number', description: 'Price in USD' },
-                      },
-                      required: ['name', 'part_number', 'price'],
+          formats: ['extract'],
+          extract: {
+            schema: {
+              type: 'object',
+              properties: {
+                products: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      name: { type: 'string', description: 'Full product name' },
+                      part_number: { type: 'string', description: 'The vendor/ATK part number (just the numeric part, e.g. 2538)' },
+                      price: { type: 'number', description: 'Price in USD' },
                     },
+                    required: ['name', 'part_number', 'price'],
                   },
                 },
-                required: ['products'],
               },
-              prompt: 'Extract ALL product listings on this page. Each product has a name (like "ATK Engines Remanufactured Crate Engine..."), a part number (the numeric code like 2538), and a price. Return every single product visible on the page.',
+              required: ['products'],
             },
-          ],
+            prompt: 'Extract ALL product listings on this page. Each product has a name (like "ATK Engines Remanufactured Crate Engine..."), a vendor part number (the numeric code like 2538), and a price. Return every single product visible on the page.',
+          },
           waitFor: 3000,
         }),
       });
