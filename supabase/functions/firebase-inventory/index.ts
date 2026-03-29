@@ -266,15 +266,15 @@ async function decodeVIN(vin: string): Promise<any> {
 let vehiclesCache: { data: any[]; timestamp: number } | null = null;
 const CACHE_TTL = 5 * 60 * 1000;
 
-async function extractVehiclesFromTasks(projectId: string, token: string): Promise<any[]> {
+async function extractVehiclesFromTasks(projectId: string, token: string, serviceAccount: any): Promise<any[]> {
   if (vehiclesCache && Date.now() - vehiclesCache.timestamp < CACHE_TTL) {
     return vehiclesCache.data;
   }
 
+  const bucket = `${projectId}.appspot.com`;
   const { docs } = await queryAllTasks(projectId, token);
   console.log(`Found ${docs.length} task documents`);
 
-  // Extract unique vehicles from task inventory fields
   const vehicleMap = new Map<string, any>();
 
   for (const doc of docs) {
@@ -283,26 +283,22 @@ async function extractVehiclesFromTasks(projectId: string, token: string): Promi
     if (!inv || !inv.stockNumber) continue;
 
     const stockNum = inv.stockNumber;
-    // Only keep the first/best occurrence per stock number
     if (vehicleMap.has(stockNum)) continue;
 
     const parsed = parseDisplayName(inv.inventoryDisplayName || '');
 
-    // Build image URLs
     const images: string[] = [];
-    // Pre-dismantle images (from inventory field)
     if (inv.postDismantledImages && Array.isArray(inv.postDismantledImages)) {
       for (const imgPath of inv.postDismantledImages) {
         if (typeof imgPath === 'string' && imgPath) {
-          images.push(getStorageUrl(projectId, imgPath));
+          images.push(await generateSignedUrl(bucket, imgPath, serviceAccount));
         }
       }
     }
-    // Post-disassembly images (from task)
     if (task.postDisassembly?.partDisassembledImages && Array.isArray(task.postDisassembly.partDisassembledImages)) {
       for (const imgPath of task.postDisassembly.partDisassembledImages) {
         if (typeof imgPath === 'string' && imgPath) {
-          images.push(getStorageUrl(projectId, imgPath));
+          images.push(await generateSignedUrl(bucket, imgPath, serviceAccount));
         }
       }
     }
@@ -322,12 +318,10 @@ async function extractVehiclesFromTasks(projectId: string, token: string): Promi
       images,
       imageUrl: images[0] || undefined,
       locationGroup: inv.inventoryLocationGroup || '',
-      // VIN is NEVER sent to client
     });
   }
 
   const vehicles = Array.from(vehicleMap.values());
-  // Sort newest year first
   vehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
 
   vehiclesCache = { data: vehicles, timestamp: Date.now() };
