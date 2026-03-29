@@ -350,7 +350,7 @@ export default function RemanufacturedEnginesATK() {
                           {engine.engine_make_size && <span className="bg-secondary px-2 py-0.5 rounded-full">{engine.engine_make_size}</span>}
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-accent">${engine.price_usd.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                          <span className="text-lg font-bold text-accent">{formatCad(engine.price_usd)}</span>
                           <span className="text-xs text-accent font-medium group-hover:underline">View Details →</span>
                         </div>
                       </div>
