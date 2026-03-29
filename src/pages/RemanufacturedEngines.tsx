@@ -27,7 +27,7 @@ const breadcrumbs = [
 export default function RemanufacturedEngines() {
   useSEO({
     title: 'Remanufactured Engines Edmonton | ATK Engines | Eskimo Auto Parts',
-    description: `Shop 1,000+ remanufactured engines from ATK Engines at ${BUSINESS.name}. GM, Ford, Chrysler, Toyota, Honda & more. Warranty-backed. Call ${BUSINESS.phone}.`,
+    description: `Shop 1,000+ remanufactured engines at ${BUSINESS.name}. GM, Ford, Chrysler, Toyota, Honda & more. Every engine is factory-spec rebuilt, dyno tested, and warranty-backed. Call ${BUSINESS.phone}.`,
   });
 
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
@@ -66,8 +66,8 @@ export default function RemanufacturedEngines() {
             Remanufactured Engines <span className="text-accent">Edmonton</span>
           </h1>
           <p className="text-primary-foreground/70 max-w-2xl text-lg">
-            Over {totalEngines > 0 ? totalEngines.toLocaleString() : '1,000'} remanufactured crate engines from ATK Engines.
-            Warranty-backed, ready to ship to Edmonton and across Alberta.
+            Over {totalEngines > 0 ? totalEngines.toLocaleString() : '1,000'} factory-spec remanufactured crate engines.
+            Every unit is dyno tested, warranty-backed, and available for shipping across Edmonton and Alberta.
           </p>
         </div>
       </section>
@@ -75,9 +75,9 @@ export default function RemanufacturedEngines() {
       {/* Trust Bar */}
       <section className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
-          <span className="flex items-center gap-2"><Shield className="w-5 h-5 text-accent" /> Warranty-Backed</span>
-          <span className="flex items-center gap-2"><Award className="w-5 h-5 text-accent" /> ATK Certified</span>
-          <span className="flex items-center gap-2"><Wrench className="w-5 h-5 text-accent" /> Professional Grade</span>
+          <span className="flex items-center gap-2"><Shield className="w-5 h-5 text-accent" /> Full Warranty Coverage</span>
+          <span className="flex items-center gap-2"><Award className="w-5 h-5 text-accent" /> Dyno Tested & Certified</span>
+          <span className="flex items-center gap-2"><Wrench className="w-5 h-5 text-accent" /> Professional-Grade Quality</span>
         </div>
       </section>
 
@@ -87,7 +87,6 @@ export default function RemanufacturedEngines() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {MANUFACTURER_GROUPS.map(group => {
             const count = getGroupCount(group);
-            const filterParam = group.makes[0]; // link to ATK page with first make filter
             return (
               <Link
                 key={group.label}
@@ -121,37 +120,33 @@ export default function RemanufacturedEngines() {
       {/* SEO Content */}
       <section className="bg-secondary/30 py-12">
         <div className="max-w-4xl mx-auto px-4 prose prose-sm text-foreground">
-          <h2 className="text-xl font-bold mb-4">Remanufactured vs. Used vs. Rebuilt Engines</h2>
+          <h2 className="text-xl font-bold mb-4">Understanding Your Engine Options: Remanufactured, Used, and Rebuilt</h2>
           <p>
-            <strong>Remanufactured engines</strong> are completely disassembled, cleaned, inspected, and rebuilt to original equipment manufacturer (OEM) specifications
-            using new and re-machined parts. Every component is tested and measured. This process delivers an engine that meets or exceeds the performance of a brand-new engine.
+            A <strong>remanufactured engine</strong> goes through a complete teardown. Every internal component is inspected, measured, and either re-machined to original tolerances or replaced with new parts. The assembled unit is then put through dynamometer testing to verify power output, oil pressure, and compression — the same benchmarks a factory-new engine must meet. The result is a powerplant that delivers like-new performance and durability at a fraction of the cost.
           </p>
           <p>
-            <strong>Used engines</strong> are pulled from salvage vehicles and sold as-is. While they cost less upfront, they carry uncertainty about remaining lifespan,
-            hidden damage, and wear. Eskimo Auto carries both used and remanufactured options — we help you choose what fits your budget and situation.
+            A <strong>used engine</strong> is removed directly from a donor vehicle and sold in its current condition. Pricing is lower, but the remaining service life is uncertain. At {BUSINESS.name}, we carry both options and help you weigh the trade-offs based on your vehicle, budget, and driving needs.
           </p>
           <p>
-            <strong>Rebuilt engines</strong> fall in between: worn or damaged parts are replaced, but the engine isn't fully disassembled or re-machined to factory spec.
+            A <strong>rebuilt engine</strong> sits between the two: only the worn or failed parts are replaced, while the rest of the assembly stays as-is. It's a practical repair, but without the full re-machining that a remanufactured unit receives.
           </p>
-          <h3 className="text-lg font-bold mt-6 mb-2">Why Choose ATK Engines?</h3>
+          <h3 className="text-lg font-bold mt-6 mb-2">Why We Supply ATK Engines</h3>
           <p>
-            ATK Engines is North America's largest remanufacturer of engines and cylinder heads. Every ATK engine is built in the USA,
-            dynamometer tested, and backed by a comprehensive warranty. With over 1,000 applications covering GM, Ford, Chrysler, Toyota, Honda, Nissan, Subaru, and more,
-            ATK has the right engine for your vehicle.
+            ATK is the largest dedicated engine remanufacturer in North America. Every unit they produce is assembled in the United States, tested on a dynamometer before it ships, and covered by a comprehensive warranty. With over 1,000 applications spanning domestic and import vehicles — GM, Ford, Chrysler, Toyota, Honda, Nissan, Subaru, and others — we can match virtually any vehicle on the road today. When you order through {BUSINESS.name}, you get ATK's manufacturing quality backed by our local parts expertise and customer support.
           </p>
         </div>
       </section>
 
       {/* CTA */}
       <section className="max-w-4xl mx-auto px-4 py-12 text-center">
-        <h2 className="text-2xl font-bold mb-3">Need Help Choosing the Right Engine?</h2>
-        <p className="text-muted-foreground mb-6">Our parts specialists can match you with the perfect remanufactured engine for your vehicle.</p>
+        <h2 className="text-2xl font-bold mb-3">Not Sure Which Engine Fits Your Vehicle?</h2>
+        <p className="text-muted-foreground mb-6">Tell us your year, make, model, and engine size — our parts specialists will match you with the right remanufactured engine and get you a quote the same day.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a href={`tel:${BUSINESS.phoneRaw}`} className="inline-flex items-center justify-center bg-accent text-accent-foreground font-bold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity">
             Call {BUSINESS.phone}
           </a>
           <Link to="/request-a-part" className="inline-flex items-center justify-center border border-accent text-accent font-bold px-6 py-3 rounded-lg hover:bg-accent/10 transition-colors">
-            Request a Quote
+            Request a Free Quote
           </Link>
         </div>
       </section>

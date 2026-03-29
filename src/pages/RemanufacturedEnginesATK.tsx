@@ -291,6 +291,7 @@ export default function RemanufacturedEnginesATK() {
                             src={engine.image_url}
                             alt={engine.name}
                             loading="lazy"
+                            referrerPolicy="no-referrer"
                             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = '/placeholder.svg';

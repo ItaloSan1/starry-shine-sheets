@@ -6,13 +6,12 @@ import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
-import { Shield, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Shield, ArrowLeft } from 'lucide-react';
 
 interface EngineDetail {
   id: string;
   brand: string;
   vendor_part_number: string;
-  jegs_part_number: string | null;
   name: string;
   slug: string;
   engine_make_size: string | null;
@@ -25,7 +24,6 @@ interface EngineDetail {
   category: string | null;
   price_usd: number;
   image_url: string | null;
-  source_url: string | null;
 }
 
 interface RelatedEngine {
@@ -48,7 +46,7 @@ export default function RemanufacturedEngineDetail() {
     setLoading(true);
     supabase
       .from('remanufactured_engines')
-      .select('*')
+      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, engine_code, config, block_material, head_material, category, price_usd, image_url')
       .eq('slug', slug)
       .eq('active', true)
       .maybeSingle()
@@ -56,7 +54,6 @@ export default function RemanufacturedEngineDetail() {
         setEngine(data as EngineDetail | null);
         setLoading(false);
 
-        // Fetch related engines
         if (data?.engine_make_size) {
           supabase
             .from('remanufactured_engines')
@@ -102,7 +99,6 @@ export default function RemanufacturedEngineDetail() {
     );
   }
 
-  // Product structured data
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -123,8 +119,7 @@ export default function RemanufacturedEngineDetail() {
 
   const specs = [
     { label: 'Brand', value: engine.brand },
-    { label: 'Part Number', value: engine.vendor_part_number },
-    { label: 'JEGS Part #', value: engine.jegs_part_number },
+    { label: 'Manufacturer Part #', value: engine.vendor_part_number },
     { label: 'Engine Type', value: engine.engine_make_size },
     { label: 'Displacement', value: engine.displacement },
     { label: 'Engine Code', value: engine.engine_code },
@@ -159,6 +154,7 @@ export default function RemanufacturedEngineDetail() {
                   src={engine.image_url}
                   alt={engine.name}
                   className="max-w-full max-h-full object-contain"
+                  referrerPolicy="no-referrer"
                   onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
                 />
               ) : (
@@ -182,7 +178,7 @@ export default function RemanufacturedEngineDetail() {
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
               <Shield className="w-4 h-4 text-accent" />
-              <span>Warranty-backed remanufactured engine</span>
+              <span>Factory-spec remanufactured powerplant — fully warranted</span>
             </div>
 
             {/* CTA Buttons */}
@@ -191,7 +187,7 @@ export default function RemanufacturedEngineDetail() {
                 to={`/request-a-part?part=${encodeURIComponent(engine.name)}&stock=${encodeURIComponent(engine.vendor_part_number)}`}
                 className="inline-flex items-center justify-center bg-accent text-accent-foreground font-bold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity text-center"
               >
-                Request This Engine
+                Get a Quote on This Engine
               </Link>
               <a
                 href={`tel:${BUSINESS.phoneRaw}`}
@@ -204,7 +200,7 @@ export default function RemanufacturedEngineDetail() {
             {/* Fits Vehicles */}
             {engine.fits_vehicles && (
               <div className="mb-6">
-                <h2 className="text-sm font-bold text-foreground uppercase tracking-wide mb-2">Fits Vehicles</h2>
+                <h2 className="text-sm font-bold text-foreground uppercase tracking-wide mb-2">Compatible Vehicles</h2>
                 <p className="text-sm text-muted-foreground">{engine.fits_vehicles}</p>
               </div>
             )}
@@ -223,17 +219,6 @@ export default function RemanufacturedEngineDetail() {
                 </tbody>
               </table>
             </div>
-
-            {engine.source_url && (
-              <a
-                href={engine.source_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-accent mt-4"
-              >
-                View on JEGS <ExternalLink className="w-3 h-3" />
-              </a>
-            )}
           </div>
         </div>
       </div>
@@ -251,7 +236,7 @@ export default function RemanufacturedEngineDetail() {
               >
                 <div className="aspect-[4/3] bg-secondary/30 overflow-hidden">
                   {rel.image_url ? (
-                    <img src={rel.image_url} alt={rel.name} loading="lazy" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                    <img src={rel.image_url} alt={rel.name} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">No Image</div>
                   )}
@@ -266,7 +251,7 @@ export default function RemanufacturedEngineDetail() {
         </section>
       )}
 
-      <CallToAction title="Need Help With Your Engine Order?" linkTo="/request-a-part" linkLabel="Request a Quote" />
+      <CallToAction title="Looking for Expert Engine Guidance?" linkTo="/request-a-part" linkLabel="Get a Free Quote" />
     </>
   );
 }
