@@ -41,20 +41,9 @@ export default function LatestArrivals() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Load makes on mount
+  // Load makes on mount (single cached call)
   useEffect(() => {
-    mongoInventoryProvider.getMakes().then(makes => {
-      fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/mongo-inventory?action=makes`, {
-        headers: {
-          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-      }).then(r => r.json()).then(data => {
-        setMakeCounts(data.makes || []);
-      }).catch(() => {
-        setMakeCounts(makes.map(m => ({ name: m, count: 0 })));
-      });
-    });
+    mongoInventoryProvider.getMakesWithCounts().then(setMakeCounts).catch(() => {});
   }, []);
 
   // Load models when make changes
@@ -84,13 +73,10 @@ export default function LatestArrivals() {
     }).catch(() => setLoading(false));
   }, [currentPage, pageSize, selectedMake, selectedModel, selectedYear, debouncedSearch]);
 
-  // Years for filter
+  // Years for filter (fast dedicated endpoint, cached)
   const [availableYears, setAvailableYears] = useState<number[]>([]);
   useEffect(() => {
-    mongoInventoryProvider.getVehiclesPaginated({ page: 1, pageSize: 200 }).then(result => {
-      const years = [...new Set(result.vehicles.map(v => v.year).filter(y => y > 0))].sort((a, b) => b - a);
-      setAvailableYears(years);
-    });
+    mongoInventoryProvider.getYears().then(setAvailableYears).catch(() => {});
   }, []);
 
   const clearFilters = () => {

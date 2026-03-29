@@ -21,6 +21,26 @@ interface PaginatedResult {
   totalPages: number;
 }
 
+// Simple in-memory cache
+const apiCache = new Map<string, { data: any; expiry: number }>();
+
+function getCached<T>(key: string): T | null {
+  const entry = apiCache.get(key);
+  if (!entry) return null;
+  if (Date.now() > entry.expiry) {
+    apiCache.delete(key);
+    return null;
+  }
+  return entry.data as T;
+}
+
+function setCache(key: string, data: any, ttlMs: number) {
+  apiCache.set(key, { data, expiry: Date.now() + ttlMs });
+}
+
+const CACHE_5MIN = 5 * 60 * 1000;
+const CACHE_1MIN = 60 * 1000;
+
 async function callMongoInventory(action: string, params: Record<string, string> = {}): Promise<any> {
   const queryParams = new URLSearchParams({ action, ...params });
   const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/mongo-inventory?${queryParams.toString()}`;
@@ -68,7 +88,6 @@ function mapVehicle(v: any): MongoVehicle {
 
 export class MongoInventoryProvider implements InventoryProvider {
   async searchParts(filters: SearchFilters, page = 1, pageSize = 12): Promise<SearchResult> {
-    // Parts search still uses mock data
     const { MockInventoryProvider } = await import('./mock-inventory');
     const mock = new MockInventoryProvider();
     return mock.searchParts(filters, page, pageSize);
@@ -101,14 +120,22 @@ export class MongoInventoryProvider implements InventoryProvider {
     if (params.year) queryParams.year = params.year;
     if (params.search) queryParams.search = params.search;
 
+    // Cache key based on all params
+    const cacheKey = `vehicles:${JSON.stringify(queryParams)}`;
+    const cached = getCached<PaginatedResult>(cacheKey);
+    if (cached) return cached;
+
     const result = await callMongoInventory('vehicles', queryParams);
-    return {
+    const mapped = {
       vehicles: (result.vehicles || []).map(mapVehicle),
       total: result.total || 0,
       page: result.page || 1,
       pageSize: result.pageSize || 50,
       totalPages: result.totalPages || 1,
     };
+
+    setCache(cacheKey, mapped, CACHE_1MIN);
+    return mapped;
   }
 
   async getAllVehicles(): Promise<MongoVehicle[]> {
@@ -128,13 +155,30 @@ export class MongoInventoryProvider implements InventoryProvider {
   }
 
   async getMakes(): Promise<string[]> {
+    const withCounts = await this.getMakesWithCounts();
+    return withCounts.map(m => m.name);
+  }
+
+  async getMakesWithCounts(): Promise<{ name: string; count: number }[]> {
+    const cacheKey = 'makes_with_counts';
+    const cached = getCached<{ name: string; count: number }[]>(cacheKey);
+    if (cached) return cached;
+
     const result = await callMongoInventory('makes');
-    return (result.makes || []).map((m: any) => m.name);
+    const makes = (result.makes || []).map((m: any) => ({ name: m.name, count: m.count || 0 }));
+    setCache(cacheKey, makes, CACHE_5MIN);
+    return makes;
   }
 
   async getModels(make: string): Promise<string[]> {
+    const cacheKey = `models:${make}`;
+    const cached = getCached<string[]>(cacheKey);
+    if (cached) return cached;
+
     const result = await callMongoInventory('models', { make });
-    return result.models || [];
+    const models = result.models || [];
+    setCache(cacheKey, models, CACHE_5MIN);
+    return models;
   }
 
   async getPartTypes(): Promise<string[]> {
@@ -144,8 +188,14 @@ export class MongoInventoryProvider implements InventoryProvider {
   }
 
   async getYears(): Promise<number[]> {
-    const vehicles = await this.getAllVehicles();
-    return [...new Set(vehicles.map(v => v.year).filter(y => y > 0))].sort((a, b) => b - a);
+    const cacheKey = 'years';
+    const cached = getCached<number[]>(cacheKey);
+    if (cached) return cached;
+
+    const result = await callMongoInventory('years');
+    const years: number[] = (result.years || []).filter((y: number) => y > 0).sort((a: number, b: number) => b - a);
+    setCache(cacheKey, years, CACHE_5MIN);
+    return years;
   }
 }
 
