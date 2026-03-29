@@ -334,7 +334,16 @@ export default function RemanufacturedEnginesATK() {
                             referrerPolicy="no-referrer"
                             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                             onError={(e) => {
-                              (e.target as HTMLImageElement).src = '/placeholder.svg';
+                              const img = e.target as HTMLImageElement;
+                              if (!img.dataset.fallback) {
+                                img.dataset.fallback = '1';
+                                const pno = engine.name.match(/ATK\s+(?:Engines\s+)?(\S+)/i)?.[1];
+                                if (pno) {
+                                  img.src = `https://atksales.com/Images/Parts/Medium/${pno}.jpg`;
+                                  return;
+                                }
+                              }
+                              img.src = '/placeholder.svg';
                             }}
                           />
                         ) : (

@@ -156,7 +156,15 @@ export default function RemanufacturedEngineDetail() {
                   alt={engine.name}
                   className="max-w-full max-h-full object-contain"
                   referrerPolicy="no-referrer"
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    if (!img.dataset.fallback) {
+                      img.dataset.fallback = '1';
+                      img.src = `https://atksales.com/Images/Parts/Medium/${engine.vendor_part_number}.jpg`;
+                      return;
+                    }
+                    img.src = '/placeholder.svg';
+                  }}
                 />
               ) : (
                 <span className="text-muted-foreground">No Image Available</span>
@@ -237,7 +245,15 @@ export default function RemanufacturedEngineDetail() {
               >
                 <div className="aspect-[4/3] bg-secondary/30 overflow-hidden">
                   {rel.image_url ? (
-                    <img src={rel.image_url} alt={rel.name} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                    <img src={rel.image_url} alt={rel.name} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-contain" onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      if (!img.dataset.fallback) {
+                        img.dataset.fallback = '1';
+                        const pno = rel.name.match(/ATK\s+(?:Engines\s+)?(\S+)/i)?.[1];
+                        if (pno) { img.src = `https://atksales.com/Images/Parts/Medium/${pno}.jpg`; return; }
+                      }
+                      img.src = '/placeholder.svg';
+                    }} />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">No Image</div>
                   )}

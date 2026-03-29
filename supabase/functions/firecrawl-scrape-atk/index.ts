@@ -295,7 +295,7 @@ Deno.serve(async (req) => {
           head_material: null,
           category: pcn,
           price_usd: p.unitCost || 0,
-          image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
+          image_url: p.partImageUrl || `https://atksales.com/Images/Parts/Medium/${p.partNumber}.jpg`,
           source_url: `https://www.atksales.com/product-detail/?pno=${p.partNumber}`,
           active: true,
         }));
@@ -322,7 +322,7 @@ Deno.serve(async (req) => {
           fits_vehicles: p.partTitle || '',
           config: p.specialNotes || null,
           price_usd: p.unitCost || 0,
-          image_url: p.partImageUrl || `https://cdn.lkqcorp.com/atk/catalog/engines/${p.partNumber.toLowerCase()}/atk${p.partNumber.toLowerCase()}-1.jpg`,
+          image_url: p.partImageUrl || `https://atksales.com/Images/Parts/Medium/${p.partNumber}.jpg`,
           active: true,
         }));
 
@@ -344,6 +344,83 @@ Deno.serve(async (req) => {
           partsOnPage: parts.length,
           upserted: upsertedCount,
         }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ── IMAGE-CHECK: validate and fix broken image URLs ──
+    if (mode === 'image-check') {
+      let body: any = {};
+      try { body = await req.json(); } catch {}
+      const table = url.searchParams.get('table') || body.table || 'cylinder_heads';
+      const batchSize = body.batchSize || 50;
+      const offset = body.offset || 0;
+
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const sb = createClient(supabaseUrl, supabaseKey);
+
+      const { data: rows, error } = await sb
+        .from(table)
+        .select('id, vendor_part_number, image_url')
+        .eq('active', true)
+        .range(offset, offset + batchSize - 1);
+
+      if (error) throw new Error(`DB read failed: ${error.message}`);
+      if (!rows || rows.length === 0) {
+        return new Response(JSON.stringify({ success: true, done: true, offset, checked: 0 }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+
+      const isEngine = table === 'remanufactured_engines';
+      let fixed = 0, broken = 0, ok = 0;
+
+      for (const row of rows) {
+        const pno = row.vendor_part_number;
+        const currentUrl = row.image_url;
+
+        // Generate candidate URLs to try
+        const candidates: string[] = [];
+        if (currentUrl && !currentUrl.includes('placeholder')) candidates.push(currentUrl);
+        // ATK CDN patterns
+        candidates.push(`https://cdn.lkqcorp.com/atk/catalog/engines/${pno.toLowerCase()}/atk${pno.toLowerCase()}-1.jpg`);
+        candidates.push(`https://cdn.lkqcorp.com/atk/catalog/engines/${pno.toUpperCase()}/atk${pno.toUpperCase()}-1.jpg`);
+        if (!isEngine) {
+          candidates.push(`https://cdn.lkqcorp.com/atk/catalog/cylinderheads/${pno.toLowerCase()}/atk${pno.toLowerCase()}-1.jpg`);
+          candidates.push(`https://cdn.lkqcorp.com/atk/catalog/cylinderheads/${pno.toUpperCase()}/atk${pno.toUpperCase()}-1.jpg`);
+        }
+        // ATK Sales direct
+        candidates.push(`https://atksales.com/Images/Parts/Medium/${pno}.jpg`);
+        candidates.push(`https://www.atksales.com/Images/Parts/Medium/${pno}.jpg`);
+
+        // Deduplicate
+        const unique = [...new Set(candidates)];
+
+        let foundWorking = false;
+        for (const candidate of unique) {
+          try {
+            const headResp = await fetch(candidate, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+            if (headResp.ok && headResp.status === 200) {
+              const contentType = headResp.headers.get('content-type') || '';
+              if (contentType.includes('image')) {
+                if (candidate !== currentUrl) {
+                  await sb.from(table).update({ image_url: candidate }).eq('id', row.id);
+                  fixed++;
+                } else {
+                  ok++;
+                }
+                foundWorking = true;
+                break;
+              }
+            }
+          } catch {}
+        }
+        if (!foundWorking) {
+          broken++;
+        }
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, table, offset, checked: rows.length, ok, fixed, broken, nextOffset: offset + batchSize }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
