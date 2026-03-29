@@ -65,6 +65,72 @@ export type Database = {
         }
         Relationships: []
       }
+      remanufactured_engines: {
+        Row: {
+          active: boolean | null
+          block_material: string | null
+          brand: string
+          category: string | null
+          config: string | null
+          created_at: string | null
+          displacement: string | null
+          engine_code: string | null
+          engine_make_size: string | null
+          fits_vehicles: string | null
+          head_material: string | null
+          id: string
+          image_url: string | null
+          jegs_part_number: string | null
+          name: string
+          price_usd: number
+          slug: string
+          source_url: string | null
+          vendor_part_number: string
+        }
+        Insert: {
+          active?: boolean | null
+          block_material?: string | null
+          brand?: string
+          category?: string | null
+          config?: string | null
+          created_at?: string | null
+          displacement?: string | null
+          engine_code?: string | null
+          engine_make_size?: string | null
+          fits_vehicles?: string | null
+          head_material?: string | null
+          id?: string
+          image_url?: string | null
+          jegs_part_number?: string | null
+          name: string
+          price_usd: number
+          slug: string
+          source_url?: string | null
+          vendor_part_number: string
+        }
+        Update: {
+          active?: boolean | null
+          block_material?: string | null
+          brand?: string
+          category?: string | null
+          config?: string | null
+          created_at?: string | null
+          displacement?: string | null
+          engine_code?: string | null
+          engine_make_size?: string | null
+          fits_vehicles?: string | null
+          head_material?: string | null
+          id?: string
+          image_url?: string | null
+          jegs_part_number?: string | null
+          name?: string
+          price_usd?: number
+          slug?: string
+          source_url?: string | null
+          vendor_part_number?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
