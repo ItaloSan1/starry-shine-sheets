@@ -79,7 +79,7 @@ export default function RemanufacturedEngineDetail() {
 
   useSEO({
     title: engine ? `${engine.name} | ATK Remanufactured Engine | ${BUSINESS.name}` : `Remanufactured Engine | ${BUSINESS.name}`,
-    description: engine ? `${engine.name}. ${formatCad(engine.price_usd)}. ${engine.displacement || ''} remanufactured engine with warranty. ${BUSINESS.phone}` : 'Loading engine details...',
+    description: engine ? `${engine.name}. ${engine.price_usd > 0 ? formatCad(engine.price_usd) : 'Call for Pricing'}. ${engine.displacement || ''} remanufactured engine with warranty. ${BUSINESS.phone}` : 'Loading engine details...',
   });
 
   if (loading) {
