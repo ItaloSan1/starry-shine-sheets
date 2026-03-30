@@ -30,7 +30,7 @@ export function CategoryCards() {
             <motion.div key={cat.to} variants={staggerItem}>
               <Link
                 to={cat.to}
-                className="group relative rounded-xl overflow-hidden border border-border aspect-[4/3] block card-hover"
+                className="group relative rounded-xl overflow-hidden border border-border aspect-[3/2] block card-hover"
               >
                 <img src={cat.img} alt={cat.label} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/40 to-transparent" />
