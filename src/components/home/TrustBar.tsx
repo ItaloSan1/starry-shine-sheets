@@ -11,8 +11,8 @@ const stats = [
 
 export function TrustBar() {
   return (
-    <section className="bg-card border-y border-border">
-      <div className="max-w-6xl mx-auto px-4 py-5">
+    <section className="bg-card border-y border-border border-t-2 border-t-accent/30">
+      <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {stats.map((stat, i) => (
             <ScrollReveal key={i} delay={i * 0.08} direction="up">

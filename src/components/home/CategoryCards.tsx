@@ -35,8 +35,8 @@ export function CategoryCards() {
                 <img src={cat.img} alt={cat.label} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/40 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-3 md:p-5">
-                  <h3 className="font-extrabold text-base md:text-lg text-primary-foreground mb-0.5">{cat.label}</h3>
-                  <p className="text-[11px] md:text-xs text-primary-foreground/60">{cat.desc}</p>
+                  <h3 className="font-extrabold text-base md:text-lg text-primary-foreground mb-0.5" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>{cat.label}</h3>
+                  <p className="text-[11px] md:text-xs text-primary-foreground/60" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}>{cat.desc}</p>
                 </div>
               </Link>
             </motion.div>

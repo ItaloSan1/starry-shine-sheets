@@ -30,7 +30,7 @@ export function TestimonialsSection() {
                   <Star key={i} className="w-4 h-4 fill-accent text-accent" />
                 ))}
               </div>
-              <blockquote className="text-base text-foreground leading-relaxed mb-4 font-medium">
+              <blockquote className="text-base md:text-[1.05rem] text-foreground leading-relaxed mb-4 font-medium">
                 "{t.text}"
               </blockquote>
               <div className="flex items-center gap-3">
