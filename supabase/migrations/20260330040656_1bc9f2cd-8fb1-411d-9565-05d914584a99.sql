@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX IF NOT EXISTS idx_engines_vendor_part_number ON remanufactured_engines (vendor_part_number);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_cylinder_heads_vendor_part_number ON cylinder_heads (vendor_part_number);
