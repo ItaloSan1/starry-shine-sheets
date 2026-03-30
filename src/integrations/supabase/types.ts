@@ -20,6 +20,7 @@ export type Database = {
           brand: string
           config: string | null
           created_at: string | null
+          description: string | null
           displacement: string | null
           engine_make_size: string | null
           fits_vehicles: string | null
@@ -35,6 +36,7 @@ export type Database = {
           brand?: string
           config?: string | null
           created_at?: string | null
+          description?: string | null
           displacement?: string | null
           engine_make_size?: string | null
           fits_vehicles?: string | null
@@ -50,6 +52,7 @@ export type Database = {
           brand?: string
           config?: string | null
           created_at?: string | null
+          description?: string | null
           displacement?: string | null
           engine_make_size?: string | null
           fits_vehicles?: string | null
@@ -121,6 +124,7 @@ export type Database = {
           category: string | null
           config: string | null
           created_at: string | null
+          description: string | null
           displacement: string | null
           engine_code: string | null
           engine_make_size: string | null
@@ -142,6 +146,7 @@ export type Database = {
           category?: string | null
           config?: string | null
           created_at?: string | null
+          description?: string | null
           displacement?: string | null
           engine_code?: string | null
           engine_make_size?: string | null
@@ -163,6 +168,7 @@ export type Database = {
           category?: string | null
           config?: string | null
           created_at?: string | null
+          description?: string | null
           displacement?: string | null
           engine_code?: string | null
           engine_make_size?: string | null
