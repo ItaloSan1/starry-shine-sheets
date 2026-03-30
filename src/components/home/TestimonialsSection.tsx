@@ -22,7 +22,7 @@ export function TestimonialsSection() {
             <motion.div
               key={t.name}
               variants={staggerItem}
-              className="relative border border-border rounded-xl p-6 bg-card card-hover"
+              className="relative border border-border border-l-4 border-l-accent/40 rounded-xl p-6 bg-card card-hover"
             >
               <Quote className="w-10 h-10 text-accent/10 absolute top-5 right-5" />
               <div className="flex gap-0.5 mb-4">
