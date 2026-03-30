@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Search, ClipboardList } from 'lucide-react';
+import { Menu, X, Phone, Search } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 
 const navLinks = [
@@ -15,25 +15,35 @@ const navLinks = [
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-primary text-primary-foreground shadow-md">
+    <header
+      className={`sticky top-0 z-50 text-primary-foreground shadow-md transition-all duration-300 ${
+        scrolled
+          ? 'bg-primary/95 backdrop-blur-md'
+          : 'bg-primary'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
-        {/* Logo — replace with <img> when logo file is available */}
         <Link to="/" className="flex items-center gap-2 font-extrabold text-lg tracking-tight shrink-0">
-          {/* TODO: Replace with: <img src="/logo.png" alt="Eskimo Auto & Truck Parts" className="h-8" /> */}
           <span className="text-accent">ESKIMO</span>
           <span className="hidden sm:inline text-primary-foreground/90 text-xs font-semibold uppercase tracking-wider">Auto & Truck Parts</span>
         </Link>
 
-        {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-0.5">
           {navLinks.map(link => (
             <Link
               key={link.to}
               to={link.to}
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`px-3.5 py-2.5 rounded-md text-sm font-medium transition-colors ${
                 location.pathname === link.to
                   ? 'bg-primary-foreground/20 text-primary-foreground'
                   : 'text-primary-foreground/75 hover:text-primary-foreground hover:bg-primary-foreground/10'
@@ -45,7 +55,6 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Desktop Phone CTA */}
         <a
           href={`tel:${BUSINESS.phoneRaw}`}
           className="hidden lg:flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"
@@ -54,7 +63,6 @@ export function Header() {
           {BUSINESS.phone}
         </a>
 
-        {/* Mobile menu button */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="lg:hidden p-2 rounded-md hover:bg-primary-foreground/10"
@@ -64,7 +72,6 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile Nav */}
       {mobileOpen && (
         <div className="lg:hidden border-t border-primary-foreground/10 bg-primary">
           <nav className="px-4 py-3 space-y-1">
