@@ -95,17 +95,12 @@ function VehicleImageGallery({ images, alt }: { images: string[]; alt: string })
         onClick={() => hasImages && setLightboxOpen(true)}
       >
           <BlurImage
-            src={images[selectedImage]}
+            src={hasImages ? images[selectedImage] : undefined}
             alt={alt}
             wrapperClassName="aspect-video rounded-lg"
             className={hdMode ? 'object-contain' : 'object-cover'}
             fallback={<Car className="w-16 h-16 text-muted-foreground/20" />}
           />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <Car className="w-16 h-16 text-muted-foreground/20" />
-          </div>
-        )}
         {hasImages && (
           <button
             onClick={e => { e.stopPropagation(); setHdMode(!hdMode); }}
