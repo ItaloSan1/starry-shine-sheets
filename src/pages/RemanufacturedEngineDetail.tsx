@@ -25,6 +25,7 @@ interface EngineDetail {
   category: string | null;
   price_usd: number;
   image_url: string | null;
+  description: string | null;
 }
 
 interface RelatedEngine {
@@ -47,7 +48,7 @@ export default function RemanufacturedEngineDetail() {
     setLoading(true);
     supabase
       .from('remanufactured_engines')
-      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, engine_code, config, block_material, head_material, category, price_usd, image_url')
+      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, engine_code, config, block_material, head_material, category, price_usd, image_url, description')
       .eq('slug', slug)
       .eq('active', true)
       .maybeSingle()
@@ -189,6 +190,10 @@ export default function RemanufacturedEngineDetail() {
               <Shield className="w-4 h-4 text-accent" />
               <span>Factory-spec remanufactured powerplant — fully warranted</span>
             </div>
+
+            {engine.description && (
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{engine.description}</p>
+            )}
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 mb-8">

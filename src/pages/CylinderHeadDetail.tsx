@@ -21,6 +21,7 @@ interface HeadDetail {
   config: string | null;
   price_usd: number;
   image_url: string | null;
+  description: string | null;
 }
 
 interface RelatedHead {
@@ -43,7 +44,7 @@ export default function CylinderHeadDetail() {
     setLoading(true);
     supabase
       .from('cylinder_heads')
-      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, config, price_usd, image_url')
+      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, config, price_usd, image_url, description')
       .eq('slug', slug)
       .eq('active', true)
       .maybeSingle()
@@ -162,10 +163,13 @@ export default function CylinderHeadDetail() {
             <div className="text-3xl font-extrabold text-accent mb-4">
               {head.price_usd > 0 ? formatCad(head.price_usd, CYLINDER_HEAD_MARKUP) : 'Call for Pricing'}
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
               <Shield className="w-4 h-4 text-accent" />
               <span>Factory-spec remanufactured — pressure tested & warranted</span>
             </div>
+            {head.description && (
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{head.description}</p>
+            )}
             <div className="flex flex-col sm:flex-row gap-3 mb-8">
               <Link
                 to={`/request-a-part?part=${encodeURIComponent(head.name)}&stock=${encodeURIComponent(head.vendor_part_number)}`}
