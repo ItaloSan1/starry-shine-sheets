@@ -191,6 +191,10 @@ export default function RemanufacturedEngineDetail() {
               <span>Factory-spec remanufactured powerplant — fully warranted</span>
             </div>
 
+            {engine.description && (
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{engine.description}</p>
+            )}
+
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 mb-8">
               <Link
