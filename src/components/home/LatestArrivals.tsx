@@ -6,6 +6,8 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Car } from 'lucide-react';
+import { BlurImage } from '@/components/ui/BlurImage';
+import { thumbUrl } from '@/lib/image-utils';
 
 export function LatestArrivals() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -111,20 +113,13 @@ export function LatestArrivals() {
                   to={`/latest-arrivals/${v.id}`}
                   className="bg-card border border-border rounded-xl overflow-hidden block card-hover"
                 >
-                  <div className="aspect-[16/10] bg-muted overflow-hidden">
-                    {v.imageUrl || (v.images && v.images[0]) ? (
-                      <img
-                        src={v.imageUrl || v.images?.[0]}
-                        alt={`${v.year} ${v.make} ${v.model}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Car className="w-10 h-10 text-muted-foreground/30" />
-                      </div>
-                    )}
-                  </div>
+                  <BlurImage
+                    src={thumbUrl(v.imageUrl || v.images?.[0], 400)}
+                    alt={`${v.year} ${v.make} ${v.model}`}
+                    wrapperClassName="aspect-[16/10]"
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    fallback={<Car className="w-10 h-10 text-muted-foreground/30" />}
+                  />
                   <div className="p-4">
                     <p className="font-bold text-sm">{v.year} {v.make} {v.model}</p>
                     {v.trim && <p className="text-xs text-muted-foreground">{v.trim}</p>}
