@@ -6,6 +6,8 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Car } from 'lucide-react';
+import { BlurImage } from '@/components/ui/BlurImage';
+import { thumbUrl } from '@/lib/image-utils';
 
 export function LatestArrivals() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
