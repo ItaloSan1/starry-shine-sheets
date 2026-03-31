@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { mongoInventoryProvider } from '@/lib/mongo-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
 import { Phone, MessageCircle, ArrowLeft, Car, Tag, ChevronLeft, ChevronRight, X, Fuel, Cog, Gauge, Globe, Truck, ImageIcon, ZoomIn } from 'lucide-react';
+import { BlurImage } from '@/components/ui/BlurImage';
 import { BUSINESS } from '@/lib/constants';
 import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { useSEO } from '@/hooks/useSEO';
