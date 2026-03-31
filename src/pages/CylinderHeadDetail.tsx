@@ -44,7 +44,7 @@ export default function CylinderHeadDetail() {
     setLoading(true);
     supabase
       .from('cylinder_heads')
-      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, config, price_usd, image_url')
+      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, config, price_usd, image_url, description')
       .eq('slug', slug)
       .eq('active', true)
       .maybeSingle()
