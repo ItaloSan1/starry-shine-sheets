@@ -39,7 +39,7 @@ function setCache(key: string, data: any, ttlMs: number) {
 }
 
 const CACHE_5MIN = 5 * 60 * 1000;
-const CACHE_1MIN = 60 * 1000;
+const CACHE_VEHICLES = 5 * 60 * 1000;
 
 async function callMongoInventory(action: string, params: Record<string, string> = {}): Promise<any> {
   const queryParams = new URLSearchParams({ action, ...params });
