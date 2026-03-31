@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { MongoClient, ObjectId } from "npm:mongodb@6.12.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -23,7 +24,6 @@ async function sha256Hex(message: string): Promise<string> {
   return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Cache the imported key to avoid re-importing for every image
 let cachedKey: CryptoKey | null = null;
 let cachedEmail: string = '';
 
@@ -38,6 +38,9 @@ async function getSigningKey(serviceAccount: any): Promise<{ key: CryptoKey; ema
   return { key: cachedKey, email: cachedEmail };
 }
 
+// 12-hour expiry for signed URLs
+const SIGNED_URL_EXPIRY = 43200;
+
 async function generateSignedUrl(bucket: string, objectPath: string, serviceAccount: any): Promise<string> {
   if (!objectPath) return '';
   if (objectPath.startsWith('http')) return objectPath;
@@ -47,7 +50,6 @@ async function generateSignedUrl(bucket: string, objectPath: string, serviceAcco
   const now = new Date();
   const datestamp = now.toISOString().replace(/[-:]/g, '').substring(0, 8);
   const timestamp = datestamp + 'T' + now.toISOString().replace(/[-:]/g, '').substring(9, 15) + 'Z';
-  const expiration = 3600;
 
   const credentialScope = `${datestamp}/auto/storage/goog4_request`;
   const credential = `${email}/${credentialScope}`;
@@ -58,7 +60,7 @@ async function generateSignedUrl(bucket: string, objectPath: string, serviceAcco
     ['X-Goog-Algorithm', 'GOOG4-RSA-SHA256'],
     ['X-Goog-Credential', credential],
     ['X-Goog-Date', timestamp],
-    ['X-Goog-Expires', String(expiration)],
+    ['X-Goog-Expires', String(SIGNED_URL_EXPIRY)],
     ['X-Goog-SignedHeaders', 'host'],
   ]);
 
@@ -114,20 +116,112 @@ function getMongoClient(): MongoClient {
   });
 }
 
-async function signImagesParallel(imagePaths: string[], bucket: string, serviceAccount: any): Promise<string[]> {
-  const results = await Promise.all(
-    imagePaths
-      .filter(p => typeof p === 'string' && p)
-      .map(async (p) => {
+function getSupabaseAdmin() {
+  const url = Deno.env.get('SUPABASE_URL')!;
+  const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  return createClient(url, key);
+}
+
+// ---- Image Cache Layer ----
+
+interface CachedUrl {
+  image_path: string;
+  signed_url: string;
+  expires_at: string;
+}
+
+async function getCachedUrls(
+  supabase: any,
+  vehicleId: string,
+  imagePaths: string[]
+): Promise<Map<string, string>> {
+  const result = new Map<string, string>();
+  if (imagePaths.length === 0) return result;
+
+  // Only return URLs that expire more than 10 minutes from now
+  const minExpiry = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+
+  const { data } = await supabase
+    .from('vehicle_image_cache')
+    .select('image_path, signed_url')
+    .eq('vehicle_id', vehicleId)
+    .in('image_path', imagePaths)
+    .gt('expires_at', minExpiry);
+
+  if (data) {
+    for (const row of data) {
+      result.set(row.image_path, row.signed_url);
+    }
+  }
+  return result;
+}
+
+async function upsertCachedUrls(
+  supabase: any,
+  vehicleId: string,
+  entries: { image_path: string; signed_url: string }[]
+): Promise<void> {
+  if (entries.length === 0) return;
+  const expiresAt = new Date(Date.now() + SIGNED_URL_EXPIRY * 1000).toISOString();
+  const rows = entries.map(e => ({
+    vehicle_id: vehicleId,
+    image_path: e.image_path,
+    signed_url: e.signed_url,
+    expires_at: expiresAt,
+  }));
+
+  await supabase
+    .from('vehicle_image_cache')
+    .upsert(rows, { onConflict: 'vehicle_id,image_path' });
+}
+
+async function signWithCache(
+  supabase: any,
+  vehicleId: string,
+  imagePaths: string[],
+  bucket: string,
+  serviceAccount: any
+): Promise<string[]> {
+  const validPaths = imagePaths.filter(p => typeof p === 'string' && p);
+  if (validPaths.length === 0) return [];
+
+  // 1. Check cache
+  const cached = await getCachedUrls(supabase, vehicleId, validPaths);
+
+  // 2. Sign only uncached paths
+  const toSign: string[] = [];
+  for (const p of validPaths) {
+    if (!cached.has(p)) toSign.push(p);
+  }
+
+  const newEntries: { image_path: string; signed_url: string }[] = [];
+  if (toSign.length > 0) {
+    const signed = await Promise.all(
+      toSign.map(async (p) => {
         try {
-          return await generateSignedUrl(bucket, p, serviceAccount);
+          const url = await generateSignedUrl(bucket, p, serviceAccount);
+          return { path: p, url };
         } catch (e) {
           console.error('Failed to sign image:', p, e);
-          return '';
+          return { path: p, url: '' };
         }
       })
-  );
-  return results.filter(Boolean);
+    );
+    for (const s of signed) {
+      if (s.url) {
+        cached.set(s.path, s.url);
+        newEntries.push({ image_path: s.path, signed_url: s.url });
+      }
+    }
+
+    // 3. Write new signed URLs to cache (fire and forget)
+    upsertCachedUrls(supabase, vehicleId, newEntries).catch(e =>
+      console.error('Cache upsert failed:', e)
+    );
+  }
+
+  // Return in original order
+  return validPaths.map(p => cached.get(p) || '').filter(Boolean);
 }
 
 function mapVehicleDoc(doc: any, signedImages: string[]): any {
@@ -172,12 +266,13 @@ serve(async (req) => {
     const serviceAccount = JSON.parse(saKeyRaw);
     const bucket = `${serviceAccount.project_id}.appspot.com`;
 
-    // Pre-warm the signing key so all parallel signs reuse it
     await getSigningKey(serviceAccount);
+
+    const supabase = getSupabaseAdmin();
 
     const url = new URL(req.url);
     const action = url.searchParams.get('action') || 'vehicles';
-    const quality = url.searchParams.get('quality') || 'thumb'; // thumb | standard | hd
+    const quality = url.searchParams.get('quality') || 'thumb';
 
     if (action === 'vehicles') {
       const page = parseInt(url.searchParams.get('page') || '1');
@@ -218,20 +313,19 @@ serve(async (req) => {
         .limit(pageSize)
         .toArray();
 
-      // Sign images in PARALLEL — the key performance improvement
       const vehicles = await Promise.all(docs.map(async (doc) => {
+        const vehicleId = doc._id?.toString() || '';
         const preImages = doc.preDismantling?.images || [];
         const postImages = doc.postDismantling?.images || [];
-        const firstImage = preImages[0] || postImages[0];
-        
+
         if (quality === 'thumb') {
-          // Only sign the first image for list views
-          const thumbUrl = firstImage ? await generateSignedUrl(bucket, firstImage, serviceAccount) : undefined;
-          return mapVehicleDoc(doc, thumbUrl ? [thumbUrl] : []);
+          const firstImage = preImages[0] || postImages[0];
+          if (!firstImage) return mapVehicleDoc(doc, []);
+          const signed = await signWithCache(supabase, vehicleId, [firstImage], bucket, serviceAccount);
+          return mapVehicleDoc(doc, signed);
         } else {
-          // Sign all images for detail/hd quality
           const allImages = [...preImages, ...postImages];
-          const signed = await signImagesParallel(allImages, bucket, serviceAccount);
+          const signed = await signWithCache(supabase, vehicleId, allImages, bucket, serviceAccount);
           return mapVehicleDoc(doc, signed);
         }
       }));
@@ -244,7 +338,7 @@ serve(async (req) => {
         page,
         pageSize,
         totalPages: Math.ceil(total / pageSize),
-      }), { headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' } });
+      }), { headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=120' } });
     }
 
     if (action === 'vehicle') {
@@ -260,20 +354,11 @@ serve(async (req) => {
       const col = client.db('yard-app').collection('vehicles-inventory');
 
       let doc: any = null;
-      // Try ObjectId first
       try {
         doc = await col.findOne({ _id: new ObjectId(id) });
-      } catch (_e) {
-        // ObjectId parse failed, try alternatives
-      }
-      // Try as plain string _id
-      if (!doc) {
-        doc = await col.findOne({ _id: id as any });
-      }
-      // Try stockNumber
-      if (!doc) {
-        doc = await col.findOne({ stockNumber: id });
-      }
+      } catch (_e) {}
+      if (!doc) doc = await col.findOne({ _id: id as any });
+      if (!doc) doc = await col.findOne({ stockNumber: id });
 
       if (!doc) {
         await client.close();
@@ -282,14 +367,13 @@ serve(async (req) => {
         });
       }
 
-      // Sign ALL images in parallel
+      const vehicleId = doc._id?.toString() || '';
       const preImages = doc.preDismantling?.images || [];
       const postImages = doc.postDismantling?.images || [];
-      const allSignedImages = await signImagesParallel([...preImages, ...postImages], bucket, serviceAccount);
+      const allSignedImages = await signWithCache(supabase, vehicleId, [...preImages, ...postImages], bucket, serviceAccount);
 
       const vehicle = mapVehicleDoc(doc, allSignedImages);
 
-      // VIN decode
       const vin = doc.vinNumber || '';
       if (vin) {
         const vinDecoded = await decodeVIN(vin);
@@ -299,7 +383,7 @@ serve(async (req) => {
       await client.close();
 
       return new Response(JSON.stringify({ vehicle }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=120' },
       });
     }
 

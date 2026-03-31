@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { mongoInventoryProvider } from '@/lib/mongo-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
 import { Phone, MessageCircle, ArrowLeft, Car, Tag, ChevronLeft, ChevronRight, X, Fuel, Cog, Gauge, Globe, Truck, ImageIcon, ZoomIn } from 'lucide-react';
+import { BlurImage } from '@/components/ui/BlurImage';
 import { BUSINESS } from '@/lib/constants';
 import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { useSEO } from '@/hooks/useSEO';
@@ -93,17 +94,13 @@ function VehicleImageGallery({ images, alt }: { images: string[]; alt: string })
         className="aspect-video bg-muted rounded-lg overflow-hidden cursor-pointer relative"
         onClick={() => hasImages && setLightboxOpen(true)}
       >
-        {hasImages ? (
-          <img
-            src={images[selectedImage]}
+          <BlurImage
+            src={hasImages ? images[selectedImage] : undefined}
             alt={alt}
-            className={`w-full h-full ${hdMode ? 'object-contain' : 'object-cover'}`}
+            wrapperClassName="aspect-video rounded-lg"
+            className={hdMode ? 'object-contain' : 'object-cover'}
+            fallback={<Car className="w-16 h-16 text-muted-foreground/20" />}
           />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <Car className="w-16 h-16 text-muted-foreground/20" />
-          </div>
-        )}
         {hasImages && (
           <button
             onClick={e => { e.stopPropagation(); setHdMode(!hdMode); }}
