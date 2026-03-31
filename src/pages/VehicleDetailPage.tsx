@@ -94,11 +94,12 @@ function VehicleImageGallery({ images, alt }: { images: string[]; alt: string })
         className="aspect-video bg-muted rounded-lg overflow-hidden cursor-pointer relative"
         onClick={() => hasImages && setLightboxOpen(true)}
       >
-        {hasImages ? (
-          <img
+          <BlurImage
             src={images[selectedImage]}
             alt={alt}
-            className={`w-full h-full ${hdMode ? 'object-contain' : 'object-cover'}`}
+            wrapperClassName="aspect-video rounded-lg"
+            className={hdMode ? 'object-contain' : 'object-cover'}
+            fallback={<Car className="w-16 h-16 text-muted-foreground/20" />}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
