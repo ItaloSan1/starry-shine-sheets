@@ -60,18 +60,27 @@ export default function LatestArrivals() {
   // Fetch vehicles
   useEffect(() => {
     setLoading(true);
-    mongoInventoryProvider.getVehiclesPaginated({
+    const params = {
       page: currentPage,
       pageSize,
       make: selectedMake || undefined,
       model: selectedModel || undefined,
       year: selectedYear || undefined,
       search: debouncedSearch || undefined,
-    }).then(result => {
+    };
+    mongoInventoryProvider.getVehiclesPaginated(params).then(result => {
       setVehicles(result.vehicles);
       setTotalVehicles(result.total);
       setTotalPages(result.totalPages);
       setLoading(false);
+
+      // Prefetch next page in background
+      if (result.page < result.totalPages) {
+        mongoInventoryProvider.getVehiclesPaginated({
+          ...params,
+          page: result.page + 1,
+        }).catch(() => {});
+      }
     }).catch(() => setLoading(false));
   }, [currentPage, pageSize, selectedMake, selectedModel, selectedYear, debouncedSearch]);
 
