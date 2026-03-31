@@ -4,6 +4,7 @@ import { mongoInventoryProvider } from '@/lib/mongo-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
 import { Car, Search, X, ChevronLeft, ChevronRight, ChevronDown, Filter } from 'lucide-react';
 import { BlurImage } from '@/components/ui/BlurImage';
+import { thumbUrl } from '@/lib/image-utils';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { useSEO } from '@/hooks/useSEO';
 import recyclerYard from '@/assets/recycler-yard.jpg';
