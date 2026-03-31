@@ -25,6 +25,7 @@ interface EngineDetail {
   category: string | null;
   price_usd: number;
   image_url: string | null;
+  description: string | null;
 }
 
 interface RelatedEngine {
