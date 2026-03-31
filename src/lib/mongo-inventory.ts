@@ -134,7 +134,7 @@ export class MongoInventoryProvider implements InventoryProvider {
       totalPages: result.totalPages || 1,
     };
 
-    setCache(cacheKey, mapped, CACHE_1MIN);
+    setCache(cacheKey, mapped, CACHE_VEHICLES);
     return mapped;
   }
 
