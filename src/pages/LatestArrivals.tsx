@@ -331,20 +331,13 @@ export default function LatestArrivals() {
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {vehicles.map(v => (
                   <Link key={v.id} to={`/latest-arrivals/${v.id}`} className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-                    <div className="aspect-[16/10] bg-muted overflow-hidden">
-                      {v.imageUrl || (v.images && v.images[0]) ? (
-                        <img
-                          src={v.imageUrl || v.images?.[0]}
-                          alt={`${v.year} ${v.make} ${v.model}`}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Car className="w-10 h-10 text-muted-foreground/30" />
-                        </div>
-                      )}
-                    </div>
+                    <BlurImage
+                      src={v.imageUrl || v.images?.[0]}
+                      alt={`${v.year} ${v.make} ${v.model}`}
+                      wrapperClassName="aspect-[16/10]"
+                      className="object-cover hover:scale-105 transition-transform duration-500"
+                      fallback={<Car className="w-10 h-10 text-muted-foreground/30" />}
+                    />
                     <div className="p-3">
                       <div className="flex items-start justify-between gap-2">
                         <div>
