@@ -333,7 +333,7 @@ export default function LatestArrivals() {
                 {vehicles.map(v => (
                   <Link key={v.id} to={`/latest-arrivals/${v.id}`} className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
                     <BlurImage
-                      src={v.imageUrl || v.images?.[0]}
+                      src={thumbUrl(v.imageUrl || v.images?.[0], 400)}
                       alt={`${v.year} ${v.make} ${v.model}`}
                       wrapperClassName="aspect-[16/10]"
                       className="object-cover hover:scale-105 transition-transform duration-500"
