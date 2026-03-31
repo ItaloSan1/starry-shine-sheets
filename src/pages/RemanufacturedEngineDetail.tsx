@@ -48,7 +48,7 @@ export default function RemanufacturedEngineDetail() {
     setLoading(true);
     supabase
       .from('remanufactured_engines')
-      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, engine_code, config, block_material, head_material, category, price_usd, image_url')
+      .select('id, brand, vendor_part_number, name, slug, engine_make_size, displacement, fits_vehicles, engine_code, config, block_material, head_material, category, price_usd, image_url, description')
       .eq('slug', slug)
       .eq('active', true)
       .maybeSingle()
