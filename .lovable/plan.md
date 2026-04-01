@@ -1,81 +1,83 @@
 
 
-# Improve Vehicle Image Quality & Speed
+# VIN Decoder Tool — Plan
 
-## Current Architecture
-- Images stored in Google Cloud Storage (Firebase bucket)
-- Every API call generates RSA-signed URLs server-side (1-hour expiry)
-- List views: sign 1 image per vehicle (thumbnail mode)
-- Detail views: sign all images per vehicle
-- No image resizing — raw uploaded photos served at full resolution
-- No CDN caching — signed URLs bypass most CDN layers
-- Client-side: `loading="lazy"` used, but no placeholder/blur-up
+## What We're Building
 
-## Problems
-1. **Speed**: Every page load hits the edge function to generate fresh signed URLs, even for the same vehicles
-2. **Image size**: Full-resolution photos served even for 160x120 thumbnail strips — wastes bandwidth on mobile
-3. **No visual feedback**: Images pop in with no placeholder, causing layout shift
-4. **Signed URL churn**: 1-hour expiry means users returning within minutes still trigger re-signing
+A public **VIN Decoder page** at `/vin-decoder` that handles two types of VINs:
 
-## Proposed Improvements
+1. **Modern VINs (1981+, 17-digit)** — decoded via the free **NHTSA vPIC API** (no API key needed)
+2. **Classic VINs (1960–1980, 5–13 digits)** — decoded using built-in lookup tables for GM, Ford, and Mopar
 
-### 1. Cache Signed URLs in the Database (biggest speed win)
-- Add a `vehicle_image_cache` table in the database with columns: `vehicle_id`, `image_path`, `signed_url`, `expires_at`
-- Edge function checks cache first — if a valid URL exists (expiring > 10 min from now), return it directly without RSA signing
-- Generate with 12-hour expiry instead of 1 hour to maximize cache hits
-- Reduces RSA signing operations by ~90% for repeat visits
+The tool serves both customers (finding compatible parts) and your team (quick vehicle identification).
 
-### 2. Serve Optimized Thumbnails via GCS Image Transformation
-- Google Cloud Storage supports on-the-fly image resizing via the `=w400` suffix on `lh3.googleusercontent.com` or via Firebase Extensions
-- Alternative: Create a lightweight edge function that proxies images through a resize step and caches the result
-- For list views, request images at 400px width max — cuts payload by 60-80%
+---
 
-### 3. Progressive Image Loading with Blur Placeholders
-- Add a `BlurImage` component that shows a CSS blur placeholder (solid color based on average) while loading
-- Use `IntersectionObserver` for smarter lazy loading with preload-ahead distance
-- Prevents layout shift and gives visual feedback during load
+## How It Works
 
-### 4. Increase Client-Side Cache TTL
-- Current in-memory cache: 1 minute for vehicles
-- Increase to 5 minutes for list views (inventory doesn't change that fast)
-- Add `stale-while-revalidate` pattern so users see cached data instantly while fresh data loads in background
+### Modern VIN (1981+)
+- User enters a 17-character VIN
+- We call the NHTSA API: `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{VIN}?format=json`
+- Display: Year, Make, Model, Trim, Engine, Transmission, Drivetrain, Body Style, Country of Origin, etc.
 
-### 5. Preload Next Page Images
-- When user is on page 1, prefetch page 2 vehicle thumbnails in the background
-- Improves perceived speed when paginating
+### Classic VIN (1960–1980)
+- User enters a shorter VIN (typically 5–13 characters)
+- We detect it's pre-1981 based on length and format
+- We decode using hardcoded lookup tables:
+  - **GM**: Division code, model year, assembly plant, body style
+  - **Ford**: Model year, assembly plant, body style, engine code
+  - **Mopar**: Model year, assembly plant, body/trim, engine code
+- Display what we can decode with a note that classic VINs have limited standardization
 
-## Implementation Order
-1. Cache signed URLs in DB (edge function + migration) — largest impact
-2. Increase client cache TTL + stale-while-revalidate
-3. BlurImage component for progressive loading
-4. Thumbnail resizing (may require Firebase Extension or proxy function)
-5. Preload next page
+### After Decode
+- Show a "Request Parts for This Vehicle" button that pre-fills the Part Request form with the decoded year/make/model
+- Show a "Search Our Inventory" link filtered to the decoded vehicle
 
-## Technical Details
+---
 
-**New table migration:**
-```sql
-CREATE TABLE vehicle_image_cache (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  vehicle_id text NOT NULL,
-  image_path text NOT NULL,
-  signed_url text NOT NULL,
-  expires_at timestamptz NOT NULL,
-  created_at timestamptz DEFAULT now(),
-  UNIQUE(vehicle_id, image_path)
-);
-ALTER TABLE vehicle_image_cache ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public read" ON vehicle_image_cache FOR SELECT TO anon, authenticated USING (true);
-```
+## Files to Create / Modify
 
-**Edge function change:** Before signing, query cache. After signing, upsert cache. Expiry set to 12 hours.
+### New Files
+1. **`src/lib/vin-decoder.ts`** — Core decode logic
+   - `decodeModernVIN(vin)` — calls NHTSA API, returns structured result
+   - `decodeClassicVIN(vin)` — uses lookup tables for GM/Ford/Mopar
+   - `detectVINType(vin)` — returns `'modern' | 'classic' | 'unknown'`
+   - Lookup tables for ~60s–80s division codes, engine codes, plant codes
 
-**BlurImage component:** Wraps `<img>` with a gray/muted background that fades out on load via `onLoad` event.
+2. **`src/pages/VinDecoder.tsx`** — The page component
+   - Input field with validation
+   - Auto-detect modern vs classic
+   - Results display with vehicle specs
+   - CTA buttons to request parts or search inventory
 
-**Files modified:**
-- `supabase/functions/mongo-inventory/index.ts` — add cache lookup/write, increase URL expiry
-- `src/lib/mongo-inventory.ts` — increase client cache from 1min to 5min, add stale-while-revalidate
-- New: `src/components/ui/BlurImage.tsx` — progressive image component
-- `src/pages/LatestArrivals.tsx` — use BlurImage
-- `src/pages/VehicleDetailPage.tsx` — use BlurImage
+3. **`src/components/vin/VinResults.tsx`** — Results display component
+   - Clean table/card layout of decoded fields
+   - Different layouts for modern (full data) vs classic (partial data)
+
+### Modified Files
+4. **`src/App.tsx`** — Add route `/vin-decoder`
+5. **`src/components/layout/Header.tsx`** — Add "VIN Decoder" to navigation
+6. **`src/components/layout/Footer.tsx`** — Add link if tools section exists
+
+---
+
+## Classic VIN Lookup Coverage
+
+The classic decoder will cover the most common patterns:
+
+| Make | Years | What We Decode |
+|------|-------|----------------|
+| GM (Chevy, Buick, Olds, Pontiac, Cadillac) | 1960–1980 | Division, model year, assembly plant, body style, engine |
+| Ford / Lincoln-Mercury | 1960–1980 | Model year, assembly plant, body style, engine |
+| Mopar (Chrysler, Dodge, Plymouth) | 1960–1980 | Model year, assembly plant, body/trim, engine |
+
+A disclaimer will note that pre-1981 VINs were not federally standardized, so decoding accuracy varies.
+
+---
+
+## Technical Notes
+- NHTSA API is free, no key required, public endpoint
+- Classic decode is 100% client-side (no API calls)
+- All decode logic lives in one utility file for maintainability
+- SEO-optimized page with proper meta tags and schema markup
 
