@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { VinResults } from '@/components/vin/VinResults';
 import { decodeVIN, detectVINType, type DecodedVehicle } from '@/lib/vin-decoder';
-import { SchemaMarkup } from '@/components/seo/SchemaMarkup';
+
 
 export default function VinDecoder() {
   const [vin, setVin] = useState('');
