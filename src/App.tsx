@@ -31,6 +31,7 @@ const RemanufacturedEngineDetail = lazy(() => import('./pages/RemanufacturedEngi
 const CylinderHeads = lazy(() => import('./pages/CylinderHeads'));
 const CylinderHeadsATK = lazy(() => import('./pages/CylinderHeadsATK'));
 const CylinderHeadDetail = lazy(() => import('./pages/CylinderHeadDetail'));
+const VinDecoder = lazy(() => import('./pages/VinDecoder'));
 
 function PageLoader() {
   return (
