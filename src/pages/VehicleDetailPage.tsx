@@ -376,6 +376,16 @@ export default function VehicleDetailPage() {
           </div>
         </div>
 
+        <VehicleContentSections
+          year={vehicle.year}
+          make={vehicle.make}
+          model={vehicle.model}
+          trim={vehicle.trim}
+          engineType={vehicle.engineType}
+          displacement={vehicle.engineSize}
+          transmissionType={vehicle.transmissionType}
+        />
+
         <section className="mt-10" aria-label="Request parts form">
           <h2 className="text-lg font-bold mb-4">Request Parts from This Vehicle</h2>
           <RequestPartForm
