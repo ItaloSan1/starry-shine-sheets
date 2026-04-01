@@ -32,6 +32,9 @@ const CylinderHeads = lazy(() => import('./pages/CylinderHeads'));
 const CylinderHeadsATK = lazy(() => import('./pages/CylinderHeadsATK'));
 const CylinderHeadDetail = lazy(() => import('./pages/CylinderHeadDetail'));
 const VinDecoder = lazy(() => import('./pages/VinDecoder'));
+const StaffLogin = lazy(() => import('./pages/staff/StaffLogin'));
+const TireDashboard = lazy(() => import('./pages/staff/TireDashboard'));
+const AddTire = lazy(() => import('./pages/staff/AddTire'));
 
 function PageLoader() {
   return (
