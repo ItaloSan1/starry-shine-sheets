@@ -45,7 +45,7 @@ export default function VinDecoder() {
 
   return (
     <>
-      <SchemaMarkup schema={schema} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       {/* Hero */}
       <section className="bg-primary text-primary-foreground py-12 md:py-16">

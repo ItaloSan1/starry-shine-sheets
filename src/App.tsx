@@ -73,6 +73,7 @@ export default function App() {
           <Route path="/remanufactured-cylinder-heads" element={<Suspense fallback={<PageLoader />}><CylinderHeads /></Suspense>} />
           <Route path="/remanufactured-cylinder-heads/atk" element={<Suspense fallback={<PageLoader />}><CylinderHeadsATK /></Suspense>} />
           <Route path="/remanufactured-cylinder-heads/atk/:slug" element={<Suspense fallback={<PageLoader />}><CylinderHeadDetail /></Suspense>} />
+          <Route path="/vin-decoder" element={<Suspense fallback={<PageLoader />}><VinDecoder /></Suspense>} />
           <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
         </Route>
       </Routes>

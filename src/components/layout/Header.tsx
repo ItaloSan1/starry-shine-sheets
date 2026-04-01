@@ -8,6 +8,7 @@ const navLinks = [
   { to: '/request-a-part', label: 'Request a Part' },
   { to: '/latest-arrivals', label: 'Latest Arrivals' },
   { to: '/sell-your-vehicle', label: 'Sell Your Vehicle' },
+  { to: '/vin-decoder', label: 'VIN Decoder' },
   { to: '/warranty-returns', label: 'Warranty' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
