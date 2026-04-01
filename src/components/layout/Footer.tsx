@@ -21,6 +21,7 @@ const companyLinks = [
   { to: '/auto-recycler-edmonton', label: 'Auto Recycler' },
   { to: '/for-shops-fleet', label: 'For Shops & Fleet' },
   { to: '/warranty-returns', label: 'Warranty & Returns' },
+  { to: '/vin-decoder', label: 'VIN Decoder' },
   { to: '/about', label: 'About Us' },
   { to: '/faq', label: 'FAQ' },
   { to: '/contact', label: 'Contact' },
