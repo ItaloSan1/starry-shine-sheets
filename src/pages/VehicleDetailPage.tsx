@@ -8,6 +8,7 @@ import { BUSINESS } from '@/lib/constants';
 import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { useSEO } from '@/hooks/useSEO';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
+import { VehicleContentSections } from '@/components/vehicle/VehicleContentSections';
 
 interface ExtendedVehicle extends Vehicle {
   images?: string[];
@@ -374,6 +375,16 @@ export default function VehicleDetailPage() {
             </div>
           </div>
         </div>
+
+        <VehicleContentSections
+          year={vehicle.year}
+          make={vehicle.make}
+          model={vehicle.model}
+          trim={vehicle.trim}
+          engineType={vehicle.engineType}
+          displacement={vehicle.engineSize}
+          transmissionType={vehicle.transmissionType}
+        />
 
         <section className="mt-10" aria-label="Request parts form">
           <h2 className="text-lg font-bold mb-4">Request Parts from This Vehicle</h2>
