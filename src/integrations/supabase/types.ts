@@ -185,6 +185,39 @@ export type Database = {
         }
         Relationships: []
       }
+      vehicle_content_cache: {
+        Row: {
+          created_at: string | null
+          engine_overview: string | null
+          generation_overview: string | null
+          id: string
+          parts_compatibility: string | null
+          transmission_overview: string | null
+          vehicle_facts: string | null
+          vehicle_key: string
+        }
+        Insert: {
+          created_at?: string | null
+          engine_overview?: string | null
+          generation_overview?: string | null
+          id?: string
+          parts_compatibility?: string | null
+          transmission_overview?: string | null
+          vehicle_facts?: string | null
+          vehicle_key: string
+        }
+        Update: {
+          created_at?: string | null
+          engine_overview?: string | null
+          generation_overview?: string | null
+          id?: string
+          parts_compatibility?: string | null
+          transmission_overview?: string | null
+          vehicle_facts?: string | null
+          vehicle_key?: string
+        }
+        Relationships: []
+      }
       vehicle_image_cache: {
         Row: {
           created_at: string | null
