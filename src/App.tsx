@@ -83,7 +83,6 @@ export default function App() {
         <Route path="/staff/login" element={<Suspense fallback={<PageLoader />}><StaffLogin /></Suspense>} />
         <Route path="/staff/tires" element={<Suspense fallback={<PageLoader />}><TireDashboard /></Suspense>} />
         <Route path="/staff/tires/add" element={<Suspense fallback={<PageLoader />}><AddTire /></Suspense>} />
-        </Route>
       </Routes>
     </BrowserRouter>
   );
