@@ -8,6 +8,7 @@ import { BUSINESS } from '@/lib/constants';
 import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { useSEO } from '@/hooks/useSEO';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
+import { VehicleContentSections } from '@/components/vehicle/VehicleContentSections';
 
 interface ExtendedVehicle extends Vehicle {
   images?: string[];
