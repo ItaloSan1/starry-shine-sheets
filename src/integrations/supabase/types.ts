@@ -185,6 +185,105 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_profiles: {
+        Row: {
+          created_at: string
+          full_name: string
+          id: string
+          initials: string
+          role: string
+        }
+        Insert: {
+          created_at?: string
+          full_name: string
+          id: string
+          initials: string
+          role?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string
+          id?: string
+          initials?: string
+          role?: string
+        }
+        Relationships: []
+      }
+      tire_inventory: {
+        Row: {
+          added_by: string | null
+          aspect_ratio: number
+          brand: string
+          condition: string
+          created_at: string
+          full_size: string | null
+          id: string
+          images: string[] | null
+          load_index: number | null
+          model: string | null
+          notes: string | null
+          price: number
+          quantity: number
+          rim_diameter: number
+          season: string
+          speed_rating: string | null
+          status: string
+          stock_number: string
+          tread_depth_32nds: number | null
+          tread_depth_mm: number | null
+          updated_at: string
+          width: number
+        }
+        Insert: {
+          added_by?: string | null
+          aspect_ratio: number
+          brand: string
+          condition?: string
+          created_at?: string
+          full_size?: string | null
+          id?: string
+          images?: string[] | null
+          load_index?: number | null
+          model?: string | null
+          notes?: string | null
+          price: number
+          quantity?: number
+          rim_diameter: number
+          season?: string
+          speed_rating?: string | null
+          status?: string
+          stock_number: string
+          tread_depth_32nds?: number | null
+          tread_depth_mm?: number | null
+          updated_at?: string
+          width: number
+        }
+        Update: {
+          added_by?: string | null
+          aspect_ratio?: number
+          brand?: string
+          condition?: string
+          created_at?: string
+          full_size?: string | null
+          id?: string
+          images?: string[] | null
+          load_index?: number | null
+          model?: string | null
+          notes?: string | null
+          price?: number
+          quantity?: number
+          rim_diameter?: number
+          season?: string
+          speed_rating?: string | null
+          status?: string
+          stock_number?: string
+          tread_depth_32nds?: number | null
+          tread_depth_mm?: number | null
+          updated_at?: string
+          width?: number
+        }
+        Relationships: []
+      }
       vehicle_content_cache: {
         Row: {
           created_at: string | null
