@@ -11,45 +11,43 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-14 bg-background">
+    <section className="py-20 md:py-28 bg-secondary/50">
       <div className="max-w-6xl mx-auto px-4">
         <ScrollReveal>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-1">What Edmonton Drivers Say</h2>
-          <p className="text-center text-muted-foreground mb-10 text-sm">Trusted by mechanics, shops, and vehicle owners across Edmonton</p>
+          <p className="text-accent text-sm font-semibold tracking-wider uppercase text-center mb-3">Reviews</p>
+          <h2 className="text-center mb-3">What Edmonton Drivers Say</h2>
+          <p className="text-center text-muted-foreground mb-14 text-sm max-w-lg mx-auto">
+            Trusted by mechanics, shops, and vehicle owners across Edmonton
+          </p>
         </ScrollReveal>
         <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-5" staggerDelay={0.12}>
           {testimonials.map(t => (
             <motion.div
               key={t.name}
               variants={staggerItem}
-              className="relative border border-border border-l-4 border-l-accent/40 rounded-xl p-6 bg-card card-hover"
+              className="relative glass rounded-2xl p-6 card-hover border-l-2 border-l-accent/40"
             >
-              <Quote className="w-10 h-10 text-accent/10 absolute top-5 right-5" />
+              <Quote className="w-8 h-8 text-accent/10 absolute top-5 right-5" />
               <div className="flex gap-0.5 mb-4">
                 {Array.from({ length: t.rating }).map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-accent text-accent" />
+                  <Star key={i} className="w-3.5 h-3.5 fill-accent text-accent" />
                 ))}
               </div>
-              <blockquote className="text-base md:text-[1.05rem] text-foreground leading-relaxed mb-4 font-medium">
+              <blockquote className="text-sm md:text-[0.95rem] text-foreground/80 leading-relaxed mb-5">
                 "{t.text}"
               </blockquote>
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-accent/10 flex items-center justify-center">
+                <div className="w-9 h-9 rounded-full bg-accent/10 flex items-center justify-center border border-accent/20">
                   <span className="text-sm font-bold text-accent">{t.name[0]}</span>
                 </div>
                 <div>
-                  <p className="font-bold text-sm">{t.name}</p>
+                  <p className="font-semibold text-sm">{t.name}</p>
                   <p className="text-xs text-muted-foreground">{t.role}</p>
                 </div>
               </div>
             </motion.div>
           ))}
         </StaggerChildren>
-        <ScrollReveal delay={0.4}>
-          <p className="text-center text-xs text-muted-foreground mt-8">
-            ⭐ See our <span className="text-accent font-semibold">Google Reviews</span> for more customer feedback
-          </p>
-        </ScrollReveal>
       </div>
     </section>
   );

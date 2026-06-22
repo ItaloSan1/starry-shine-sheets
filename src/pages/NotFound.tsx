@@ -13,7 +13,7 @@ export default function NotFound() {
         </p>
 
         {/* Quick search */}
-        <div className="bg-card border border-border rounded-xl p-4 mb-6">
+        <div className="glass rounded-xl p-4 mb-6">
           <p className="text-sm font-bold mb-3">Looking for a part?</p>
           <div className="flex gap-2">
             <Link

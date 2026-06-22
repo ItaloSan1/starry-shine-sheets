@@ -44,10 +44,10 @@ export default function UsedTiresRims() {
   return (
     <div className="pb-20 lg:pb-0">
       {/* Hero */}
-      <section className="bg-primary text-primary-foreground py-10">
+      <section className="bg-secondary text-foreground py-10">
         <div className="max-w-5xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold mb-2">Used Tires & Rims in Edmonton</h1>
-          <p className="text-primary-foreground/70 max-w-2xl">Quality used tires, OEM wheels, alloy rims, and steel wheels at recycler prices.</p>
+          <p className="text-foreground/60 max-w-2xl">Quality used tires, OEM wheels, alloy rims, and steel wheels at recycler prices.</p>
         </div>
       </section>
 
@@ -102,7 +102,7 @@ export default function UsedTiresRims() {
         )}
 
         {/* CTA Banner */}
-        <div className="bg-muted/50 border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="glass border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <p className="font-bold text-sm">Can't find your size?</p>
             <p className="text-xs text-muted-foreground">Call us with your tire size or bolt pattern.</p>

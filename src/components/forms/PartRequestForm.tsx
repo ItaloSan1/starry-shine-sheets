@@ -36,12 +36,12 @@ export function PartRequestForm() {
     if (errors[field]) setErrors(prev => ({ ...prev, [field]: undefined as any }));
   };
 
-  const inputClass = "px-3 py-2.5 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-accent";
+  const inputClass = "px-3 py-2.5 rounded-xl border border-border/50 bg-background/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent";
   const errorClass = "text-xs text-destructive mt-0.5";
 
   if (submitted) {
     return (
-      <div className="bg-card border border-border rounded-lg p-8 text-center">
+      <div className="glass rounded-2xl p-8 text-center">
         <CheckCircle className="w-12 h-12 text-accent mx-auto mb-3" />
         <h3 className="font-bold text-xl mb-2">Request Submitted!</h3>
         <p className="text-muted-foreground mb-1">We'll check our inventory and get back to you shortly.</p>
@@ -51,7 +51,7 @@ export function PartRequestForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-5">
+    <form onSubmit={handleSubmit} className="glass rounded-2xl p-5">
       <h3 className="font-bold text-lg mb-1">Request a Part</h3>
       <p className="text-sm text-muted-foreground mb-4">Tell us what you need and we'll check our inventory.</p>
 
@@ -78,10 +78,10 @@ export function PartRequestForm() {
       </div>
       <textarea placeholder="Additional notes..." value={form.notes} onChange={e => set('notes', e.target.value)} rows={2} className={`w-full ${inputClass} mb-4 resize-none`} />
       <div className="flex flex-col sm:flex-row gap-3">
-        <button type="submit" disabled={submitting} className="bg-accent text-accent-foreground px-6 py-2.5 rounded-md font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-50">
+        <button type="submit" disabled={submitting} className="bg-accent text-accent-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50">
           {submitting ? 'Sending...' : 'Submit Request'}
         </button>
-        <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center justify-center gap-2 border border-border text-foreground px-6 py-2.5 rounded-md font-semibold text-sm hover:bg-muted transition-colors">
+        <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center justify-center gap-2 border border-border text-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors">
           <Phone className="w-4 h-4" /> Call Instead
         </a>
       </div>

@@ -13,13 +13,13 @@ export default function WarrantyReturns() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="relative bg-primary text-primary-foreground py-8 overflow-hidden">
+      <div className="relative bg-secondary text-foreground py-8 overflow-hidden">
         <div className="absolute inset-0">
           <img src={warranty} alt="Quality auto parts warranty" className="w-full h-full object-cover opacity-20" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4">
-          <h1 className="text-xl md:text-3xl font-bold text-primary-foreground">Warranty & Returns Policy</h1>
-          <p className="text-primary-foreground/80 mt-2 text-sm md:text-base">We stand behind every part we sell.</p>
+          <h1 className="text-xl md:text-3xl font-bold text-foreground">Warranty & Returns Policy</h1>
+          <p className="text-foreground/70 mt-2 text-sm md:text-base">We stand behind every part we sell.</p>
         </div>
       </div>
       <div className="max-w-4xl mx-auto px-4 py-8">

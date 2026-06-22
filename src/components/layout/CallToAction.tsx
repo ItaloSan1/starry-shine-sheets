@@ -12,22 +12,21 @@ interface CallToActionProps {
   variant?: 'accent' | 'primary';
 }
 
-export function CallToAction({ title, description, linkTo, linkLabel, showPhone = true, variant = 'accent' }: CallToActionProps) {
-  const bg = variant === 'accent'
-    ? 'bg-gradient-to-br from-accent via-accent to-accent/90'
-    : 'bg-gradient-to-br from-primary via-primary to-primary/90';
-
+export function CallToAction({ title, description, linkTo, linkLabel, showPhone = true }: CallToActionProps) {
   return (
-    <section className={`${bg} text-primary-foreground py-14`}>
-      <div className="max-w-4xl mx-auto px-4 text-center">
+    <section className="relative py-20 overflow-hidden gradient-mesh">
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+
+      <div className="relative max-w-4xl mx-auto px-4 text-center">
         <ScrollReveal>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-primary-foreground mb-3">{title}</h2>
-          {description && <p className="text-primary-foreground/85 mb-6 text-sm md:text-base leading-relaxed">{description}</p>}
+          <h2 className="text-2xl md:text-3xl mb-3">{title}</h2>
+          {description && <p className="text-muted-foreground mb-8 text-sm md:text-base leading-relaxed max-w-xl mx-auto">{description}</p>}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             {showPhone && (
               <a
                 href={`tel:${BUSINESS.phoneRaw}`}
-                className="flex items-center gap-2 bg-primary-foreground text-primary px-6 py-3 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity shadow-lg"
+                className="flex items-center gap-2 bg-accent text-accent-foreground px-7 py-3.5 rounded-xl font-semibold text-sm hover:shadow-glow transition-all"
               >
                 <Phone className="w-4 h-4" />
                 Call {BUSINESS.phone}
@@ -36,7 +35,7 @@ export function CallToAction({ title, description, linkTo, linkLabel, showPhone 
             {linkTo && linkLabel && (
               <Link
                 to={linkTo}
-                className="bg-primary-foreground/15 border border-primary-foreground/25 text-primary-foreground px-6 py-3 rounded-lg font-bold text-sm hover:bg-primary-foreground/25 transition-colors"
+                className="glass text-foreground px-7 py-3.5 rounded-xl font-semibold text-sm hover:border-accent/30 transition-all"
               >
                 {linkLabel}
               </Link>

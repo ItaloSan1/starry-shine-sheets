@@ -48,7 +48,7 @@ export default function VinDecoder() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       {/* Hero */}
-      <section className="bg-primary text-primary-foreground py-12 md:py-16">
+      <section className="bg-secondary text-foreground py-12 md:py-16">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-5">
             <Car className="w-4 h-4" />
@@ -57,15 +57,15 @@ export default function VinDecoder() {
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
             VIN Decoder
           </h1>
-          <p className="text-primary-foreground/70 text-lg max-w-xl mx-auto">
-            Decode any Vehicle Identification Number — modern <span className="text-primary-foreground/90 font-medium">(1981+)</span> or classic <span className="text-primary-foreground/90 font-medium">(1960–1980)</span>. Instantly find year, make, model, engine, and more.
+          <p className="text-foreground/60 text-lg max-w-xl mx-auto">
+            Decode any Vehicle Identification Number — modern <span className="text-foreground/80 font-medium">(1981+)</span> or classic <span className="text-foreground/80 font-medium">(1960–1980)</span>. Instantly find year, make, model, engine, and more.
           </p>
         </div>
       </section>
 
       {/* Decoder */}
       <section className="max-w-2xl mx-auto px-4 -mt-6 relative z-10 mb-16">
-        <div className="bg-card border border-border rounded-xl shadow-lg p-6 md:p-8">
+        <div className="glass rounded-xl shadow-lg p-6 md:p-8">
           <label htmlFor="vin-input" className="block text-sm font-semibold text-foreground mb-2">
             Enter VIN
           </label>

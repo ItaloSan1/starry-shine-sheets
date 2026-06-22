@@ -195,13 +195,13 @@ export default function LatestArrivals() {
   return (
     <div className="pb-20 lg:pb-0">
       {/* Hero */}
-      <div className="relative bg-primary text-primary-foreground py-6 overflow-hidden">
+      <div className="relative bg-secondary text-foreground py-6 overflow-hidden">
         <div className="absolute inset-0">
           <img src={recyclerYard} alt="Eskimo Auto recycler yard latest arrivals" className="w-full h-full object-cover opacity-20" />
         </div>
         <div className="relative max-w-6xl mx-auto px-4">
-          <h1 className="text-xl md:text-2xl font-bold text-primary-foreground">Latest Arrivals</h1>
-          <p className="text-primary-foreground/70 mt-1 text-sm">Fresh vehicles recently arrived at our Edmonton yard — parts are being pulled now</p>
+          <h1 className="text-xl md:text-2xl font-bold text-foreground">Latest Arrivals</h1>
+          <p className="text-foreground/60 mt-1 text-sm">Fresh vehicles recently arrived at our Edmonton yard — parts are being pulled now</p>
         </div>
       </div>
 
@@ -323,7 +323,7 @@ export default function LatestArrivals() {
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="bg-card border border-border rounded-lg h-64 animate-pulse" />
+                  <div key={i} className="glass rounded-xl h-64 animate-pulse" />
                 ))}
               </div>
             ) : vehicles.length === 0 ? (
@@ -340,7 +340,7 @@ export default function LatestArrivals() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {vehicles.map(v => (
-                  <Link key={v.id} to={`/latest-arrivals/${v.id}`} className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                  <Link key={v.id} to={`/latest-arrivals/${v.id}`} className="glass rounded-xl overflow-hidden hover:shadow-md transition-shadow">
                     <BlurImage
                       src={thumbUrl(v.imageUrl || v.images?.[0], 400)}
                       alt={`${v.year} ${v.make} ${v.model}`}

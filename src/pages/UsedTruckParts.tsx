@@ -25,13 +25,13 @@ export default function UsedTruckParts() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <section className="relative bg-primary text-primary-foreground py-10 overflow-hidden">
+      <section className="relative bg-secondary text-foreground py-10 overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroYard} alt="Eskimo Auto truck parts yard Edmonton" className="w-full h-full object-cover opacity-20" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold mb-2">Used Truck Parts in Edmonton</h1>
-          <p className="text-primary-foreground/70 max-w-2xl">Reliable used parts for Ford, Chevy, GMC, Ram, Toyota, and more. Every part inspected and warranty-backed.</p>
+          <p className="text-foreground/60 max-w-2xl">Reliable used parts for Ford, Chevy, GMC, Ram, Toyota, and more. Every part inspected and warranty-backed.</p>
         </div>
       </section>
       <section className="bg-card border-b border-border py-4">
@@ -53,7 +53,7 @@ export default function UsedTruckParts() {
             <li>Truck engines — gas and diesel</li><li>Automatic and manual transmissions</li><li>Transfer cases and differentials</li><li>Truck beds, tailgates, box sides</li><li>Bumpers — front and rear</li><li>Tow mirrors, headlights, taillights</li><li>Suspension components</li><li>Interior — seats, consoles, clusters</li>
           </ul>
         </div>
-        <div className="bg-muted/50 border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="glass border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div><p className="font-bold text-sm">Need a truck part?</p><p className="text-xs text-muted-foreground">Search our inventory or call — we verify fitment for your specific truck.</p></div>
           <div className="flex gap-2 shrink-0">
             <Link to="/search-inventory?category=truck" className="flex items-center gap-1.5 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"><Search className="w-3.5 h-3.5" /> Search Parts</Link>

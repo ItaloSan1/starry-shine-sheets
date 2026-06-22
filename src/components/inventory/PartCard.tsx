@@ -71,7 +71,7 @@ export function PartCard({ part }: { part: Part }) {
             </a>
             <a
               href={`sms:${BUSINESS.phoneRaw}?body=${encodeURIComponent(`Hi, I'm interested in part #${part.stockNumber}: ${part.description}`)}`}
-              className="flex-1 flex items-center justify-center gap-1 bg-primary text-primary-foreground px-2 py-2 rounded-lg text-[11px] font-bold hover:opacity-90 transition-opacity"
+              className="flex-1 flex items-center justify-center gap-1 bg-secondary text-foreground px-2 py-2 rounded-lg text-[11px] font-bold hover:opacity-90 transition-opacity"
             >
               <MessageSquare className="w-3 h-3" /> Text
             </a>

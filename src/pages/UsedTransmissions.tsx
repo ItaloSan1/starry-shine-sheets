@@ -18,13 +18,13 @@ export default function UsedTransmissions() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <section className="relative bg-primary text-primary-foreground py-10 overflow-hidden">
+      <section className="relative bg-secondary text-foreground py-10 overflow-hidden">
         <div className="absolute inset-0">
           <img src={transmissions} alt="Used transmissions at Eskimo Auto Parts Edmonton" className="w-full h-full object-cover opacity-20" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold mb-2">Used Transmissions in Edmonton</h1>
-          <p className="text-primary-foreground/70 max-w-2xl">Automatic and manual transmissions for cars and trucks. Warranty-backed.</p>
+          <p className="text-foreground/60 max-w-2xl">Automatic and manual transmissions for cars and trucks. Warranty-backed.</p>
         </div>
       </section>
       <section className="bg-card border-b border-border py-4">
@@ -42,7 +42,7 @@ export default function UsedTransmissions() {
           <p className="text-muted-foreground leading-relaxed mb-4">Whether you need an automatic or manual transmission, Eskimo Auto & Truck Parts has options for domestic and import vehicles. We carry transmissions for cars, trucks, and SUVs — and verify fitment before every sale.</p>
           <p className="text-muted-foreground leading-relaxed mb-4">Every transmission includes a warranty. We also carry transfer cases and related drivetrain components. If we don't have your transmission in stock, we can often source it through our recycler network.</p>
         </div>
-        <div className="bg-muted/50 border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="glass border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div><p className="font-bold text-sm">Need a transmission?</p><p className="text-xs text-muted-foreground">Search or call — we check fitment for your specific vehicle.</p></div>
           <div className="flex gap-2 shrink-0">
             <Link to="/search-inventory?category=transmission" className="flex items-center gap-1.5 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"><Search className="w-3.5 h-3.5" /> Search</Link>

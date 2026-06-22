@@ -1,16 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Search, Phone, Shield, Clock, Wrench, MapPin } from 'lucide-react';
+import { Search, Phone, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { BUSINESS } from '@/lib/constants';
-import heroClean from '@/assets/hero-parts-clean.jpg';
-
-const trustChips = [
-  { icon: Clock, label: BUSINESS.establishedText },
-  { icon: MapPin, label: 'Edmonton Auto Recycler' },
-  { icon: Shield, label: 'Warranty-Backed Parts' },
-  { icon: Wrench, label: 'Parts Sourcing Available' },
-];
 
 const quickLinks = [
   { label: 'Engines', to: '/used-engines-edmonton' },
@@ -18,7 +10,7 @@ const quickLinks = [
   { label: 'Body Parts', to: '/used-body-parts-edmonton' },
   { label: 'Tires & Rims', to: '/used-tires-rims-edmonton' },
   { label: 'Truck Parts', to: '/used-truck-parts-edmonton' },
-  { label: 'Latest Arrivals', to: '/latest-arrivals' },
+  { label: 'Remanufactured', to: '/remanufactured-engines' },
 ];
 
 export function HeroSection() {
@@ -34,115 +26,141 @@ export function HeroSection() {
     navigate(`/search-inventory${q ? `?q=${encodeURIComponent(q)}` : ''}`);
   };
 
-  const inputClass =
-    'px-3 py-2.5 bg-background text-foreground text-sm rounded-md border border-border focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent placeholder:text-muted-foreground transition-shadow';
-
   return (
-    <section className="relative bg-primary text-primary-foreground overflow-hidden">
-      {/* Accent line */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-accent/60 to-transparent z-10" />
+    <section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden gradient-mesh">
+      {/* Grid overlay */}
+      <div className="absolute inset-0 grid-pattern opacity-40" />
 
-      <div className="relative max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-5 min-h-[520px]">
-          {/* Left panel — solid dark bg, all content */}
-          <motion.div
-            className="lg:col-span-3 flex flex-col justify-center px-6 md:px-10 lg:px-14 py-12 md:py-16 relative z-10"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            {/* Trust chips */}
-            <div className="flex flex-wrap gap-2 mb-5">
-              {trustChips.map((chip, i) => (
-                <motion.span
-                  key={chip.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + i * 0.08, duration: 0.4 }}
-                  className="inline-flex items-center gap-1.5 text-xs font-medium text-primary-foreground/80 bg-primary-foreground/8 px-2.5 py-1 rounded-full border border-primary-foreground/5"
-                >
-                  <chip.icon className="w-3 h-3" />
-                  {chip.label}
-                </motion.span>
-              ))}
+      {/* Radial glow from center */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-accent/5 blur-[120px] animate-pulse-glow" />
+
+      {/* Content */}
+      <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-6 text-center py-20">
+        {/* Trust chip */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-8"
+        >
+          <span className="inline-flex items-center gap-2 text-xs font-medium text-accent glass rounded-full px-4 py-2 border-accent/20">
+            {BUSINESS.establishedText} &mdash; Edmonton, Alberta
+          </span>
+        </motion.div>
+
+        {/* Main headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
+        >
+          <span className="block text-foreground">Quality Auto Parts.</span>
+          <span className="block text-gradient">Worldwide Delivery.</span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-foreground/50 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
+        >
+          Used & remanufactured parts from Edmonton's most trusted auto recycler.
+          Engines, transmissions, body panels, tires — tested, warrantied, shipped.
+        </motion.p>
+
+        {/* Search Bar */}
+        <motion.form
+          onSubmit={handleSearch}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5, type: 'spring', stiffness: 100 }}
+          className="glass rounded-2xl p-2 max-w-3xl mx-auto mb-6 glow"
+        >
+          <div className="flex flex-col sm:flex-row gap-2">
+            <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <input
+                type="text" value={year} onChange={e => setYear(e.target.value)}
+                placeholder="Year"
+                className="bg-background/50 text-foreground text-sm rounded-xl px-4 py-3 border border-border/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 placeholder:text-muted-foreground transition-all"
+              />
+              <input
+                type="text" value={make} onChange={e => setMake(e.target.value)}
+                placeholder="Make"
+                className="bg-background/50 text-foreground text-sm rounded-xl px-4 py-3 border border-border/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 placeholder:text-muted-foreground transition-all"
+              />
+              <input
+                type="text" value={model} onChange={e => setModel(e.target.value)}
+                placeholder="Model"
+                className="bg-background/50 text-foreground text-sm rounded-xl px-4 py-3 border border-border/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 placeholder:text-muted-foreground transition-all"
+              />
+              <input
+                type="text" value={part} onChange={e => setPart(e.target.value)}
+                placeholder="Part needed"
+                className="bg-background/50 text-foreground text-sm rounded-xl px-4 py-3 border border-border/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 placeholder:text-muted-foreground transition-all"
+              />
             </div>
-
-            <h1 className="text-3xl md:text-[2.75rem] font-extrabold text-primary-foreground leading-[1.1] mb-4">
-              Edmonton's Trusted Source for
-              <span className="text-accent block mt-1">Quality Used Auto & Truck Parts</span>
-            </h1>
-            <p className="text-primary-foreground/65 mb-7 max-w-lg text-sm md:text-base leading-relaxed">
-              Engines, transmissions, body panels, tires and more — tested, warrantied, and ready for pickup or shipping. Serving Edmonton since 1984.
-            </p>
-
-            {/* Search form */}
-            <motion.form
-              onSubmit={handleSearch}
-              className="mb-5 bg-primary-foreground/5 rounded-xl p-3 border border-primary-foreground/8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
+            <button
+              type="submit"
+              className="bg-accent text-accent-foreground px-8 py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:shadow-glow transition-all shrink-0"
             >
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                <input type="text" value={year} onChange={e => setYear(e.target.value)} placeholder="Year" className={inputClass} />
-                <input type="text" value={make} onChange={e => setMake(e.target.value)} placeholder="Make" className={inputClass} />
-                <input type="text" value={model} onChange={e => setModel(e.target.value)} placeholder="Model" className={inputClass} />
-                <input type="text" value={part} onChange={e => setPart(e.target.value)} placeholder="Part needed" className={inputClass} />
-                <button type="submit" className="col-span-2 sm:col-span-1 bg-accent text-accent-foreground px-4 py-2.5 rounded-md font-bold text-sm flex items-center justify-center gap-2 hover:brightness-110 transition-all">
-                  <Search className="w-4 h-4" />
-                  Search
-                </button>
-              </div>
-            </motion.form>
+              <Search className="w-4 h-4" />
+              Search
+            </button>
+          </div>
+        </motion.form>
 
-            {/* Quick links */}
-            <div className="flex flex-wrap gap-x-4 gap-y-1 mb-7 text-xs">
-              <span className="text-primary-foreground/40 font-medium">Popular:</span>
-              {quickLinks.map(link => (
-                <Link key={link.to} to={link.to} className="text-primary-foreground/55 hover:text-accent transition-colors">
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+        {/* Quick category pills */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
+          className="flex flex-wrap justify-center gap-2 mb-12"
+        >
+          {quickLinks.map(link => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="text-xs font-medium text-foreground/40 hover:text-accent px-3 py-1.5 rounded-full border border-border/30 hover:border-accent/30 transition-all"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </motion.div>
 
-            {/* Two CTAs only */}
-            <div className="flex flex-wrap items-center gap-3">
-              <a
-                href={`tel:${BUSINESS.phoneRaw}`}
-                className="flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-lg font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-accent/20"
-              >
-                <Phone className="w-4 h-4" />
-                Call {BUSINESS.phone}
-              </a>
-              <Link
-                to="/search-inventory"
-                className="flex items-center gap-2 border border-primary-foreground/20 text-primary-foreground px-6 py-3 rounded-lg font-semibold text-sm hover:bg-primary-foreground/10 transition-all"
-              >
-                <Search className="w-4 h-4" />
-                Browse Inventory
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Right panel — photo with left-fade */}
-          <motion.div
-            className="hidden lg:block lg:col-span-2 relative"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
+        {/* CTA buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="flex flex-wrap justify-center gap-4"
+        >
+          <a
+            href={`tel:${BUSINESS.phoneRaw}`}
+            className="flex items-center gap-2 bg-accent text-accent-foreground px-7 py-3.5 rounded-xl font-semibold text-sm hover:shadow-glow-lg transition-all"
           >
-            <img
-              src={heroClean}
-              alt="Professional auto parts warehouse with organized engine blocks"
-              className="absolute inset-0 w-full h-full object-cover"
-              width={960}
-              height={1280}
-            />
-            {/* Gradient fade from left so photo melts into dark bg */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/40 to-transparent" />
-          </motion.div>
-        </div>
+            <Phone className="w-4 h-4" />
+            Call {BUSINESS.phone}
+          </a>
+          <Link
+            to="/latest-arrivals"
+            className="flex items-center gap-2 glass text-foreground px-7 py-3.5 rounded-xl font-semibold text-sm hover:border-accent/30 transition-all"
+          >
+            Browse Latest Arrivals
+          </Link>
+        </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-scroll-bounce"
+      >
+        <ChevronDown className="w-5 h-5 text-foreground/30" />
+      </motion.div>
     </section>
   );
 }

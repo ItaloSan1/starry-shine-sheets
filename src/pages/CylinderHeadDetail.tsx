@@ -124,7 +124,7 @@ export default function CylinderHeadDetail() {
       <BreadcrumbSchema items={breadcrumbs} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
-      <section className="bg-primary text-primary-foreground py-6">
+      <section className="bg-secondary text-foreground py-6">
         <div className="max-w-7xl mx-auto px-4">
           <Breadcrumbs items={breadcrumbs} />
         </div>
@@ -136,7 +136,7 @@ export default function CylinderHeadDetail() {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-card border border-border rounded-xl overflow-hidden">
+          <div className="glass rounded-xl overflow-hidden">
             <div className="aspect-square bg-secondary/30 flex items-center justify-center p-4">
               {head.image_url ? (
                 <img src={head.image_url} alt={head.name} className="max-w-full max-h-full object-contain" referrerPolicy="no-referrer" onError={(e) => {
@@ -209,7 +209,7 @@ export default function CylinderHeadDetail() {
           <h2 className="text-xl font-bold mb-4">Related Cylinder Heads</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {related.map(rel => (
-              <Link key={rel.id} to={`/remanufactured-cylinder-heads/atk/${rel.slug}`} className="group bg-card border border-border rounded-xl overflow-hidden hover:border-accent transition-all">
+              <Link key={rel.id} to={`/remanufactured-cylinder-heads/atk/${rel.slug}`} className="group glass rounded-xl overflow-hidden hover:border-accent transition-all">
                 <div className="aspect-[4/3] bg-secondary/30 overflow-hidden">
                   {rel.image_url ? (
                     <img src={rel.image_url} alt={rel.name} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-contain" onError={(e) => {

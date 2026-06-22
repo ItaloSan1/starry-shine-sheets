@@ -28,14 +28,14 @@ export default function AutoRecycler() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <section className="relative bg-primary text-primary-foreground py-12 overflow-hidden">
+      <section className="relative bg-secondary text-foreground py-12 overflow-hidden">
         <div className="absolute inset-0">
           <img src={recyclerYard} alt="Eskimo Auto recycler yard Edmonton" className="w-full h-full object-cover opacity-20" />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-primary/70" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-extrabold mb-3">Auto Recycler in Edmonton</h1>
-          <p className="text-primary-foreground/70 max-w-2xl leading-relaxed">Edmonton's trusted auto recycler since {BUSINESS.established}. We buy vehicles, recycle responsibly, and sell quality used parts.</p>
+          <p className="text-foreground/60 max-w-2xl leading-relaxed">Edmonton's trusted auto recycler since {BUSINESS.established}. We buy vehicles, recycle responsibly, and sell quality used parts.</p>
         </div>
       </section>
 
@@ -98,7 +98,7 @@ export default function AutoRecycler() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="bg-muted/50 border border-border rounded-xl p-6 mb-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="glass border border-border rounded-xl p-6 mb-10 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div><p className="font-bold text-sm">Looking for used parts?</p><p className="text-xs text-muted-foreground">Search our inventory or request the part you need.</p></div>
             <div className="flex gap-2 shrink-0">
               <Link to="/search-inventory" className="flex items-center gap-1.5 bg-accent text-accent-foreground px-4 py-2.5 rounded-lg text-sm font-bold hover:brightness-110 transition-all"><Search className="w-3.5 h-3.5" /> Search Parts</Link>

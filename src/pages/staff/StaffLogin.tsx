@@ -34,7 +34,7 @@ export default function StaffLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-sm">
-        <div className="bg-card border border-border rounded-xl p-6 shadow-lg">
+        <div className="glass rounded-xl p-6 shadow-lg">
           <h1 className="text-xl font-bold text-center mb-1">Staff Login</h1>
           <p className="text-xs text-muted-foreground text-center mb-6">Eskimo Auto Parts — Tire Inventory</p>
           <form onSubmit={handleLogin} className="space-y-4">

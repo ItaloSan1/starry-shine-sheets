@@ -41,7 +41,7 @@ export function SearchResults({ parts, total, loading, sortBy = 'newest', onSort
           <select
             value={sortBy}
             onChange={e => onSortChange(e.target.value)}
-            className="text-sm px-3 py-1.5 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-accent"
+            className="text-sm px-3 py-1.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-accent"
           >
             <option value="newest">Newest First</option>
             <option value="price-low">Price: Low to High</option>

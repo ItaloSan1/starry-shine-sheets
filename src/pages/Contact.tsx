@@ -12,13 +12,13 @@ export default function Contact() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="relative bg-primary text-primary-foreground py-8 overflow-hidden">
+      <div className="relative bg-secondary text-foreground py-8 overflow-hidden">
         <div className="absolute inset-0">
           <img src={storefront} alt="Eskimo Auto Parts storefront Edmonton" className="w-full h-full object-cover opacity-20" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4">
-          <h1 className="text-xl md:text-3xl font-bold text-primary-foreground">Contact Eskimo Auto & Truck Parts</h1>
-          <p className="text-primary-foreground/80 mt-2 text-sm md:text-base">Call, text, or visit us in Edmonton. We're here to help you find the right part.</p>
+          <h1 className="text-xl md:text-3xl font-bold text-foreground">Contact Eskimo Auto & Truck Parts</h1>
+          <p className="text-foreground/70 mt-2 text-sm md:text-base">Call, text, or visit us in Edmonton. We're here to help you find the right part.</p>
         </div>
       </div>
       <div className="max-w-5xl mx-auto px-4 py-8">

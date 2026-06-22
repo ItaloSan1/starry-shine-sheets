@@ -136,7 +136,7 @@ export default function RemanufacturedEngineDetail() {
       <BreadcrumbSchema items={breadcrumbs} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
-      <section className="bg-primary text-primary-foreground py-6">
+      <section className="bg-secondary text-foreground py-6">
         <div className="max-w-7xl mx-auto px-4">
           <Breadcrumbs items={breadcrumbs} />
         </div>
@@ -149,7 +149,7 @@ export default function RemanufacturedEngineDetail() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Image */}
-          <div className="bg-card border border-border rounded-xl overflow-hidden">
+          <div className="glass rounded-xl overflow-hidden">
             <div className="aspect-square bg-secondary/30 flex items-center justify-center p-4">
               {engine.image_url ? (
                 <img
@@ -246,7 +246,7 @@ export default function RemanufacturedEngineDetail() {
               <Link
                 key={rel.id}
                 to={`/remanufactured-engines/atk/${rel.slug}`}
-                className="group bg-card border border-border rounded-xl overflow-hidden hover:border-accent transition-all"
+                className="group glass rounded-xl overflow-hidden hover:border-accent transition-all"
               >
                 <div className="aspect-[4/3] bg-secondary/30 overflow-hidden">
                   {rel.image_url ? (

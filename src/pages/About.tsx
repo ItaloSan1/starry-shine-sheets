@@ -14,14 +14,14 @@ export default function About() {
   return (
     <div className="pb-20 lg:pb-0">
       {/* Hero with image */}
-      <div className="relative bg-primary text-primary-foreground py-12 overflow-hidden">
+      <div className="relative bg-secondary text-foreground py-12 overflow-hidden">
         <div className="absolute inset-0">
           <img src={yardAerial} alt="Eskimo Auto Parts facility aerial view" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-primary/80" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4">
-          <h1 className="text-xl md:text-3xl font-bold text-primary-foreground">About Eskimo Auto & Truck Parts</h1>
-          <p className="text-primary-foreground/80 mt-2 text-sm md:text-base">Edmonton's trusted auto recycler since {BUSINESS.established}.</p>
+          <h1 className="text-xl md:text-3xl font-bold text-foreground">About Eskimo Auto & Truck Parts</h1>
+          <p className="text-foreground/70 mt-2 text-sm md:text-base">Edmonton's trusted auto recycler since {BUSINESS.established}.</p>
         </div>
       </div>
 

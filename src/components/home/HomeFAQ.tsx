@@ -26,7 +26,7 @@ export const homeFaqData = [
   },
   {
     question: "Can you ship parts outside Edmonton?",
-    answer: "Yes, we can arrange shipping for parts across Alberta and beyond. Contact us for a shipping quote on your specific part.",
+    answer: "Yes, we ship parts across Canada and worldwide. Contact us for a shipping quote on your specific part.",
   },
   {
     question: "How long have you been in business?",
@@ -36,16 +36,17 @@ export const homeFaqData = [
 
 export function HomeFAQ() {
   return (
-    <section className="py-14 bg-muted/30">
+    <section className="py-20 md:py-28">
       <div className="max-w-3xl mx-auto px-4">
         <ScrollReveal>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-8">Frequently Asked Questions</h2>
+          <p className="text-accent text-sm font-semibold tracking-wider uppercase text-center mb-3">FAQ</p>
+          <h2 className="text-center mb-10">Frequently Asked Questions</h2>
         </ScrollReveal>
         <ScrollReveal delay={0.15}>
-          <Accordion type="single" collapsible className="space-y-2">
+          <Accordion type="single" collapsible className="space-y-3">
             {homeFaqData.map((item, i) => (
-              <AccordionItem key={i} value={`faq-${i}`} className="bg-card border border-border rounded-xl px-5">
-                <AccordionTrigger className="text-sm font-bold text-left py-4 hover:no-underline">
+              <AccordionItem key={i} value={`faq-${i}`} className="glass rounded-xl px-5 border-border/30">
+                <AccordionTrigger className="text-sm font-semibold text-left py-4 hover:no-underline hover:text-accent transition-colors">
                   {item.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed">

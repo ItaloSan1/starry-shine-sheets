@@ -241,13 +241,13 @@ export default function RemanufacturedEnginesATK() {
       <BreadcrumbSchema items={breadcrumbs} />
 
       {/* Hero */}
-      <section className="bg-primary text-primary-foreground py-8 md:py-12">
+      <section className="bg-secondary text-foreground py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4">
           <Breadcrumbs items={breadcrumbs} />
           <h1 className="text-2xl md:text-4xl font-extrabold mt-3 mb-2">
             ATK Remanufactured <span className="text-accent">Engines</span>
           </h1>
-          <p className="text-primary-foreground/70 text-sm md:text-base">
+          <p className="text-foreground/60 text-sm md:text-base">
             {totalCount > 0 ? `${totalCount.toLocaleString()} engines` : 'Loading...'} available
             {selectedCategory ? ` in ${selectedCategory}` : ''}
           </p>
@@ -308,7 +308,7 @@ export default function RemanufacturedEnginesATK() {
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="bg-card border border-border rounded-xl h-72 animate-pulse" />
+                  <div key={i} className="glass rounded-xl h-72 animate-pulse" />
                 ))}
               </div>
             ) : engines.length === 0 ? (
@@ -323,7 +323,7 @@ export default function RemanufacturedEnginesATK() {
                     <Link
                       key={engine.id}
                       to={`/remanufactured-engines/atk/${engine.slug}`}
-                      className="group bg-card border border-border rounded-xl overflow-hidden hover:border-accent hover:shadow-md transition-all"
+                      className="group glass rounded-xl overflow-hidden hover:border-accent hover:shadow-md transition-all"
                     >
                       <div className="aspect-[4/3] bg-secondary/50 overflow-hidden">
                         {engine.image_url ? (

@@ -40,7 +40,7 @@ export function TireDetailModal({ tire, open, onClose }: TireDetailModalProps) {
                   <button
                     key={i}
                     onClick={() => setImgIdx(i)}
-                    className={`w-14 h-14 rounded-md overflow-hidden border-2 transition-colors ${i === imgIdx ? 'border-accent' : 'border-border'}`}
+                    className={`w-14 h-14 rounded-xl overflow-hidden border-2 transition-colors ${i === imgIdx ? 'border-accent' : 'border-border'}`}
                   >
                     <img src={src} alt="" className="w-full h-full object-cover" />
                   </button>

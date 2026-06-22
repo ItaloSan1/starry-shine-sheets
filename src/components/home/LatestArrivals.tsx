@@ -2,10 +2,9 @@ import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { mongoInventoryProvider } from '@/lib/mongo-inventory';
 import type { Vehicle } from '@/lib/inventory-adapter';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Car } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Car } from 'lucide-react';
 import { BlurImage } from '@/components/ui/BlurImage';
 import { thumbUrl } from '@/lib/image-utils';
 
@@ -22,7 +21,6 @@ export function LatestArrivals() {
     }).catch(() => setLoading(false));
   }, []);
 
-  // Items per page based on screen
   const itemsPerPage = typeof window !== 'undefined' && window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 4;
   const totalPages = Math.ceil(vehicles.length / itemsPerPage);
 
@@ -34,7 +32,6 @@ export function LatestArrivals() {
     setCurrentPage(prev => (prev - 1 + totalPages) % totalPages);
   }, [totalPages]);
 
-  // Auto-advance every 5 seconds
   useEffect(() => {
     if (isPaused || totalPages <= 1) return;
     const interval = setInterval(nextPage, 7000);
@@ -48,12 +45,12 @@ export function LatestArrivals() {
 
   if (loading) {
     return (
-      <section className="py-14 bg-secondary">
+      <section className="py-20 md:py-28">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="h-8 bg-muted rounded w-48 mb-8 animate-pulse" />
+          <div className="h-8 bg-muted rounded w-48 mb-8 animate-shimmer" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[1,2,3,4].map(i => (
-              <div key={i} className="bg-card border border-border rounded-xl h-64 animate-pulse" />
+              <div key={i} className="glass rounded-2xl h-64 animate-shimmer" />
             ))}
           </div>
         </div>
@@ -61,32 +58,31 @@ export function LatestArrivals() {
     );
   }
 
-  if (vehicles.length === 0) {
-    return null;
-  }
+  if (vehicles.length === 0) return null;
 
   return (
-    <section className="py-14 bg-secondary">
+    <section className="py-20 md:py-28">
       <div className="max-w-6xl mx-auto px-4">
         <ScrollReveal>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-10">
             <div>
-              <h2 className="text-2xl md:text-3xl font-extrabold">Latest Arrivals</h2>
+              <p className="text-accent text-sm font-semibold tracking-wider uppercase mb-2">New In</p>
+              <h2>Latest Arrivals</h2>
               <p className="text-muted-foreground text-sm mt-1">Fresh vehicles in our yard — parts available now</p>
             </div>
             <div className="flex items-center gap-3">
               {totalPages > 1 && (
-                <div className="hidden md:flex items-center gap-1">
-                  <button onClick={prevPage} className="p-1.5 rounded-md border border-border hover:bg-muted transition-colors" aria-label="Previous">
+                <div className="hidden md:flex items-center gap-2">
+                  <button onClick={prevPage} className="p-2 rounded-lg glass hover:border-accent/30 transition-all" aria-label="Previous">
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <span className="text-xs text-muted-foreground px-2">{currentPage + 1}/{totalPages}</span>
-                  <button onClick={nextPage} className="p-1.5 rounded-md border border-border hover:bg-muted transition-colors" aria-label="Next">
+                  <span className="text-xs text-muted-foreground px-1">{currentPage + 1}/{totalPages}</span>
+                  <button onClick={nextPage} className="p-2 rounded-lg glass hover:border-accent/30 transition-all" aria-label="Next">
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               )}
-              <Link to="/latest-arrivals" className="hidden md:flex items-center gap-1.5 text-accent font-bold text-sm hover:gap-2.5 transition-all">
+              <Link to="/latest-arrivals" className="hidden md:flex items-center gap-1.5 text-accent font-semibold text-sm hover:gap-2.5 transition-all">
                 View All <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -111,13 +107,13 @@ export function LatestArrivals() {
                 <Link
                   key={v.id}
                   to={`/latest-arrivals/${v.id}`}
-                  className="bg-card border border-border rounded-xl overflow-hidden block card-hover"
+                  className="glass rounded-2xl overflow-hidden block card-hover group"
                 >
                   <BlurImage
                     src={thumbUrl(v.imageUrl || v.images?.[0], 400)}
                     alt={`${v.year} ${v.make} ${v.model}`}
                     wrapperClassName="aspect-[16/10]"
-                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                     fallback={<Car className="w-10 h-10 text-muted-foreground/30" />}
                   />
                   <div className="p-4">
@@ -129,7 +125,9 @@ export function LatestArrivals() {
                       }`}>{v.status === 'Dismantling' ? 'Now Dismantling' : v.status}</span>
                       {v.mileage && <span className="text-[11px] text-muted-foreground">{v.mileage.toLocaleString()} km</span>}
                     </div>
-                    <p className="text-xs text-accent font-semibold mt-2.5">View Parts from This Vehicle →</p>
+                    <p className="text-xs text-accent font-medium mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                      View Parts →
+                    </p>
                   </div>
                 </Link>
               ))}
@@ -137,14 +135,13 @@ export function LatestArrivals() {
           </AnimatePresence>
         </div>
 
-        {/* Mobile pagination dots */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-1.5 mt-4 md:hidden">
+          <div className="flex justify-center gap-1.5 mt-6 md:hidden">
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrentPage(i)}
-                className={`w-2 h-2 rounded-full transition-colors ${i === currentPage ? 'bg-accent' : 'bg-border'}`}
+                className={`w-2 h-2 rounded-full transition-all ${i === currentPage ? 'bg-accent w-6' : 'bg-border'}`}
                 aria-label={`Go to page ${i + 1}`}
               />
             ))}
@@ -152,7 +149,7 @@ export function LatestArrivals() {
         )}
 
         <div className="mt-6 text-center md:hidden">
-          <Link to="/latest-arrivals" className="text-accent font-bold text-sm hover:underline">
+          <Link to="/latest-arrivals" className="text-accent font-semibold text-sm">
             View All Arrivals →
           </Link>
         </div>

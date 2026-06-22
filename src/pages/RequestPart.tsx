@@ -32,13 +32,13 @@ export default function RequestPart() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <div className="relative bg-primary text-primary-foreground py-8 overflow-hidden">
+      <div className="relative bg-secondary text-foreground py-8 overflow-hidden">
         <div className="absolute inset-0">
           <img src={partsCounter} alt="Eskimo Auto Parts counter" className="w-full h-full object-cover opacity-20" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold">Request a Part</h1>
-          <p className="text-primary-foreground/70 mt-1">Can't find what you're looking for? Let us track it down.</p>
+          <p className="text-foreground/60 mt-1">Can't find what you're looking for? Let us track it down.</p>
         </div>
       </div>
       <div className="max-w-5xl mx-auto px-4 py-6">
@@ -47,7 +47,7 @@ export default function RequestPart() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {steps.map((step, i) => (
-            <div key={i} className="bg-card border border-border rounded-lg p-5 text-center">
+            <div key={i} className="glass rounded-xl p-5 text-center">
               <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-3">
                 <step.icon className="w-5 h-5 text-accent" />
               </div>
@@ -68,7 +68,7 @@ export default function RequestPart() {
             />
           </div>
           <div className="space-y-4">
-            <div className="bg-card border border-border rounded-lg p-5">
+            <div className="glass rounded-xl p-5">
               <h3 className="font-bold mb-2">Prefer to call or text?</h3>
               <p className="text-sm text-muted-foreground mb-4">Our parts team can help you find what you need right away.</p>
               <div className="space-y-2">
@@ -80,7 +80,7 @@ export default function RequestPart() {
                 </a>
               </div>
             </div>
-            <div className="bg-muted/50 border border-border rounded-lg p-5">
+            <div className="glass border border-border rounded-lg p-5">
               <h3 className="font-bold text-sm mb-2">Why request through us?</h3>
               <ul className="text-xs text-muted-foreground space-y-1.5">
                 <li>• Access to our full on-site inventory</li>

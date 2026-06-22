@@ -29,64 +29,75 @@ const companyLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground pb-20 lg:pb-0">
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="relative bg-background pb-20 lg:pb-0">
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Brand */}
           <div>
-            {/* TODO: Replace with: <img src="/logo.png" alt="Eskimo Auto & Truck Parts" className="h-8 mb-3" /> */}
-            <Link to="/" className="inline-block font-extrabold text-xl tracking-tight mb-3">
-              <span className="text-accent">ESKIMO</span>
-              <span className="text-primary-foreground/90 text-xs font-semibold uppercase tracking-wider ml-2">Auto & Truck Parts</span>
+            <Link to="/" className="inline-block mb-4 group">
+              <span className="text-xl font-bold tracking-tight text-gradient">ESKIMO</span>
+              <span className="block text-[10px] font-medium uppercase tracking-[0.15em] text-foreground/40 mt-0.5">
+                Auto & Truck Parts
+              </span>
             </Link>
-            <p className="text-primary-foreground/60 text-sm leading-relaxed">
-              Edmonton's trusted auto recycler since {BUSINESS.established}. Quality used parts for cars and trucks.
+            <p className="text-foreground/40 text-sm leading-relaxed">
+              Edmonton's trusted auto recycler since {BUSINESS.established}. Quality used & remanufactured parts shipped worldwide.
             </p>
           </div>
+
+          {/* Parts */}
           <div>
-            <h3 className="font-bold text-sm uppercase tracking-wider mb-3 text-primary-foreground/80">Parts</h3>
-            <ul className="space-y-1.5">
+            <h3 className="font-semibold text-xs uppercase tracking-widest text-foreground/50 mb-4">Parts</h3>
+            <ul className="space-y-2">
               {partsLinks.map(link => (
                 <li key={link.to}>
-                  <Link to={link.to} className="text-sm text-primary-foreground/60 hover:text-accent transition-colors">{link.label}</Link>
+                  <Link to={link.to} className="text-sm text-foreground/40 hover:text-accent transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
+
+          {/* Company */}
           <div>
-            <h3 className="font-bold text-sm uppercase tracking-wider mb-3 text-primary-foreground/80">Company</h3>
-            <ul className="space-y-1.5">
+            <h3 className="font-semibold text-xs uppercase tracking-widest text-foreground/50 mb-4">Company</h3>
+            <ul className="space-y-2">
               {companyLinks.map(link => (
                 <li key={link.to}>
-                  <Link to={link.to} className="text-sm text-primary-foreground/60 hover:text-accent transition-colors">{link.label}</Link>
+                  <Link to={link.to} className="text-sm text-foreground/40 hover:text-accent transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
+
+          {/* Contact */}
           <div>
-            <h3 className="font-bold text-sm uppercase tracking-wider mb-3 text-primary-foreground/80">Contact</h3>
-            <ul className="space-y-3 text-sm text-primary-foreground/60">
-              <li className="flex items-start gap-2">
-                <Phone className="w-4 h-4 shrink-0 mt-0.5" />
+            <h3 className="font-semibold text-xs uppercase tracking-widest text-foreground/50 mb-4">Contact</h3>
+            <ul className="space-y-3 text-sm text-foreground/40">
+              <li className="flex items-start gap-3">
+                <Phone className="w-4 h-4 shrink-0 mt-0.5 text-accent/60" />
                 <a href={`tel:${BUSINESS.phoneRaw}`} className="hover:text-accent transition-colors">{BUSINESS.phone}</a>
               </li>
-              <li className="flex items-start gap-2">
-                <Mail className="w-4 h-4 shrink-0 mt-0.5" />
+              <li className="flex items-start gap-3">
+                <Mail className="w-4 h-4 shrink-0 mt-0.5 text-accent/60" />
                 <a href={`mailto:${BUSINESS.email}`} className="hover:text-accent transition-colors">{BUSINESS.email}</a>
               </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
+              <li className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-accent/60" />
                 <span>{BUSINESS.address}</span>
               </li>
-              <li className="flex items-start gap-2">
-                <Clock className="w-4 h-4 shrink-0 mt-0.5" />
-                {/* TODO: Confirm business hours */}
+              <li className="flex items-start gap-3">
+                <Clock className="w-4 h-4 shrink-0 mt-0.5 text-accent/60" />
                 <span>Mon-Fri 8am-5pm · Sat 9am-2pm</span>
               </li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-primary-foreground/10 mt-8 pt-6 text-center text-xs text-primary-foreground/40">
-          <p>© {new Date().getFullYear()} {BUSINESS.name}. Serving Edmonton since {BUSINESS.established}.</p>
+
+        <div className="border-t border-border/30 mt-10 pt-6 text-center text-xs text-foreground/25">
+          <p>&copy; {new Date().getFullYear()} {BUSINESS.name}. Serving Edmonton since {BUSINESS.established}.</p>
         </div>
       </div>
     </footer>

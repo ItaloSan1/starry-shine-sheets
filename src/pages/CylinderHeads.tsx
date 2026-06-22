@@ -43,13 +43,13 @@ export default function CylinderHeads() {
     <>
       <BreadcrumbSchema items={breadcrumbs} />
 
-      <section className="bg-primary text-primary-foreground py-12 md:py-16">
+      <section className="bg-secondary text-foreground py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4">
           <Breadcrumbs items={breadcrumbs} />
           <h1 className="text-3xl md:text-5xl font-extrabold mt-4 mb-4">
             Remanufactured Cylinder Heads <span className="text-accent">Edmonton</span>
           </h1>
-          <p className="text-primary-foreground/70 max-w-2xl text-lg">
+          <p className="text-foreground/60 max-w-2xl text-lg">
             {totalHeads > 0 ? `${totalHeads} cylinder heads` : 'Factory-spec remanufactured cylinder heads'} available.
             Every unit is pressure tested, resurfaced, and warranty-backed.
           </p>
@@ -69,7 +69,7 @@ export default function CylinderHeads() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             to="/remanufactured-cylinder-heads/atk"
-            className="group bg-card border border-border rounded-xl p-6 hover:border-accent hover:shadow-md transition-all col-span-1 sm:col-span-2"
+            className="group glass rounded-xl p-6 hover:border-accent hover:shadow-md transition-all col-span-1 sm:col-span-2"
           >
             <div className="flex items-center justify-between">
               <div>

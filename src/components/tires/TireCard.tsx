@@ -12,7 +12,7 @@ export function TireCard({ tire, onClick }: TireCardProps) {
 
   return (
     <div
-      className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
+      className="glass rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
       onClick={onClick}
     >
       {/* Image */}
@@ -29,7 +29,7 @@ export function TireCard({ tire, onClick }: TireCardProps) {
         </div>
         {tire.quantity > 1 && (
           <div className="absolute top-2 right-2">
-            <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded">×{tire.quantity}</span>
+            <span className="bg-secondary text-foreground text-xs font-bold px-2 py-0.5 rounded">×{tire.quantity}</span>
           </div>
         )}
       </div>

@@ -58,23 +58,23 @@ export function SellVehicleForm() {
     if (errors[field]) setErrors(prev => ({ ...prev, [field]: undefined as any }));
   };
 
-  const inputClass = "px-3 py-2.5 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-accent w-full";
+  const inputClass = "px-3 py-2.5 rounded-xl border border-border/50 bg-background/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent w-full";
   const selectClass = inputClass;
   const errorClass = "text-xs text-destructive mt-0.5";
 
   if (submitted) {
     return (
-      <div className="bg-card border border-border rounded-lg p-8 text-center">
+      <div className="glass rounded-2xl p-8 text-center">
         <CheckCircle className="w-12 h-12 text-accent mx-auto mb-3" />
         <h3 className="font-bold text-xl mb-2">Submission Received!</h3>
         <p className="text-muted-foreground mb-1">We'll review your vehicle info and contact you.</p>
         {/* TODO: Confirm response time with business */}
         <p className="text-sm text-muted-foreground mb-6">Typical response time: within 1 business day.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-md font-bold text-sm">
+          <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-xl font-semibold text-sm">
             <Phone className="w-4 h-4" /> Call Now
           </a>
-          <a href={`sms:${BUSINESS.phoneRaw}`} className="flex items-center justify-center gap-2 border border-border px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-muted transition-colors">
+          <a href={`sms:${BUSINESS.phoneRaw}`} className="flex items-center justify-center gap-2 border border-border px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-muted transition-colors">
             <MessageSquare className="w-4 h-4" /> Text Us
           </a>
         </div>
@@ -83,7 +83,7 @@ export function SellVehicleForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-5 md:p-6">
+    <form onSubmit={handleSubmit} className="glass rounded-2xl p-5 md:p-6">
       <h3 className="font-bold text-lg mb-1">Get a Quote for Your Vehicle</h3>
       <p className="text-sm text-muted-foreground mb-5">Fill out the form and we'll get back to you with a fair cash offer.</p>
 
@@ -168,7 +168,7 @@ export function SellVehicleForm() {
         {/* TODO: Implement file upload when backend is connected */}
       </div>
 
-      <button type="submit" disabled={submitting} className="w-full bg-accent text-accent-foreground py-3 rounded-md font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-50">
+      <button type="submit" disabled={submitting} className="w-full bg-accent text-accent-foreground py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50">
         {submitting ? 'Submitting...' : 'Submit for Quote'}
       </button>
     </form>

@@ -128,7 +128,7 @@ export default function TireDashboard() {
       ) : (
         <div className="px-4 space-y-2">
           {filtered.map(t => (
-            <div key={t.id} className="bg-card border border-border rounded-lg p-3">
+            <div key={t.id} className="glass rounded-xl p-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
@@ -147,7 +147,7 @@ export default function TireDashboard() {
                 </div>
                 {/* Thumb */}
                 {t.images && t.images.length > 0 && (
-                  <img src={t.images[0]} alt="" className="w-14 h-14 rounded-md object-cover border border-border shrink-0" />
+                  <img src={t.images[0]} alt="" className="w-14 h-14 rounded-xl object-cover border border-border shrink-0" />
                 )}
               </div>
               {/* Editable price/qty */}

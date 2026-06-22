@@ -376,7 +376,7 @@ export function TireEntryForm({ onSuccess }: { onSuccess?: () => void }) {
         <Label className="text-xs">Photos (up to 5)</Label>
         <div className="flex flex-wrap gap-2 mt-2">
           {imagePreviews.map((src, i) => (
-            <div key={i} className="relative w-20 h-20 rounded-md overflow-hidden border border-border">
+            <div key={i} className="relative w-20 h-20 rounded-xl overflow-hidden border border-border">
               <img src={src} alt="" className="w-full h-full object-cover" />
               <button
                 type="button"
@@ -388,7 +388,7 @@ export function TireEntryForm({ onSuccess }: { onSuccess?: () => void }) {
             </div>
           ))}
           {imageFiles.length < 5 && (
-            <label className="w-20 h-20 rounded-md border-2 border-dashed border-border flex items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors">
+            <label className="w-20 h-20 rounded-xl border-2 border-dashed border-border flex items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors">
               <Plus className="w-5 h-5 text-muted-foreground" />
               <input type="file" accept="image/*" className="hidden" onChange={handleImageAdd} multiple />
             </label>

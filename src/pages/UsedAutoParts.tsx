@@ -25,13 +25,13 @@ export default function UsedAutoParts() {
 
   return (
     <div className="pb-20 lg:pb-0">
-      <section className="relative bg-primary text-primary-foreground py-10 overflow-hidden">
+      <section className="relative bg-secondary text-foreground py-10 overflow-hidden">
         <div className="absolute inset-0">
           <img src={partsWarehouse} alt="Eskimo Auto Parts warehouse Edmonton" className="w-full h-full object-cover opacity-20" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold mb-2">Used Auto Parts in Edmonton</h1>
-          <p className="text-primary-foreground/70 max-w-2xl">Quality used car parts at recycler prices. Every part inspected and warranty-backed.</p>
+          <p className="text-foreground/60 max-w-2xl">Quality used car parts at recycler prices. Every part inspected and warranty-backed.</p>
         </div>
       </section>
       <section className="bg-card border-b border-border py-4">
@@ -53,7 +53,7 @@ export default function UsedAutoParts() {
             <li>Engines and engine components</li><li>Automatic and manual transmissions</li><li>Body panels — doors, fenders, hoods, bumpers, mirrors</li><li>Lighting — headlights, taillights, fog lights</li><li>Electrical — alternators, starters, modules</li><li>Suspension — struts, control arms, steering racks</li><li>Interior — seats, dashboards, consoles</li><li><Link to="/used-tires-rims-edmonton" className="text-accent hover:underline">Tires and rims</Link></li>
           </ul>
         </div>
-        <div className="bg-muted/50 border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="glass border border-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div><p className="font-bold text-sm">Looking for a specific part?</p><p className="text-xs text-muted-foreground">Search our inventory or call us — we check fitment before every sale.</p></div>
           <div className="flex gap-2 shrink-0">
             <Link to="/search-inventory" className="flex items-center gap-1.5 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"><Search className="w-3.5 h-3.5" /> Search Inventory</Link>

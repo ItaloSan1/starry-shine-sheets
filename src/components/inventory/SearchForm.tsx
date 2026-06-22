@@ -59,11 +59,11 @@ export function SearchForm({ filters, onFilterChange, onSearch }: SearchFormProp
     onSearch();
   };
 
-  const selectClass = "w-full px-3 py-2.5 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-accent";
+  const selectClass = "w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-accent";
   const inputClass = selectClass;
 
   return (
-    <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-4 md:p-6">
+    <form onSubmit={handleSubmit} className="glass rounded-lg p-4 md:p-6">
       {/* Main row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 mb-3">
         <select value={filters.year || ''} onChange={e => update('year', e.target.value ? Number(e.target.value) : undefined)} className={selectClass}>
@@ -86,7 +86,7 @@ export function SearchForm({ filters, onFilterChange, onSearch }: SearchFormProp
           <option value="">Any Part Type</option>
           {partTypes.map(pt => <option key={pt} value={pt}>{pt}</option>)}
         </select>
-        <button type="submit" className="w-full bg-accent text-accent-foreground px-4 py-2.5 rounded-md font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+        <button type="submit" className="w-full bg-accent text-accent-foreground px-4 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
           <Search className="w-4 h-4" />
           Search
         </button>
