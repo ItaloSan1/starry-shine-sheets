@@ -3,7 +3,7 @@ import { Phone, Shield, Building2, Recycle, Search, ArrowRight, Truck, Droplets,
 import { useSEO } from '@/hooks/useSEO';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
-import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { ScrollReveal, StaggerChildren, staggerItem } from '@/components/ui/ScrollReveal';
 import { motion } from 'framer-motion';
@@ -107,7 +107,7 @@ export default function AutoRecycler() {
           </div>
         </ScrollReveal>
 
-        <PartRequestForm />
+        <RequestPartForm />
       </div>
       <CallToAction title="Edmonton's Trusted Auto Recycler" description={`Serving Edmonton since ${BUSINESS.established}. Call ${BUSINESS.phone}.`} linkTo="/sell-your-vehicle" linkLabel="Sell Your Vehicle" />
     </div>

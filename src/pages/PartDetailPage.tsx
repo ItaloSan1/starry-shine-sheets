@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { inventoryProvider } from '@/lib/mock-inventory';
 import type { Part } from '@/lib/inventory-adapter';
 import { Phone, MessageCircle, ArrowLeft, Shield, Camera } from 'lucide-react';
-import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { BUSINESS } from '@/lib/constants';
 
 export default function PartDetailPage() {
@@ -59,7 +59,7 @@ export default function PartDetailPage() {
           </div>
         </div>
         <div className="mt-10">
-          <PartRequestForm />
+          <RequestPartForm />
         </div>
       </div>
     </div>

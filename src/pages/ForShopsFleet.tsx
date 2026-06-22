@@ -1,5 +1,5 @@
 import { CallToAction } from '@/components/layout/CallToAction';
-import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { Wrench, Building2, Truck, Percent, Clock, Users } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { useSEO } from '@/hooks/useSEO';
@@ -50,7 +50,7 @@ export default function ForShopsFleet() {
           <p className="text-sm text-muted-foreground leading-relaxed">Call us at <a href={`tel:${BUSINESS.phoneRaw}`} className="text-accent font-semibold hover:underline">{BUSINESS.phone}</a> to set up an account. We'll discuss your needs and get you started.</p>
         </section>
 
-        <PartRequestForm />
+        <RequestPartForm />
       </div>
       <CallToAction title="Ready to Partner with Edmonton's Trusted Recycler?" description="Set up your account today and start saving on quality used parts." />
     </div>

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { SearchForm } from '@/components/inventory/SearchForm';
 import { SearchResults } from '@/components/inventory/SearchResults';
 import { EmptyState } from '@/components/inventory/EmptyState';
-import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 import { useSEO } from '@/hooks/useSEO';
@@ -90,7 +90,7 @@ export default function SearchInventory() {
           )}
         </div>
         <div className="mt-10">
-          <PartRequestForm />
+          <RequestPartForm />
         </div>
       </div>
     </div>

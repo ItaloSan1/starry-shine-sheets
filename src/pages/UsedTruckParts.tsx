@@ -3,7 +3,7 @@ import { Phone, Shield, Building2, Search, Truck } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
-import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
 import heroYard from '@/assets/hero-yard.jpg';
@@ -61,7 +61,7 @@ export default function UsedTruckParts() {
           </div>
         </div>
         <div className="mb-8"><h3 className="font-bold text-sm mb-3">Browse by Category</h3><div className="flex flex-wrap gap-2">{categories.map(cat => (<Link key={cat.to} to={cat.to} className="text-sm bg-muted hover:bg-accent/10 hover:text-accent px-4 py-2 rounded-md transition-colors">{cat.label}</Link>))}</div></div>
-        <PartRequestForm />
+        <RequestPartForm />
       </div>
       <CallToAction title="Need a Used Truck Part?" description={`Call or text ${BUSINESS.phone}. Since ${BUSINESS.established}.`} linkTo="/request-a-part" linkLabel="Request a Part" />
     </div>

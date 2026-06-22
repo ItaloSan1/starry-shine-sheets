@@ -3,7 +3,7 @@ import { Phone, Shield, Building2, Wrench, Search } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
-import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
 import bodyParts from '@/assets/body-parts.jpg';
@@ -47,7 +47,7 @@ export default function UsedBodyParts() {
             <a href={`tel:${BUSINESS.phoneRaw}`} className="flex items-center gap-1.5 border border-border px-4 py-2 rounded-md text-sm font-semibold hover:bg-muted transition-colors"><Phone className="w-3.5 h-3.5" /> Call</a>
           </div>
         </div>
-        <PartRequestForm />
+        <RequestPartForm />
       </div>
       <CallToAction title="Need a Body Part?" description={`Call or text ${BUSINESS.phone}. Since ${BUSINESS.established}.`} linkTo="/request-a-part" linkLabel="Request a Part" />
     </div>

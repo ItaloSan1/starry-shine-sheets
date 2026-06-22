@@ -4,7 +4,7 @@ import { Phone, Shield, Building2, Search } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
-import { PartRequestForm } from '@/components/forms/PartRequestForm';
+import { RequestPartForm } from '@/components/forms/RequestPartForm';
 import { CallToAction } from '@/components/layout/CallToAction';
 import { BUSINESS } from '@/lib/constants';
 import { usePublicTires, TireRecord } from '@/hooks/useTireInventory';
@@ -117,7 +117,7 @@ export default function UsedTiresRims() {
           </div>
         </div>
 
-        <PartRequestForm />
+        <RequestPartForm />
       </div>
 
       <CallToAction title="Need Tires or Rims?" description={`Call or text ${BUSINESS.phone}. Since ${BUSINESS.established}.`} linkTo="/request-a-part" linkLabel="Request a Part" />
