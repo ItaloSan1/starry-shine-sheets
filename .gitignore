@@ -27,3 +27,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code / local dev tooling & throwaway preview experiments
+.claude/
+generate_preview.py
+preview.html
