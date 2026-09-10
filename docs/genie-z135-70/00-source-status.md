@@ -11,7 +11,7 @@ connector and were extracted with PyMuPDF: every page has a text layer
 |--------|-------|----------------|-------------------------------|
 | Operator's 114474 | 67 | all | 01, 02, 03, 07 |
 | Service 1268557GT Rev A4 | 244 | all (schematic sheets are drawings; their text labels are in the extract) | 02, 03, 04, 05, 06, 08 |
-| Parts 106877GT Rev G6 | 358 | digested by three agents into 09a/09b/09c | 09a, 09b, 09c |
+| Parts 106877GT **Rev H.04 (July 2024)** | 358 | digested by three agents into 09a/09b/09c | 09a, 09b, 09c |
 
 Remaining limits: the electrical and hydraulic schematic sheets (SM pp.215–228)
 are drawings; render them with PyMuPDF from `source/1268557.pdf` when a wire

@@ -14,7 +14,7 @@
 | Doc | Part no. | Edition | Coverage | Ingested |
 |-----|----------|---------|----------|----------|
 | Operator's Manual | 114474 | Second Edition, Fifth Printing, Sept 2015, © 2005 Terex | ANSI/CSA machines SN 779 to 2000 | **Fully** (67 PDF pages, text in `extracted/114474.txt`) |
-| Parts Manual | 106877 (106877GT) | Rev G6, Jan 2013, 358 pp | SN 100/101 to 2000 | **Fully** (compressed PDF, text in `extracted/106877.txt`; digest in 09a–09c) |
+| Parts Manual | 106877 (106877GT) | **Rev H.04, July 2024**, 358 pp (web index also lists Rev G6, Jan 2013) | SN 100 to 2000 | **Fully** (compressed PDF, text in `extracted/106877.txt`; digest in 09a–09c). Part numbers reflect 2024 supersessions |
 | Service and Repair Manual | 1268557 (1268557GT) | **Rev A4, October 2018** | Z13505-101 to Z13513-2000 | **Fully** (244 pages, text in `extracted/1268557.txt`) |
 
 Service manual 1268557GT Rev A4 states it includes repair procedures, fault

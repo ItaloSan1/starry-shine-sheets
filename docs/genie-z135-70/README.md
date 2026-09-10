@@ -10,7 +10,7 @@ documents below as the **source of truth** over forums, videos, or memory.
 | # | Document | Genie part no. | Covers | URL |
 |---|----------|----------------|--------|-----|
 | 1 | Operator's Manual (ANSI/CSA), Second Edition, Fifth Printing, Sept 2015 | 114474 | Z-135/70 from SN 779 to 2000 | https://manuals.genielift.com/Operators/english/114474.pdf |
-| 2 | Parts Manual, Rev G6, Jan 2013 (358 pp) | 106877 (106877GT) | Z-135/70 SN 100/101 to 2000 | https://manuals.genielift.com/parts%20and%20service%20manuals/data/Parts/Z%20Booms/106877.pdf |
+| 2 | Parts Manual, **Rev H.04, July 2024** (358 pp; the web index lists an older Rev G6 Jan 2013 printing) | 106877 (106877GT) | Z-135/70 SN 100 to 2000 | https://manuals.genielift.com/parts%20and%20service%20manuals/data/Parts/Z%20Booms/106877.pdf |
 | 3 | Service and Repair Manual | 1268557 (1268557GT) | Z-135/70 from Z13505-101 to Z13513-2000 | https://manuals.genielift.com/parts%20and%20service%20manuals/data/Service/Z%20Booms/1268557.pdf |
 
 ## Ingestion status (read this first)
