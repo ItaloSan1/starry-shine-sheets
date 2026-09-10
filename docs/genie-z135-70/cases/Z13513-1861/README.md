@@ -83,3 +83,26 @@ Figures `figs/j100-*.png`.
   **traction** manifold (SM p.152) — wrong box.
 - Coil test: **7.5 to 9.5 Ω** at 68°F/20°C, ±30%; BU and BT share the spec. Tag and
   disconnect the wiring before testing (SM p.150).
+
+## Function enable valve (why one jumper at J100 moves nothing)
+`figs/func-enable-valve.png` — SM p.135. Schematic item **A**, solenoid valve
+2 position 2 way, coil `Y74`, connector `J166`, mounted **behind the medium
+pressure filter**: *"Enables lift pump to provide hydraulic pressure for all boom
+and steer/axle functions."* Coil spec 3.5–5.5 Ω (SM p.150).
+
+Consequence: energizing the axle retract coil `BU` at `J100` only shifts a spool —
+no oil reaches the steer and axle manifold until the function enable valve is also
+energized. Forcing axle retract electrically would mean latching on the master
+hydraulic enable for every boom and steer function at the same time, on a machine
+already carrying eleven faults. The supported paths remain Route A (platform
+controls) and Route B (portable hydraulic power unit on the cylinder `R`/`E` ports,
+SM p.164) in `axle-retract-for-transport.md`.
+
+Useful field tests at `J100` with the plug off:
+- Coil side, ohms: **7.5–9.5 Ω** at 20 °C, ±30% (SM p.150). Coil `89849GT`.
+- Harness side, DC volts, while the platform commands retract: battery voltage means
+  the command chain through the swivel and DCON is intact and the fault is
+  downstream; nothing means chase it back to DCON `J32-2`.
+- Plug identification: solid green `V61AXRT` = `J100` retract (DCON `J32-2`);
+  green/white `V60AXEX` = `J99` extend (DCON `J32-3`); brown `VLVRET1` = shared
+  return for `J99`, `J100`, `J87` and `J106`.
