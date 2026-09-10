@@ -6,7 +6,7 @@
 
 ## Serial number format `[V]`
 - Format: `Z135` + two-digit build year + `-` + sequence. Service manual coverage is written as **Z13505-101 to Z13513-2000**, i.e. 2005 unit #101 through 2013 unit #2000.
-- Owner's machine on file: **Z13513-1861**, built 2013, 2,162 hours at time of the Drive flowchart (see 08).
+- Owner's machine on file: **Z13513-1861**. Serial plate (photo in `cases/Z13513-1861/photos/serial-plate.jpg`) `[V]`: Model Z-135; manufacture date **11/29/12**; model year **2013**; **electrical schematic number ES0366** (the service manual sheet is ES0366J, SM p.229 / PDF 243); machine unladen weight **45,264 lb / 20,532 kg**; foam tires required; rated work load 600 lb / 272 kg; 2 occupants; side force 150 lb / 667 N; max chassis inclination 0°; wind 28 mph; platform height 135 ft / 41.15 m; reach 69 ft 9 in / 21.26 m; gradeability 45 %; **nominal power 62 kW**; Terex South Dakota, Watertown SD; ANSI A92.5, CSA B354.4. Ground display hour meter **2162.4 h** (photo `ground-display-hours.jpg`). Auction lot tag 1310 on the covers.
 - Serial plate: on the chassis/turntable; the Operator's Manual says "See the serial label for the machine weight" and the decal map shows the serial label next to decal 52865 (Annual Inspection) on the turntable. `[V]`
 
 ## The three manufacturer documents
