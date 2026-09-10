@@ -66,3 +66,20 @@ Figures: `figs/scon-*.png`.
 - Module `1258463GT` from SN 1712 (this machine); `139647-SGT` to SN 1711. Item 22 on
   parts figure 304.1, turntable hydraulic tank side (PM pp.54–55). Replacing it
   requires a **full machine calibration** (SM p.154).
+
+## Connector J100 (axle retract valve)
+Figures `figs/j100-*.png`.
+- Legend: "J100 — 2 pin Deutsch connector for axle retract valve" (SM p.206). Coil
+  designator on ES0366J is **Y100**; the extend partner is `J99`/`Y99`.
+- Pin 1 = `V61AXRT-GR` (green), switched supply from DCON `J32-2`.
+  Pin 2 = `VLVRET1-BR` (brown), valve return, common to `J99`, `J87`, `J106`,
+  and back to DCON `J32-1` (SM p.229).
+- The valve is **BU, index 11** on the steer and axle manifold, `89853GT` solenoid
+  valve 2 position 3 way, coil `89849GT` 12 V D10 16 W, nut `45912GT`, seal kit
+  `89310GT` (SM p.138, PM p.225).
+- **Location:** inside the manifold box on the **yellow triangle side** of the chassis
+  (SM p.138). Parts figure **204.1 Chassis Components, Yellow Triangle Side**, PM p.32:
+  box `101032PGT` item 4, cover `107728GT` item 9. The blue triangle side box holds the
+  **traction** manifold (SM p.152) — wrong box.
+- Coil test: **7.5 to 9.5 Ω** at 68°F/20°C, ±30%; BU and BT share the spec. Tag and
+  disconnect the wiring before testing (SM p.150).
