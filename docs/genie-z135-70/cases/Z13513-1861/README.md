@@ -4,6 +4,28 @@
 - `photos/` — serial plate (ES0366, 45,264 lb, 62 kW), ground display (2162.4 h), machine photos.
 - Key finding: the six chassis sensors are fed by a 5 V output generated inside the DCON (J32-20), which does not cross the electrical swivel; the boom angle sensors are fed by the TCON's 5 V (J12-26).
 
+## Axle retraction for transport
+`axle-retract-for-transport.md` — the machine measured 12.8 ft at the yard and would
+not load. Manual-cited procedure for bringing the axles in (12 ft 11 in → 8 ft 1 in),
+covering the normal platform-control route, what the eleven faults do and do not
+block, Genie's own portable-hydraulic-power-unit method at the cylinder `R`/`E` ports
+when the controls are dead, and the move-it-wide fallbacks.
+`axle-retract-guide.html` — the illustrated version, 15 figures rendered from the
+three PDFs. Published artifact:
+https://claude.ai/code/artifact/d164976f-6532-4f6f-9deb-5de8a5e512d4
+
+Key facts established for it:
+- `LSFA1ES`/`LSRA1ES` prevent **boom** functions with the axles retracted; they do not
+  prevent retraction (SM p.203).
+- Each axle extension cylinder is held by two cross-piloted counterbalance valves
+  (`DB`/`DC` front, `DD`/`DE` rear, 3:1, 3000 psi — SM p.227), so the axles cannot be
+  pushed in or bled in.
+- All six 0 V sensor faults disable only "Primary up, Secondary up/down and Extend"
+  (SM pp.184–187) — none blocks axle retract. The one fault that can is the primary
+  boom angle crosscheck, which switches off `P_38` propel power (SM p.189).
+- Bypass mode is platform out-of-level and calibration only; Recovery mode is booms
+  only (SM pp.100–101). Neither moves an axle.
+
 ## Illustrated field guide
 `field-guide.html` — the same diagnosis as an illustrated page: 18 figures rendered
 from the manual PDFs (parts diagrams, connector pin legends, located crops of
