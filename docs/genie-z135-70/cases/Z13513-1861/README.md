@@ -106,3 +106,29 @@ Useful field tests at `J100` with the plug off:
 - Plug identification: solid green `V61AXRT` = `J100` retract (DCON `J32-2`);
   green/white `V60AXEX` = `J99` extend (DCON `J32-3`); brown `VLVRET1` = shared
   return for `J99`, `J100`, `J87` and `J106`.
+
+## Field observation 2026-09-10: both axle indicators lit, no axle motion
+Owner photographed the platform control panel with the engine running. **Both axle
+indicators (extend and retract) show an amber LED at the same time**, and neither
+direction moves the axles. Panel is visibly wet, decal corner lifted.
+
+Leading hypothesis, manual-backed — Control System Fault Code table, SM p.176:
+
+| Error Source | Error Type | Effects | Recovery Actions |
+|---|---|---|---|
+| Axle Extend/Retract Buttons | Fault Check (**both buttons pressed**) | **Axle extend/retract disabled.** Display message on LCD | Check ribbon and connector from membrane switch. If necessary replace membrane switch. |
+
+A wet or aged membrane bridging traces makes the controller read both buttons held,
+and it then refuses both directions. Parts: `106509GT` DECAL, MEMBRANE, PLATFORM
+CONTROL (plus `82841GT` overlay decal, required when replacing 106509), `62399GT`
+PCB MEMBRANE/LED, `81488GT` platform control box gasket (PM p.209).
+
+Separately, the **continuous flashing** is explained by the dead axle angle sensors:
+OM p.28 defines flashing as "axles moving" and steady as "fully extended"/"fully
+retracted", so with both axle angle sensors at 0 V the controller can never confirm
+an end stop and the light flashes indefinitely.
+
+Still unconfirmed: the identity of a third lit amber LED below the axle pair (machine
+not level vs drive enable — drive enable on would itself block retraction, OM p.51),
+and whether the foot switch was held during the attempt. Next step is to read the
+ground control LCD, which is where this fault posts its message.
