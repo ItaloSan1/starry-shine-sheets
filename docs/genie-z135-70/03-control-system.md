@@ -150,5 +150,10 @@ Two kinds: mechanical operational/safety switches (each operational switch is ba
 | Platform angle sensor | ±20° range, ±10° safety cutout |
 | SCON | dual-axis tilt, ±4.5° alarm |
 
+## Two separate 5 V sensor supplies and what crosses the slip ring `[V]` (sheet ES0366J, SM p.229 / PDF 243; pin legends pp.208–210)
+- **TCON 5 V** (J12-26 P109ANG GR/WH, return J12-25 SNSR GND BR): printed beside the boom angle sensor circuits C123PBS / C124SBS / C141PBS / C142SBS. This is the supply the "5.0 VDC LED on the TCON board" belongs to.
+- **DCON 5 V** (J32-20 P109ANG GR/WH labelled "STEER SNSR PWR (5.0 VDC)", return J32-19 P110RT BK "STEER SNSR GND"): generated inside the DCON (the sheet draws "5 VOLT" sources in the DCON block); feeds the four steer sensors J107–J110 (drawn) and, by inference, the two axle sensors J160/J161. The two supplies share the circuit number 109 but are physically separate.
+- **Slip ring (10 contacts)** labels on the sheet: P18, P6R1, C60AXE, DCON PWR, P9A, P12, DCON GND, P7R, CAN HIGH, CAN LOW; wire names beside them at plugs J33–J38: P61LSA, P53LS, P21DCON, GNDDCON, S56PRV, D82CAN+, D81CAN−, C61AXR, C60AXE. No sensor 5 V and no boom-angle circuit crosses the swivel.
+
 ## Reference from the owner's Drive flowchart (cross-checked against these pin legends) `[V]`
-TCON board screws 49820GT / nylocks 12344GT are the board ground path; 20 A ground-box breaker 147095GT; SCON harness 226496GT; electrical rotator 1253702GT (10 contacts) replaces 122918 / 89437 / 107533; TCON board 1258461GT from SN 1712 (217570GT before). Field-standard CAN checks (≈60 Ω across CAN H/L with battery off, ≈2.5 V idle) are `[F]`, not Genie values.
+TCON board screws 49820GT / nylocks 12344GT are the board ground path; 20 A ground-box breaker 147095GT; SCON harness 226496GT; electrical rotator 1253702GT (10 contacts) replaces 122918 / 89437 / 107533; TCON board 1258461GT from SN 1712 (217570GT before). Field-standard CAN checks (≈60 Ω across CAN H/L with battery off, ≈2.5 V idle) are `[F]`, not Genie values. The flowchart's statement that the chassis sensor 5 V comes from TCON through the rotator is **wrong** per the sheet (see the section above).

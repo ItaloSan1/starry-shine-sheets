@@ -50,6 +50,7 @@ pin, torque or step, **grep the extracted text** before answering. See
 | [09b-parts-hydraulic.md](09b-parts-hydraulic.md) | Parts Manual 106877GT: hydraulic parts |
 | [09c-parts-mechanical-engine.md](09c-parts-mechanical-engine.md) | Parts Manual 106877GT: engine, chassis, boom, platform, decals, options |
 | [10-external-sources.md](10-external-sources.md) | Forums, videos, articles consulted, with takeaways |
+| [cases/](cases/) | Machine-specific case files (Z13513-1861: verified diagnosis walkthrough and photos) |
 
 ## Non-negotiable safety rules (apply to every answer)
 
