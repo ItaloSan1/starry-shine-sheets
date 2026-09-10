@@ -132,3 +132,54 @@ Still unconfirmed: the identity of a third lit amber LED below the axle pair (ma
 not level vs drive enable — drive enable on would itself block retraction, OM p.51),
 and whether the foot switch was held during the attempt. Next step is to read the
 ground control LCD, which is where this fault posts its message.
+
+## Field update 2026-09-10 (later): axles retracted, chassis codes cleared
+Owner energised the axle valve coils directly and brought the axles in. Machine is
+now at retracted width. **All six chassis sensor codes (four steer, two axle, all
+"0 V") are gone**, which localises the remaining problem to the turntable side.
+
+Remaining codes as read off the display:
+- Primary boom angle sensor crosscheck fault
+- Secondary boom angle sensor crosscheck fault
+- Primary boom angle zone fault
+- Primary boom angle sensor not calibrated
+- Secondary boom switches fault
+- Secondary boom angle sensor shorted / 0 V
+- TCON–SCON calibration inconsistent
+
+### What this rules out
+The earlier leading hypothesis — `P21DCON` out of TCON `J12-2` feeding both the DCON
+and the SCON — is now largely **ruled out**. `J12-2` is confirmed as `P21DCON - WH`
+(SM p.194) and it also lands on SCON `J122-1`; with the chassis sensors reading again
+and the engine running, that feed is healthy.
+
+### What it points at
+Every remaining code sits on the **boom angle sensor circuit on the turntable**:
+
+| Wire | Pin | Role |
+|---|---|---|
+| `P109ANG - GR/WH` | TCON `J12-26` | 5 V supply, boom angle sensors |
+| `SNSR GND - BR` | TCON `J12-25` | sensor ground |
+| `C123PBS - RD/BK` | TCON `J12-32` | primary boom angle, **operational** |
+| `C141PBS - RD` | SCON `J122-3` | primary boom angle, **safety** |
+| `C124SBS - OR/BK` | TCON `J12-33` | secondary boom angle, **operational** |
+| `C142SBS - OR` | SCON `J122-2` | secondary boom angle, **safety** |
+
+"Crosscheck" = the operational copy (TCON) and the safety copy (SCON) of the same
+sensor disagree. The fault table carries separate *Operational* and *Safety* entries
+for each boom angle sensor (SM pp.177–178); the 0 V recovery action for both is
+"Check for 5.0 VDC at the sensor... Check that the 5.0 VDC LED is lit on the TCON
+board."
+
+### Why it will not drive
+SCON fault matrix, SM p.189: **Primary Boom angle (crosscheck)** switches OFF `P_38`,
+`P_39`, `P_10`, `P_11`, `P_30`; **Secondary Boom angle (crosscheck)** switches OFF
+`P_38`, `P_39`, `P_11`, `P_30`. `P_38` is propel. Propel cannot return until those
+crosscheck faults clear. There is no legitimate way around it.
+
+### Consequence for sequencing
+Full machine calibration must run **in a fixed order** (SM p.105) and the boom angle
+sensors come *after* the axle angle sensors and steer sensors — and axle sensor
+calibration requires **fully extending the axles again** (SM p.168). So the machine
+must be transported narrow and repaired at a shop, not calibrated in the yard.
+Immediate transport option is free-wheel and winch (OM p.58).
