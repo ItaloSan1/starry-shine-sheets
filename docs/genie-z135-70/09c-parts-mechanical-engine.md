@@ -28,7 +28,7 @@ README. Its cover and page 2 read:
 
 So this file documents **Rev H.04 (July 2024, First Edition, Eighth Printing)**, 358
 pages, serial range Z-135/70 SN 100 to 2000. The README/01-machine-identity entries that
-say "Rev G6 Jan 2013" should be updated to H.04 July 2024 (same part number 106877GT).
+said "Rev G6 Jan 2013" and have been updated to H.04 July 2024 (same part number 106877GT).
 Rev H.04 already carries the later part supersessions (1253702GT swivel, 1255768GT swing
 drive, 216061GT angle sensors, 1316635GT fuel cap, 1303581GT battery, etc.).
 

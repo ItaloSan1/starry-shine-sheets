@@ -7,7 +7,7 @@ serial-number notes are quoted **exactly as printed**, including the
 manufacturer's trailing asterisks (`*`, `**`, `***`, `****`), whose meaning is
 not defined anywhere in the extracted text.
 
-> **Revision caveat.** The README describes 106877 as "Rev G6, Jan 2013". The
+> **Revision caveat.** The README originally described 106877 as "Rev G6, Jan 2013" (since corrected). The
 > PDF actually ingested is **Rev H.04, July 2024, "From SN100 to 2000"**
 > (cover page, p.1). Page numbers below are the printed page numbers of that
 > revision, which coincide with the PDF page index (358 pages). Part numbers
