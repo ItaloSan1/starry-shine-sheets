@@ -44,3 +44,25 @@ Published artifact: https://claude.ai/code/artifact/b2e1c9c1-41bb-4666-9053-24fb
   (DCON PWR), P9A orange, C61AXR brown (P12), P18 blue, C60AXE yellow, P53LS green (P6R1).
 - The sheet's own swivel contact labels: P18, P6R1, C60AXE, DCON PWR, P9A, P12,
   DCON GND, P7R, CAN HIGH, CAN LOW.
+
+## SCON wiring reference
+`scon-wiring.html` — both SCON connectors as drawn on ES0366J, every pin decoded
+against the Safety Controller Pin Legend, the six switched safety power outputs
+mapped to their pins, the SCON fault matrix, and where to probe.
+Published artifact: https://claude.ai/code/artifact/518be58a-4ef5-4214-b095-c75022c044a2
+Figures: `figs/scon-*.png`.
+
+- `J121` gray 12-pin, `J122` black 12-pin (SM p.209).
+- `J122-1` `P21DCON-WH` is the SCON's own ECU supply — the **same circuit that feeds
+  the DCON**, out of TCON `J12-2`. Losing it takes out both modules.
+- `J121-12` `GNDSCON-BR` is the module ground the tilt-sensor fault entries keep
+  pointing at.
+- Safety outputs: `P_38` propel on `J121-10` `S137PLL`; `P_39` on `J121-11` `S139TRF`;
+  `P_10` on `J121-8` `S59CNK`; `P_11`+`P_30` on `J122-8` `S140ENL`; `P_9B` ignition
+  and fuel on `J122-10` `P58LS`; `P_7R` on `J121-9` and `J122-11` `S56PRV`.
+- Matrix cross-check: *Loss of CAN* drops all six including `P_9B`, so a machine whose
+  engine keeps running has a SCON that is powered, grounded and on the bus — the
+  "SCON CAN no response" message is very likely latched history.
+- Module `1258463GT` from SN 1712 (this machine); `139647-SGT` to SN 1711. Item 22 on
+  parts figure 304.1, turntable hydraulic tank side (PM pp.54–55). Replacing it
+  requires a **full machine calibration** (SM p.154).
