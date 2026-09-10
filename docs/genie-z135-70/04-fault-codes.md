@@ -1,49 +1,111 @@
-# 04 — Fault codes
+# 04 — Fault codes (Service Manual 1268557GT Section 4, pp.171–189) `[V]`
 
-**Status:** the complete Control System Fault Code table is in Service Manual
-1268557GT Section 4 (pp.171–190) which is not yet ingested. What follows is
-verified from indexed text of the Z/ZX-135/70 manuals, the Operator's Manual,
-and the Drive flowchart. Do not invent meanings for codes not listed here.
+Before troubleshooting: trained person; machine on firm level ground, key off,
+E-stops in, wheels chocked, AC disconnected, boom stowed, turntable lock in,
+welder disconnected. Two people for some procedures.
 
-## How faults present `[V]`
-- Ground LCD scrolls messages; platform **Fault indicator light** (16) lights for a system fault; **Check engine light** (14) for an engine fault.
-- Error types in the ZX/Z-135 table: "Fault Check" (message on LCD), joystick and sensor value faults, CAN faults, calibration faults.
-- After repair: recycle power (E-stop in/out or key off/on). Faults that return are live; faults that stay gone were history. Clear history from the TCON display menu or WebGPI.
+Common error types: **Value at 5.0 V** (open ground / open signal), **Value Too
+High**, **Value Too Low**, **Value at 0 V** (no 5 V supply, damaged wiring; check
+the **5.0 VDC LED on the TCON board**), **Out of Tolerance** (recalibrate),
+**Not calibrated**, **Just calibrated** (one-second beep, self-clearing),
+**Fault Check**, **Calibration check**, **Range check**.
 
-## Safety switch faults (SCON) `[V]`
-LCD text: `Pxx SAFETY SWITCH FAULT`. Codes documented for this machine family: **P3, P6R1, P6R2, P7, P7R, DCON P7R, P9A, P9B, P10, P11, P12, P14, P18, P22, P22R, P30, P38, P39**.
+## Joysticks (pp.172, 178, 181, 183–185)
+| Source | Value at 5.0 V / too high / too low / 0 V | Not calibrated | Just calibrated |
+|--------|------|------|------|
+| Primary ext/ret, primary up/down, steer, turntable rotate, jib up/down, jib ext/ret, platform rotate, propel joysticks | Limited speed, direction frozen at zero/neutral, alarm. Check joystick wiring and that connector terminals have not backed out; substitute a known good joystick; replace and recalibrate | Speed/direction frozen at zero. Calibrate joystick (propel: calibrate thresholds) | 1 s beep, self-clearing |
+| Secondary boom joystick | Primary up, secondary up/down and extend disabled, alarm; same checks | frozen at zero | self-clearing |
 
-| Code | What is known |
-|------|---------------|
-| P11 | Primary up power (forum reading of display: "primary up power p11 fault"). Manual recovery: recycle power; check wiring **S140ENL (orange/black)** between SCON and TCON; check SCON chart |
-| P30 | Secondary up / extend power ("Sec up/ext power p30 fault"). Same S140ENL circuit as P11 |
-| P38 | Circuit S137PLL (red/white) SCON J121-10 ↔ TCON J13-17 (platform level related) |
-| P39 | Circuit S139TRF (white/red) SCON J121-11 ↔ TCON J13-19 (turntable rotate related) |
-| P6R2, P9B | Circuit P54ENG (black/white) J122-9 ↔ J12-4. Manual: check P54ENG and P58LS between SCON and TCON for damage; check SCON charts |
-| P6R1, P9A | Circuit P53LS (white/black) J122-7 ↔ J12-3 & J12-6 |
-| P9B | also P58LS (red/black) J122-10 ↔ J12-7 |
-| P7 | Circuit S56PRV (red) J121-9 / J122-11 ↔ J11-6, J12-5 |
-| P22 | **Platform out of level**; platform level controls do not work. Use the bypass key procedure (03). PLATFORM LEVEL > 15 DEGREES FAULT requires recovery by trained personnel |
-| P10, P11, P30, P38, P39, P9B together | Per the SCON Fault Matrix (service manual ≈p.189), **loss of CAN** is the only single condition that turns off all six safety relays at once. Six simultaneous P-faults = a CAN failure, not six separate faults |
+## Membrane buttons on TCON (pp.173, 176, 178, 181, 183)
+Both buttons pressed (primary up/down, primary ext/ret, secondary up/ext/down/ret, turntable rotate, axle extend/retract, platform rotate) → that function disabled, LCD message. Check ribbon and connector from the membrane switch; replace membrane if needed.
 
-## Sensor and joystick value faults `[V-index]`
-Fault wording used by the table: **Value at 5.0 V** (too high / open signal wire), **Value at 0 V** (too low / open ground or dead 5 V supply), **Value Too High**, **Value Too Low**, **Not calibrated**, **Just calibrated**, **cross check** (dual-output sensors disagree), **zone fault**.
-- Sensors on this machine: primary boom angle (dual output: operational + safety), secondary boom angle, jib boom bellcrank angle, platform level (angle) sensor on the rotator, turntable level (tilt) sensor X/Y at SCON, 4 steer angle sensors, 2 axle position sensors, platform overload load cell (if equipped), boom extend limit switches.
-- "Not calibrated" on boom sensors: primary up, secondary up/down and extend disabled with alarm; recalibrate per 05.
-- "Just calibrated": one-second beep, self-clearing.
-- Axle angle sensor **Value at 0 V** recovery text: "Check that the 5.0 VDC LED is lit on the TCON board"; steer sensor at 0 V: "Check for an open ground circuit going to the sensor". Value at 5 V = open signal wire between sensor and DCON.
-- Joystick faults: recalibrate the joystick (05). Note the joystick must be calibrated before threshold, max-out or ramping can be set.
+## Boom length and speed calibration (p.173)
+- **Primary Boom Length, Fault Check (unknown length)**: all boom functions stop; only retract allowed, then boom down once fully retracted. Check primary retracted and extended switches for proper contact with the boom; readjust or shim.
+- Primary up/down speed, primary ext/ret speed, secondary up/down speed, turntable rotate speed **Not calibrated**: message, operation at default speed; perform the auto-calibrate (function speed) procedure.
 
-## CAN bus faults `[V-index]`
-- **TCON CAN BUS / CAN BUS** faults. Recovery: "check CAN bus wiring from TCON to propel DCON **through rotator**; repair or replace wiring or DCON"; "check CAN bus wiring from TCON to SCON/PCON; repair or replace wiring or SCON/PCON".
-- SCON "CAN no response" plus all chassis sensors at 0 V on the owner's machine was traced in the Drive flowchart to power/ground/5 V/rotator candidates (see 08).
+## Valve faults (pp.173, 177, 179, 181–185)
+- **Fault Check** on primary extend / retract / up / down valves, primary lock-out valves #1 and #2, secondary extend / retract / up / down / extend-sequence / down-sequence valves, turntable rotate CW / CCW valves, platform rotate CW / CCW, jib extend/retract, steer valves LF/RF/LR/RR, axle valve, motor valve speed, brake valve: limited speed, direction frozen, alarm. Check wiring; check for open or shorted coil; repair or replace.
+- Flow (proportional) valves: primary up/down, primary ext/ret, secondary up/down/ext/ret, turntable rotate, jib up/down, jib level (bellcrank), platform level up/down: **Not calibrated** = normal function but threshold for one direction is zero → calibrate thresholds; **Value Too High** = opens in wiring or bad ground, replace coil; **Value Too Low** = shorts to ground, replace coil.
+- Propel valves fwd/rev and Propel EDC: not calibrated → calibrate thresholds; too high/low as above.
 
-## Load sense faults `[V-index]`
-- LSS1R0 fault reported intermittently in the field; one technician traced it to the DCON main board `[F]`. LSS1RS load sense switch on SCON pin 2; platform overload sensor on SCON pin 1 (ZX manual text).
-- Platform overload: alarm sounds, overload light flashes at platform, "platform overload" on the ground LCD, all platform and ground functions inhibited until weight removed (2 s delay). Reset: remove weight, release foot pedal, pull E-stop out, wait 5 s `[F]`.
+## Safety switch faults (pp.174–175)
+| LCD message | Recovery |
+|-------------|----------|
+| P3 SAFETY SWITCH FAULT | Internal fault, not on Z135 |
+| P6R1 | Check circuit **P53LS (white/black)** for shorts/opens. Repair wiring or replace TCON |
+| P6R2 | Check circuit **P54ENG (black/white)**. Repair wiring or replace TCON |
+| P7 | Check circuit **S56PRV (red)**. Repair wiring or replace TCON |
+| P7R | Function enable button was held during start-up. Recycle power with the button released |
+| DCON P7R | Check S56PRV (red). Repair wiring or replace DCON |
+| P9A | Check P53LS (white/black). Repair wiring or replace TCON |
+| P9B | **Boom violated the safety limits and the engine was shut off as a safety feature.** Use auxiliary power to bring the boom back inside limits. Check P54ENG and P58LS between SCON and TCON. Check the SCON chart |
+| P10 | Recycle power |
+| P11 | Recycle power; check circuit **S140ENL (orange/black; pin legend says OR/RD)** between SCON and TCON; check SCON chart |
+| P12, P14, P18 | Recycle power |
+| P22 | Re-level platform. Check wiring on circuit **P56PRV (red/white)** |
+| P22R | Re-level platform. Repair or replace PCON |
+| P30 | Recycle power; check S140ENL between SCON and TCON; SCON chart |
+| P38 | Recycle power; check **S137PLL (red/white)** between SCON and TCON; SCON chart |
+| P39 | Recycle power; check **S139TRF (white/red)** between SCON and TCON; SCON chart |
 
-## Engine faults `[S]`
-Perkins engines report SPN/FMI codes readable with Perkins EST or a J1939 reader; this manual's engine fault code pages are pending. Check engine light: engine stopped → tag out; running → service within 24 h `[V]`.
+## SCON Fault Matrix (p.189) — which safety relays turn OFF
+Relays: P_38 propel · P_39 turntable rotate · P_10 primary extend · P_11 primary/secondary up · P_30 secondary extend/down · P_9B ignition/fuel.
 
-## To be filled from Service Manual pp.171–190
-Full table with: fault message, error type, cause, effect on functions, recovery steps; SCON Fault Matrix (relay states per condition).
+| Condition | P_38 | P_39 | P_10 | P_11 | P_30 | P_9B |
+|-----------|:---:|:---:|:---:|:---:|:---:|:---:|
+| Turntable tilt Y axis (+5°, secondary not stowed) | OFF | OFF | | OFF | OFF | |
+| Primary boom angle crosscheck | OFF | OFF | OFF | OFF | OFF | |
+| Secondary boom angle crosscheck | OFF | OFF | | OFF | OFF | |
+| Secondary boom safety (not retracted and not raised) | | | | OFF | OFF | OFF |
+| Axle safety not stowed (not faulted, primary and secondary stowed) | | OFF | OFF | OFF | OFF | |
+| Axle crosscheck angle sensor vs safety switch | | OFF | OFF | OFF | OFF | |
+| Axle not fully extended and turntable rotate (stowed, in drive disable zone) | OFF | OFF | | | | |
+| Turntable tilt angle crosscheck (3 SCON internal sensors in delta) | OFF | OFF | OFF | OFF | OFF | |
+| Primary boom safety (max angle) | OFF | OFF | | OFF | OFF | OFF |
+| **Loss of CAN** | **OFF** | **OFF** | **OFF** | **OFF** | **OFF** | **OFF** |
+| LSS1RS disconnected (SCON pin #2) | | | | OFF | OFF | |
+| Platform overload (SCON pin #1) | | | | | | OFF |
+| Secondary boom length crosscheck LSS1RS vs LSS1RO | | | | OFF | OFF | OFF |
+
+Reading the matrix: all six P-faults at once = loss of CAN. P_9B alone = platform overload. P_11 + P_30 only = LSS1RS disconnected. P_11 + P_30 + P_9B = secondary boom not retracted and not raised, or secondary length crosscheck.
+
+## Platform overload and engine (p.176)
+- **Platform Overload, Fault Check**: LCD message; all PCON functions disabled; TCON limited to auxiliary power; FUEL POWER P9B FAULT. Check for overload; check the overload switch on the platform support.
+- Footswitch Timeout (calibration check): recycle power.
+- Engine speed range check (underspeed): engine below 50 rpm; check fuel system.
+- Oil pressure range check (low): check sender and oil level.
+- Water/oil temperature range check (high): overheating; check sender, water/oil level, radiator or heat exchanger.
+- Oil pressure sender / water-oil temp sender fault check: check sender wiring for opens/shorts.
+
+## CAN faults (p.176)
+- **DCON CAN Bus, Fault Check**: LCD message, **propel disabled**. Check CAN wiring from TCON to DCON **through rotator**; repair or replace wiring or DCON.
+- **CAN Bus, Fault Check**: LCD message. Check CAN wiring from TCON to SCON/PCON; repair or replace wiring or SCON/PCON.
+
+## Angle sensors (pp.177–185)
+Operational and safety **primary** boom angle sensors, operational and safety **secondary** boom angle sensors, **front / rear axle** angle sensors:
+| Error | Effect | Recovery |
+|-------|--------|----------|
+| Value at 5.0 V | Primary up, secondary up/down and extend disabled, alarm | Check for an open ground circuit to the sensor |
+| Value Too High | same | Sensor out of range; check sensor and actuating pin installation; repair/replace and recalibrate |
+| Value Too Low / Value at 0 V | same | Check for 5.0 VDC at the sensor; check wiring; check the 5.0 VDC LED on the TCON board |
+| Out of Tolerance | same | Recalibrate sensor |
+| Not calibrated | Primary (or secondary) up only active from TCON, alarm | Perform calibration procedure |
+| Just calibrated | 1 s beep | self-clearing |
+
+**Steer angle sensors LF / RF / LR / RR** (pp.186–187): Value at 5.0 V → open ground to sensor; Too High → out of range, check sensor and actuating pin, recalibrate; Too Low / 0 V → check 5 V at sensor, wiring, TCON 5.0 VDC LED. Effect: primary up, secondary up/down and extend disabled, alarm.
+
+**Turntable level sensor X (operational and safety)** (p.180): Value at 5.0 V → flash unit-out-of-level icon and LED, alarm; **check that SCON is grounded**. Too High / Too Low / 0 V / Out of Tolerance → **replace SCON**.
+**Turntable level sensor Y (operational and safety)** (pp.181–182): Value at 5.0 V → primary up and extend disabled, alarm; check SCON grounded. Others → replace SCON.
+**Platform level sensor Y direction** (p.182): value faults → primary up and extend disabled, alarm; check that SCON is grounded.
+**Jib angle sensor RSJ1AO** (p.188): value faults → limited speed, frozen, alarm; power up controller with the problem corrected.
+**SCON tilt sensor calibration check** (p.188): "X direction and Y direction not calibrated" → re-power after entering tilt X and Y matrix information.
+
+## Secondary boom switch faults (p.188)
+- **Secondary Boom Switch Timeout**: too much time between LSS1RO releasing and LSS1RS releasing on extend (or engaging on retract), or the joystick engaged three times in the interval. Effect: secondary extend inhibited. Recovery: on extend, retract until LSS1RO engages and retry; check LSS1RS and LSS1RO for damage and operation.
+- **Secondary Boom Switches Intermittence (LSS1RS Fault)**: LSS1RS or LSS1RO changed state without a command or while the secondary was not fully raised. Effect: secondary down inhibited until cleared. Check switches; clear with the TCON display menu or laptop with WebGPI.
+- **LSS1RO Fault**: LSS1RO did not switch within the specified time after the secondary was raised. Effect: secondary extend inhibited, alarm. Check switch; clear via display menu or WebGPI.
+
+## Clearing faults (pp.107–108)
+- Software ≤ 3.11 / 4.01: Default Reset menu (minus)(minus)(previous)(previous) → **Delete Faults** (active latching faults only).
+- Software 3.12 / 4.02+: Clear Faults menu (minus)(previous)(previous)(minus) → **Clear all safety switch faults**.
+- Fault history is not cleared by these; WebGPI can also clear faults.

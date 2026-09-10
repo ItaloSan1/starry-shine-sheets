@@ -1,5 +1,23 @@
 # 00 — Source ingestion status
 
+## Final status (2026-09-10, later)
+The owner uploaded compressed copies of all three PDFs to Google Drive
+(114474_compressed.pdf 2.3 MB, 1268557 (1)_compressed.pdf 6.0 MB,
+106877 (1)_compressed.pdf 6.2 MB). All three downloaded through the Drive
+connector and were extracted with PyMuPDF: every page has a text layer
+(2 blank pages in the service manual, 1 in the parts manual). Coverage:
+
+| Manual | Pages | Read by Claude | Knowledge-base files rewritten |
+|--------|-------|----------------|-------------------------------|
+| Operator's 114474 | 67 | all | 01, 02, 03, 07 |
+| Service 1268557GT Rev A4 | 244 | all (schematic sheets are drawings; their text labels are in the extract) | 02, 03, 04, 05, 06, 08 |
+| Parts 106877GT Rev G6 | 358 | digested by three agents into 09a/09b/09c | 09a, 09b, 09c |
+
+Remaining limits: the electrical and hydraulic schematic sheets (SM pp.215–228)
+are drawings; render them with PyMuPDF from `source/1268557.pdf` when a wire
+path must be traced. The separate Genie Maintenance Manual (checklists A–E) is
+still not part of the source set.
+
 ## What happened on the first build (2026-09-10)
 
 | Source | Result |

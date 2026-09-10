@@ -14,8 +14,8 @@
 | Doc | Part no. | Edition | Coverage | Ingested |
 |-----|----------|---------|----------|----------|
 | Operator's Manual | 114474 | Second Edition, Fifth Printing, Sept 2015, © 2005 Terex | ANSI/CSA machines SN 779 to 2000 | **Fully** (67 PDF pages, text in `extracted/114474.txt`) |
-| Parts Manual | 106877 (106877GT) | Rev G6, Jan 2013, 358 pp | SN 100/101 to 2000 | **Not yet**: 149 MB image PDF, over the Drive connector's 10 MB limit, no text layer returned |
-| Service and Repair Manual | 1268557 (1268557GT) | **Rev A4, October 2018** | Z13505-101 to Z13513-2000 | **Pages 1–66 verified** (specs, torque, platform controls, platform, jib boom). Pages 67–243 pending full PDF |
+| Parts Manual | 106877 (106877GT) | Rev G6, Jan 2013, 358 pp | SN 100/101 to 2000 | **Fully** (compressed PDF, text in `extracted/106877.txt`; digest in 09a–09c) |
+| Service and Repair Manual | 1268557 (1268557GT) | **Rev A4, October 2018** | Z13505-101 to Z13513-2000 | **Fully** (244 pages, text in `extracted/1268557.txt`) |
 
 Service manual 1268557GT Rev A4 states it includes repair procedures, fault
 codes, and electrical and hydraulic schematics, and that **detailed maintenance
@@ -31,7 +31,14 @@ procedures are in a separate Maintenance Manual**. `[V]`
 ## Serial-number breaks found so far `[V]`
 | Break | What changes |
 |-------|--------------|
-| Before SN 180 (except SN 102) vs after SN 179 | Drive motors (SN 102 has the later motors). Hydraulic schematic sheet differs |
+| Before SN 180 (except SN 102) vs after SN 179 | Drive motors (SN 102 has the later motors); traction manifold orifice AL 0.063 in vs 0.039 in. Hydraulic schematic sheet differs |
+| Before SN 440 vs after SN 439 | Function manifold layout and system-relief adjustment method (cap/hex vs lock nut/stem) |
+| From SN Z13512-1712 | Bypass/recovery key switch is on the lower right side of the ground control box |
+| Software < 3.0 | Display says RESET … SENSORS instead of DELETE … CALIBRATION |
+| Software ≤ 3.11 / 4.01 vs 3.12 / 4.02+ | Delete Faults lives in Default Reset menu vs separate Clear Faults menu |
+| Software < 4.01 vs ≥ 4.01 | 6-point (digital level) vs 2-point boom angle sensor calibration |
+| Software ≥ 1.11 | Recovery mode procedure as written (1.01: contact Genie) |
+| Software ≥ 3.07 | Overload Recovery / Clear Overload Recovery menu (passcode) |
 | SN 180–534 vs from SN 535 | Hydraulic schematic sheet differs |
 | Before SN 321 vs after SN 320 | Calibration mode entry: **jumper across 2-pin connector** in lower-left of ground control box (before 321) vs **calibration toggle switch** at top of ground control box (after 320) |
 | To SN 1711 vs from SN 1712 | TCON board part number: 217570GT vs 1258461GT (from the Drive flowchart citing parts manual) `[V]` |

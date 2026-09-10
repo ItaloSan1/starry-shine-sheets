@@ -15,17 +15,13 @@ documents below as the **source of truth** over forums, videos, or memory.
 
 ## Ingestion status (read this first)
 
-See [00-source-status.md](00-source-status.md). As of the first build of this
-knowledge base the sandbox's network policy blocked `manuals.genielift.com`
-and every mirror, so the PDFs were **not** read page-by-page. The content here
-was assembled from indexed excerpts of those exact manuals, Genie-published
-spec sheets and bulletins, a prior diagnostic flowchart in the owner's Google
-Drive that cites pin data from manuals 1268557GT and 106877GT, technician
-forums, and YouTube transcripts. Every fact carries a confidence tag.
-
-**To finish ingestion:** put the three PDFs in `docs/genie-z135-70/source/`
-(or upload them to Google Drive) and run `scripts/genie/ingest-manuals.sh`.
-Then Claude must read the extracted text and upgrade or correct every entry.
+All three manuals are in `source/` (compressed PDFs supplied by the owner) and
+their full text is in `extracted/` (`114474.txt` 67 pages, `1268557.txt` 244
+pages, `106877.txt` 358 pages). The Service Manual and Operator's Manual were
+read completely and the knowledge-base files were rewritten from them. The
+Parts Manual was digested into `09a`–`09c` by section. For any exact number,
+pin, torque or step, **grep the extracted text** before answering. See
+[00-source-status.md](00-source-status.md) for history.
 
 ## Confidence tags used in every file
 
@@ -49,7 +45,10 @@ Then Claude must read the extracted text and upgrade or correct every entry.
 | [06-hydraulics.md](06-hydraulics.md) | Pressures, pumps, manifolds, oil spec, brakes, free-wheel/towing |
 | [07-maintenance.md](07-maintenance.md) | Checklist A–E intervals and items |
 | [08-diagnostic-playbook.md](08-diagnostic-playbook.md) | Staged electrical diagnosis (owner's machine Z13513-1861) plus documented field cases |
-| [09-parts-reference.md](09-parts-reference.md) | Part numbers collected so far, with serial breaks |
+| [09-parts-reference.md](09-parts-reference.md) | Quick part-number list from the Drive flowchart and decal tables |
+| [09a-parts-electrical.md](09a-parts-electrical.md) | Parts Manual 106877GT: electrical and control-system parts |
+| [09b-parts-hydraulic.md](09b-parts-hydraulic.md) | Parts Manual 106877GT: hydraulic parts |
+| [09c-parts-mechanical-engine.md](09c-parts-mechanical-engine.md) | Parts Manual 106877GT: engine, chassis, boom, platform, decals, options |
 | [10-external-sources.md](10-external-sources.md) | Forums, videos, articles consulted, with takeaways |
 
 ## Non-negotiable safety rules (apply to every answer)

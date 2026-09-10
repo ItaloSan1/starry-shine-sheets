@@ -29,3 +29,11 @@ Platform: E-stop; horn; alarm on any switch press; engine will not start with fo
 | Two years / 2000 h (A+B+C+D+E) `[M]` | hydraulic oil change / analysis, hub oil replacement |
 
 Confirm `[M]` rows against the Genie Z-boom Maintenance Manual before quoting.
+
+## Tests the Service Manual hands off to the Maintenance Manual `[V]`
+- Check and Adjust the Engine RPM (referenced at SM 5-1).
+- Test the Level Sensor (after turntable level sensor calibration).
+- Test the Primary Boom Angle Sensor and Test the Secondary Boom Angle Sensor (after calibration).
+- Hydraulic filter replacement intervals (high pressure, medium pressure, return, case drain).
+- Drive hub oil (SAE 90 GL5, 47 fl oz per hub; rotate hub 40 fl oz).
+- Turntable rotation gear backlash check (procedure in SM 9-1).
