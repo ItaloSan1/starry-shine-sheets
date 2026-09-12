@@ -86,9 +86,22 @@ Figures `figs/j100-*.png`.
 
 ## Function enable valve (why one jumper at J100 moves nothing)
 `figs/func-enable-valve.png` — SM p.135. Schematic item **A**, solenoid valve
-2 position 2 way, coil `Y74`, connector `J166`, mounted **behind the medium
-pressure filter**: *"Enables lift pump to provide hydraulic pressure for all boom
-and steer/axle functions."* Coil spec 3.5–5.5 Ω (SM p.150).
+2 position 2 way, mounted **behind the medium pressure filter**: *"Enables lift pump
+to provide hydraulic pressure for all boom and steer/axle functions."* Torque
+20–25 ft-lbs. Coil spec 3.5–5.5 Ω (SM p.150).
+
+Coil designator **`Y74`** is confirmed on sheet ES0366J, labelled
+`Y74 FUNCTION ENABLE VALVE (J166)`, with `V155PSE-OR/RD` as the adjacent feed wire
+`[V]` (schematic text; the extraction is spatially jumbled, so confirm the colour on
+the sheet before relying on it).
+
+**Manual conflict, unresolved:** the schematic calls that connector `J166`, but the
+Drive Chassis / Platform Controller connector legend lists `J166` as *"6 pin Deutsch
+connector for jib bellcrank sensor"* (SM p.206) — and separately lists `J162` as the
+3 pin jib bellcrank angle sensor. One of the two is a manual error. **Identify the
+function enable valve by locating it behind the medium pressure filter and ohming the
+coil at 3.5–5.5 Ω, not by trusting the connector number.** An earlier revision of this
+file asserted `J166` without flagging the conflict; that was wrong.
 
 Consequence: energizing the axle retract coil `BU` at `J100` only shifts a spool —
 no oil reaches the steer and axle manifold until the function enable valve is also

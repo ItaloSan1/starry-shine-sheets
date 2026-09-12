@@ -159,7 +159,7 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
   </ul>
   <div class="prog">
     <div class="bar"><i id="progBar"></i></div>
-    <span id="progText">0 of 20 done</span>
+    <span id="progText">0 of 22 done</span>
   </div>
   <div id="saveState"></div>
 </header>
@@ -321,6 +321,33 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
         <div class="cite">Circuit numbers: SM pp.211&ndash;213 &middot; SCON matrix: SM p.189</div>
         <div class="note"><label for="note-b4">Verdict</label>
           <textarea id="note-b4" placeholder="Circuit identified as ..."></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="b5" data-kind="trace">
+    <div class="t-top">
+      <input type="checkbox" id="chk-b5" aria-labelledby="ttl-b5">
+      <div>
+        <div class="t-title" id="ttl-b5">Best single guess: check the function enable valve <span class="mono">Y74</span></div>
+        <p class="t-why">This is the hypothesis that explains everything at once. Energising an axle
+           solenoid does nothing unless <b>Y74, the function enable valve</b>, is also energised &mdash;
+           it is what lets the lift pump supply pressure to <em>all</em> boom and steer/axle functions.
+           Anyone who discovered that jumpering the axle valve moved nothing would need a way to hold
+           Y74 on, and a toggle in the basket wired down to the turntable is exactly that way.
+           It also explains why your direct-to-solenoid trick worked when it did.</p>
+        <p class="t-why"><b>Find it:</b> behind the medium pressure filter. Ohm the coil &mdash;
+           <b>3.5 to 5.5 &Omega;</b>. Do not go by connector number: the schematic labels it
+           <span class="mono">J166</span> but the connector legend says <span class="mono">J166</span>
+           is the jib bellcrank sensor, so the manual contradicts itself here. The adjacent feed wire
+           on the sheet reads <span class="mono">V155PSE-OR/RD</span> &mdash; an orange/red host wire
+           under one of those Scotchloks would just about confirm it.</p>
+        <p class="t-why"><b>If that is what it is:</b> the machine has had its master hydraulic
+           interlock latched on from the platform. Every boom and steer function has had pressure
+           available at all times, regardless of what the safety system wanted. It comes out.</p>
+        <div class="cite">SM p.135 &sect;8-7 &middot; coil spec SM p.150 &middot; sheet ES0366J</div>
+        <div class="note"><label for="note-b5">Coil ohms and wire colour</label>
+          <textarea id="note-b5" placeholder="Y74 coil = ___ &Omega;   Scotchlok host colour = ___"></textarea></div>
       </div>
     </div>
   </article>
@@ -612,7 +639,7 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
 
 <script>
 (function(){
-  var IDS=["a1","a2","b1","b2","b3","b4","c1","c2","c3","c4","c5","c6","c7",
+  var IDS=["a1","a2","b1","b2","b3","b4","b5","c1","c2","c3","c4","c5","c6","c7",
            "d1","d2","d3","d4","d5","f1","f2","f3"];
   var bar=document.getElementById("progBar"),
       txt=document.getElementById("progText"),
