@@ -159,7 +159,7 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
   </ul>
   <div class="prog">
     <div class="bar"><i id="progBar"></i></div>
-    <span id="progText">0 of 22 done</span>
+    <span id="progText">0 of 24 done</span>
   </div>
   <div id="saveState"></div>
 </header>
@@ -185,10 +185,15 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
   <p><b>2. There is only one Scotchlok tap, and it is at the turntable.</b> I told you there was one
      part-way down the boom as well. There is not &mdash; both your photos show the same splice, beside
      the tilt sensor carton. The white wire runs platform to turntable with one tap at the far end.</p>
-  <p><b>3. That tap is on an orange/black wire</b>, with a red wire alongside, into a 2-pin black
-     Deutsch plug. Orange/black on this machine is <span class="mono">C64LS-OR/BK</span> (circuit 64,
-     power for operational switches) or <span class="mono">C124SBS-OR/BK</span> (the secondary boom
-     angle operational signal). <b>Both are on the stop-list.</b> Open this one first.</p>
+  <p><b>3. The tap's host wire is NOT yet identified &mdash; I overstated this morning.</b> Some
+     reviewers read the conductor as orange with a black stripe (which would be
+     <span class="mono">C64LS-OR/BK</span>, circuit 64, on the stop-list); another, enlarging the same
+     photo, reads <b>plain orange with no stripe visible</b>, paired with a plain red wire. Nothing in
+     the photo settles it, and nothing proves the 2-pin plug is even a Deutsch. <b>So read the printed
+     name off the wire itself</b> &mdash; do not go by colour, and do not assume it is safe because it
+     might be unstriped.</p>
+  <p><b>3b. The white wire carries on PAST that tap.</b> Its actual far end has never been seen. Find
+     where it really ends &mdash; that is part of B, not an afterthought.</p>
   <p><b>4. Your ground control box is <span class="mono">237069GT</span></b> (from SN 1712).
      <span class="mono">106512GT</span> is SN 1711 and earlier &mdash; wrong part for this machine.</p>
   <p><b>5. Solenoid coil range is 3.5&ndash;10 &Omega;</b>, not the 3.5&ndash;5.5 quoted on task B5.
@@ -198,6 +203,18 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
      location, wire colour, expected value and its manual page &mdash; is in
      <span class="mono">field-plan-2026-09-13.md</span> in the repo. This page is the short field
      version for ticking off.</p>
+</div>
+
+<div class="callout">
+  <h2>Hard stop &mdash; if you find either of these, stop and photograph</h2>
+  <p><b>If the empty cavity at <span class="mono">J114</span> is cavity 3</b>
+     (<span class="mono">C141PBS-RD</span>, the safety angle signal to SCON
+     <span class="mono">J122-3</span>), or <b>if the Scotchlok loop joins cavity 3 to cavity 4</b>, then
+     a safety input has been deliberately defeated. Do not operate the machine, do not energise it
+     further, and message me before you change anything.</p>
+  <p>Also note, honestly: <b>this plan contains no repair step.</b> Measuring is all it does. Removing
+     the bridge, the bonding wire and the toggle is a separate job that happens after the readings, and
+     the machine is not fit for service until it is done.</p>
 </div>
 
 <div class="verdict">
@@ -373,6 +390,39 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
         <div class="cite">SM p.135 &sect;8-7 &middot; coil spec SM p.150 &middot; sheet ES0366J</div>
         <div class="note"><label for="note-b5">Coil ohms and wire colour</label>
           <textarea id="note-b5" placeholder="Y74 coil = ___ &Omega; (spec 3.5-10)   Scotchlok host colour = ___"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="b6" data-kind="stop">
+    <div class="t-top">
+      <input type="checkbox" id="chk-b6" aria-labelledby="ttl-b6">
+      <div>
+        <div class="t-title" id="ttl-b6">Follow the white wire to its real far end</div>
+        <p class="t-why">It does not stop at the Scotchlok &mdash; it keeps going. Nobody has seen where
+           it actually terminates. Until you have both ends of this wire you do not know what the switch
+           does, no matter what the tap turns out to be.</p>
+        <div class="note"><label for="note-b6">Where it really ends</label>
+          <textarea id="note-b6" placeholder="Far end lands at: ..."></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="c8" data-kind="stop">
+    <div class="t-title-spacer"></div>
+    <div class="t-top">
+      <input type="checkbox" id="chk-c8" aria-labelledby="ttl-c8">
+      <div>
+        <div class="t-title" id="ttl-c8">Measure the two angle signals themselves &mdash; the test the plan was missing</div>
+        <p class="t-why">Everything else here measures the 5&nbsp;volt supply and the ground. <b>Nothing
+           measured the actual signals</b> &mdash; and the fault is those two signals disagreeing. With
+           <span class="mono">J114</span> plugged together, back-probe <b>cavity 3</b> (safety, goes to
+           the SCON) and <b>cavity 4</b> (operational, goes to the TCON), each against sensor ground,
+           boom stowed. Do the same at <span class="mono">J154</span>. The two should sit close together.
+           <b>How far apart they are is the fault.</b> A reviewer caught that this was missing; it is
+           arguably the single most informative reading on the machine.</p>
+        <div class="note"><label for="note-c8">Signal volts, boom stowed</label>
+          <textarea id="note-c8" placeholder="J114 cav3 = ___ V   cav4 = ___ V     J154 cav3 = ___ V   cav4 = ___ V"></textarea></div>
       </div>
     </div>
   </article>
@@ -664,7 +714,7 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
 
 <script>
 (function(){
-  var IDS=["a1","a2","b1","b2","b3","b4","b5","c1","c2","c3","c4","c5","c6","c7",
+  var IDS=["a1","a2","b1","b2","b3","b4","b5","b6","c8","c1","c2","c3","c4","c5","c6","c7",
            "d1","d2","d3","d4","d5","f1","f2","f3"];
   var bar=document.getElementById("progBar"),
       txt=document.getElementById("progText"),

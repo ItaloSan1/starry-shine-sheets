@@ -1,914 +1,1510 @@
-# Field plan — Saturday 2026-09-13
+# Field plan for 2026-09-13 — Z13513-1861
 
-**Genie Z-135/70, serial Z13513-1861, 2162.4 hours.** Axles retracted (8 ft 1 in). Engine runs. Propel is dead. Seven faults on the ground display, all on the boom angle sensor circuit.
+This machine will not drive, and its ground control screen is showing seven faults, all of them
+on the two boom angle sensors and the calibration that goes with them. Somebody has already been
+inside it: there are home-made splices at the primary boom angle sensor plug, a long green wire
+bolted to bare steel, and a mains-rated toggle switch fitted into the platform control box with a
+white wire running down the boom. Today is not a repair day. Today we find out what every one of
+those added wires is joined to, whether the factory wiring behind them is sound, and which of the
+seven faults is cause and which is consequence — so that the calibration technician arrives to a
+machine whose wiring is understood rather than guessed at.
 
-Somebody replaced the primary boom angle sensor, never ran the calibration it requires, and when the faults stayed, patched around them: two Scotchlok taps and a pulled pin at the sensor plug, a bonding wire at the pivot, and a non-Genie toggle switch in the platform box wired down to the turntable. Today finds out what that toggle does and whether the sensor circuit is electrically sound.
+**The one rule: nobody gets into the platform, and nobody operates this machine from the platform,
+until the toggle switch in that box has been identified and removed.** Until we know which circuit
+it taps, it must be treated as a live bypass of a safety circuit.
 
-> ## The one rule
->
-> **Nobody gets in the platform until the toggle switch is identified.** It is wired with plain 16 GA wire and insulation-piercing taps, it reaches from the basket to the turntable, and several of the circuits it could be on are safety circuits. Section B settles it. Do that first.
+---
 
-## How to read this
+## How to read this plan
 
-- **[V]** — verified: quoted from the Operator's Manual (OM 114474), Parts Manual (PM 106877GT) or Service and Repair Manual (SM 1268557GT). Page numbers are the **printed** page.
-- **[M]** — our inference, not manufacturer fact. Never treat an [M] as a spec.
-- Every card lists its sources at the end. If a number matters for a repair decision, open the PDF.
+Every statement in this plan carries a confidence tag:
 
-**Meter settings in plain words:** DC volts — 20 V range (or auto). Resistance — 200 ohm range. Continuity — the setting that beeps. Touch your two probes together first and note what the meter reads (usually 0.2–0.5 ohm of lead resistance); subtract that from every resistance reading.
+- **[V] — verified.** Read out of one of the three manufacturer documents: Operator's Manual
+  114474 (OM), Parts Manual 106877GT (PM), Service and Repair Manual 1268557GT (SM). Page numbers
+  are the **printed** page numbers on the page itself, not PDF page numbers.
+- **[F] — field observation.** Read off this machine's display, or off a photograph taken at the
+  yard. True of this machine on this date; not a manufacturer statement.
+- **[M] — our inference.** Engineering judgement, general trade practice, or a working number we
+  chose. Never quote an [M] item to a customer or to Genie as if it were in the manual.
 
-**Two machine states used all day:**
+Where the manuals contradict each other, the conflict is stated rather than silently resolved.
+Where a number is ours rather than Genie's, it says so on the line. Anything tagged [F] or [M] is
+not manufacturer fact, and must not be presented as one.
 
-| | Key | E-stops | Battery | Engine |
+---
+
+## 0. Setup for every test
+
+**(from card `setup` — "Setting the machine up for every test")**
+
+### Where it is
+
+**Component.** Ground control box (it holds the TCON = turntable controller, the machine's main
+computer, built on a circuit board Genie calls the ALC-1000), plus the SCON (safety controller,
+which is also the turntable tilt sensor), the two battery sets, and the engine relay-and-fuse panel.
+
+**Where on the machine.** GROUND CONTROL BOX: on the turntable, hydraulic-tank side — the side with
+the 65-gallon hydraulic tank, NOT the engine side. The Parts Manual draws it as item 34, "Ref.
+Ground Controls", in figure 304.1 "Hydraulic Tank Side Components"; the Service Manual calls that
+side "the ground controls side of the machine". SCON: same tank side, item 22 in that same figure
+304.1, bolted to the turntable near the middle. ENGINE STARTING/CONTROLS BATTERY (one 12 V, 950 CCA
+battery — CCA = cold cranking amps, a measure of starting punch): engine side, under the engine-side
+turntable cover, Parts figure 303.1 item 22, next to the relay plate. AUXILIARY POWER UNIT BATTERIES
+(two, 315 Ah — Ah = amp-hours, a measure of stored energy): in a steel battery box with a thumb-screw
+lid on the hydraulic-tank side, Parts figure 304.1 items 28-32. ENGINE RELAY AND FUSE PANEL: on the
+relay mount plate in the engine compartment under a relay cover, Parts figure 303.1 items 6, 8, 15-19.
+
+**How to find it.** Stand at the turntable on the side where you can see the hydraulic tank filler
+cap and its sight gauge (the little window that shows the oil level). The control box on that side,
+with the LCD window, the big red mushroom STOP button, a key switch below it and a second small key
+switch at the lower right, is the ground control box. Walk round to the other side (engine side) and
+open that turntable cover: you will find the single starting battery on its tray under a hold-down
+bar, and beside it a plate carrying the relays, a row of fuses and four bolt-head terminals under a
+cover. The Service Manual's panel drawing names six relay positions on that plate — CR28, CR17, CR41,
+CR5, CR1 and CR15 — and four marked terminals: B1PBAT (power from battery), B3PBAT (fused power from
+B1), R21PIGN (the 20 A ignition fuse) and 02PGND (ground). Back on the tank side, the low steel box
+with two thumb screws in its lid holds the two big auxiliary batteries. The SCON is a sealed module
+with two 12-pin Deutsch plugs (Deutsch is the connector brand — grey plug J121, black plug J122)
+bolted to the turntable near the centre on the tank side. **Do not loosen it: it is the tilt sensor.**
+
+**What it looks like.** Ground control box lid: an LCD display behind a lens at the top left, a
+membrane decal (the printed flat keypad), a large red mushroom STOP button at the top right, a
+3-position key switch under it (off / ground / platform), a small 20 A circuit breaker button and an
+audible alarm, and at the lower right a second, smaller key switch marked Run / Bypass / Recovery.
+Its decal shows the code P22 next to Bypass — P22 is the platform-out-of-level fault code. A key
+switch cover weldment (part 215590GT) is drawn beside that switch in the parts figure, so it may or
+may not be fitted here. Inside the lid: the LCD circuit board on a ribbon cable. Inside the box: the
+ECM/ALC-1000 circuit board — ECM is Genie's label for this engine-and-machine control board, and it
+is the TCON — with four large rectangular AMP plugs (AMP is the connector brand) entering through the
+side wall: J11 black 23-pin, J12 black 35-pin, J13 white 23-pin, J14 white 35-pin. There is also a
+4-way flange-mount Deutsch DTP power receptacle, a ground screw for a wrist strap, and a small toggle
+switch at the top of the box — that is the calibration toggle. **Leave it alone.** The board carries
+a "5.0 VDC" indicator light (LED) that the fault table tells you to check.
+
+**Cite.** SM p.99 and fig sm099-bypass-key.png; SM p.103 and fig sm103-alc-board.png; SM p.75; SM
+p.152; SM p.201 fig sm201-limitswitch-legend.png; SM pp.205-206, p.211 and fig sm211-fuse-panel.png;
+PM p.46 fig pm046-engine-compartment.png; PM pp.47, 55, 57, 60-63; OM p.21 fig key-om-gc-panel.png;
+OM p.22; SM p.24; SM p.42.
+
+### Set the machine to
+
+Two states are used by every card in this plan.
+
+**STATE A — "key ON, volts".** Main key switch in the GROUND position; the small bypass/recovery key
+switch left in RUN with no key in it. Both E-stops (the red emergency stop button on the ground
+control box and the one in the platform box) pulled OUT. Both battery sets connected. Engine OFF.
+
+**STATE B — "dead machine, ohms".** Main key switch OFF and the key removed; bypass/recovery key
+switch in RUN, no key in it. Both E-stops pushed IN. Cables tagged and disconnected at BOTH battery
+sets. Engine OFF.
+
+Never use PLATFORM unless a later card says so, and NEVER turn the bypass/recovery switch to Bypass
+or Recovery anywhere in this plan. Always go to STATE B before unplugging or plugging any connector.
+
+The Operator's Manual says "Before performing service on this machine, disconnect the batteries under
+both turntable covers." Follow the Service Manual's own order: first the two auxiliary power unit
+batteries in the battery box on the hydraulic-tank side (take the box cover off, then tag and
+disconnect), then the engine starting/controls battery under the engine-side turntable cover. Likely
+good practice [M]: take the negative (ground) cable off first and put it back on last, so a slipped
+spanner on the positive post cannot short to the frame.
+
+**Engine.** OFF in both states. The engine is never needed for any test on this card. Do not press
+the engine start button, the glow plug button (glow plugs are the diesel's cold-start heaters) or the
+auxiliary power button while probing — auxiliary power can move the boom with the engine off.
+
+**Other.** Firm level ground, wheels chocked, boom fully lowered and retracted (stowed), axles
+RETRACTED (machine at its narrow 8 ft 1 in width) so the two axle safety limit switches LSFA1ES
+(front) and LSRA1ES (rear) hold the boom functions off by design, turntable rotation lock pin fitted.
+Turntable rotate is still allowed up to 15 degrees with the axles retracted, which is exactly why the
+rotation lock pin goes in and why your hands stay off the membrane buttons the whole time the key is
+on. Propel is already dead on this machine because the SCON has switched off its P_38 propel output.
+
+### Connector and wires
+
+TCON AMP connectors J11, J12, J13, J14 sit on the ALC-1000 board in the ground control box. J12, the
+black 35-pin, is the one carrying the boom angle sensor 5 V supply, the sensor ground and both boom
+angle signals. Its body is three rows: pins 1-12 along the top, 13-23 in the middle, 24-35 along the
+bottom (pin-numbering drawing on SM p.210).
+
+Note for the boom cards: the six boom-angle wires do NOT run straight from the board to the sensor.
+They pass through a 12-pin Deutsch harness plug called **J20** (the Service Manual names it "the
+lower/upper limit switch harness" connector), and the conductor colours CHANGE at J20. A continuity
+check that ignores J20 will point you at the wrong length of harness.
+
+| Pin | Wire name | Harness colour | What it is | Goes to | Cite |
+|---|---|---|---|---|---|
+| J12-26 | P109ANG - GR/WH | green/white | 5 V supply for the boom angle sensors, shared by J114 and J154 | via J20 pins 11 and 10 to J114 pins 1 and 6; and to J154 pins 1 and 6 | SM p.210; SM p.205; SM p.177 |
+| J12-25 | SNSR GND - BR | brown | sensor ground — the return path for both boom angle sensors | via J20 pins 12 and 7 to J114 pins 2 and 5; and to J154 pins 2 and 5 | SM p.210 |
+| J12-32 | C123PBS - RD/BK | red/black | primary boom angle sensor, **operational** signal | via J20 pin 6 to J114 pin 4 | SM p.210 |
+| J12-33 | C124SBS - OR/BK | orange/black | secondary boom angle sensor, **operational** signal | J154 pin 4 | SM p.210 |
+| J12-2 | P21DCON - WH | white | battery-level feed shared with the DCON (drive chassis controller) and SCON. Likely [M] that it leaves the TCON — the manuals give only the wire name at each end. What matters here is that a battery-level wire shares one plug body with the delicate 5 V sensor wires. | DCON supply and SCON J122 pin 1 | SM p.210; SM p.209 |
+| J122-3 (SCON) | C141PBS - RD | red | primary boom angle sensor, **safety** signal — the independent copy the safety controller reads. When this copy and the TCON's copy disagree, you get the "crosscheck" fault. | via J20 pin 2 to J114 pin 3 | SM p.209 |
+| J122-2 (SCON) | C142SBS - OR | orange | secondary boom angle sensor, **safety** signal | J154 pin 3 | SM p.209 |
+| J137-2 / J137-1 (front axle) | P61LSA - GR / J2 - GR/BK | green / green-black | front axle safety limit switch LSFA1ES. Do not touch, jumper or adjust. | axle-extended safety circuit; P61LSA-GR to DCON J31 pin 23 | SM p.206; SM p.229 sheet ES0366J; SM p.208 |
+| J138-2 / J138-1 (rear axle) | C60AXE - GR/WH / J2 - GR/BK | green-white / green-black | rear axle safety limit switch LSRA1ES. Do not touch, jumper or adjust. Note: P53LS-WH/BK is **not** on either axle switch — it is a limit-switch supply at the controllers. | axle-extended safety circuit; C60AXE-GR/WH to SCON J122 pin 4 | SM p.206; SM p.229; SM p.209; SM p.210 |
+| B1PBAT / 02PGND | (panel terminals, not wires) | n/a | your meter reference pair on the engine side: "Power from Battery" and "Ground" | battery positive via the main feed; machine ground | SM p.211 |
+
+**Why we never unplug an AMP connector with the key on.** (1) The Service Manual's own procedure for
+working on this board starts with "Push in the red Emergency Stop button to the off position at both
+the ground and platform controls", and every repair procedure assumes "Key switch in the off position
+with the key removed" before you "Tag and disconnect the harnesses". (2) The boards are damaged by
+static electricity — the manual requires a grounded wrist strap clipped to the ground screw inside
+the box. (3) [M, likely] breaking the 5 V, ground and CAN lines while the computers are running can
+set NEW safety faults, which would bury the seven codes we are chasing under fresh ones. (4) [M,
+likely] a 35-pin plug wiggled out under power can bridge a battery-voltage pin onto a 5 V sensor pin
+for an instant. So: key OFF, key out, both E-stops IN, both battery sets disconnected, wrist strap
+on — then and only then touch an AMP plug.
+
+### Do this
+
+1. **Park and secure.** Firm, level surface, boom fully lowered and retracted, turntable turned so
+   the boom sits between the non-steer wheels, wheels chocked. Fit the turntable rotation lock pin.
+2. **Confirm the axles are retracted** — the machine is at its narrow 8 ft 1 in width. With the axles
+   in, LSFA1ES and LSRA1ES hold the boom functions off: the Service Manual says these switches
+   "Prevent boom functions with the axles retracted", and the Operator's Manual function test confirms
+   "The boom should not raise unless the axles are extended." Judgement call, not a manufacturer
+   permission [M, likely]: that lock-out is why we are willing to turn the key on at all for voltage
+   readings. It is not a complete guarantee. Two things are still live with the axles in — turntable
+   rotate works up to 15 degrees, and auxiliary power can move functions with the engine off.
+3. **Find the ground control box.** Stand on the hydraulic-tank side of the turntable — the side with
+   the tank filler cap and the sight gauge. The TCON lives inside it.
+4. **Learn the two key switches.** TOP = main key switch: OFF / GROUND / PLATFORM. BOTTOM-RIGHT small
+   key switch = bypass/recovery: Run / Bypass / Recovery. The same single key is used for both. FOR
+   THIS PLAN: the main key is used only in OFF and GROUND; the bypass/recovery switch stays in RUN
+   with the key OUT of it. If you arrive and find the key sitting in the bypass/recovery switch, or
+   the switch not in Run, photograph it, put it back to Run, remove the key and write it down.
+5. **Learn the two E-stops.** Ground box: red mushroom at the top right of the lid — push IN = off
+   (stops all functions and turns the engine off); pull OUT = on. Platform box: same button, same
+   action. The Operator's Manual notes that "Selecting and operating the ground controls will override
+   the platform red Emergency Stop button", so a pushed-in platform E-stop protects nobody once the
+   ground controls are selected.
+6. **Find both battery sets.** (a) Hydraulic-tank side: low steel battery box, lid held by two thumb
+   screws, two 315 Ah auxiliary power unit batteries inside. (b) Engine side: open the engine-side
+   turntable cover; on a tray under a hold-down bar sits ONE 12 V, 950 CCA starting/controls battery.
+   The Operator's Manual warns that jump leads go on "the starter and controls battery, not the
+   auxiliary power batteries". The two sets are joined through a 100 A dual battery separator, so
+   treat them as one system.
+7. **Find the engine relay and fuse panel.** Engine side, on the relay mount plate next to the
+   starting battery, under a cover. Match what you see to the SM p.211 panel drawing (Deutz and
+   Perkins) or SM p.212 (Cummins). p.211 names: CR28 engine/fuel relay, CR17 hydraulic oil cooler fan
+   relay, CR41 flashing beacon relay, CR5 horn relay, CB10 20 A circuit breaker, F23 30 A fuse, F22
+   60 A glow plug fuse, F7 20 A fuse, B1PBAT, B3PBAT, R21PIGN 20 A ignition fuse, 02PGND, CR1 start
+   relay, CR15 glow plug relay. The parts list shows three plug-in SPDT relays and two sealed 70 A
+   relays, so the physical count of relay bodies is not the same as the count of names. Look for a
+   blown fuse or a burnt relay socket and note what you see. Pull nothing.
+8. **Find the SCON.** Tank side, Parts figure 304.1 item 22: a sealed module bolted to the turntable
+   near the centre, with grey plug J121 and black plug J122. The manual describes it as "Redundant
+   dual axis tilt sensors measuring the X and Y tilt angles of the turntable" that "also provides
+   safety switch logic for function cut-off". Do not loosen its bolts and do not unplug it.
+9. **Set up the meter.** Any digital multimeter. The manual's wording for a voltage test is "a
+   voltmeter set to DC voltage". Likely settings, ordinary practice rather than manual instruction
+   [M]: 20 V DC range for 5 V and 12 V readings, 200 ohm range for resistance. Note what the manual
+   DOES specify for resistance work: "Tag and disconnect the wiring from the coil to be tested",
+   readings "within specification, plus or minus 30%", at 68 °F / 20 °C, valve coil table 3.5 to 10
+   ohm. Prove the meter first: red on B1PBAT, black on 02PGND with the key OFF; then touch the two
+   leads together on ohms — close to 0 ohm and a beep.
+10. **STATE A — "key ON, volts".** Everything plugged in, both battery sets connected, both E-stops
+    OUT, bypass/recovery in RUN with key out, main key to GROUND, engine OFF. Do not press any
+    membrane button, glow plug, engine start or auxiliary power button. Stand clear of the boom and
+    out of the turntable swing path. Read the LCD, write down every fault word for word, photograph it.
+11. **STATE B — "dead machine, ohms".** Main key OFF and removed. Bypass/recovery in RUN, no key.
+    Both E-stops IN. Remove rings and watches — the manual repeats "Electrocution/burn hazard...
+    Remove all rings, watches and other jewelry" at every battery step — and wear eye protection. Open
+    both turntable covers. Take the cover off the auxiliary battery box, tag and disconnect those
+    cables, then tag and disconnect the engine starting/controls battery. Likely good practice [M]:
+    negative first, ends tied back. Confirm the machine is dead: LCD blank, B1PBAT to 02PGND = 0 V.
+12. **The rule for moving between states:** go A to B BEFORE you touch any connector; go B back to A
+    only after every plug you opened is back on and latched. Never pull a plug in State A. Never take
+    an ohm reading in State A.
+13. **Opening the ground control box** (only when a later card sends you inside): be in State B.
+    Remove the lid fasteners and open the lid; the LCD board hangs on the lid by a ribbon cable, so
+    support it. Clip a grounded wrist strap to the ground screw inside the box — "Electrostatic
+    discharge (ESD) can damage printed circuit board components." Look but do not pull: the four AMP
+    plugs, the DTP power receptacle, the two membrane ribbon cables, and the small toggle switch at
+    the top of the box — that is the calibration toggle. Do not move it. If you find it already moved
+    to the left, photograph it and write it down: it means someone left the machine in calibration mode.
+14. **Before leaving this card**, have a written record of: chocks and rotation lock pin fitted; axle
+    width 8 ft 1 in; the position of both key switches and where the key was found; which E-stops were
+    in or out on arrival; the calibration toggle position if you were inside; which battery cables you
+    disconnected and where you tagged them; the condition of the fuse and relay panel; and the exact
+    LCD fault text plus a photograph from State A.
+
+### You should see
+
+| Measurement | Expected | If OK it means | If not it means | Cite |
 |---|---|---|---|---|
-| **STATE A** — measuring volts | GROUND position | Ground E-stop **out**, platform E-stop **in** | Connected | Off |
-| **STATE B** — measuring ohms, or unplugging anything | **Off, key removed** | Both **pushed in** | **Disconnected, both sets** | Off |
+| ARRIVAL CHECK (not State A and not State B): key OFF and out, both E-stops IN, batteries still connected. DC volts, red on B1PBAT, black on 02PGND. | Roughly 12 to 13 V. [M for the number — the manuals give no resting battery voltage.] The manual gives only the naming: B1PBAT = "Power from Battery", 02PGND = "Ground". | Battery and main feed alive, meter works. Go to State A. | Below about 12 V: charge or replace the starting/controls battery before trusting any electrical reading. 0 V: check the battery cables, the F23 30 A fuse and the main feed first. | SM p.211 |
+| STATE A: main key to GROUND, both E-stops out, engine off, hands off the keypad — watch the LCD. | Display wakes and lists the live faults. On this machine, from the last field reading [F]: primary boom angle sensor crosscheck; secondary boom angle sensor crosscheck; primary boom angle zone fault; primary boom angle sensor not calibrated; secondary boom switches fault; secondary boom angle sensor shorted / 0 V; TCON-SCON calibration inconsistent. | Write them down word for word and photograph the screen. This is the baseline. | Display dead: check the 20 A circuit breaker button on the ground panel, that both E-stops are truly out, and the battery voltage above. A different fault list: record it exactly — a change in the list matters as much as the list. | OM p.22; case README (field reading); SM p.189 |
+| STATE A arrival record (look only): position of the main key switch, the bypass/recovery key switch, and — if a later card has the box open in State B — the calibration toggle. | Main key in OFF or GROUND only. Bypass/recovery in Run with no key in it. Calibration toggle NOT moved left. | Note it and carry on. Normal operating configuration. | Key left in the bypass/recovery switch, switch in Bypass or Recovery, or the calibration toggle moved left: photograph exactly as found, then return the switch to Run and remove the key. Leave the toggle for the calibration technician. Genie's own wording is the point: "If either the Bypass or the Recovery function is required, this indicates there may be faults with the machine." | SM p.99; SM p.42; OM p.22 |
+| STATE B confirmation after both battery sets are off: LCD, then B1PBAT to 02PGND on DC volts. | LCD blank; 0 V. | Machine is dead. Plugs may be opened and resistance readings taken. | Voltage still present: a battery cable is still connected somewhere. Two sets joined through a 100 A separator — find and clear it before touching any plug. | OM p.12; SM p.76; PM p.47 |
 
-Go to STATE B before you unplug or plug in any connector. Both battery sets are under the two turntable covers — the starting battery on the engine side, the two auxiliary batteries in the box on the hydraulic-tank side. `[V]` OM p.22
+### Why we are doing this
 
+Every reading in this plan only means something if it was taken in the right state. A volt reading
+with the key off is meaningless. An ohm reading with the battery still connected can be wrong and can
+damage a cheap meter. A plug pulled with the key on can set new fault codes on top of the seven we
+are trying to explain. Getting the setup right once means every later number can be trusted and
+compared against the next machine. This card also walks you round the machine and shows you where
+every box, key, battery, fuse and plug you will touch actually is.
+
+### Safety
+
+- Never bypass, jumper or defeat any safety circuit, limit switch (including the axle safety switches
+  LSFA1ES at J137 and LSRA1ES at J138), angle sensor, tilt sensor (the SCON) or load cell. This plan
+  removes the bypasses already found on this machine; it never adds one.
+- Key OFF, key removed, both E-stops pushed IN before unplugging or plugging any connector. Both
+  battery sets disconnected — under both turntable covers — for every resistance or continuity reading.
+- Do not use the Bypass or Recovery positions, and do not move the calibration toggle switch inside
+  the ground control box. Those belong to the calibration technician.
+- Firm level ground, wheels chocked, boom stowed, turntable rotation lock pin fitted. Turntable rotate
+  is still enabled up to 15 degrees with the axles retracted, so keep your hands off the membrane
+  keypad while the key is on and keep out of the swing path.
+- Electrocution and burn hazard at the batteries and inside the boxes: "Remove all rings, watches and
+  other jewelry." Batteries hold acid and give off explosive gas: eye protection, protective clothing,
+  no sparks, no flames, no smoking; neutralise spills with baking soda and water.
+- Static electricity can destroy the control boards. Clip a grounded wrist strap to the ground screw
+  inside the ground control box, or keep one hand in firm contact with bare grounded metal, whenever
+  the lid is open.
+- Do not lift, loosen or unplug the SCON module — it is the machine's tilt sensor. The manuals require
+  full machine calibration after the SCON is REPLACED; a module merely loosened is likely [M] to read
+  wrong too, so treat it as untouchable.
+- The engine is never needed on this card. Do not press engine start, glow plug or auxiliary power
+  while probing. Auxiliary power can move the boom with the engine off.
+- Any sensor that gets replaced must be recalibrated, in the manufacturer's fixed order, by a
+  technician with Genie factory service training, after this plan's wiring repairs.
+
+### Sources
+
+- [V] "Before performing service on this machine, disconnect the batteries under both turntable covers." — OM p.12 (114474.txt 796-798)
+- [V] "Apply jumper cables to the starter and controls battery, not the auxiliary power batteries." — OM p.17 (1108-1110)
+- [V] "16 Remove the cover from the auxiliary power unit batteries. 17 Tag and disconnect the cables... 18 Tag and disconnect the cables from the engine starting/controls battery located on the engine side of the machine." — SM p.76 (6013-6025)
+- [V] "Electrocution/burn hazard... Remove all rings, watches and other jewelry." — SM p.76 (6018-6022)
+- [V] "Batteries contain acid... Neutralize battery acid spills with baking soda and water. Explosion Hazard. Keep sparks, flames and lighted tobacco away." — OM p.17 (1114-1131)
+- [V] "22 1303581GT BATTERY, 12V, 950CCA, FLA" with tray, hold-down bar and hook — PM p.47 (2270-2322), fig 303.1 at PM p.46
+- [V] "31 56462GT BATTERY, J 305GH, 315AH ... 2" in battery box 107509GT with thumb-screw cover — PM p.57 (2872-2898)
+- [V] "9 237068GT SEPARATOR,DUAL BATTERY,100A" — PM p.47 (2239-2240)
+- [V] "34 Ref. Ground Controls (refer to 305.1)" — PM p.57 (2907-2908); drawing figs/pm054-scon.png
+- [V] "Remove the retaining fasteners from the fixed turntable cover at the ground controls side of the machine." — SM p.75 (5946-5949); shorter form SM p.152 (10883-10884)
+- [V] "7 60485GT COVER,TURNTABLE,LEFT SIDE" (tank side) / "46 50082GT COVER,TURNTABLE,RIGHT SIDE" (engine side) — PM p.39 (1806-1807), PM p.45 (2184-2185)
+- [V] "22- 1258463GT MODULE,SCON,PROGRAMMED from SN 1712, machine needs to be recalibrated after installing a new module" — PM p.55 (2778-2787)
+- [V] "Safety Controller (SCON): Redundant dual axis tilt sensors measuring the X and Y tilt angles of the turntable. Also provides safety switch logic for function cut-off. Alarm sounds at ±4.5 degrees." — SM p.203 (15317-15320)
+- [V] "J121 12 pin Deutsch gray SCON connector / J122 12 pin Deutsch black SCON connector" — SM p.206 (15608-15611)
+- [V] Limit Switch Legend lettering "16 SCON ... 18 LSRA1ES ... 24 LSFA1ES" — SM p.201, figs/sm201-limitswitch-legend.png
+- [V] "LSFA1ES: ... Prevents boom functions with the axles retracted. Switch closes when axles are fully extended." (same for LSRA1ES) — SM p.203 (15322-15329)
+- [V] "J137 2 pin Deutsch connector for front axle safety switch / J138 2 pin Deutsch connector for rear axle safety switch" — SM p.206 (15636-15641)
+- [V] CORRECTED from the drawn schematic: J137 pin 2 = P61LSA-GR, pin 1 = J2-GR/BK; J138 pin 2 = C60AXE-GR/WH, pin 1 = J2-GR/BK — SM p.229 sheet ES0366J (PDF p.243, detail x 600-800, y 1100-1330)
+- [V] "J12 Turntable Controller ... 3 P53LS - WH/BK ... 6 P53LS - WH/BK"; "J122 ... 7 P53LS - WH/BK" — SM p.210 (16132, 16138), SM p.209 (16022): P53LS is a controller-side limit-switch supply, not an axle-switch wire
+- [V] "J122 Safety Controller ... 4 C60AXE - GR/WH" — SM p.209 (16008)
+- [V] "J31 Drive Chassis ... 23 P61LSA - GR" — SM p.208 (15969)
+- [V] "The primary boom should not raise... The boom should not raise unless the axles are extended." / "The turntable should rotate 15° and then stop." — OM p.31 (1851-1854), OM p.32 (1893-1896)
+- [V] "Width, axles retracted 8 ft 1 in 2.5 m" — OM specifications (3967-3969)
+- [V] "The axles can only be retracted if the primary and secondary booms are fully lowered and retracted..." — OM p.48 (3186-3188)
+- [V] Lockout/parking routine, five steps incl. chock the wheels — OM p.19 (1206-1215)
+- [V] Standard machine configuration for every repair procedure (seven bullets) — SM p.24 (2395-2409)
+- [V] "Always use the turntable rotation lock pin each time the machine is transported." — OM p.59 (3726-3727); service use SM p.152 (10880-10881)
+- [V] "The turntable control box (TCON) is the communication and operations center for the machine... contains two key switches... If either the Bypass or the Recovery function is required, this indicates there may be faults with the machine." — SM p.99 (7567-7581), fig sm099-bypass-key.png
+- [V] "Bypass is used for a platform out-of-level condition and calibrating certain machine parameters. Recovery is only to be used as a last attempt to lower the platform... 1 Run 2 Bypass 3 Recovery... located on the lower right side of the control box from serial number Z13512-1712." — SM p.99 (7582-7596)
+- [V] "Turn the main key switch to ground controls. Remove the key from the main key switch and insert the key into the bypass/recovery key switch." — SM p.100 (7638-7642)
+- [V] "If this procedure is performed with the main key switch in the off position an active latched safety fault will be set and will have to be cleared." — SM p.101 (7721-7723)
+- [V] "Key switch for off/ground/platform selection..." — OM p.22 (1376-1381), panel drawing figs/key-om-gc-panel.png
+- [V] "Push in red Emergency Stop button to the off position to stop all functions and turn the engine off." — OM p.22 (1367-1371); platform E-stop OM p.26 (1573-1578)
+- [V] "9 20A circuit breaker for system circuit 10 Alarm 11 Bypass/recovery key switch... (P22)... Recovery key position should only be used by trained and authorized personnel." — OM p.22 (1401-1411)
+- [V] "Selecting and operating the ground controls will override the platform red Emergency Stop button." — OM p.47 (3127-3128)
+- [V] "Use emergency/auxiliary power if the primary power source (engine) fails." — OM p.47 (3129-3135)
+- [V] ALC-1000 board procedure: E-stops in, lid off, harnesses tagged and disconnected, grounded wrist strap on the ground screw, ESD warning — SM p.103 (7833-7876), fig sm103-alc-board.png
+- [V] Membrane decal connects to the ECM board by two ribbon cables; procedure begins key off, both E-stops in — SM p.104 (7909-7921)
+- [V] "Full machine calibration must be completed in the proper sequence when the ALC-1000 circuit board (TCON)... has been replaced or the turntable level sensor (SCON) has been replaced... only by qualified technicians that have Genie factory service training." — SM p.105 (7973-7983)
+- [M] A SCON merely loosened or moved (not replaced) also needs recalibration — not stated anywhere; both sources condition recalibration on replacement only. Worded "likely"; the card simply forbids touching the module.
+- [V] "Locate the calibration toggle switch at the top of the ground control box. Activate calibration mode by moving the toggle switch in the left direction." — SM p.42 (3700-3703)
+- [V] Ground control box parts: membrane decal 106510GT, recovery kit 122516GT with key switch 88150GT, key switch cover weldment 215590GT, 4-way flange DTP receptacle 73717GT, ECM ground board 1258461GT from SN 1712, LCD board 88056GT, toggle switch 56457-SGT — PM p.63 (3155-3205)
+- [V] Lid parts: control box assembly 237069GT from SN 1712, lid 107714GT, E-stop kit 122519GT / button 66812GT, key switch kit 122515GT / switch 66811GT, LCD lens 62374GT, 20 A breaker 147095GT, alarm 62379GT — PM p.61 (3056-3132)
+- [V] "J11 Black 23 pin AMP connector on TCON / J12 Black 35 pin AMP... / J13 White 23 pin... / J14 White 35 pin..." plus J9/J10 membrane ribbons — SM p.205 (15428-15442)
+- [V] "J20 12 pin Deutsch connector lower/upper limit switch harness" — SM p.205 (15448-15450)
+- [V] J20 pins 11, 12, 2, 10, 7, 6 feed J114 pins 1, 2, 3, 6, 5, 4; colours change across J20 — figs/es-j114-primary-sensor.png, es-boom-sensors-wide.png (ES0366J, SM p.229)
+- [V] "J114 6 pin Deutsch connector for primary boom angle sensor (PBAS)" / "J154 6 pin Deutsch connector for secondary boom angle sensor" — SM p.206 (15597-15599), SM p.207 (15685-15687)
+- [V] J154 pin assignments 1/6 P109ANG, 2/5 SNSR GND, 3 C142SBS-OR, 4 C124SBS-OR/BK — figs/es-j154-secondary-sensor.png
+- [V] J12 pin list used here: 1 GNDSCON-BR, 2 P21DCON-WH, 3 and 6 P53LS-WH/BK, 5 S56PRV-RD, 25 SNSR GND-BR, 26 P109ANG-GR/WH, 32 C123PBS-RD/BK, 33 C124SBS-OR/BK, 35 GND16-BR — SM p.210 (16124-16196), fig sm210-tcon-pins.png
+- [V] "J122 Safety Controller 1 P21DCON - WH 2 C142SBS - OR 3 C141PBS - RD" — SM p.209 (15996-16004), fig sm209-scon-pins.png
+- [V] CORRECTED: "PRV Proportional Valve" — S56PRV is a proportional-valve circuit, not a battery-level feed — SM p.194 (14118-14119); S56PRV-RD at SCON J121-9 and J122-11 (16028, 16038)
+- [M] Which box sources the P21DCON circuit, and at what voltage, is not stated anywhere — only the wire name at each end.
+- [V] "Value at 0 V ... Check for 5.0 VDC at the sensor. Check for damaged wiring going to the sensor. Check that the 5.0 VDC LED is lit on the TCON board." — SM p.177 (12591-12598); "% .0" is an extraction artefact of "5.0"
+- [V] Engine relay and fuse panel legend, 14 items CR28 … CR15 — SM p.211 (16324-16378), fig sm211-fuse-panel.png; Cummins version SM p.212
+- [V] CORRECTED relay count: "15 61225GT RELAY,12VDC,70AMP,SEALED ... 2 ... 19 34052GT RELAY,SPDT,12V(AUTO) PLUG IN** 3" — PM p.47 (2280-2311)
+- [V] "6 107525PGT PLATE,RELAY MOUNT ... 8 88266GT COVER,RELAY" — PM p.47 (2226-2245), fig pm046-engine-compartment.png
+- [V] "Using a voltmeter set to DC voltage, probe the back of the electrical connector at pins B and C." — SM p.161 (11463-11465)
+- [V] CORRECTED spec: coil resistance tested with the wiring disconnected, "within specification, plus or minus 30%", at 68 °F / 20 °C, table runs 3.5 to 10 ohm — SM p.150 (10717-10778)
+- [M] Meter ranges (20 V DC, 200 ohm, continuity beep) and "a good wire reads under 1 ohm" — not in the manuals; ordinary practice
+- [M] A rested, charged 12 V battery reads roughly 12 to 13 V between B1PBAT and 02PGND — not in the manuals
+- [M] Disconnect the negative (ground) battery cable first — no polarity order is given in the manuals
+- [M] Pulling a live AMP plug can latch new faults and momentarily bridge battery voltage onto a 5 V pin — reasoning, supported only indirectly by SM p.103, SM p.24, SM p.210 and SM p.101
+- [M] Turning the key on for voltage readings is acceptable because the retracted axles lock out the boom — not a manufacturer permission; the lock-out is real but incomplete
+- [V] "The circuit board (PCON) sends the data to the turntable control box (TCON) for processing." — SM p.26 (2478-2504)
+- [V] "J31 Black 23 pin AMP connector on DCON / J32 White 23 pin AMP connector on DCON" — SM p.205 (15468-15472), SM p.208 (15742)
+- [F] The seven live fault codes are a field reading off the LCD — case README lines 154-161 (2026-09-10)
+- [V] Propel is off because the boom angle crosscheck faults switch off P_38, and P_38 is propel — SCON fault matrix, SM p.189, figs/scon-fault-matrix.png
+- [F] Machine is now at retracted width; all six chassis sensor codes are gone — case README lines 149-152
 
 ---
 
-## 0. Set the machine up
+## What a crosscheck fault is
 
-### Setting the machine up for every test
+**(from card `crosscheck` — "What a crosscheck fault is, in plain words")**
 
-**What this finds out.** This card puts the machine into two known, safe states that every later test card starts from: a "key ON, volts" state where the ground computer is awake but nothing can move, and a "dead machine, ohms" state where the batteries are disconnected and plugs may be pulled. It also walks you round the machine and shows you where every box, key, battery, fuse and plug you will touch actually is.
+Nothing is measured on this card. You stand at the ground control panel, read the display, sort the
+faults, and understand the wiring before the next cards send you to the plugs with a meter.
 
-**Where it is**
+### Where it is
 
-- *What it is:* Ground control box (it holds the TCON = turntable controller, the machine's main computer, built on a circuit board Genie calls the ALC-1000), plus the SCON (safety controller, which is also the turntable tilt sensor), the two battery sets, and the engine relay-and-fuse panel
-- *Where on the machine:* GROUND CONTROL BOX: on the turntable, hydraulic-tank side - the side with the 65-gallon hydraulic tank, NOT the engine side. The Parts Manual draws it as item 34, 'Ref. Ground Controls', in figure 304.1 'Hydraulic Tank Side Components'; the Service Manual calls that side 'the ground controls side of the machine'. SCON: same tank side, item 22 in that same figure 304.1, bolted to the turntable near the middle (the Service Manual limit-switch drawing letters 'SCON' on the turntable body). ENGINE STARTING/CONTROLS BATTERY (one 12 V, 950 CCA battery - CCA = cold cranking amps, a measure of starting punch): engine side, under the engine-side turntable cover, Parts figure 303.1 item 22, next to the relay plate. AUXILIARY POWER UNIT BATTERIES (two, 315 Ah - Ah = amp-hours, a measure of stored energy): in a steel battery box with a thumb-screw lid on the hydraulic-tank side, Parts figure 304.1 items 28-32. ENGINE RELAY AND FUSE PANEL: on the relay mount plate in the engine compartment under a relay cover, Parts figure 303.1 items 6, 8, 15-19.
-- *How to find it:* Stand at the turntable on the side where you can see the hydraulic tank filler cap and its sight gauge (the little window that shows the oil level). The control box on that side, with the LCD window, the big red mushroom STOP button, a key switch below it and a second small key switch at the lower right, is the ground control box. Walk round to the other side (engine side) and open that turntable cover: you will find the single starting battery on its tray under a hold-down bar, and beside it a plate carrying the relays, a row of fuses and four bolt-head terminals under a cover. The Service Manual's panel drawing names six relay positions on that plate - CR28, CR17, CR41, CR5, CR1 and CR15 - and four marked terminals: B1PBAT (power from battery), B3PBAT (fused power from B1), R21PIGN (the 20 A ignition fuse) and 02PGND (ground). Back on the tank side, the low steel box with two thumb screws in its lid holds the two big auxiliary batteries. The SCON is a sealed module with two 12-pin Deutsch plugs (Deutsch is the connector brand - grey plug J121, black plug J122) bolted to the turntable near the centre on the tank side. Do not loosen it: it is the tilt sensor.
-- *What it looks like:* Ground control box lid: an LCD display behind a lens at the top left, a membrane decal (the printed flat keypad), a large red mushroom STOP button at the top right, a 3-position key switch under it (off / ground / platform), a small 20 A circuit breaker button and an audible alarm, and at the lower right a second, smaller key switch marked Run / Bypass / Recovery. Its decal shows the code P22 next to Bypass - P22 is the platform-out-of-level fault code. A key switch cover weldment (a small welded metal cover, part 215590GT) is drawn beside that switch in the parts figure, so it may or may not be fitted here. Inside the lid: the LCD circuit board on a ribbon cable. Inside the box: the ECM/ALC-1000 circuit board - ECM is Genie's label for this engine-and-machine control board, and it is the TCON - with four large rectangular AMP plugs (AMP is the connector brand) entering through the side wall: J11 black 23-pin, J12 black 35-pin, J13 white 23-pin, J14 white 35-pin. There is also a 4-way flange-mount Deutsch DTP power receptacle (DTP is Deutsch's bigger power-connector family), a ground screw for a wrist strap, and a small toggle switch at the top of the box - that is the calibration toggle. Leave it alone. The board carries a '5.0 VDC' indicator light (LED) that the fault table tells you to check.
-- *Source:* SM p.99 lines 7567-7596 and figure sm099-bypass-key.png; SM p.103 lines 7833-7876 and figure sm103-alc-board.png; SM p.75 line 5946-5949; SM p.152 lines 10883-10884; SM p.201 figure sm201-limitswitch-legend.png; SM p.205 lines 15428-15450; SM p.206 lines 15608-15611; SM p.211 lines 16324-16378 and figure sm211-fuse-panel.png; PM p.46 figure pm046-engine-compartment.png; PM p.47 lines 2226-2322; PM p.55 lines 2778-2787; PM p.57 lines 2873-2908; PM p.60 figure pm060-ground-controls.png; PM p.61 lines 3056-3132; PM p.63 lines 3155-3205; OM p.21 figure key-om-gc-panel.png; OM p.22 lines 1367-1411; SM p.24 lines 2395-2409; SM p.42 lines 3700-3703
+**Component.** The ground control box display is what you read on this card. The two boom angle
+sensors and the safety controller (SCON) are the parts the faults are talking about.
 
-**Set the machine to**
+**Where on the machine.** The ground controls sit on the turntable (OM p.20 legend item 2). The
+turntable controller (TCON), the machine's main computer, lives inside that same box. On this
+machine, serial Z13513-1861, the parts manual calls that box 237069GT "ASSY,CONTROL BOX,TCON,Z135",
+the "from SN 1712" version; the older 106512GT is "to SN 1711" and does not apply. The SCON is a
+separate module on the hydraulic-tank side of the turntable, item 22 of parts figure 304.1 (drawing
+PM p.54, list PM p.55); for this serial the part is 1258463GT "MODULE,SCON,PROGRAMMED". The primary
+boom angle sensor sits inside the primary boom at the boom pivot pin, behind the boom end cover at
+the pivot end (SM p.81). The secondary boom angle sensor sits on the turntable riser bulkhead on the
+ground-controls side, under its own small cover (SM p.88).
 
-- **Key:** Two states are used in this plan. STATE A (key ON, volts): main key switch in the GROUND position; the small bypass/recovery key switch left in RUN with no key in it. STATE B (dead machine, ohms): main key switch OFF and the key removed; bypass/recovery key switch in RUN, no key in it. Never use PLATFORM unless a later card says so, and NEVER turn the bypass/recovery switch to Bypass or Recovery anywhere in this plan.
-- **E-stops:** E-stop = the red emergency stop button, the big red mushroom-head button you hit to kill everything. STATE A: both E-stops (the one on the ground control box and the one in the platform box) pulled OUT (on). STATE B: both pushed IN (off). Always go to STATE B before unplugging or plugging any connector.
-- **Battery:** STATE A: both battery sets connected. STATE B: cables tagged and disconnected at BOTH battery sets. The Operator's Manual says 'Before performing service on this machine, disconnect the batteries under both turntable covers.' Follow the Service Manual's own order: first the two auxiliary power unit batteries in the battery box on the hydraulic-tank side (take the box cover off, then tag and disconnect), then the engine starting/controls battery under the engine-side turntable cover. Likely good practice [M]: take the negative (ground) cable off first and put it back on last, so a slipped spanner on the positive post cannot short to the frame.
-- **Engine:** OFF in both states. The engine is never needed for any test on this card. Do not press the engine start button, the glow plug button (glow plugs are the diesel's cold-start heaters) or the auxiliary power button while probing - auxiliary power can move the boom with the engine off.
-- **Also:** Firm level ground, wheels chocked, boom fully lowered and retracted (stowed), axles RETRACTED (machine at its narrow 8 ft 1 in width) so the two axle safety limit switches LSFA1ES (front) and LSRA1ES (rear) hold the boom functions off by design, turntable rotation lock pin fitted. Turntable rotate is still allowed up to 15 degrees with the axles retracted, which is exactly why the rotation lock pin goes in and why your hands stay off the membrane buttons (the flat rubber keypad on the ground control box) the whole time the key is on. Propel (driving) is already dead on this machine because the SCON (safety controller) has switched off its P_38 propel output.
+**How to find it.** Stand on the ground at the ground control panel on the turntable. Turn the key to
+ground, pull the red E-stop out, read the screen. You open nothing on this card. For later cards: to
+reach the primary sensor, walk to the pivot end of the primary boom — the end nearest the turntable —
+take the retaining fasteners out of the boom end cover and lift the cover off. The secondary sensor
+is on the riser bulkhead right next to where you are standing at the ground controls; its cover is
+held by one retaining fastener.
 
-**Connector — TCON AMP connectors J11, J12, J13, J14 on the ALC-1000 board in the ground control box (J12, the black 35-pin, is the one carrying the boom angle sensor 5 V supply, the sensor ground and both boom angle signals)**
+**What it looks like.** Each boom angle sensor is a small rotary angle sensor on a bracket. When you
+take the bracket off there are two springs and a hex-shaped key that must not be lost. The sensors
+use Hall-effect technology — they sense the position of a magnet rather than rubbing a contact — and
+the manual says they must be calibrated whenever they are replaced. Each sensor has ONE 6-pin Deutsch
+plug: J114 primary, J154 secondary. On this machine the primary sensor hardware is bright new Genie
+blue (PM fig 511.2 items 8 and 9). Its plug half is moulded DEUTSCH IPD USA DT04-6P and has been
+interfered with: five wires seated, one gold pin terminal hanging loose outside the plug, two blue
+Scotchlok taps (Scotchlok = a squeeze-on connector that cuts through wire insulation, also called IDC)
+joined by a green jumper, and a separate green wire running outside the loom to a pink butt splice on
+a pivot-bracket bolt. **Important:** the five wire colours visible in that photo (blue, red, yellow,
+green, white) do NOT match the factory sensor lead colours on the schematic (red, black, blue, orange,
+brown, yellow), so the sensor side has been re-terminated. Do not use wire colour alone to work out
+which cavity is which.
 
-Four large rectangular AMP-brand plugs enter the ground control box through its side wall and seat on the TCON board: J11 black 23-pin, J12 black 35-pin, J13 white 23-pin, J14 white 35-pin. The 35-pin body is three rows: pins 1-12 along the top, 13-23 in the middle, 24-35 along the bottom (pin-numbering drawing on Service Manual p.210). J12 carries, on the one plug, a battery-level feed (pin 2, wire P21DCON-WH, the supply circuit shared by the DCON = drive chassis controller and the SCON = safety controller) AND the delicate 5 V sensor supply (pin 26, P109ANG-GR/WH), the sensor ground (pin 25, SNSR GND-BR) and the two boom angle 'operational' signals (pin 32, C123PBS-RD/BK, primary; pin 33, C124SBS-OR/BK, secondary). Note for a later card: the six boom-angle wires do NOT run straight from the board to the sensor. They pass through a 12-pin Deutsch harness plug called J20 (the Service Manual names it 'the lower/upper limit switch harness' connector), and the conductor colours CHANGE at J20. Between J20 and the primary sensor plug J114 the conductors read RD, WH/BK, BL, OR, GR, WH; from J114 on to the sensor itself they read RD, BK, BL, YL, BR, OR. There is no green/white wire to find at the sensor plug, so a continuity check that ignores J20 will point you at the wrong length of harness. WHY WE NEVER UNPLUG AN AMP CONNECTOR WITH THE KEY ON: (1) the Service Manual's own procedure for working on this board starts with 'Push in the red Emergency Stop button to the off position at both the ground and platform controls', and every repair procedure assumes 'Key switch in the off position with the key removed' before you 'Tag and disconnect the harnesses'; (2) the boards are damaged by static electricity - the manual requires a grounded wrist strap clipped to the ground screw inside the box; (3) [M, likely] breaking the 5 V, ground and CAN lines while the computers are running can set NEW safety faults (CAN = the single two-wire data line all the control boxes talk over; the manual shows this system sets 'an active latched safety fault' when a key step is done in the wrong key state), which would bury the seven codes we are chasing under fresh ones; and (4) [M, likely] a 35-pin plug wiggled out under power can bridge a battery-voltage pin onto a 5 V sensor pin for an instant, which is the kind of damage that turns a wiring fault into a dead TCON. So: key OFF, key out, both E-stops IN, both battery sets disconnected, wrist strap on - then and only then touch an AMP plug, and only when a later card asks for it.
+**Cite.** OM p.20; PM p.61, p.54, p.55 (fig pm054-scon.png); SM p.81, p.88, p.202, pp.206-207, p.205;
+OM p.64; SM p.203; PM p.169.
 
-*Source:* SM p.205 lines 15428-15450 (connector legend, including J20); SM p.210 lines 16124-16196 and figure sm210-tcon-pins.png (J12 pins and the 35-pin numbering drawing); ES0366J figures es-j114-primary-sensor.png and es-boom-sensors-wide.png (J20 pin numbers and conductor colours); SM p.103 lines 7833-7876 and figure sm103-alc-board.png (procedure, static warning, ground screw); SM p.24 lines 2395-2409 (standard machine configuration); SM p.101 lines 7721-7723 (latched safety fault wording)
+### Set the machine to
+
+- **Key:** GROUND only while you read the display. Key OFF and pulled out before anyone touches a
+  plug. No plug work happens on this card. Do not touch the bypass/recovery key switch.
+- **E-stops:** ground E-stop pulled OUT so the display comes on; platform E-stop left pushed IN. The
+  software version appears on the screen when the red E-stop is pulled out (SM p.83) — find it and
+  write it down. Push the ground E-stop back IN before you walk away.
+- **Engine:** OFF. The fact that the engine runs at all is used as evidence further down, but you do
+  not need it running to read the fault list.
+- **Battery:** connected, so the display can light up.
+- **Other:** firm level ground, wheels chocked, boom stowed, axles left retracted at 8 ft 1 in. Do
+  NOT press Delete Faults or Clear Faults. Do NOT use the bypass or recovery key positions. Do NOT fit
+  the calibration jumper or toggle.
+
+### Connector and wires
+
+Each 6-pin sensor plug carries TWO complete, separate sensor circuits in one plug. Pins 1, 2 and 3
+are the SAFETY half (S18 primary, S20 secondary on schematic sheet ES0366J): 5 volts in, ground, and
+a signal wire that goes only to the SCON. Pins 6, 5 and 4 are the OPERATIONAL half (S17 primary, S19
+secondary): 5 volts in, ground, and a signal wire that goes only to the TCON. The 5 volt feed
+(P109ANG-GR/WH, out of TCON J12-26) and the sensor ground (SNSR GND-BR, out of TCON J12-25) are shared
+by both halves AND by both plugs — which is why damage at one plug can make the other sensor fault.
+One difference matters when you look at colours: at J114 the schematic shows an extra short jumper
+block between harness plug J20 and J114, marked "UNIT #130 OR HIGHER", so the harness-side colours
+change through that block. There is no such block at J154.
 
 | Pin | Wire name | Harness colour | Sensor colour | What it is | Goes to |
 |---|---|---|---|---|---|
-| J12-26 (TCON, black 35-pin) | P109ANG - GR/WH | green with a white stripe (at the TCON end only - see 'goes to') | n/a (this is the controller end) | 5 V supply for the boom angle sensors, shared by the primary sensor plug J114 and the secondary sensor plug J154. The fault table's recovery action is to check for 5.0 VDC at the sensor and that the '5.0 VDC' LED is lit on the TCON board. | Through the 12-pin Deutsch harness plug J20 (pins 11 and 10) to primary sensor plug J114 pins 1 and 6; and to secondary sensor plug J154 pins 1 and 6. The conductor colour changes at J20: it is RD into J114-1 and OR into J114-6, and RD/OR again at J154. |
-| J12-25 (TCON, black 35-pin) | SNSR GND - BR | brown (at the TCON end) | n/a | Sensor ground - the return path for the boom angle sensors | Through J20 (pins 12 and 7) to J114 pins 2 and 5; and to J154 pins 2 and 5. Between J20 and J114 the conductors are WH/BK and GR; at the sensor side of J114 they are BK and BR. |
-| J12-32 (TCON, black 35-pin) | C123PBS - RD/BK | red with a black stripe | n/a | Primary boom angle sensor, operational signal - the copy of the angle the TCON uses to run the machine | Through J20 pin 6 to J114 pin 4 (the conductor is WH between J20 and J114, and YL from J114 to the sensor) |
-| J12-33 (TCON, black 35-pin) | C124SBS - OR/BK | orange with a black stripe | n/a | Secondary boom angle sensor, operational signal | J154 pin 4 (the conductor is YL from J154 to the sensor) |
-| J12-2 (TCON, black 35-pin) | P21DCON - WH | white | n/a | Battery-level feed on the same circuit that reaches the DCON (drive chassis controller) and the SCON (safety controller) at J122 pin 1. Likely [M] that this circuit leaves the TCON rather than arriving at it - the manuals give only the wire name at each end, not the direction or the voltage. What matters here is simply that a battery-level wire and the delicate 5 V sensor wires share one plug body - one reason never to pull J12 with power on. | DCON supply and SCON J122 pin 1 |
-| J122-3 (SCON, black 12-pin Deutsch) | C141PBS - RD | red | n/a | Primary boom angle sensor, safety signal - the independent copy of the same angle that the safety controller reads. When this copy and the TCON's copy disagree, you get the 'crosscheck' fault. | Through J20 pin 2 to J114 pin 3 (conductor BL all the way through) |
-| J122-2 (SCON, black 12-pin Deutsch) | C142SBS - OR | orange | n/a | Secondary boom angle sensor, safety signal | J154 pin 3 (conductor BL at the sensor) |
-| J137 pins 2 and 1 (2-pin Deutsch, front axle) | pin 2 = P61LSA - GR; pin 1 = J2 - GR/BK | pin 2 green; pin 1 green with a black stripe | at the switch itself the two conductors are WH (on pin 2) and BK (on pin 1) | Front axle safety limit switch LSFA1ES. It is one of the two switches that lock out the boom functions while the axles are retracted. The schematic draws the switch with a normally-open contact pair (13/14) and a normally-closed pair (21/22). P61LSA-GR runs back to the DCON on its black 23-pin plug J31, pin 23. Do not touch, jumper or adjust this switch. | Axle-extended safety circuit; P61LSA-GR to DCON J31 pin 23 |
-| J138 pins 2 and 1 (2-pin Deutsch, rear axle) | pin 2 = C60AXE - GR/WH; pin 1 = J2 - GR/BK | pin 2 green with a white stripe; pin 1 green with a black stripe | at the switch itself the two conductors are WH (on pin 2) and BK (on pin 1) | Rear axle safety limit switch LSRA1ES, the second of the two axle lock-out switches. C60AXE-GR/WH lands on the SCON black 12-pin plug J122, pin 4. Do not touch, jumper or adjust this switch. Note for the record: the wire P53LS-WH/BK is NOT on either axle switch - it is a limit-switch supply at the controllers, on TCON J12 pins 3 and 6 and on SCON J122 pin 7. | Axle-extended safety circuit; C60AXE-GR/WH to SCON J122 pin 4 |
-| B1PBAT (panel item 9) and 02PGND (panel item 12) on the engine relay and fuse panel | not wires - marked terminals on the panel | n/a | n/a | Your meter reference pair on the engine side: B1PBAT is 'Power from Battery' and 02PGND is 'Ground'. Use them to prove the meter, to read battery voltage, and as a solid ground for the black meter lead while working on the engine side. The panel drawing shows them as bolt-head terminals in the right-hand block, with B3PBAT and R21PIGN beside them. | Battery positive via the main feed; machine ground |
+| J114-1 | P109ANG - GR/WH (circuit 109, "Sensor Power") | RD on the J20→J114 jumper (UNIT #130+); GR/WH upstream of J20 | RD | 5 V supply, SAFETY half S18 | J20-11, then TCON J12-26 |
+| J114-2 | SNSR GND - BR | WH/BK on the jumper from J20-12 | BK | ground, SAFETY half | J20-12, then TCON J12-25 |
+| J114-3 | C141PBS - RD (circuit 141, "Primary Boom Angle Signal Safety") | BL from J20-2 | BL | SAFETY signal — read by the SCON only. Schematic input label RSP1AS. | J20-2, then SCON J122-3 |
+| J114-6 | P109ANG - GR/WH | OR from J20-10 | OR | 5 V supply, OPERATIONAL half S17 | J20-10, then TCON J12-26 (same pin as J114-1) |
+| J114-5 | SNSR GND - BR | GR from J20-7 | BR | ground, OPERATIONAL half | J20-7, then TCON J12-25 |
+| J114-4 | C123PBS - RD/BK (circuit 123, "Primary Boom Angle Signal Operational") | WH from J20-6 | YL | OPERATIONAL signal — read by the TCON only | J20-6, then TCON J12-32 |
+| J154-1 | P109ANG - GR/WH | GR/WH (no jumper block at J154) | RD | 5 V supply, SAFETY half S20 | TCON J12-26, shared with J114 |
+| J154-2 | SNSR GND - BR | BR | BK | ground, SAFETY half | TCON J12-25, shared with J114 |
+| J154-3 | C142SBS - OR (circuit 142, "Secondary Boom Angle Signal Safety") | OR | BL | SAFETY signal — read by the SCON only. Schematic input label RSS1AS. | SCON J122-2 |
+| J154-6 | P109ANG - GR/WH | GR/WH | OR | 5 V supply, OPERATIONAL half S19 | TCON J12-26 |
+| J154-5 | SNSR GND - BR | BR | BR | ground, OPERATIONAL half | TCON J12-25 |
+| J154-4 | C124SBS - OR/BK (circuit 124, "Secondary Boom Angle Signal Operational"). **The manual disagrees with itself on this colour:** the wire legend on SM p.199 says RD/WH; the TCON pin list on SM p.210 and the schematic both print OR/BK. Identify by printed name, not colour. | OR/BK (pin list and schematic); RD/WH (p.199 legend) | YL | OPERATIONAL signal — read by the TCON | TCON J12-33 |
+| SCON J121-10 | S137PLL - RD/WH (circuit 137, "Drive Power (P_38)"; PLL = Propel Lockout) | RD/WH | — | **P_38 = propel power.** Switched OFF by BOTH crosscheck rows. | TCON J13-17 |
+| SCON J121-11 | S139TRF - WH/RD (circuit 139) | WH/RD | — | P_39 = turntable rotate. OFF on both crosscheck rows. | TCON J13-19 |
+| SCON J121-8 | S59CNK - GR/WH (circuit 59, "Chain break circuit") | GR/WH | — | P_10 = primary boom extend. Only the PRIMARY crosscheck row switches it off — but four other chart rows also switch P_10 off, so P_10 being off does not by itself point at the primary sensor. | TCON J12-8 |
+| SCON J122-8 | S140ENL - OR/RD (circuit 140, "Boom Envelope Safety"). **Colour conflict:** SM p.175 calls the same wire "orange/black". Identify by printed name. | OR/RD | — | P_11 = primary/secondary boom up AND P_30 = secondary extend/down, both on this one wire ("P11+P30" on the schematic). OFF on both crosscheck rows. | TCON J12-9 and J12-34 |
+| SCON J122-10 | P58LS - RD/BK — this is **circuit 58**, "Safety interlock to engine", NOT circuit 138 (a different red/black circuit; no wire named S138/P138/C138 exists anywhere) | RD/BK | — | P_9B = ignition/fuel. Blank on BOTH crosscheck rows, so a crosscheck fault does not shut the engine off. | TCON J12-7 |
+| SCON J121-9 and J122-11 | S56PRV - RD (circuit 56, "Foot switch/TCON estop power"; PRV = Proportional Valve) | RD | — | P_7R — foot-switch and E-stop power for the proportional valves. Not one of the six crosscheck columns. | TCON J12-5 |
+| SCON J122-1 and J121-12 | P21DCON - WH (power in) and GNDSCON - BR (ground; the schematic spells it SCONGND-BR — same wire) | WH and BR | — | power into the safety controller ("ECU PWR") and its ground | TCON J12-2 and J12-1 |
 
-**Do this**
+### Do this
 
-1. Park and secure. Machine on a firm, level surface, boom fully lowered and retracted (stowed), turntable turned so the boom sits between the non-steer wheels, wheels chocked. Fit the turntable rotation lock pin. This is both the Operator's Manual 'Lockout After Each Use' routine and the Service Manual's standard configuration for every repair procedure.
-2. Confirm the axles are retracted - the machine is at its narrow 8 ft 1 in width. With the axles in, the front and rear axle safety limit switches LSFA1ES and LSRA1ES hold the boom functions off by design: the Service Manual says these switches 'Prevent boom functions with the axles retracted', and the Operator's Manual function test confirms 'The boom should not raise unless the axles are extended.' Judgement call, not a manufacturer permission [M, likely]: that lock-out is why we are willing to turn the key on at all for voltage readings. It is not a complete guarantee. Two things are still live with the axles in - turntable rotate works up to 15 degrees, and auxiliary power can move functions with the engine off. That is why the rotation lock pin goes in, why nobody presses a membrane button while the key is on, and why nobody stands in the swing path.
-3. Find the ground control box. Stand on the hydraulic-tank side of the turntable - the side with the tank filler cap and the sight gauge. The control box with the LCD window and the big red STOP button is it. The Parts Manual draws it there as 'Ref. Ground Controls', item 34, in the Hydraulic Tank Side figure, and the Service Manual calls this 'the ground controls side of the machine'. The TCON (turntable controller, the machine's main computer, built on the board Genie calls the ALC-1000) lives inside it.
-4. Learn the two key switches. TOP key switch = the main key switch, three positions that stay where you put them: OFF (machine off), GROUND (ground controls operate), PLATFORM (platform controls operate). BOTTOM-RIGHT small key switch = the bypass/recovery key switch, three positions: Run, Bypass, Recovery. On this serial number (from Z13512-1712) it sits on the lower right of the box. The same single key is used for both - Genie's own procedure says 'Remove the key from the main key switch and insert the key into the bypass/recovery key switch'. FOR THIS PLAN: the main key is used only in OFF and GROUND. The bypass/recovery switch stays in RUN with the key OUT of it. Never turn it to Bypass (that is for levelling an out-of-level platform and for calibration) and never to Recovery (last-resort lowering only). If you arrive and find the key sitting in the bypass/recovery switch, or the switch not in Run, photograph it, put it back to Run, remove the key and write it down - it tells you what a previous person was doing.
-5. Learn the two E-stops (red emergency stop buttons). Ground box: the red mushroom button at the top right of the lid - push IN = off, which stops all functions and turns the engine off; pull OUT = on. Platform box: the same button, same action. The Operator's Manual notes that 'Selecting and operating the ground controls will override the platform red Emergency Stop button', so for ground-box voltage readings the platform E-stop does not strictly have to be out. We still pull BOTH out in State A, so the platform box is powered when a later card needs it, and push BOTH in for State B.
-6. Find both battery sets. The Operator's Manual says 'Before performing service on this machine, disconnect the batteries under both turntable covers.' (a) Hydraulic-tank side: a low steel battery box with a lid held by two thumb screws. Inside are TWO large 315 Ah auxiliary power unit batteries - they run the emergency/auxiliary pump. (b) Engine side: open the engine-side turntable cover (the Parts Manual calls it 'COVER,TURNTABLE,RIGHT SIDE'; the tank-side one is 'LEFT SIDE'). On a tray under a hold-down bar sits ONE 12 V, 950 CCA battery - the Service Manual calls it the 'engine starting/controls battery located on the engine side of the machine'. This is the battery that feeds the control computers. The Operator's Manual warns that jump leads go on 'the starter and controls battery, not the auxiliary power batteries'. The two sets are joined through a 100 A dual battery separator, so treat them as one system.
-7. Find the engine relay and fuse panel. Engine side, on the relay mount plate next to the starting battery, under a cover (Parts figure 303.1, items 6 and 8; see figs/pm046-engine-compartment.png, circled detail). Lift the cover and match what you see to the Service Manual panel drawing - p.211 for the Deutz and Perkins engines, p.212 for Cummins. The p.211 drawing names six relay positions and eight other items: CR28 engine/fuel relay, CR17 hydraulic oil cooler fan relay, CR41 flashing beacon relay, CR5 horn relay, CB10 20 A circuit breaker (RPM solenoid), F23 30 A fuse (engine / start / alternator), F22 60 A fuse (glow plug), F7 20 A fuse (cooler fan / horn), terminals B1PBAT (power from battery), B3PBAT (fused power from B1), R21PIGN 20 A ignition fuse and 02PGND (ground), CR1 start relay, CR15 glow plug relay. The parts list for this plate shows three plug-in SPDT relays and two sealed 70 A relays, so the physical count of relay bodies is not the same as the count of names. Just look for a blown fuse or a burnt relay socket and note what you see. Do not pull anything yet.
-8. Find the SCON (safety controller). Same tank side, Parts figure 304.1 item 22: a sealed module bolted to the turntable near the centre, with two 12-pin Deutsch plugs - grey J121 and black J122. The Service Manual describes it as 'Redundant dual axis tilt sensors measuring the X and Y tilt angles of the turntable' that 'also provides safety switch logic for function cut-off'. In plain words, it is both the tilt sensor and the safety cut-off brain. Do not loosen its bolts and do not unplug it on this card. The manuals state that a REPLACED SCON needs the machine recalibrated; whether merely loosening or moving it also forces recalibration is not stated, but it very likely disturbs the tilt reading [M], so leave it strictly alone.
-9. Set up the meter. Any digital multimeter. The manual's own wording for a voltage test is 'a voltmeter set to DC voltage' (DC = direct current, the kind batteries give). Likely settings, ordinary practice rather than manual instruction [M]: on a manual-ranging meter use the 20 V DC range for these 5 V and 12 V readings, and the 200 ohm range for resistance; on an auto-ranging meter just pick DC V or ohms. Use the continuity beep for quick wire checks. Note what the manual DOES specify for resistance work: 'Tag and disconnect the wiring from the coil to be tested' before you test it, readings 'within specification, plus or minus 30%', taken at 68 degrees F / 20 degrees C, and the valve coil table runs from 3.5 ohm up to 10 ohm. Prove the meter before you trust it: red lead on the B1PBAT terminal and black on the 02PGND terminal of the fuse panel with the key OFF; then touch the two leads together on the ohms range - it should read close to 0 ohm and beep.
-10. STATE A - 'key ON, volts'. Use this for every reading that is a voltage (5 V at a sensor plug, a supply at a pin, what the display says). Everything plugged in. Both battery sets connected. Both E-stops OUT. Bypass/recovery switch in RUN, key out of it. Main key to GROUND - 'the ground controls will operate' and the LCD wakes up. Engine OFF. Do not press any membrane button, the glow plug button, the engine start button or the auxiliary power button. Stand clear of the boom and out of the turntable swing path. Read the LCD, write down every fault message word for word, and photograph the screen.
-11. STATE B - 'dead machine, ohms'. Use this for every reading that is resistance or continuity, and ALWAYS before any plug is pulled or pushed. Main key OFF, key removed and in your pocket. Bypass/recovery in RUN, no key. Both E-stops IN. Remove rings and watches first - the manual repeats 'Electrocution/burn hazard... Remove all rings, watches and other jewelry' at every battery step - and wear eye protection. Open both turntable covers. Following the Service Manual's own order: take the cover off the auxiliary power unit battery box, tag and disconnect those cables, then tag and disconnect the cables at the engine starting/controls battery. Likely good practice [M]: negative (ground) cable off first on each battery, and tie the ends back so they cannot swing onto a post. Confirm the machine is dead: LCD blank, and B1PBAT to 02PGND reads 0 V.
-12. The rule for moving between states: go A to B BEFORE you touch any connector; go B back to A only after every plug you opened is back on and latched. Never pull a plug in State A. Never take an ohm reading in State A - battery voltage on the wire gives a false resistance reading and can damage a cheap meter.
-13. Opening the ground control box (only when a later card sends you inside): be in State B - key off and removed, both E-stops in, both battery sets disconnected. Remove the lid fasteners and open the lid; the LCD board hangs on the lid by a ribbon cable, so support it. Clip a grounded wrist strap to the ground screw inside the box - the manual warns that 'Electrostatic discharge (ESD) can damage printed circuit board components', meaning ordinary static off your clothes can kill the board. Look but do not pull: the four AMP plugs J11 black 23-pin, J12 black 35-pin, J13 white 23-pin, J14 white 35-pin; the 4-way flange-mount Deutsch DTP power receptacle; the two membrane ribbon cables; and the small toggle switch at the top of the box - that is the calibration toggle ('Activate calibration mode by moving the toggle switch in the left direction'). Do not move it. If you find it already moved to the left, photograph it and write it down: it means someone left the machine in calibration mode.
-14. Before leaving this card, have a written record of: wheel chocks and rotation lock pin fitted; axle width 8 ft 1 in (retracted); the position of both key switches and where the key was found; which E-stops were in or out on arrival; the position of the calibration toggle inside the box, if a later card has you in there; which battery cables you disconnected and where you tagged them; the condition of the fuse and relay panel; and the exact LCD fault text plus a photograph from State A. Every following card starts from State A or State B as named on it.
+1. Park on firm level ground, chock the wheels, boom stowed, axles left retracted, engine off. You
+   will not touch a plug or a meter on this card.
+2. Walk to the ground controls (OM p.20 legend item 2). Turn the key to ground and pull the red E-stop
+   OUT. The software version appears on the screen — write it down. It decides which calibration the
+   calibration tech uses later: version 4.01 and higher use the 2 Point Calibration, earlier versions
+   the 6 Point. The manual does not say the version is the first screen or that it disappears, so if
+   you do not see it straight away, keep looking.
+3. Read every fault shown on the display. Copy each line word for word, in the order shown, and
+   photograph the screen. The Service Manual has no separate "how to read the fault list" procedure;
+   the one sentence naming the display as the place to read machine faults is on SM p.100, inside the
+   bypass/recovery-key procedure. The faults reported on this machine are: primary boom angle sensor
+   crosscheck; secondary boom angle sensor crosscheck; primary boom angle zone fault; primary boom
+   angle sensor not calibrated; secondary boom switches fault; secondary boom angle sensor shorted /
+   0 V; TCON-SCON calibration inconsistent.
+4. Understand the design in one sentence from the manual (SM p.202): "As in aircraft, which features
+   redundant safety systems, each mechanical operational switch is backed up with a separate,
+   independently functioning safety switch." Redundant just means doubled up on purpose. The angle
+   sensors are Hall-effect and "must be calibrated when replaced". For each boom there are two sensor
+   names on the schematic: RSP1AO and RSS1AO are the OPERATIONAL copy read by the TCON, and RSP1AS and
+   RSS1AS are the SAFETY copy read by the SCON. The SCON "provides safety switch logic for function
+   cut-off" — it is the box that switches machine functions off when something is wrong.
+5. Sort each fault line into one of three kinds. (a) CROSSCHECK: the safety controller compared the
+   safety copy against the operational copy of the same sensor and the two numbers do not agree.
+   (b) ELECTRICAL: one copy is reading a wrong voltage — "Value at 0 V", "Value at 5.0 V", "Value Too
+   High", "Value Too Low", "Out of Tolerance" (SM pp.177-180). (c) NOT CALIBRATED: that controller has
+   no stored calibration for that channel. The line "secondary boom switches fault" is NOT unknown:
+   SM p.188 carries "Secondary Boom Switch Timeout" and "Secondary Boom Switches Intermittence Fault
+   (LSS1RS Fault)" for the secondary boom limit switches LSS1RS and LSS1RO, and SM p.189 has a chart
+   row "Secondary Boom length (crosscheck LSS1RS and LSS1RO)". Only two of the seven display lines —
+   "primary boom angle zone fault" and "TCON-SCON calibration inconsistent" — have no counterpart
+   anywhere in the October 2018 manual. Note them and do not guess at them.
+6. Write down, from the SM p.189 chart, which safety controller outputs are being held OFF right now.
+   Primary crosscheck row: P_38 OFF, P_39 OFF, P_10 OFF, P_11 OFF, P_30 OFF, P_9B blank. Secondary
+   crosscheck row: P_38 OFF, P_39 OFF, P_11 OFF, P_30 OFF, with P_10 and P_9B blank. **CAREFUL when
+   reading this page:** the descriptive title boxes across the top run P_38, P_39, P_10, P_11, P_9B,
+   P_30, but the narrow data columns underneath run P_38, P_39, P_10, P_11, P_30, P_9B. The last two
+   are swapped between the two rows of headings. Score the OFF marks against the narrow data columns.
+   The titles say: P_38 Propel; P_39 Turntable Rotate; P_10 Primary Boom Extend; P_11 Primary /
+   Secondary Up; P_9B Ignition/Fuel; P_30 Secondary Extend/Down. The wire legend calls circuit 137
+   (S137PLL, red/white) "Drive Power (P_38)". That is why propel is dead. Nothing on the drive side
+   needs chasing until the crosscheck faults are gone.
+7. Note what is NOT switched off. P_9B, ignition and fuel, carried on P58LS red/black, is blank on
+   both crosscheck rows, and the engine runs. The chart's "Loss of CAN" row switches all six outputs
+   off including P_9B. CAN (Controller Area Network) is the two-wire data link the controllers use to
+   talk to each other. So a running engine tells you the SCON is powered up and talking on that link,
+   which rules out the Loss of CAN row and the other rows that cut P_9B. Do not buy a safety
+   controller or a turntable controller on the strength of these faults. It does not on its own prove
+   every ground wire is perfect — it only shows the module is running well enough to hold its outputs on.
+8. Read the manual's own recovery lines and keep them for the next cards. For "Value at 0 V" on any of
+   the four channels: "Check for 5.0 VDC at the sensor. Check for damaged wiring going to the sensor.
+   Check that the 5.0 VDC LED is lit on the TCON board. Repair or replace as necessary." For "Not
+   calibrated": effect is "Primary up only active from TCON, activate alarm" (or "Secondary up only
+   active from TCON"), recovery "Perform calibration procedure per service manual". For "Out of
+   Tolerance": "Recalibrate sensor". For "Value at 5.0 V": "Check for an open ground circuit going to
+   the sensor".
+9. Understand why the secondary sensor can report "0 V" when the damage is at the primary plug. The
+   schematic feeds BOTH J114 and J154 from the same 5 volt wire and the same ground wire, tapping the
+   same two horizontal lines at junction dots. So a short, or a pin pushed into the wrong cavity, at
+   J114 can pull that shared supply down and upset the secondary sensor too.
+10. Understand why the tap-and-jumper work at J114 cannot satisfy the check. **This paragraph is
+    engineering reasoning, tagged [M], not manual text.** The check exists to prove that two
+    independent sensors agree. Each controller keeps its own stored calibration for its own channel —
+    the fault table lists "Not calibrated" separately for the operational copy and the safety copy, and
+    every replaced angle sensor must be calibrated. So if two signal wires are tied together, the two
+    controllers receive the same raw voltage but each converts it using its own stored calibration —
+    and one of them is reporting "not calibrated" right now — so the two angle numbers still disagree
+    and the crosscheck fault stays. (One caution on a weaker argument: the schematic draws each sensor
+    half as a variable resistor with a wiper, not as a driven electronic output, so two of them tied
+    together would not necessarily "fight" each other and drag the shared 5 volt line down. Treat that
+    particular mechanism as unproven; the shared 5 volt and ground lines are still a real path for one
+    plug's damage to affect the other sensor.) And even if a tie ever made the two numbers match, the
+    machine would then have one sensor watching the boom instead of two — exactly the condition the
+    check exists to detect. The only route out is six clean, separate pins at J114 and J154 with the
+    correct Deutsch pin terminals, the loose pin back in its correct cavity, every tap and jumper
+    removed, and then calibration by the calibration tech in the SM p.105 order, in which the secondary
+    boom angle sensor is calibrated before the primary.
+11. Push the red E-stop IN and turn the key OFF. Do not press Delete Faults or Clear Faults — the fault
+    list is your evidence. Do not turn the bypass or recovery key. Do not fit any calibration jumper or
+    toggle. Go to the J114 card.
 
-**You should see**
+### You should see
 
-| Measurement | Expected | If that is what you get | If not |
-|---|---|---|---|
-| ARRIVAL CHECK (this is not State A and not State B): everything off - main key OFF and out, both E-stops pushed IN - but the batteries still connected. Meter on DC volts. Red lead on the B1PBAT terminal, black lead on the 02PGND terminal of the engine-side relay and fuse panel. | **Roughly 12 to 13 V. [M for the number - the manuals give no resting battery voltage; this is ordinary lead-acid behaviour.] What the manual does give is the naming: B1PBAT is 'Power from Battery' and 02PGND is 'Ground'.** | The battery and the main feed are alive and the meter works. Go on to State A. | Below about 12 V: charge or replace the starting/controls battery before you trust any electrical reading - a weak supply makes both the 5 V sensor line and the CAN data line misbehave. 0 V: check the battery cables, the F23 30 A fuse and the main feed before anything else. |
-| STATE A: main key to GROUND, both E-stops out, engine off, hands off the keypad - watch the ground control LCD. | **The display wakes up ('Turn the key switch to the ground position and the ground controls will operate') and lists the live faults. On this machine, from the last field reading [F - read off the display in the field, not a manufacturer statement], expect: primary boom angle sensor crosscheck fault; secondary boom angle sensor crosscheck fault; primary boom angle zone fault; primary boom angle sensor not calibrated; secondary boom switches fault; secondary boom angle sensor shorted / 0 V; TCON-SCON calibration inconsistent.** | Write them down word for word and photograph the screen. This is the baseline every later card is compared against. | Display dead: check the 20 A circuit breaker button on the ground panel (Operator's Manual item 9, 'circuit breaker for system circuit'), that both E-stops are truly pulled out, and the battery voltage above. A different fault list from the one expected: record it exactly - a change in the list matters as much as the list. |
-| STATE A arrival record (look only, touch nothing): the position of the main key switch, the bypass/recovery key switch and - if a later card has the box open in State B - the calibration toggle at the top of the ground control box. | **Main key in OFF or GROUND only. Bypass/recovery key switch in Run with no key in it. Calibration toggle NOT moved to the left.** | Note it and carry on. The machine is in a normal operating configuration. | Key left in the bypass/recovery switch, or the switch in Bypass or Recovery, or the calibration toggle moved left: photograph it exactly as found, then return the bypass/recovery switch to Run and remove the key. Leave the calibration toggle for the calibration technician. Genie's own wording is the point here: 'If either the Bypass or the Recovery function is required, this indicates there may be faults with the machine.' Finding it left in those positions is evidence about what was done to this machine, so record it before you change it. |
-| STATE B confirmation, after both battery sets are disconnected: look at the LCD, then read B1PBAT to 02PGND on DC volts. | **LCD blank; 0 V between B1PBAT and 02PGND.** | The machine is dead. Plugs may now be opened and resistance readings taken. | Voltage still present: a battery cable is still connected somewhere. There are two battery sets, joined through a 100 A dual battery separator - find and clear it before touching any plug. |
+| Measurement | Expected | If OK it means | If not it means | Cite |
+|---|---|---|---|---|
+| The fault list on the ground display, copied word for word | Both crosscheck lines present: primary and secondary boom angle sensor crosscheck. Per the SM p.189 chart that means P_38 (propel), P_39, P_10, P_11 and P_30 are being held OFF. | Dead propel is fully explained by P_38 "Drive Power" being held off. Skip all drive-system diagnosis and go to the J114 card. | If propel is dead but NO crosscheck line shows, look for a "P38 SAFETY SWITCH FAULT" message. SM p.175 says recycle power and check the wiring on circuit S137PLL (red/white) "between SCON and TCON"; p.175 names no pins, but the pin lists give those ends as SCON J121-10 and TCON J13-17. Then check the other p.189 rows that also switch P_38 off: turntable tilt Y axis, turntable tilt angle crosscheck, primary boom safety max angle, loss of CAN, and the axle-not-fully-extended plus turntable-rotate row. | SM p.189 + fig scon-fault-matrix.png; SM p.175; SM p.199; SM p.209; SM p.210 |
+| Does the engine start and run? | Yes — it does on this machine. P_9B is blank on both crosscheck rows, so it should be on. | The SCON is powered (P21DCON-WH into J122-1), grounded (GNDSCON-BR on J121-12) and talking on CAN, because the "Loss of CAN" row would switch all six outputs off including P_9B. It also rules out the two boom-safety rows that cut P_9B and the platform overload row. Do not replace the SCON or the TCON. This does not by itself prove the ground wire is perfect. | If the engine shuts off with a "P9B SAFETY SWITCH FAULT", SM p.174 says the boom has violated the safety limits and the engine was shut off as a safety feature; use auxiliary power to bring the boom back inside its limits, and check circuits P54ENG and P58LS between the SCON and the TCON. That is a different, additional problem. | SM p.189; SM p.174; SM p.209 |
+| The line "primary boom angle sensor not calibrated" | Present now, and it will STAY present after the wiring repair until the calibration tech runs the primary boom angle sensor calibration in the SM p.105 order. Effect listed: "Primary up only active from TCON, activate alarm". | If the wiring repair is done and only "not calibrated" remains, hand the machine to the calibration tech. Do not attempt calibration on this plan. | If it clears by itself after the wiring work, the display was showing a stale fault; record that and carry on. If "Out of Tolerance" appears instead, the recovery is "Recalibrate sensor". | SM p.177; SM p.178; SM p.105; SM p.202 |
+| The line "secondary boom angle sensor shorted / 0 V" | The manual's "Value at 0 V" entry points at the 5 volt supply and the wiring. Because the 5 V line and the ground line are shared between J114 and J154, expect this code to be caused by, or at least affected by, the splice work at the primary plug. | If the secondary "0 V" code disappears when J114 is unplugged on the J114 card, the primary splice work is dragging the shared supply down. Repair J114 first. | If it stays with J114 unplugged, the J154 card must test the secondary sensor and its own six pins. | SM p.179; SM p.180; figs es-j154-secondary-sensor.png, es-scon-boomsensors.png |
+| The lines "primary boom angle zone fault" and "TCON-SCON calibration inconsistent" | Neither is listed anywhere in SM 1268557GT (October 2018). Searching for "zone" returns only "drive enable zone" / "drive disable zone"; searching all three manuals for "inconsistent" returns nothing. These are likely [M] newer-software messages from the same family — the two controllers holding different calibration data for the same sensor — but the manuals do not say so. | Treat them as companions of the crosscheck and not-calibrated faults. Expect them to clear only after a proper calibration, not after wiring work alone. | If they remain after both the wiring repair and a full calibration, contact Genie Product Support with the software version from step 2. The manual has no recovery text for them. | grep of 1268557.txt / 106877.txt / 114474.txt |
 
-**Why we are doing this.** Every reading in this plan only means something if it was taken in the right state. A volt reading with the key off is meaningless. An ohm (resistance) reading with the battery still connected can be wrong and can damage a cheap meter. A plug pulled with the key on can set new fault codes on top of the seven we are trying to explain. Getting the setup right once means every later number can be trusted and compared against the next machine.
+### Why we are doing this
 
-**Safety**
+The SCON fault chart on SM p.189 says a primary boom angle crosscheck fault switches OFF five safety
+outputs, and the first one, P_38, is named "Propel". So the dead drive is not a separate drive
+problem. It is the expected result of the crosscheck faults. That decides the whole plan: fix the two
+sensor circuits (six clean pins at each plug, no taps, no jumpers), then hand the machine to the
+calibration tech. Do not chase the drive motors, pumps or valves. Do not buy a new TCON or SCON. And
+never try to trick the check.
 
-- Never bypass, jumper or defeat any safety circuit, limit switch (including the axle safety switches LSFA1ES at J137 and LSRA1ES at J138), angle sensor, tilt sensor (the SCON) or load cell. This plan removes the bypasses already found on this machine; it never adds one.
-- Key OFF, key removed, both E-stops (red emergency stop buttons) pushed IN before unplugging or plugging any connector. Both battery sets disconnected - under both turntable covers - for every resistance or continuity reading.
-- Do not use the Bypass or Recovery positions of the bypass/recovery key switch, and do not move the calibration toggle switch inside the ground control box. Those belong to the calibration technician. Genie's wording: 'If either the Bypass or the Recovery function is required, this indicates there may be faults with the machine.'
-- Firm level ground, wheels chocked, boom stowed, turntable rotation lock pin fitted. Turntable rotate is still enabled up to 15 degrees with the axles retracted, so keep your hands off the membrane keypad while the key is on and keep out of the swing path. Do not elevate a machine whose safety envelope is faulted.
-- Electrocution and burn hazard at the batteries and inside the boxes: 'Remove all rings, watches and other jewelry.' Batteries hold acid and give off explosive gas: wear eye protection and protective clothing, no sparks, no flames, no smoking, and neutralise any spill with baking soda and water.
-- Static electricity can destroy the control boards. Clip a grounded wrist strap to the ground screw inside the ground control box, or keep one hand in firm contact with bare grounded metal on the machine, whenever the lid is open.
-- Do not lift, loosen or unplug the SCON module - it is the machine's tilt sensor. The manuals require full machine calibration after the SCON is REPLACED; a module that has merely been loosened or moved is likely [M] to read wrong too, so treat it as untouchable on this card.
-- The engine is never needed on this card. Do not press engine start, glow plug or auxiliary power while probing. Auxiliary power can move the boom with the engine off.
-- Any sensor that gets replaced must be recalibrated. Full machine calibration has to be done in the manufacturer's fixed order, by a technician with Genie factory service training, after this plan's wiring repairs and before the machine goes back into service.
+### Safety
 
-**Open questions on this card**
-
-- The original card had the technician read the TCON '5.0 VDC' LED with the ground control box lid open in STATE A (key ON). That has been REMOVED from this card. It contradicted this card's own rule that the box is only opened in State B, and it contradicts the Service Manual, whose only procedure for opening this box begins 'Push in the red Emergency Stop button to the off position at both the ground and platform controls' (SM p.103) with the standard configuration 'Key switch in the off position with the key removed' (SM p.24). The fault table names the LED check but gives no key state at all (SM p.177). Unresolved: the LED cannot light with the machine dead, so whoever writes the card that needs this reading must decide how to take it and say plainly that it departs from SM p.103. This setup card does not authorise it.
-- Meter ranges (20 V DC, 200 ohm, continuity beep), the 12-13 V resting battery figure and 'negative cable first' are ordinary practice, not manual statements - all tagged [M]. The manuals say only 'a voltmeter set to DC voltage' and 'tag and disconnect the cables'.
-- The reasoning for never pulling an AMP plug live (latching new faults, momentarily bridging a battery-voltage pin onto a 5 V pin) is tagged [M]. The manual supports the RULE - E-stops in, key off, wrist strap - but never spells out the mechanism.
-- The claim that turning the key on is acceptable because the retracted axles lock out the boom is judgement, tagged [M], not a manufacturer permission. Turntable rotate to 15 degrees and auxiliary power remain live.
-- Whether merely loosening or moving the SCON (as opposed to replacing it) forces a full machine calibration is NOT stated in the manuals - they condition it on replacement only. This card words it as likely [M] and simply forbids touching the module.
-- Which engine is fitted (Deutz/Perkins vs Cummins) decides whether the SM p.211 or the SM p.212 fuse legend applies. The serial-plate photo shows 62 kW but not the make. Confirm from the engine decal; the two layouts differ in CR28's name and in whether CR15 exists.
-- Manual conflict, unresolved: the connector legend (SM p.205) says 'J15 Black 4 pin DTP connector on PCON', but the Turntable Controller Pin Legend (SM p.210) lists J15 as a Turntable Controller plug carrying B1BAT-RD and two GND-BR, and the ground-box parts list includes a 4-way flange-mount Deutsch DTP receptacle (73717GT). Treat the 4-way receptacle on the ground box as the TCON battery feed until proven otherwise.
-- Whether the auxiliary batteries can back-feed the control circuit through the 100 A dual battery separator when only the starting battery is disconnected is not stated anywhere. That uncertainty is exactly why this card follows the Operator's Manual and disconnects both sets.
-- The key switch cover weldment (215590GT, item 15) is drawn beside the bypass/recovery switch in the parts figure. Whether it is fitted on this machine, and whether it is meant to lock the switch, is unknown - photograph it.
-- The calibration toggle switch inside the ground box (56457-SGT) may be found already in the left/calibration position, given the 'not calibrated' and 'TCON-SCON calibration inconsistent' codes. This card only records its position; it does not move it.
-- The seven live fault codes are a field reading off the LCD (tagged [F], not [V]); only the P_38 propel lock-out half is manual-verified from the SCON fault matrix on SM p.189. Re-read the display in State A and record what is actually there.
-- The colour and material of the ground control box and of the relay cover are not given in any of the three manuals, so no colour or material is asserted here. The Cummins-only fuse cover is listed as a 'FORMING', which in this parts manual denotes sheet metal.
-
-<details><summary>Sources for this card (69 checked statements)</summary>
-
-- `[V]` Operator's Manual: before service, disconnect the batteries under both turntable covers — *114474.txt 796-798 (PDF 14 = OM p.12)*
-- `[V]` Jump leads go on the starter and controls battery, not the auxiliary power batteries - so the two sets are distinct — *114474.txt 1108-1110 (PDF 19 = OM p.17)*
-- `[V]` The Service Manual's own battery disconnect order is auxiliary power unit batteries first (cover off, then cables), then the engine starting/controls battery, which is on the engine side — *1268557.txt 6013-6025 (PDF 90 = SM p.76)*
-- `[V]` Electrocution/burn warning at the battery steps: remove rings, watches and jewelry — *1268557.txt 6018-6022 (PDF 90 = SM p.76)*
-- `[V]` Battery safety: acid, explosive gas, eye protection, no sparks, neutralise with baking soda — *114474.txt 1114-1131 (PDF 19 = OM p.17)*
-- `[V]` Starting battery is 12 V 950 CCA (part 1303581GT), item 22 of Parts figure 303.1 Engine Compartment Components, with a battery tray, hold-down bar and hook — *106877.txt 2270-2322 (PM p.47); section heading '303.1 Engine Compartment Components' at line 2198 (PM p.46)*
-- `[V]` Auxiliary power unit batteries: two 315 Ah batteries in a steel battery box whose cover is held by thumb screws, listed in Parts figure 304.1 Hydraulic Tank Side Components items 28-32 — *106877.txt 2872-2898 (PDF 57 = PM p.57); section footer '304.1 Hydraulic Tank Side Components' at line 2927*
-- `[V]` A 100 A dual battery separator joins the two battery sets — *106877.txt 2239-2240 (PM p.47)*
-- `[V]` The ground control box is drawn in the Hydraulic Tank Side Components figure as item 34 — *106877.txt 2907-2908 (PM p.57); drawing: /home/user/starry-shine-sheets/docs/genie-z135-70/cases/Z13513-1861/figs/pm054-scon.png (PM p.54, callout 34 at lower left)*
-- `[V]` The Service Manual calls that side 'the ground controls side of the machine' — *1268557.txt 5946-5949 (PDF 89 = SM p.75); shorter form 'Remove the ground controls side fixed turntable cover.' at lines 10883-10884 (PDF 166 = SM p.152)*
-- `[V]` Parts Manual names the tank-side turntable cover LEFT SIDE and the engine-side cover RIGHT SIDE — *106877.txt 1806-1807 (PM p.39) and 2184-2185 (PM p.45)*
-- `[V]` SCON module is item 22 of Parts figure 304.1; from SN 1712 it is 1258463GT, and the machine needs recalibration after a NEW module is installed — *106877.txt 2778-2787 (PDF 55 = PM p.55); drawing figs/pm054-scon.png*
-- `[V]` SCON is the redundant dual-axis tilt sensor and provides the safety cut-off logic — *1268557.txt 15317-15320 (PDF 217 = SM p.203)*
-- `[V]` SCON connectors are J121 grey 12-pin and J122 black 12-pin Deutsch — *1268557.txt 15608-15611 (PDF 220 = SM p.206)*
-- `[V]` The Service Manual limit-switch figure letters SCON on the turntable body and places LSFA1ES (24) and LSRA1ES (18) at the axles — *sm201-limitswitch-legend.png figure (SM p.201); list text at /home/user/starry-shine-sheets/docs/genie-z135-70/extracted/1268557.txt lines 15096-15106*
-- `[V]` LSFA1ES and LSRA1ES prevent boom functions with the axles retracted and close when the axles are fully extended — *1268557.txt 15322-15329 (PDF 217 = SM p.203)*
-- `[V]` J137 is the 2-pin Deutsch plug for the front axle safety switch and J138 for the rear axle safety switch — *1268557.txt 15636-15641 (PDF 220 = SM p.206)*
-- `[V]` CORRECTED: at J137 (front, LSFA1ES) pin 2 = P61LSA-GR and pin 1 = J2-GR/BK; at J138 (rear, LSRA1ES) pin 2 = C60AXE-GR/WH and pin 1 = J2-GR/BK. P53LS-WH/BK is not on either switch. Read off the drawn schematic, not the jumbled text. — *1268557.pdf PDF page 243 = SM p.229, sheet ES0366J, detail clip x 600-800, y 1100-1330 (rendered at 8x this session); partial view also in figs/es-dcon-sensors.png*
-- `[V]` P53LS-WH/BK is a limit-switch supply at the controllers - TCON J12 pins 3 and 6, SCON J122 pin 7 - which is why it cannot be the wire at the axle safety switches — *1268557.txt 16132 and 16138 (SM p.210); 16022 (SM p.209)*
-- `[V]` C60AXE-GR/WH, the rear axle safety switch wire, lands on SCON J122 pin 4 — *1268557.txt 16008 (PDF 223 = SM p.209)*
-- `[V]` P61LSA-GR, the front axle safety switch wire, lands on the DCON black 23-pin plug J31 at pin 23 — *1268557.txt 15922 (J31 heading) and 15969 (PDF 222 = SM p.208)*
-- `[V]` Operator's Manual function test: the boom will not raise with the axles retracted, and the turntable rotates only 15 degrees — *114474.txt 1851-1854 (PDF 33 = OM p.31) and 1893-1896 (PDF 34 = OM p.32)*
-- `[V]` Width with the axles retracted is 8 ft 1 in — *114474.txt 3967-3969 (OM specifications)*
-- `[V]` The axles can only be retracted with the booms fully lowered and retracted, so a machine at 8 ft 1 in is stowed — *114474.txt 3186-3188 (PDF 50 = OM p.48)*
-- `[V]` Lockout / parking: firm level surface, boom stowed, turntable so the boom is between the non-steer wheels, key off and removed, chock the wheels — *114474.txt 1206-1215 (PDF 21 = OM p.19)*
-- `[V]` Service Manual standard configuration for every repair procedure: firm level surface, key off with key removed, both E-stops in, wheels chocked, boom stowed, turntable rotation lock — *1268557.txt 2395-2409 (PDF 38 = SM p.24)*
-- `[V]` A turntable rotation lock pin exists and is used to secure the turntable — *114474.txt 3726-3727 (PDF 61 = OM p.59); service use at 1268557.txt lines 10880-10881 (SM p.152) 'Secure the turntable from rotating with the turntable rotation lock pin.'*
-- `[V]` The ground control box holds two key switches - the main one at the top for ground/platform, the bypass/recovery one at the bottom - and the TCON is the machine's communication and operations centre — *1268557.txt 7567-7581 (PDF 113 = SM p.99); figure figs/sm099-bypass-key.png*
-- `[V]` Bypass is for a platform out-of-level condition and calibration; Recovery is a last attempt to lower the platform; positions are 1 Run, 2 Bypass, 3 Recovery; the switch is on the lower right from SN Z13512-1712 — *1268557.txt 7582-7596 (PDF 113 = SM p.99); decal figure figs/key-switch-decal.png (Run / Bypass P22 / Recovery)*
-- `[V]` One key serves both switches - it is removed from the main switch and put into the bypass/recovery switch — *1268557.txt 7638-7642 (PDF 114 = SM p.100)*
-- `[V]` The control system sets an active latched safety fault when a procedure is run in the wrong key state — *1268557.txt 7721-7723 (PDF 115 = SM p.101)*
-- `[V]` Main key switch positions are off / ground / platform — *114474.txt 1376-1381 (PDF 24 = OM p.22); panel drawing figs/key-om-gc-panel.png (OM p.21, items 2, 4, 9, 11)*
-- `[V]` Ground E-stop: push in = off, stops all functions and turns the engine off; pull out = on. Platform E-stop is the same. — *114474.txt 1367-1371 (OM p.22) and 1573-1578 (PDF 28 = OM p.26)*
-- `[V]` The ground panel has a 20 A circuit breaker for the system circuit (item 9), an alarm (10) and the bypass/recovery key switch (11), whose Bypass position relates to fault code P22, platform out of level — *114474.txt 1401-1411 (PDF 24 = OM p.22)*
-- `[V]` Operating the ground controls overrides the platform E-stop — *114474.txt 3127-3128 (PDF 49 = OM p.47)*
-- `[V]` Emergency/auxiliary power operates machine functions with the engine off - the reason not to press that button while probing — *114474.txt 3129-3135 (PDF 49 = OM p.47)*
-- `[V]` Work on the ALC-1000 board begins with both E-stops pushed in, then the lid off, harnesses tagged and disconnected, a grounded wrist strap on the ground screw, with a static-damage warning — *1268557.txt 7833-7876 (PDF 117 = SM p.103); figure figs/sm103-alc-board.png*
-- `[V]` The membrane decal connects to the ECM circuit board by two ribbon cables, and that procedure also begins key off with both E-stops in — *1268557.txt 7909-7921 (PDF 118 = SM p.104)*
-- `[V]` Full machine calibration is required in a fixed order when the ALC-1000 (TCON) or the SCON has been REPLACED, and only Genie-trained technicians may do it — *1268557.txt 7973-7983 (PDF 119 = SM p.105)*
-- `[M]` A SCON that has merely been loosened or moved (rather than replaced) also needs recalibration — *1268557.txt 7973-7983 (context only)*
-- `[V]` The calibration toggle switch is at the top of the ground control box and moving it left activates calibration mode — *1268557.txt 3700-3703 (PDF 56 = SM p.42)*
-- `[V]` Parts list for the ground control box (figure 305.1): membrane decal 106510GT, recovery kit 122516GT with momentary key switch 88150GT, key switch cover weldment 215590GT, 4-way flange-mount Deutsch DTP receptacle 73717GT, ECM ground board 1258461GT from SN 1712, LCD board 88056GT, SPDT 2-position maintained toggle switch 56457-SGT — *106877.txt 3155-3205 (PDF 63 = PM p.63, parts LIST page)*
-- `[V]` The exploded drawing of the ground control box - showing the key switch cover beside the bypass/recovery switch at the lower right of the lid, the DTP receptacle on the side wall and the four rectangular plug openings - is the figure page, not the list page — *pm060-ground-controls.png figure (PM p.60); see also figs/pm062-gc-box.png (PM p.62)*
-- `[V]` Ground control box lid parts (figure 305.1): TCON control box assembly 237069GT from SN 1712, lid 107714GT, E-stop kit 122519GT with red mushroom button 66812GT, main key switch kit 122515GT with 3-position maintained key switch 66811GT, LCD lens 62374GT, 20 A circuit breaker 147095GT, alarm 62379GT — *106877.txt 3056-3132 (PDF 61 = PM p.61)*
-- `[V]` TCON AMP connectors: J11 black 23-pin, J12 black 35-pin, J13 white 23-pin, J14 white 35-pin; J9 and J10 are the membrane ribbon connectors — *1268557.txt 15428-15442 (PDF 219 = SM p.205)*
-- `[V]` J20 is a 12-pin Deutsch connector in the lower/upper limit switch harness - the intermediate plug the boom angle sensor wires pass through — *1268557.txt 15448-15450 (PDF 219 = SM p.205)*
-- `[V]` On ES0366J the six primary-boom-sensor wires pass through J20 and change conductor colour: P109ANG-GR/WH at J20-11 and J20-10, SNSR GND-BR at J20-12 and J20-7, C141PBS-RD at J20-2, C123PBS-RD/BK at J20-6; between J20 and J114 the conductors are RD, WH/BK, BL, OR, GR, WH; at the sensor side of J114 they are RD(1), BK(2), BL(3), YL(4), BR(5), OR(6) — *es-j114-primary-sensor.png figure (ES0366J, SM p.229); wider view figs/es-boom-sensors-wide.png*
-- `[V]` J114 is the 6-pin Deutsch connector for the primary boom angle sensor and J154 for the secondary — *1268557.txt 15597-15599 (SM p.206) and 15685-15687 (SM p.207)*
-- `[V]` J154 pin assignments: 1 and 6 P109ANG-GR/WH, 2 and 5 SNSR GND-BR, 3 C142SBS-OR (safety, to SCON), 4 C124SBS-OR/BK (operational, to TCON); sensor-side conductors RD, BK, BL, YL, BR, OR — *es-j154-secondary-sensor.png figure (ES0366J, SM p.229)*
-- `[V]` J12 pin assignments used on this card: 1 GNDSCON-BR, 2 P21DCON-WH, 3 and 6 P53LS-WH/BK, 5 S56PRV-RD, 25 SNSR GND-BR, 26 P109ANG-GR/WH, 32 C123PBS-RD/BK, 33 C124SBS-OR/BK, 35 GND16-BR; the 35-pin drawing shows pins 1-12 on the top row and 24-35 on the bottom row — *1268557.txt 16124-16196 (PDF 224 = SM p.210); pin-numbering drawing in figs/sm210-tcon-pins.png*
-- `[V]` SCON J122 pins: 1 P21DCON-WH, 2 C142SBS-OR, 3 C141PBS-RD — *1268557.txt 15996, 16000, 16004 (PDF 223 = SM p.209); figure figs/sm209-scon-pins.png*
-- `[V]` CORRECTED: S56PRV is a proportional-valve circuit, not a battery-level feed. The Service Manual's abbreviation table defines PRV as Proportional Valve, and S56PRV-RD lands on SCON J121-9 and J122-11. — *1268557.txt 14118-14119 (PDF 208 = SM p.194); S56PRV - RD at lines 16028 (J121-9) and 16038 (J122-11), SM p.209*
-- `[M]` Which box sources the P21DCON circuit, and at what voltage, is not stated in the manuals — *1268557.txt 16130 (SM p.210), 15996 (SM p.209) (context only)*
-- `[V]` Fault table recovery action for a boom angle sensor at 0 V: check 5.0 VDC at the sensor and that the 5.0 VDC LED is lit on the TCON board — *1268557.txt 12591-12598 (PDF 191 = SM p.177); the '% .0' is an extraction artefact of '5.0'*
-- `[V]` Engine relay and fuse panel legend for Deutz and Perkins engines names six relay positions and four marked terminals: CR28, CR17, CR41, CR5, CB10 20 A, F23 30 A, F22 60 A, F7 20 A, B1PBAT, B3PBAT, R21PIGN 20 A, 02PGND, CR1, CR15 — *1268557.txt 16324-16378 (PDF 225 = SM p.211); drawing figs/sm211-fuse-panel.png shows the six relay blocks and the bolt-head terminals; Cummins version at lines 16386-16437 (SM p.212) has 13 items and no CR15*
-- `[V]` CORRECTED relay count: the panel's parts list shows three plug-in SPDT relays and two sealed 70 A relays, so 'four cube relays' is wrong — *106877.txt 2280-2311 (PDF 47 = PM p.47)*
-- `[V]` The relay and fuse hardware sits in the engine compartment on a relay mount plate under a relay cover (Parts figure 303.1 items 6 and 8); the manuals do not state the cover's material — *106877.txt 2226-2245 (PDF 47 = PM p.47); figure figs/pm046-engine-compartment.png*
-- `[V]` The manual's own wording for a voltage test is 'a voltmeter set to DC voltage' — *1268557.txt 11463-11465 (PDF 175 = SM p.161)*
-- `[V]` CORRECTED spec: resistance tests are done with the wiring disconnected from the part, results within plus or minus 30 percent at 68 F / 20 C, and the valve coil table runs from 3.5 ohm up to 10 ohm - not 9.5 ohm — *1268557.txt 10717-10778 (PDF 164 = SM p.150)*
-- `[M]` Meter ranges (20 V DC, 200 ohm, continuity beep) and 'a good wire reads under 1 ohm' — *1268557.txt 11463 and 10819-10828 (context only)*
-- `[M]` A rested, charged 12 V battery reads roughly 12 to 13 V between B1PBAT and 02PGND — *1268557.txt 16361-16372 (context only)*
-- `[M]` Disconnect the negative (ground) battery cable first — *1268557.txt 6015-6025 (context only)*
-- `[M]` Pulling a live AMP plug can latch new faults and can momentarily bridge a battery-voltage pin onto a 5 V pin — *1268557.txt 7833-7876, 2395-2409, 16130 and 16178, 7721-7723 (indirect)*
-- `[M]` Turning the key on for voltage readings is acceptable because the retracted axles lock out the boom — *1268557.txt 2395-2409 and 12591-12598 (context only)*
-- `[V]` PCON is the platform controls circuit board; it sends data to the TCON; the platform box also holds an LED circuit board — *1268557.txt 2478-2504 (PDF 40 = SM p.26)*
-- `[V]` DCON is the drive chassis controller; its connectors are the black and white 23-pin AMP plugs J31 and J32 — *1268557.txt 15468-15472 (SM p.205) and 15742 (PDF 222 = SM p.208)*
-- `[F]` The seven live fault codes on this machine are a field reading off the LCD, not a manufacturer statement — *README.md 154-161 (field observation 2026-09-10)*
-- `[V]` Propel is off because the boom angle crosscheck faults switch off P_38, and P_38 is propel - this half IS manual-verified — *scon-fault-matrix.png figure (SM p.189)*
-- `[F]` The machine is currently at retracted width, with the chassis sensor codes cleared — *README.md 149-152 (field observation)*
-
-</details>
-
-
----
-## A. Stand down — two minutes, before anything else
-
-1. **Tag the toggle switch out.** Write *DO NOT OPERATE — unidentified circuit* on it and tell anyone else on site. Nobody in the platform until section B is done.
-2. **Photograph every splice before you touch it** — both Scotchlok taps, the loose pin in the connector face, the green bonding wire and its ring terminal, all six toggle terminals, and where the white wire enters and leaves each loom. You are dismantling somebody else's undocumented repair; you need to be able to put it back.
-
-
----
-
-## Background: what a crosscheck fault actually is
-
-### What a crosscheck fault is, in plain words
-
-**What this finds out.** This card explains what the ground display means when it says "crosscheck fault" on the primary and secondary boom angle sensors, why those two words alone are enough to kill propel (propel = drive, the machine driving along the ground), and why the splice-and-jumper work found at the primary sensor plug can never make the fault go away. Nothing is measured on this card. You stand at the ground control panel, read the display, sort the faults, and understand the wiring before the next cards send you to the plugs with a meter.
-
-**Where it is**
-
-- *What it is:* The ground control box display is what you read on this card. The two boom angle sensors and the safety controller (SCON) are the parts the faults are talking about.
-- *Where on the machine:* The ground controls sit on the turntable, the part that swings on top of the chassis (OM p.20 legend item 2 'Ground controls'). The turntable controller (TCON), which is the machine's main computer, lives inside that same ground control box. On this machine, serial number Z13513-1861, the parts manual calls that box 237069GT 'ASSY,CONTROL BOX,TCON,Z135', which is the version 'from SN 1712' (PM p.61 item 6-). The older number 106512GT is the 'to SN 1711' version and does not apply here. The safety controller (SCON) is a separate module on the hydraulic-tank side of the turntable, item 22 of parts figure 304.1 'Hydraulic Tank Side Components' (drawing on PM p.54, parts list on PM p.55). For this serial number the SCON part is 1258463GT 'MODULE,SCON,PROGRAMMED', the 'from SN 1712' version. The primary boom angle sensor sits inside the primary boom at the boom pivot pin, behind the boom end cover at the pivot end (SM p.81). The secondary boom angle sensor sits on the turntable riser bulkhead on the ground-controls side of the machine, under its own small cover (SM p.88).
-- *How to find it:* Stand on the ground at the ground control panel on the turntable. Turn the key to the ground position, pull the red E-stop out, and read the screen. You do not open anything on this card. For later cards: to reach the primary sensor, walk to the pivot end of the primary boom, which is the end nearest the turntable, and take the retaining fasteners out of the boom end cover, then lift the cover off (SM p.81 step 1). The secondary sensor is on the riser bulkhead right next to where you are standing at the ground controls; it has a small cover held by one retaining fastener (SM p.88 step 3).
-- *What it looks like:* Each boom angle sensor is a small rotary angle sensor on a bracket. When you take the bracket off there are two springs and a hex-shaped key that must not be lost (SM p.81, SM p.88). The sensors use Hall-effect technology, which simply means they sense the position of a magnet rather than rubbing a contact, and the manual says they must be calibrated whenever they are replaced (SM p.202). Each sensor has ONE 6-pin Deutsch plug. Deutsch is a brand of sealed plug with a coloured plastic wedge lock inside. The primary sensor plug is called J114, the secondary is J154 (SM p.206, SM p.207). On this machine the primary sensor hardware is bright new Genie blue: parts figure 511.2 items 8 (233118GT sensor rotator) and 9 (218757GT primary sensor pin weldment) on PM p.169. Its plug half is moulded DEUTSCH IPD USA DT04-6P and has been interfered with: five wires seated, one gold pin terminal hanging loose outside the plug, two blue Scotchlok taps (Scotchlok = a squeeze-on connector that cuts through wire insulation to make a joint, also called IDC or insulation displacement) joined by a green jumper, and a separate green wire running outside the loom to a pink butt splice on a pivot-bracket bolt (photo 2026-09-12-j114-dt04-6p-loose-pin.jpg; case README). Important: the five wire colours visible in that photo (blue, red, yellow, green, white) do NOT match the factory sensor lead colours on the schematic (red, black, blue, orange, brown, yellow), so the sensor side has been re-terminated. Do not use wire colour alone to work out which cavity is which. The SCON has two 12-pin Deutsch plugs: J121 is grey, J122 is black (SM p.206). The TCON's J12 is a black 35-pin AMP connector; AMP is another connector brand, this one a large rectangular multi-way plug (SM p.205).
-- *Source:* OM p.20 line 1254; PM p.61 lines 3054-3066; PM p.54 line 2669 and p.55 lines 2778-2788, fig pm054-scon.png; SM p.81 lines 6365-6389; SM p.88 lines 6893-6909; SM p.202 lines 15134-15136; SM p.206 lines 15597-15611; SM p.207 lines 15685-15687; SM p.205 lines 15437-15438; OM p.64 line 3968; SM p.203 lines 15322-15329; PM p.169 lines 8611+
-
-**Set the machine to**
-
-- **Key:** Key switch turned to the GROUND position only while you read the display. Key OFF and pulled out of the switch before anyone touches a plug. No plug work happens on this card.
-- **E-stops:** Ground control red E-stop (E-stop = the red emergency stop button, push it in and the machine is dead) pulled OUT so the display comes on. The software version number appears on the screen when the red E-stop is pulled out (SM p.83) - find it on the screen and write it down. Push the E-stop back IN before you walk away from the box. Leave the platform E-stop pushed IN.
-- **Battery:** Connected, so the display can light up. The battery only has to be disconnected for resistance (ohms) tests, and those come on later cards.
-- **Engine:** OFF. Do not start the engine for this card. The fact that the engine runs at all is used as evidence further down, but you do not need it running to read the fault list.
-- **Also:** Machine parked on firm level ground, wheels chocked, boom stowed. The axles are retracted, so the machine is at its narrow width of 8 ft 1 in / 2.5 m (OM p.64). With the axles retracted the boom functions are locked out on purpose by the axle-extended safety limit switches LSFA1ES and LSRA1ES (SM p.203). Leave the axles retracted. Do NOT press Delete Faults or Clear Faults. Do NOT use the bypass or recovery key positions. Do NOT fit the calibration jumper or toggle.
-
-**Connector — J114 (primary boom angle sensor, 6-pin Deutsch) and J154 (secondary boom angle sensor, 6-pin Deutsch). Their signals end up at SCON J122 (the black 12-pin plug) and TCON J12 (the black 35-pin AMP plug).**
-
-Each 6-pin sensor plug carries TWO complete, separate sensor circuits in one plug. Pins 1, 2 and 3 are the SAFETY half (called S18 on the primary, S20 on the secondary on schematic sheet ES0366J, which is the machine wiring diagram printed on SM p.229): 5 volts in, ground, and a signal wire that goes only to the safety controller (SCON). Pins 6, 5 and 4 are the OPERATIONAL half (S17 primary, S19 secondary): 5 volts in, ground, and a signal wire that goes only to the turntable controller (TCON). The 5 volt feed (wire P109ANG - GR/WH, out of TCON J12-26) and the sensor ground (wire SNSR GND - BR, out of TCON J12-25) are shared by both halves AND by both plugs. That sharing is why damage at one plug can make the other sensor report a fault. One difference between the two plugs matters when you look at wire colours: at J114 the schematic shows an extra short jumper block between the machine harness plug J20 and J114, marked 'UNIT #130 OR HIGHER', so the harness-side colours change through that block. There is no such jumper block at J154 - the circuit wires run straight into J154. The original Genie sensor part was named 'SENSOR, DUAL OUTPUT, ANGLE', part number 94980GT (PM p.77). It is no longer available, and the first-time replacement is kit 217246GT (PM p.77 and PM p.167). On PM p.167 the part-number cell for the dual-output sensor prints only 'Ref.'; the number 94980GT itself appears on PM p.77.
-
-*Source:* figs es-j114-primary-sensor.png, es-j154-secondary-sensor.png, es-scon-boomsensors.png (SM p.229 sheet ES0366J); SM p.210 lines 16175-16194; SM p.209 lines 15999-16004; SM p.198 lines 14718-14723; PM p.77 lines 3954-3958; PM p.167 lines 8549-8557
-
-| Pin | Wire name | Harness colour | Sensor colour | What it is | Goes to |
-|---|---|---|---|---|---|
-| J114-1 | P109ANG - GR/WH (circuit 109, named 'Sensor Power' in the wire legend) | RD, on the short jumper lead between harness plug J20-11 and J114-1. That jumper block is marked 'UNIT #130 OR HIGHER' on the schematic. Upstream of J20 the circuit wire itself is GR/WH. | RD | 5 volt supply for the SAFETY half of the sensor, S18 (PRI BM ANG SAFETY) | J20-11, then TCON J12-26 P109ANG - GR/WH |
-| J114-2 | SNSR GND - BR (the sensor ground. The wire legend lists a circuit 110 'Sensor Return' but gives its colour as BK, black, so the number 110 is NOT confirmed for this brown wire - see open questions) | WH/BK, on the jumper lead from J20-12 | BK | Ground return for the SAFETY half S18 | J20-12, then TCON J12-25 SNSR GND - BR |
-| J114-3 | C141PBS - RD (circuit 141, named 'Primary Boom Angle Signal Safety'. PBS = Primary Boom Angle Sensor) | BL, on the jumper lead from J20-2 | BL | SAFETY signal, primary boom angle. Read by the safety controller (SCON) only. The schematic labels this input RSP1AS. | J20-2, then SCON J122-3 C141PBS - RD |
-| J114-6 | P109ANG - GR/WH (same 5 volt circuit as pin 1) | OR, on the jumper lead from J20-10 | OR | 5 volt supply for the OPERATIONAL half of the sensor, S17 (PRI BM ANG OPER) | J20-10, then TCON J12-26, the same 5 volt wire that feeds pin 1 |
-| J114-5 | SNSR GND - BR (same ground as pin 2) | GR, on the jumper lead from J20-7 | BR | Ground return for the OPERATIONAL half S17 | J20-7, then TCON J12-25, the same ground wire that serves pin 2 |
-| J114-4 | C123PBS - RD/BK (circuit 123, named 'Primary Boom Angle Signal Operational') | WH, on the jumper lead from J20-6 | YL | OPERATIONAL signal, primary boom angle. Read by the turntable controller (TCON) only. | J20-6, then TCON J12-32 C123PBS - RD/BK |
-| J154-1 | P109ANG - GR/WH (circuit 109 'Sensor Power') | GR/WH - green with a white stripe. There is NO jumper block at J154, so the circuit wire runs straight into the plug. | RD | 5 volt supply for the SAFETY half S20 (SEC BM ANG SAFETY) | TCON J12-26, shared with J114 |
-| J154-2 | SNSR GND - BR (sensor ground; circuit number not confirmed, see open questions) | BR - plain brown | BK | Ground return for the SAFETY half S20 | TCON J12-25, shared with J114 |
-| J154-3 | C142SBS - OR (circuit 142, named 'Secondary Boom Angle Signal Safety'. SBS = Sec Boom Angle Sensor) | OR - plain orange | BL | SAFETY signal, secondary boom angle. Read by the safety controller (SCON) only. The schematic labels this input RSS1AS. | SCON J122-2 C142SBS - OR |
-| J154-6 | P109ANG - GR/WH (same 5 volt circuit as J154-1) | GR/WH | OR | 5 volt supply for the OPERATIONAL half S19 (SEC BM ANG OPER) | TCON J12-26 |
-| J154-5 | SNSR GND - BR | BR | BR | Ground return for the OPERATIONAL half S19 | TCON J12-25 |
-| J154-4 | C124SBS - OR/BK (circuit 124, named 'Secondary Boom Angle Signal Operational'). WARNING: the manual disagrees with itself on this colour. The wire legend on SM p.199 lists circuit 124 as RD/WH, while the TCON pin list on SM p.210 and the schematic both print OR/BK. Identify this wire by its printed name C124SBS, not by colour. | OR/BK per the pin list and schematic; RD/WH per the p.199 wire legend | YL | OPERATIONAL signal, secondary boom angle. Read by the turntable controller (TCON) only. | TCON J12-33 C124SBS - OR/BK |
-| SCON J121-10 | S137PLL - RD/WH (circuit 137, named 'Drive Power (P_38)'. PLL = Propel Lockout) | RD/WH | not a sensor wire | P_38 = propel power, the power that lets the machine drive. Switched OFF by BOTH boom angle crosscheck rows of the p.189 chart. | TCON J13-17 S137PLL - RD/WH |
-| SCON J121-11 | S139TRF - WH/RD (circuit 139, named 'Turntable Rotate Flow Control Safety (P_39)'. TRF = Turntable Rotate Flow Control) | WH/RD | not a sensor wire | P_39 = turntable rotate. OFF on both crosscheck rows. | TCON J13-19 S139TRF - WH/RD |
-| SCON J121-8 | S59CNK - GR/WH (circuit 59, named 'Chain break circuit'. CNK = Chain Break) | GR/WH | not a sensor wire | P_10 = primary boom extend. Of the two crosscheck rows, only the PRIMARY one switches it OFF. Note that P_10 is also switched OFF by four other rows of the same chart (axle safety not stowed; axle crosscheck angle sensor versus safety switch; turntable tilt angle crosscheck; loss of CAN), so P_10 being off does not by itself point at the primary sensor. | TCON J12-8 S59CNK - GR/WH |
-| SCON J122-8 | S140ENL - OR/RD (circuit 140, named 'Boom Envelope Safety'. ENL = Envelope Lockout) | OR/RD per both pin lists. WARNING: the fault text on SM p.175 calls this same wire 'orange/black'. Identify it by the printed name S140ENL, not by colour. | not a sensor wire | P_11 = primary / secondary boom up AND P_30 = secondary extend/down. Both ride on this one wire; the schematic labels the pin 'P11+P30'. OFF on both crosscheck rows. | TCON J12-9 and TCON J12-34, both S140ENL - OR/RD |
-| SCON J122-10 | P58LS - RD/BK. The wire name carries its own circuit number: this is circuit 58, named 'Safety interlock to engine' in the wire legend on SM p.198. It is NOT circuit 138. Circuit 138 is a different red/black circuit ('Primary Boom Up/Secondary Boom Down-Extend (P_11/30)', SM p.199) and no wire anywhere in the manual carries the name S138, P138 or C138. | RD/BK | not a sensor wire | P_9B = ignition/fuel. The schematic labels this pin P9B. When this output goes off, the engine is shut down. It is blank on BOTH crosscheck rows, meaning a crosscheck fault does not shut the engine off. | TCON J12-7 P58LS - RD/BK |
-| SCON J121-9 and SCON J122-11 | S56PRV - RD (circuit 56, named 'Foot switch/TCON estop power'. PRV = Proportional Valve) | RD | not a sensor wire | P_7R, the label printed on both pins on the schematic. This is the foot-switch and E-stop power line for the proportional valves. It is not one of the six columns of the crosscheck chart. | TCON J12-5 S56PRV - RD |
-| SCON J122-1 and SCON J121-12 | P21DCON - WH (power in) and GNDSCON - BR (ground). Note the schematic spells the ground wire SCONGND-BR while the pin list spells it GNDSCON-BR; it is the same wire. DCON = drive chassis controller, the computer down on the chassis; this wire is a shared power feed. | WH and BR | not a sensor wire | Power into the safety controller (the schematic labels J122-1 'ECU PWR') and the safety controller's ground. | TCON J12-2 P21DCON - WH, and TCON J12-1 GNDSCON - BR |
-
-**Do this**
-
-1. Park on firm level ground, chock the wheels, boom stowed, axles left retracted, engine off. You will not touch a plug or a meter on this card.
-2. Walk to the ground controls on the turntable (OM p.20 legend item 2). Turn the key to the ground position and pull the red E-stop OUT. The software version number appears on the screen when the red E-stop is pulled out (SM p.83). Look for it and write it down. It decides which calibration procedure the calibration tech uses later: version 4.01 and higher use the 2 Point Calibration, earlier versions use the 6 Point Calibration. The manual does not say the version is the first screen or that it disappears, so if you do not see it straight away, keep looking.
-3. Read every fault shown on the display in the ground control box. Copy each line word for word, in the order shown, and photograph the screen. The Service Manual has no separate 'how to read the fault list' procedure; the one sentence that names the display as the place to read machine faults is on SM p.100, and it sits inside the bypass/recovery-key procedure. The faults reported on this machine are: primary boom angle sensor crosscheck; secondary boom angle sensor crosscheck; primary boom angle zone fault; primary boom angle sensor not calibrated; secondary boom switches fault; secondary boom angle sensor shorted / 0 V; TCON-SCON calibration inconsistent.
-4. Understand the design in one sentence from the manual (SM p.202): 'As in aircraft, which features redundant safety systems, each mechanical operational switch is backed up with a separate, independently functioning safety switch.' Redundant just means doubled up on purpose. The angle sensors are Hall-effect - they read the position of a magnet with no rubbing contact - and the manual says they 'must be calibrated when replaced'. For each boom there are two sensor names on the schematic: RSP1AO and RSS1AO are the OPERATIONAL copy read by the turntable controller (TCON, the main computer in the ground control box), and RSP1AS and RSS1AS are the SAFETY copy read by the safety controller (SCON). The SCON 'provides safety switch logic for function cut-off' (SM p.203), that is, it is the box that switches machine functions off when something is wrong.
-5. Sort each fault line into one of three kinds. (a) CROSSCHECK means the safety controller compared the safety copy against the operational copy of the same sensor and the two numbers do not agree (SM p.189 chart rows 'Primary Boom angle (crosscheck)' and 'Secondary Boom angle (crosscheck)'). (b) ELECTRICAL means one copy is reading a wrong voltage: 'Value at 0 V', 'Value at 5.0 V', 'Value Too High', 'Value Too Low', 'Out of Tolerance' (SM pp.177-180). (c) NOT CALIBRATED means that controller has no stored calibration for that channel (SM pp.177-180). The line 'secondary boom switches fault' is NOT one of the unknown lines: the manual carries matching entries on SM p.188 for the secondary boom limit switches LSS1RS and LSS1RO ('Secondary Boom Switch Timeout' and 'Secondary Boom Switches Intermittence Fault (LSS1RS Fault)'), and SM p.189 also has a chart row 'Secondary Boom length (crosscheck LSS1RS and LSS1RO)'. Only two of the seven display lines - 'primary boom angle zone fault' and 'TCON-SCON calibration inconsistent' - have no counterpart anywhere in the October 2018 manual. Note them and do not guess at them.
-6. Write down, from the SM p.189 chart, which safety controller outputs are being held OFF right now. Primary crosscheck row: P_38 OFF, P_39 OFF, P_10 OFF, P_11 OFF, P_30 OFF, P_9B blank. Secondary crosscheck row: P_38 OFF, P_39 OFF, P_11 OFF, P_30 OFF, with P_10 and P_9B blank. CAREFUL when reading this page: the descriptive title boxes across the top run P_38, P_39, P_10, P_11, P_9B, P_30, but the narrow data columns underneath run P_38, P_39, P_10, P_11, P_30, P_9B. The last two are swapped between the two rows of headings. Score the OFF marks against the narrow data columns. The titles say: P_38 - Propel; P_39 - Turntable Rotate; P_10 - Primary Boom Extend; P_11 - Primary / Secondary Up; P_9B - Ignition/Fuel; P_30 - Secondary Extend/Down. The wire legend calls circuit 137 (wire S137PLL, red/white) 'Drive Power (P_38)'. That is why propel is dead. Nothing on the drive side needs chasing until the crosscheck faults are gone.
-7. Note what is NOT switched off. P_9B, ignition and fuel, carried on wire P58LS red/black, is blank on both crosscheck rows, and the engine runs. The chart's 'Loss of CAN' row switches all six outputs off including P_9B. CAN, short for Controller Area Network, is the two-wire data link the controllers use to talk to each other. So a running engine tells you the safety controller is powered up and talking on that data link, which rules out the Loss of CAN row and the other rows that cut P_9B. Do not buy a safety controller or a turntable controller on the strength of these faults. It does not on its own prove every ground wire is perfect - it only shows the module is running well enough to hold its outputs on.
-8. Read the manual's own recovery lines for the electrical and calibration faults and keep them for the next cards. For 'Value at 0 V' on any of the four channels (operational or safety, primary or secondary) the manual says: 'Check for 5.0 VDC at the sensor. Check for damaged wiring going to the sensor. Check that the 5.0 VDC LED is lit on the TCON board. Repair or replace as necessary' (SM pp.177-180). For 'Not calibrated' the effect is 'Primary up only active from TCON, activate alarm' (primary) or 'Secondary up only active from TCON, activate alarm' (secondary), and the recovery is 'Perform calibration procedure per service manual'. For 'Out of Tolerance': 'Recalibrate sensor'. For 'Value at 5.0 V': 'Check for an open ground circuit going to the sensor'.
-9. Understand why the secondary sensor can report '0 V' when the damage is at the primary plug. The schematic feeds BOTH J114 and J154 from the same 5 volt wire (P109ANG - GR/WH, out of TCON J12-26) and the same ground wire (SNSR GND - BR, out of TCON J12-25). The wide crop of the schematic shows both plugs tapping the same two horizontal lines at junction dots. So a short, or a pin pushed into the wrong cavity, at J114 can pull that shared supply down and upset the secondary sensor too. The J114 and J154 cards measure this.
-10. Understand why the tap-and-jumper work at J114 cannot satisfy the check. This paragraph is engineering reasoning, tagged M, not manual text. The check exists to prove that two independent sensors agree. Each controller keeps its own stored calibration for its own channel: the fault table lists 'Not calibrated' separately for the operational copy (TCON) and the safety copy (SCON), and the manual says every replaced angle sensor must be calibrated. So if two signal wires are tied together, the two controllers receive the same raw voltage but each converts it using its own stored calibration - and one of them is reporting 'not calibrated' right now - so the two angle numbers still disagree and the crosscheck fault stays. (One caution on a weaker argument: the schematic draws each sensor half as a variable resistor with a wiper, not as a driven electronic output, so two of them tied together would not necessarily 'fight' each other and drag the shared 5 volt line down. Treat that particular mechanism as unproven; the shared 5 volt and ground lines are still a real path for one plug's damage to affect the other sensor.) And even if a tie ever made the two numbers match, the machine would then have one sensor watching the boom instead of two, which is exactly the condition the check exists to detect. The only route out is six clean, separate pins at J114 and J154 with the correct Deutsch pin terminals, the loose pin put back in its correct cavity, every tap and jumper removed, and then calibration by the calibration tech in the SM p.105 order, in which the secondary boom angle sensor is calibrated before the primary boom angle sensor.
-11. Push the red E-stop IN and turn the key OFF. Do not press Delete Faults or Clear Faults - the fault list is your evidence. Do not turn the bypass or recovery key. Do not fit any calibration jumper or toggle. Go to the J114 card.
-
-**You should see**
-
-| Measurement | Expected | If that is what you get | If not |
-|---|---|---|---|
-| The fault list on the ground control display, copied word for word | **Both crosscheck lines present: primary boom angle sensor crosscheck and secondary boom angle sensor crosscheck. Per the SM p.189 chart that means P_38 (propel), P_39, P_10, P_11 and P_30 are being held OFF by the safety controller.** | Dead propel is fully explained by P_38 'Drive Power' being held off. Skip all drive-system diagnosis and go to the J114 card. | If propel is dead but NO crosscheck line is shown, look for a 'P38 SAFETY SWITCH FAULT' message on the display. SM p.175 says to recycle power and check the wiring on circuit S137PLL (red/white) 'between SCON and TCON'; p.175 itself names no pins, but the pin lists give those ends as SCON J121-10 (SM p.209) and TCON J13-17 (SM p.210). Then check the SM p.189 chart for the other rows that also switch P_38 off: turntable tilt Y axis, turntable tilt angle crosscheck, primary boom safety max angle, loss of CAN, and the axle-not-fully-extended plus turntable-rotate row. |
-| Does the engine start and run? | **Yes - it does on this machine. P_9B, ignition and fuel, is blank on both crosscheck rows, so it should be on.** | The safety controller is powered (P21DCON - WH into J122-1), grounded (GNDSCON - BR on J121-12) and talking on the CAN data link, because the 'Loss of CAN' row would switch all six outputs off including P_9B. It also rules out the two boom-safety rows that cut P_9B (secondary boom safety, primary boom safety max angle) and the platform overload row. Do not replace the SCON or the TCON. This does not by itself prove the ground wire is perfect - only that the module is running. | If the engine shuts off with a 'P9B SAFETY SWITCH FAULT', SM p.174 says the boom has violated the safety limits and the engine was shut off as a safety feature; use auxiliary power to bring the boom back inside its limits, and check circuits P54ENG and P58LS between the SCON and the TCON for damage. That would be a different, additional problem on top of the crosscheck faults. |
-| The line 'primary boom angle sensor not calibrated' | **Present now, and it will STAY present after the wiring repair until the calibration tech runs the primary boom angle sensor calibration (SM p.82 onward) in the SM p.105 order. The effect listed in the fault table is 'Primary up only active from TCON, activate alarm'.** | If the wiring repair is done and only 'not calibrated' remains, hand the machine over to the calibration tech. Do not attempt calibration on this plan. | If 'not calibrated' clears by itself after the wiring work, the display was showing a stale fault; record that and carry on. If 'Out of Tolerance' appears instead, the manual's recovery is 'Recalibrate sensor'. |
-| The line 'secondary boom angle sensor shorted / 0 V' | **The manual's entry for 'Value at 0 V' (operational copy on SM p.179, safety copy on SM p.180) points at the 5 volt supply and the wiring: 'Check for 5.0 VDC at the sensor. Check for damaged wiring going to the sensor. Check that the 5.0 VDC LED is lit on the TCON board.' Because the 5 volt line (P109ANG) and the ground line (SNSR GND) are shared between J114 and J154, expect this code to be caused by, or at least affected by, the splice work at the primary plug.** | If the secondary '0 V' code disappears when J114 is unplugged on the J114 card, the primary splice work is dragging the shared supply down. Repair J114 first. | If the secondary '0 V' code stays with J114 unplugged, the J154 card must test the secondary sensor and its own six pins. |
-| The lines 'primary boom angle zone fault' and 'TCON-SCON calibration inconsistent' | **Neither is listed anywhere in Service and Repair Manual 1268557GT (October 2018). Searching that file for 'zone' returns only five lines, all of them 'drive enable zone' or 'drive disable zone', never a 'zone fault'. Searching all three manuals for 'inconsistent' returns nothing at all. These are likely (tagged M, unverified) newer-software messages from the same family as the faults above - the two controllers holding different calibration data for the same sensor - but the manuals do not say so.** | Treat them as companions of the crosscheck and not-calibrated faults. Expect them to clear only after a proper calibration by the calibration tech, not after wiring work alone. | If they remain after both the wiring repair and a full calibration, contact Genie Product Support with the software version you wrote down in step 2. The manual has no recovery text for them. |
-
-**Why we are doing this.** The safety controller (SCON) fault chart on printed page 189 of the Service and Repair Manual says a primary boom angle crosscheck fault switches OFF five safety outputs, and the first one, P_38, is named "Propel". So the dead drive is not a separate drive problem. It is the expected result of the crosscheck faults. That decides the whole plan: fix the two sensor circuits (six clean pins at each plug, no taps, no jumpers), then hand the machine to the calibration tech. Do not chase the drive motors, pumps or valves. Do not buy a new turntable controller (TCON) or safety controller (SCON). And never try to trick the check.
-
-**Safety**
-
-- Firm level ground, wheels chocked, boom stowed, axles left retracted. Do not raise, extend or rotate anything while the safety envelope is faulted.
-- Key OFF and the red E-stop pushed IN before anyone unplugs any connector. This card is read-only; the connector cards follow.
+- Firm level ground, wheels chocked, boom stowed, axles left retracted. Do not raise, extend or rotate
+  anything while the safety envelope is faulted.
+- Key OFF and the red E-stop pushed IN before anyone unplugs any connector. This card is read-only.
 - Battery disconnected for any resistance (ohms) test on later cards.
-- Never jumper, tie, tap or bridge an angle sensor signal, a limit switch, the tilt sensor or the load cell. This plan REMOVES the Scotchlok taps, the green jumper and the external green wire at J114. It never adds one.
-- Do not use the bypass or recovery key positions and do not fit the calibration jumper or toggle. Calibration and those key positions belong to the calibration tech. Replacing an angle sensor requires recalibration (SM p.202); replacing the safety controller requires the entire machine to be calibrated in a specific order (SM p.154); the order itself is on SM p.105, secondary boom angle sensor before primary.
-- Do not press Delete Faults or Clear Faults before the wiring is repaired. The fault list is your evidence.
-- The generic AC-rated toggle switch in the platform box and its white wire running down the boom are not Genie parts. Until that wire is identified, treat it as a possible safety-circuit bypass and do not operate the machine from the platform.
+- Never jumper, tie, tap or bridge an angle sensor signal, a limit switch, the tilt sensor or the load
+  cell. This plan REMOVES the Scotchlok taps, the green jumper and the external green wire at J114. It
+  never adds one.
+- Do not use the bypass or recovery key positions and do not fit the calibration jumper or toggle.
+  Replacing an angle sensor requires recalibration (SM p.202); replacing the SCON requires the entire
+  machine to be calibrated in a specific order (SM p.154); the order itself is on SM p.105, secondary
+  boom angle sensor before primary.
+- Do not press Delete Faults or Clear Faults before the wiring is repaired. The fault list is evidence.
+- The generic AC-rated toggle switch in the platform box and its white wire running down the boom are
+  not Genie parts. Until that wire is identified, treat it as a possible safety-circuit bypass and do
+  not operate the machine from the platform.
 
-**Open questions on this card**
+### Sources
 
-- 'Primary boom angle zone fault' and 'TCON-SCON calibration inconsistent' are not in the October 2018 Service Manual. There is no 'zone fault' entry (the word 'zone' appears only as 'drive enable zone' and 'drive disable zone'), and 'inconsistent' has no hits in any of the three manuals. Their meaning here is inference, tagged M: likely newer-software wording for a calibration mismatch between the two controllers. Record the exact display wording and the software version from the E-stop-out screen and ask Genie Product Support for the definition.
-- The sensor ground wire SNSR GND - BR carries no circuit number anywhere in the schematic or the pin lists. The wire legend does list a circuit 110 'Sensor Return', but gives its colour as BK (black), not brown. So calling the brown sensor ground 'circuit 110' is likely correct in function but is NOT confirmed by the manual, and this card does not state it as fact. Identify that wire by its printed name SNSR GND, not by a circuit number.
-- Colour conflict inside the manual for S140ENL: the pin lists on SM pp.209 and 210 say OR/RD, while the P11 and P30 fault entries on SM p.175 say 'orange/black'. Identify the wire by its printed circuit name, not colour alone.
-- Colour conflict inside the manual for circuit 124: the wire legend on SM p.199 says RD/WH, while the TCON pin list on SM p.210 and schematic ES0366J both say C124SBS - OR/BK. Same remedy: identify by printed name C124SBS.
-- The SM p.189 chart has no P_7R column, so the manual does not say whether a crosscheck fault touches P_7R (wire S56PRV, the foot-switch and E-stop power for the proportional valves). This card assumes it does not. Verify on the machine by whether the P7 or P7R messages appear.
-- Whether the 217246GT kit fitted on this machine truly carries two independent sensing elements like the original 'DUAL OUTPUT' 94980GT is unresolved. The figure 511.2 drawing prints callout 17 (216061GT) twice, but the quantity column was lost in text extraction and the parts list never says two elements or two outputs. Confirm on the J114 card by counting the sensor leads and which cavity each occupies.
-- The manuals assign no pin terminal part number to the 6-way J114 or J154 connectors. 73713GT is listed on PM p.169 only as a sub-part of the LSP1RO limit-switch assembly's 4-way Deutsch connector. Confirm the correct 6-way DT terminal with Genie Product Support before ordering.
-- Which cavity the loose gold pin belongs to, and which two conductors the Scotchlok and green-jumper loop actually bridges, are unknown until the J114 card measures them. Do not assume it is pins 3 and 4. Wire colour is no help here: the photo colours do not match the factory sensor lead colours, so the sensor side has been re-terminated at some point.
-- The manual prints the fault-table wording (the SM p.189 chart rows and the SM pp.177-180 entries) but not the exact strings the display shows. The display's 'crosscheck fault' text is being matched to the p.189 chart rows by name, not by a documented one-to-one list.
-- The display line 'secondary boom switches fault' has more than one possible manual counterpart: the two LSS1RS / LSS1RO entries on SM p.188, or the SM p.189 chart row 'Secondary Boom length (crosscheck LSS1RS and LSS1RO)'. Those are different faults with different consequences - the p.189 chart row also cuts P_9B (ignition/fuel), which would stop the engine, and the engine runs. Get the exact display wording before deciding which it is.
-- Whether calibration must be repeated on both controllers after simply re-pinning J114, with no sensor change, is not stated in so many words. The live 'not calibrated' fault implies yes for the primary at least, and the SM p.105 order puts the secondary boom angle sensor first.
-
-<details><summary>Sources for this card (74 checked statements)</summary>
-
-- `[V]` The manual describes a redundant design: each operational switch is backed up by a separate, independently functioning safety switch ('As in aircraft'). — *1268557.txt 15126-15129 (SM p.202)*
-- `[V]` The rotation/angle sensors use Hall-effect technology and must be calibrated when replaced. — *1268557.txt 15134-15136 (SM p.202)*
-- `[V]` Every boom angle sensor has an operational copy (RSP1AO, RSS1AO) and a safety copy (RSP1AS, RSS1AS). — *1268557.txt 15284-15293 (SM p.203)*
-- `[V]` RSP1AO provides operational primary boom angle; RSP1AS provides safety primary boom angle. — *1268557.txt 15373-15378 (SM p.204)*
-- `[V]` RSS1AS is the backup safety sensor for RSS1AO and cuts P9B, P_11 and P_30 if the secondary boom drifts down while still extended. — *1268557.txt 15387-15390 (SM p.204)*
-- `[V]` The safety controller (SCON) provides safety switch logic for function cut-off and holds the turntable tilt sensors. — *1268557.txt 15317-15320 (SM p.203)*
-- `[V]` The SM p.189 chart's descriptive header boxes run P_38, P_39, P_10, P_11, P_9B, P_30, but the narrow data columns underneath run P_38, P_39, P_10, P_11, P_30, P_9B. The last two are swapped between the two heading rows, so OFF marks must be scored against the narrow data columns. — *scon-fault-matrix.png figure scon-fault-matrix.png (SM p.189); text 1268557.txt 13630-13646*
-- `[V]` Primary Boom angle (crosscheck) switches OFF P_38, P_39, P_10, P_11 and P_30; the P_9B cell is blank. — *scon-fault-matrix.png figure scon-fault-matrix.png row 2 (SM p.189); text 1268557.txt 13654-13660*
-- `[V]` Secondary Boom angle (crosscheck) switches OFF P_38, P_39, P_11 and P_30; the P_10 and P_9B cells are blank. — *scon-fault-matrix.png figure scon-fault-matrix.png row 3 (SM p.189); text 1268557.txt 13661-13667*
-- `[V]` P_10 is also switched OFF by four other chart rows besides the primary crosscheck: 'Axle safety not stowed', 'Axle crosscheck angle sensor versus safety switch', 'Turntable tilt angle (crosscheck SCON internal sensors 3 in a delta configuration)' and 'Loss of CAN'. — *scon-fault-matrix.png figure scon-fault-matrix.png, P_10 column (SM p.189)*
-- `[V]` Loss of CAN switches OFF all six outputs including P_9B. — *1268557.txt 13712-13718 (SM p.189); figure scon-fault-matrix.png*
-- `[V]` The SM p.189 chart also carries a row 'Secondary Boom length (crosscheck LSS1RS and LSS1RO)', which switches OFF P_11, P_30 and P_9B. — *1268557.txt 13733 (SM p.189); figure scon-fault-matrix.png last row*
-- `[V]` The Service Manual does carry entries for the secondary boom limit switches: 'Secondary Boom Switch Timeout' and 'Secondary Boom Switches Intermittence Fault (LSS1RS Fault)' involving LSS1RS and LSS1RO. — *1268557.txt 13540-13572 (SM p.188)*
-- `[V]` Circuit 137 red/white is 'Drive Power (P_38)'. — *1268557.txt 14825-14827 (SM p.199)*
-- `[V]` Circuit 139 white/red is 'Turntable Rotate Flow Control Safety (P_39)'. — *1268557.txt 14832-14835 (SM p.199)*
-- `[V]` Circuit 140 orange/red is 'Boom Envelope Safety'. — *1268557.txt 14836-14838 (SM p.199)*
-- `[V]` P58LS is circuit 58, 'Safety interlock to engine' (red/black), NOT circuit 138. Circuit 138 is a separate red/black circuit ('Primary Boom Up/Secondary Boom Down-Extend (P_11/30)') and no wire named S138, P138 or C138 exists anywhere in the Service Manual. There is therefore no conflict between the wire legend, the schematic label P9B and the SM p.174 P9B fault text. — *1268557.txt 14556-14558 (SM p.198) and 14828-14831 (SM p.199); grep 'S138|P138|C138' returns no lines*
-- `[V]` Wire names on this machine encode their own circuit number, which is why P58LS resolves to circuit 58: S137PLL=137, S139TRF=139, S140ENL=140, S56PRV=56, S59CNK=59, P109ANG=109, C141PBS=141, C123PBS=123, C124SBS=124, C142SBS=142. — *1268557.txt 14550-14561, 14718-14723, 14779-14786, 14825-14851 (SM pp.198-199) cross-read with the pin lists at 15995-16040 and 16127-16237 (SM pp.209-210)*
-- `[V]` Circuit 56 red is 'Foot switch/TCON estop power'; circuit 59 green/white is 'Chain break circuit'. — *1268557.txt 14550-14552 and 14559-14561 (SM p.198)*
-- `[V]` Circuit 109 green/white is 'Sensor Power'. Circuit 110 is listed as 'Sensor Return' with colour BK (black). — *1268557.txt 14718-14723 (SM p.198)*
-- `[V]` The full circuit names for the four boom angle signals carry a Safety or Operational qualifier: 123 'Primary Boom Angle Signal Operational' (RD/BK), 124 'Secondary Boom Angle Signal Operational' (RD/WH), 141 'Primary Boom Angle Signal Safety' (RD), 142 'Secondary Boom Angle Signal Safety' (OR). — *1268557.txt 14779-14786 and 14844-14851 (SM p.199)*
-- `[V]` The manual contradicts itself on the colour of circuit 124: the wire legend on SM p.199 gives RD/WH, while the TCON pin list on SM p.210 and schematic ES0366J both give C124SBS - OR/BK. — *1268557.txt 14783-14786 (SM p.199) vs 16191-16192 (SM p.210); fig es-j154-secondary-sensor.png*
-- `[V]` Wire suffix meanings: PLL = Propel Lockout; PRV = Proportional Valve; PBS = Primary Boom Angle Sensor. — *1268557.txt 14104-14105, 14118-14119, 14080-14081 (SM p.194)*
-- `[V]` Wire suffix meanings: TRF = Turntable Rotate Flow Control; SBS = Sec Boom Angle Sensor. — *1268557.txt 14234-14235, 14192-14193 (SM p.195)*
-- `[V]` Wire suffix meanings: ENL = Envelope Lockout; CNK = Chain Break; ANG = Angle. — *1268557.txt 13950-13951, 13934-13935, 13904-13905 (SM p.193)*
-- `[V]` SCON J121 pins: 8 S59CNK-GR/WH, 9 S56PRV-RD, 10 S137PLL-RD/WH, 11 S139TRF-WH/RD, 12 GNDSCON-BR. — *1268557.txt 16023-16024, 16027-16028, 16031-16032, 16035-16036, 16039-16040 (SM p.209); figures scon-pinlegend.png, sm209-scon-pins.png*
-- `[V]` SCON J122 pins: 1 P21DCON-WH, 2 C142SBS-OR, 3 C141PBS-RD, 8 S140ENL-OR/RD, 9 P54ENG-BK/WH, 10 P58LS-RD/BK, 11 S56PRV-RD. — *1268557.txt 15995-15996, 15999-16000, 16003-16004, 16025-16026, 16029-16030, 16033-16034, 16037-16038 (SM p.209); figures scon-pinlegend.png, sm209-scon-pins.png*
-- `[V]` On schematic sheet ES0366J the SCON pins are labelled: J121-08 'P10', J121-09 'P7R', J121-10 'P38', J121-11 'P39', J121-12 'GND'; J122-01 'ECU PWR', J122-02 'RSS1AS', J122-03 'RSP1AS', J122-08 'P11+P30', J122-10 'P9B', J122-11 'P7R'. The schematic spells the ground wire SCONGND-BR where the pin list spells it GNDSCON-BR. — *es-scon-boomsensors.png SCON MODULE block, J121-GRAY 12 PIN / J122-BLACK 12 PIN (SM p.229, sheet ES0366J)*
-- `[V]` The schematic text also carries 'P_38 PWR TO PROPEL' and 'P_39 POWER TO TTROT FC'. — *1268557.txt 18760-18762 (SM p.229 schematic text; sheet name ES0366J at line 19698)*
-- `[V]` TCON J12 pins: 1 GNDSCON-BR, 2 P21DCON-WH, 5 S56PRV-RD, 7 P58LS-RD/BK, 8 S59CNK-GR/WH, 9 S140ENL-OR/RD, 25 SNSR GND-BR, 26 P109ANG-GR/WH, 32 C123PBS-RD/BK, 33 C124SBS-OR/BK, 34 S140ENL-OR/RD. — *1268557.txt 16127-16144, 16175-16178, 16189-16194 (SM p.210); figure sm210-tcon-pins.png*
-- `[V]` TCON J13-17 is S137PLL-RD/WH and J13-19 is S139TRF-WH/RD. — *1268557.txt 16232-16233, 16236-16237 (SM p.210); figure sm210-tcon-pins.png*
-- `[V]` J114 is the 6-pin Deutsch connector for the primary boom angle sensor; J121 is the 12-pin grey and J122 the 12-pin black SCON connector. — *1268557.txt 15597-15599, 15608-15611 (SM p.206)*
-- `[V]` J154 is the 6-pin Deutsch connector for the secondary boom angle sensor. — *1268557.txt 15685-15687 (SM p.207)*
-- `[V]` J12 is the black 35-pin AMP connector on the TCON. — *1268557.txt 15437-15438 (SM p.205)*
-- `[V]` J114 wiring: the circuits P109ANG-GR/WH, SNSR GND-BR, C141PBS-RD, P109ANG-GR/WH, SNSR GND-BR, C123PBS-RD/BK land on harness plug J20 pins 11, 12, 2, 10, 7, 6; a jumper block marked 'UNIT #130 OR HIGHER' carries colours RD, WH/BK, BL, OR, GR, WH into J114 cavities 1, 2, 3, 6, 5, 4; the sensor pigtail is RD, BK, BL into S18-PRI BM ANG SAFETY and OR, BR, YL into S17-PRI BM ANG OPER. — *es-j114-primary-sensor.png J20 / J114 / S18-PRI BM ANG SAFETY / S17-PRI BM ANG OPER block (SM p.229, sheet ES0366J)*
-- `[V]` J154 has NO intermediate jumper block. The circuit wires P109ANG-GR/WH, SNSR GND-BR, C142SBS-OR, P109ANG-GR/WH, SNSR GND-BR, C124SBS-OR/BK run straight into J154 cavities 1, 2, 3, 6, 5, 4, and the sensor pigtail below is RD, BK, BL into S20-SEC BM ANG SAFETY and OR, BR, YL into S19-SEC BM ANG OPER. So the harness-side colours at J154 are GR/WH, BR, OR, GR/WH, BR, OR/BK - not the pigtail colours. — *es-j154-secondary-sensor.png J154 / S20-SEC BM ANG SAFETY / S19-SEC BM ANG OPER block (SM p.229, sheet ES0366J)*
-- `[V]` The same 5 volt net P109ANG-GR/WH and the same ground net SNSR GND-BR feed both J114 and J154 (junction dots on common horizontal lines); C141PBS-RD and C142SBS-OR run to SCON J122-3 and J122-2, and C123PBS-RD/BK and C124SBS-OR/BK to the TCON. — *es-scon-boomsensors.png wide crop of ES0366J showing the SCON module, the J20/J114 group and the J154 group with P109ANG-GR/WH and SNSR GND-BR junction dots (SM p.229)*
-- `[V]` On the schematic each sensor half (S17, S18, S19, S20) is drawn as a variable resistor with a wiper (a potentiometer symbol) across the 5 volt and ground lines, not as an actively driven electronic output. — *es-j114-primary-sensor.png S18-PRI BM ANG SAFETY and S17-PRI BM ANG OPER symbols (SM p.229); same symbols at S20/S19 in es-j154-secondary-sensor.png*
-- `[V]` Fault table, Operational Primary Boom Angle Sensor: 'Value at 0 V' effect and recovery; 'Not calibrated' effect and recovery. — *1268557.txt 12576-12607 (SM p.177)*
-- `[V]` Fault table, Safety Primary Boom Angle Sensor: same 'Value at 0 V' and 'Not calibrated' entries; 'Out of Tolerance' recovery is 'Recalibrate sensor'; 'Value at 5.0 V' recovery is checking for an open ground. — *1268557.txt 12632-12663 (SM p.178)*
-- `[V]` Fault table, Operational Secondary Boom Angle Sensor: 'Value at 0 V' and 'Not calibrated' entries. — *1268557.txt 12775-12806 (SM p.179)*
-- `[V]` Fault table, Safety Secondary Boom Angle Sensor: 'Value at 0 V' and 'Not calibrated' entries. — *1268557.txt 12830-12862 (SM p.180)*
-- `[V]` Safety Switch P38 fault recovery names circuit S137PLL (red/white) 'between SCON and TCON'. The page itself gives no pin numbers. — *1268557.txt 12418-12425 (SM p.175)*
-- `[V]` Safety Switch P11 and P30 fault recoveries both name circuit S140ENL and call it 'orange/black', while the pin lists on SM pp.209 and 210 give the same wire as OR/RD. — *1268557.txt 12375-12382, 12410-12417 (SM p.175) vs 16025-16026 (SM p.209) and 16143-16144 (SM p.210)*
-- `[V]` Safety Switch P9B: the boom has violated the safety limits and the engine is shut off; check P54ENG and P58LS between SCON and TCON. — *1268557.txt 12338-12349 (SM p.174)*
-- `[V]` Safety Switch P7 names circuit S56PRV (red wire); P7R means the function enable button was held down during startup. — *1268557.txt 12309-12322 (SM p.174)*
-- `[V]` 'Zone fault' is not an entry in the Service Manual; the word 'zone' appears only as 'drive enable zone' and 'drive disable zone'. — *1268557.txt grep -i zone: lines 6516, 6999, 13690, 15331, 15334 only*
-- `[V]` 'Inconsistent' does not appear anywhere in any of the three manuals. — *1268557.txt grep -n -i inconsist across 1268557.txt, 106877.txt and 114474.txt returned no lines*
-- `[M]` The 'primary boom angle zone fault' and 'TCON-SCON calibration inconsistent' display lines are likely newer-software messages about the same kind of calibration mismatch between the two controllers.
-- `[V]` Primary boom angle sensor is inside the primary boom at the boom pivot pin, behind the boom end cover at the pivot end; it limits the primary boom angle relative to the secondary boom and gravity. — *1268557.txt 6365-6379 (SM p.81); also 5694-5695 (SM p.72)*
-- `[V]` Secondary boom angle sensor is on the turntable riser bulkhead at the ground-controls side, under a cover held by a retaining fastener. — *1268557.txt 6893-6902 (SM p.88)*
-- `[V]` Each angle sensor and bracket assembly has two springs and a hex-shaped key that must not be lost. — *1268557.txt 6387-6389 (SM p.81) and 6907-6909 (SM p.88)*
-- `[V]` Full machine calibration must run in a fixed sequence, and the secondary boom angle sensor is calibrated before the primary boom angle sensor. — *1268557.txt 8011-8037 (SM p.105)*
-- `[V]` If the safety controller (SCON) is replaced, the entire machine must be calibrated in a specific order. — *1268557.txt 11000-11003 (SM p.154)*
-- `[V]` The software version is displayed on the LCD screen when the red E-stop is pulled out to the on position; versions 4.01 and higher use the 2 Point Calibration procedure, earlier versions the 6 Point. The manual does not say the version is the first screen shown. — *1268557.txt 6491-6496 (SM p.83)*
-- `[V]` The manual names the LCD screen on the ground control box as the place to check for machine faults. That sentence sits inside the bypass/recovery-key procedure, not in a standalone fault-reading procedure, and the Service Manual contains no separate 'how to read the fault list' procedure. — *1268557.txt 7650-7664 (SM p.100)*
-- `[V]` Ground controls are on the turntable (Operator's Manual component legend item 2). — *114474.txt 1254 (OM p.20)*
-- `[V]` Machine width with the axles retracted is 8 ft 1 in / 2.5 m. — *114474.txt 3966-3969 (OM p.64)*
-- `[V]` The axle-extended safety limit switches LSFA1ES and LSRA1ES prevent boom functions with the axles retracted; each switch closes when the axles are fully extended. — *1268557.txt 15322-15329 (SM p.203)*
-- `[V]` For this machine's serial number (SN 1861) the applicable TCON ground control box is 237069GT 'ASSY,CONTROL BOX,TCON,Z135', the 'from SN 1712' variant. 106512GT 'CONTROL BOX ASSY,TCON' is the 'to SN 1711' variant and does not apply. — *106877.txt 3017 (PM p.60 figure title), 3054-3066 (PM p.61)*
-- `[V]` The SCON module is item 22 of parts figure 304.1 'Hydraulic Tank Side Components' (drawing PM p.54, list PM p.55). For SN 1712 and above, which includes this machine, the part is 1258463GT 'MODULE,SCON,PROGRAMMED'; the machine needs to be recalibrated after installing a new module. — *106877.txt 2669 (PM p.54), 2778-2788 (PM p.55); figure pm054-scon.png*
-- `[V]` The original boom angle sensor was named 'SENSOR, DUAL OUTPUT, ANGLE', part 94980GT (PM p.77). It is no longer available for the boom angle sensor after SN 12853, and for first-time replacement the manual says to order kit 217246 (fig 511.2). Kit 217246GT is listed on PM p.167; on that page the dual-output sensor's part-number cell prints only 'Ref.'. — *106877.txt 3954-3958 (PM p.77); 8549-8557 (PM p.167)*
-- `[V]` Parts figure 511.2 'Primary Boom Angle Sensor and Retract Limit Switch (from SN 1854)' applies to this machine (SN 1861). Item 10 is 215728GT 'ASSY,ANGLE SEN.,Z135 PRIMARY (Complete)' including items 14 to 22, calibration required after replacement; item 17 is 216061GT 'SENSOR, ANGLE, 180 DEG, CW', sensor and magnet matched and replaced together, machine calibration required after installation; items 8 and 9 are 233118GT sensor rotator and 218757GT primary sensor pin weldment. — *106877.txt 8611 (PM p.168 figure title), 8665-8696 (PM p.169)*
-- `[V]` The exploded drawing of parts figure 511.2 prints callout 17 twice; the lower callout row reads 22, 21, 17, 20, 19, 18, 17, 16, 15, 14. — *pm168-pri-boom-sensor.png PM p.168 lower callout row*
-- `[M]` Because callout 17 appears twice, the 217246GT kit likely keeps two separate sensing elements like the original dual-output sensor. This is NOT established by the parts list: the description of item 17 mentions only a sensor matched to a magnet, and the quantity column is missing from the text extraction. A duplicate callout can equally mark one part shown twice.
-- `[V]` Part 73713GT 'TERMINAL, PIN, DT, 14-18 AWG, NICKEL, 0.095-0.150 OD, DEUTSCH, STRIP' is listed on PM p.169, but as a sub-item ('2-') under limit switch assembly 110913GT (LSP1RO), whose connector is the 4-way 119067GT. Items 10 and 14 to 22 of figure 511.2, which are the angle sensor itself, list no connector or terminal, and no page in the manuals names a pin terminal for the 6-way J114 or J154. — *106877.txt 8626-8646 and 8665-8696 (PM p.169)*
-- `[M]` The correct pin terminal for J114 and J154 is likely the same size-compatible Deutsch DT pin terminal 73713GT that the parts manual lists in the same figure, but the manuals never assign a terminal part number to those 6-way connectors. Confirm the correct terminal with Genie Product Support before ordering.
-- `[F]` Field photo: the primary sensor connector half is moulded DEUTSCH IPD USA DT04-6P, with blue, red, yellow, green and white wires entering the housing, one gold pin terminal hanging loose outside it, and a separate green wire leaving the loom. — *2026-09-12-j114-dt04-6p-loose-pin.jpg photo*
-- `[F]` The five seated wire colours in the J114 field photo (blue, red, yellow, green, white) do not match the factory sensor lead colours on the schematic (red, black, blue, orange, brown, yellow), so the sensor side has been re-terminated and wire colour cannot be used to identify cavities. — *2026-09-12-j114-dt04-6p-loose-pin.jpg photo, compared with fig es-j114-primary-sensor.png*
-- `[F]` Field findings at J114: new blue sensor hardware, two blue Scotchlok taps joined by a green jumper, and a long green wire outside the loom to a pink butt splice on a pivot-bracket bolt. — *README.md 210-215*
-- `[F]` Live fault list on the display as reported: primary and secondary boom angle sensor crosscheck, primary boom angle zone fault, primary boom angle sensor not calibrated, secondary boom switches fault, secondary boom angle sensor shorted / 0 V, TCON-SCON calibration inconsistent. — *README.md 155-161*
-- `[M]` Tying the operational and safety signal wires together cannot satisfy the crosscheck: each controller applies its own stored calibration (and one channel is currently reporting 'not calibrated'), so the two angle numbers still disagree; and a tie would remove the second, independent sensor that the check exists to prove is present.
-- `[M]` The idea that two tied sensor outputs would 'fight each other' and drag the shared 5 volt supply down is weak: the schematic draws the sensor halves as variable resistors with wipers, not as driven electronic outputs. Damage at J114 can still affect J154 through the shared 5 volt and ground wires by other means (a short to ground or to another circuit, or a pin in the wrong cavity).
-- `[M]` A running engine shows the safety controller is powered, grounded and talking on the CAN data link, because the 'Loss of CAN' row would drop P_9B (ignition/fuel). Strictly it rules out the Loss of CAN row and the other rows that cut P_9B; it does not on its own prove the ground wire GNDSCON-BR at J121-12 is intact, only that the module is running well enough to hold its outputs on.
-
-</details>
-
+- [V] "As in aircraft, which features redundant safety systems, each mechanical operational switch is backed up with a separate, independently functioning safety switch." — SM p.202 (15126-15129)
+- [V] "The rotation or angle sensors utilize Hall Effect technology and must be calibrated when replaced." — SM p.202 (15134-15136)
+- [V] "RSP1AO Primary boom angle sensor / RSP1AS Primary boom angle sensor, safety / RSS1AO ... / RSS1AS ..." — SM p.203 (15284-15293)
+- [V] "RSP1AO: ... Provides operational primary boom angle positioning relative to secondary boom angle. RSP1AS: Rotary Sensor, Primary #1 Angle Safety." — SM p.204 (15373-15378)
+- [V] "RSS1AS: ... Cuts power to circuits P9B, P_11 and P_30 if the secondary boom drifts down while still extended." — SM p.204 (15387-15390)
+- [V] "Safety Controller (SCON): Redundant dual axis tilt sensors ... Also provides safety switch logic for function cut-off." — SM p.203 (15317-15320)
+- [V] SM p.189 chart: descriptive title boxes run P_38, P_39, P_10, P_11, P_9B, P_30 but the narrow data columns run P_38, P_39, P_10, P_11, P_30, P_9B — figs/scon-fault-matrix.png; text 13630-13646
+- [V] "Primary Boom angle (crosscheck) / OFF / OFF / OFF / OFF / OFF / (blank)" — SM p.189 (13654-13660)
+- [V] "Secondary Boom angle (crosscheck) / OFF / OFF / (blank) / OFF / OFF" — SM p.189 (13661-13667)
+- [V] P_10 is also switched off by "Axle safety not stowed", "Axle crosscheck angle sensor versus safety switch", "Turntable tilt angle (crosscheck...)" and "Loss of CAN" — figs/scon-fault-matrix.png, P_10 column
+- [V] "Loss of CAN / OFF / OFF / OFF / OFF / OFF / OFF" — SM p.189 (13712-13718)
+- [V] "Secondary Boom length (crosscheck LSS1RS and LSS1RO) / OFF (P_11) / OFF (P_30) / OFF (P_9B)" — SM p.189 (13733)
+- [V] "Secondary Boom Switch Timeout ... Secondary Boom Switches Intermittence Fault (LSS1RS Fault)" — SM p.188 (13540-13572)
+- [V] "RD/WH / 137 / Drive Power (P_38)" — SM p.199 (14825-14827)
+- [V] "WH/RD / 139 / Turntable Rotate Flow Control Safety (P_39)" — SM p.199 (14832-14835)
+- [V] "OR/RD / 140 / Boom Envelope Safety" — SM p.199 (14836-14838)
+- [V] CORRECTED: "RD/BK / 58 / Safety interlock to engine" vs "RD/BK / 138 / Primary Boom Up/Secondary Boom Down-Extend (P_11/30)" — SM p.198 (14556-14558), SM p.199 (14828-14831); grep for S138/P138/C138 returns nothing
+- [V] Wire names encode their own circuit number (S137PLL=137, S56PRV=56, C141PBS=141, …) — SM pp.198-199 cross-read with the pin lists SM pp.209-210
+- [V] "RD / 56 / Foot switch/TCON estop power ... GR/WH / 59 / Chain break circuit" — SM p.198 (14550-14561)
+- [V] "GR/WH / 109 / Sensor Power / BK / 110 / Sensor Return" — SM p.198 (14718-14723)
+- [V] "RD/BK / 123 / Primary Boom Angle Signal Operational / RD/WH / 124 / Secondary Boom Angle Signal Operational ... RD / 141 / Primary Boom Angle Signal Safety / OR / 142 / Secondary Boom Angle Signal Safety" — SM p.199 (14779-14786, 14844-14851)
+- [V] Colour conflict on circuit 124: RD/WH in the p.199 legend vs C124SBS-OR/BK in the SM p.210 pin list and on ES0366J
+- [V] "PLL Propel Lockout / PRV Proportional Valve / PBS Primary Boom Angle Sensor" — SM p.194 (14080-14119)
+- [V] "TRF Turntable Rotate Flow Control / SBS Sec Boom Angle Sensor" — SM p.195 (14192-14235)
+- [V] "ENL Envelope Lockout / CNK Chain Break / ANG Angle" — SM p.193 (13904-13951)
+- [V] SCON J121 pins 8, 9, 10, 11, 12 and J122 pins 1, 2, 3, 8, 9, 10, 11 — SM p.209 (15995-16040), figs scon-pinlegend.png, sm209-scon-pins.png
+- [V] Schematic labels at the SCON: J121-08 "P10", -09 "P7R", -10 "P38", -11 "P39", -12 "GND"; J122-01 "ECU PWR", -02 "RSS1AS", -03 "RSP1AS", -08 "P11+P30", -10 "P9B", -11 "P7R" — figs/es-scon-boomsensors.png
+- [V] "P_38 PWR TO PROPEL / S139TRF-WH/RD / P_39 POWER TO TTROT FC" — SM p.229 (18760-18762)
+- [V] TCON J12 pins 1, 2, 5, 7, 8, 9, 25, 26, 32, 33, 34 — SM p.210 (16127-16194), fig sm210-tcon-pins.png
+- [V] "17 S137PLL - RD/WH ... 19 S139TRF - WH/RD" at TCON J13 — SM p.210 (16232-16237)
+- [V] J114 wiring incl. the "UNIT #130 OR HIGHER" jumper block and devices S18/S17 — figs/es-j114-primary-sensor.png (ES0366J, SM p.229)
+- [V] J154 has NO intermediate jumper block; harness-side colours are GR/WH, BR, OR, GR/WH, BR, OR/BK — figs/es-j154-secondary-sensor.png
+- [V] The same 5 V net and ground net feed both J114 and J154 (junction dots), and J12 carries exactly one P109ANG pin and one SNSR GND pin — figs/es-boom-sensors-wide.png with fig sm210-tcon-pins.png
+- [V] Each sensor half is drawn as a variable resistor with a wiper (potentiometer symbol), not a driven output — figs/es-j114-primary-sensor.png
+- [V] Fault table, Operational Primary Boom Angle Sensor, "Value at 0 V" and "Not calibrated" — SM p.177 (12576-12607)
+- [V] Safety Primary Boom Angle Sensor: same entries, plus "Out of Tolerance / Recalibrate sensor" and "Value at 5.0 V / Check for an open ground circuit going to the sensor" — SM p.178 (12632-12663)
+- [V] Operational and Safety Secondary Boom Angle Sensor "Value at 0 V" and "Not calibrated" — SM p.179 (12775-12806), SM p.180 (12830-12862)
+- [V] "Safety Switch P38 ... Recycle power and check wiring on circuit S137PLL (red/white) between SCON and TCON." — SM p.175 (12418-12425)
+- [V] "Safety Switch P11 ... circuit S140ENL (orange/black) ..." vs the pin lists' OR/RD — SM p.175 (12375-12417) vs SM pp.209-210
+- [V] "Safety Switch P9B ... Use aux to get the boom back into operational limits. Check P54ENG and P58LS between SCON and TCON for damage." — SM p.174 (12338-12349)
+- [V] "Safety Switch P7 ... Check wiring for circuit S56PRV (red wire)..." — SM p.174 (12309-12322)
+- [V] "zone" appears in the Service Manual only as "drive enable zone" / "drive disable zone" — grep, lines 6516, 6999, 13690, 15331, 15334
+- [V] "inconsistent" does not appear anywhere in any of the three manuals — grep, no match
+- [M] "primary boom angle zone fault" and "TCON-SCON calibration inconsistent" are likely newer-software messages about a calibration mismatch between the two controllers — no manual support
+- [V] Primary boom angle sensor is inside the primary boom at the boom pivot pin, behind the end cover — SM p.81 (6365-6379), SM p.72 (5694-5695)
+- [V] Secondary boom angle sensor is on the turntable riser bulkhead at the ground-controls side, under a cover held by a retaining fastener — SM p.88 (6893-6902)
+- [V] "Remove the angle sensor and bracket assembly. Do not lose the two springs or the hex-shaped key." — SM p.81 (6387-6389), SM p.88 (6907-6909)
+- [V] Full machine calibration sequence puts the secondary boom angle sensor before the primary — SM p.105 (8011-8037)
+- [V] "If the Safety Controller (SCON) has been replaced, the entire machine must be calibrated in a specific order." — SM p.154 (11000-11003)
+- [V] "The software version is displayed on the LCD screen when the red Emergency Stop button is pulled out to the on position." (2 Point for 4.01+, 6 Point before) — SM p.83 (6491-6496)
+- [V] "Check the LCD screen on the ground control box for machine faults, then contact trained service personnel." — SM p.100 (7650-7664), inside the bypass/recovery-key procedure
+- [V] "2 Ground controls" — OM p.20 (1254)
+- [V] "Width, axles retracted / 8 ft 1 in / 2.5 m" — OM p.64 (3966-3969)
+- [V] LSFA1ES / LSRA1ES prevent boom functions with the axles retracted — SM p.203 (15322-15329)
+- [V] TCON box for SN 1861 is 237069GT "from SN 1712"; 106512GT is "to SN 1711" — PM p.61 (3054-3066)
+- [V] SCON module for SN 1861 is 1258463GT — PM p.55 (2778-2788), drawing PM p.54
+- [V] Original sensor 94980GT "SENSOR, DUAL OUTPUT, ANGLE" is no longer available after SN 12853; first-time replacement is kit 217246 — PM p.77 (3954-3958), PM p.167 (8549-8557)
+- [V] Fig 511.2 "(from SN 1854)" applies: item 10 assembly 215728GT, item 17 sensor 216061GT (sensor and magnet matched, calibration required), items 8/9 rotator 233118GT and pin weldment 218757GT — PM pp.168-169 (8611, 8665-8696)
+- [V] The 511.2 drawing prints callout 17 twice — figs/pm168-pri-boom-sensor.png
+- [M] That the 217246GT kit keeps two separate sensing elements is inference from the duplicate callout only; the parts list never says two
+- [V] Terminal 73713GT is listed on PM p.169 only as a sub-item of limit switch assembly 110913GT whose connector is the 4-way 119067GT; no page names a terminal for the 6-way J114 or J154 — PM p.169 (8626-8646)
+- [M] The correct 6-way terminal is likely the same size-class Deutsch DT pin 73713GT — confirm with Genie Product Support before ordering
+- [F] Photo: primary sensor connector half moulded DEUTSCH IPD USA DT04-6P, five wires seated (BL, RD, YL, GN, WH), one gold pin hanging loose, a separate green wire leaving the loom — photos/2026-09-12-j114-dt04-6p-loose-pin.jpg
+- [F] Those five colours do not match the factory sensor lead colours on the schematic, so the sensor side has been re-terminated — same photo vs fig es-j114-primary-sensor.png
+- [F] Field findings at J114: new blue sensor hardware, two blue Scotchlok taps joined by a green jumper, long green wire outside the loom to a pink butt splice on a pivot-bracket bolt — case README 210-215
+- [F] Live fault list as reported — case README 155-161
+- [M] Tying the operational and safety signal wires together cannot satisfy the crosscheck (separate stored calibrations; lost redundancy) — engineering inference, not manual text
+- [M] The "tied outputs fight each other" mechanism is weak: the schematic draws the halves as potentiometers, not driven outputs
+- [M] A running engine shows the SCON is powered, grounded and on the CAN link — inference from the Loss of CAN row; it does not prove GNDSCON-BR is intact
 
 ---
 
-## B. Identify the toggle switch — do this first
-
-Order matters here. B1 tells you what kind of switch it is, B3 tells you which factory circuit it is spliced into, B5 tests the single most likely answer.
-
-
-### B1-B2: Work out what kind of switch the non-Genie toggle is, and where its three white wires go
-
-**What this finds out.** With the batteries disconnected, use a multimeter (electrical test meter) on its ohm/beeper setting to learn two things. (1) What kind of switch somebody fitted: how many of its terminals are live together in each lever position, and whether the lever springs back or stays put. (2) Which machine wires each of its three white wires is actually joined to. This card only measures and writes down. It does not cut, unsplice or reconnect anything.
-
-**Where it is**
-
-- *What it is:* A non-Genie (aftermarket) toggle switch and its three white 16 GA wires (16 GA = 16 American Wire Gauge, a size code; a smaller number means a thicker wire). Plus the single white wire that leaves the platform control box and runs away along the boom toward the turntable. Reported to have been found in the platform control box, also called the PCON box (PCON = platform controller, the small computer in the basket control box). No photograph shows the switch actually mounted in the box - both switch photos show it already loose in the technician's hand - so treat 'it was in the box' as a field report, not as photographed fact (likely, tag M).
-- *Where on the machine:* The platform control box is the blue box on the platform (basket) railing that carries the joysticks, the membrane push-button panel and a red Emergency Stop button (Operator's Manual p.20 item 7 'Platform controls'; Operator's Manual p.26 item 17 'Red Emergency Stop button'). The description 'blue box on the railing' comes from the field photographs, not from the manual. The far end of the white wire is down at the turntable end of the machine, at a blue Scotchlok tap, close to where a cardboard carton printed TILT SENSOR is sitting (photo 2026-09-12-white-wire-turntable-tilt-sensor-box.jpg). Scotchlok is a brand of insulation-displacement tap: a small plastic clamshell you squeeze shut over two wires, and a metal blade inside cuts through both insulations to join them.
-- *How to find it:* Stand on the platform floor with the boom stowed. Undo the platform control box lid retaining fasteners and lift the lid (Service Manual p.28 step 2). These are steps 1 and 2 of the manual procedure 'How to Remove the LED Circuit Board' - stop after step 2. Do not carry on into its later steps and do not pull any ribbon cables. Inside you will see: two round joystick bases with black rubber boots and grey plug bodies, a green printed circuit board with two blue ribbon-cable sockets along one edge, and in one corner a small black contact block moulded 'NC 1' with a red push-piece (NC = normally closed: the contact conducts until the E-stop button is pushed in). At that block a white wire arrives, ending in a blue insulated female push-on spade terminal, and that blue spade is stacked on the same block terminal as the red wire's own red spade terminal (photos 2026-09-12-white-wire-to-toggle-in-box.jpg and 2026-09-12-platform-box-interior-pcb.jpg). Follow the white wire out of the box and along the machine to the turntable end, where a blue Scotchlok tap joins it to an orange wire with a black stripe; a red wire runs alongside, and the red and orange/black wires go into a grey two-pin plug (photo 2026-09-12-white-wire-scotchlok-boom.jpg). The aftermarket switch is a loose black rectangular toggle with three white wires on push-on spade crimps. It is not a Genie part: it has no Genie part number and no Genie boot. (Note: Genie DOES fit toggle switches in this box - PM p.211 item 14 is a 128200GT toggle in the platform control box figure - so the point is not 'no toggle belongs here', it is 'this particular switch is not a Genie part'.)
-- *What it looks like:* Black rectangular body. Threaded metal bushing with a bare metal lever and a hex nut, and no rubber boot on it. Moulded into the body: '10A 250VAC 15A 125VAC 3/4HP 125-250VAC MEXICO 9614', with RU and CSA approval marks (photo 2026-09-12-aftermarket-toggle-ac-rating.jpg). IMPORTANT and corrected: the terminal face carries SIX terminals in two rows of three, not three in a row. Each terminal is a small screw with a square brass pressure plate, and a flat brass blade (spade) tab beside it. Only three of the six are wired; the other three are bare (photo 2026-09-12-aftermarket-toggle-terminals.jpg). The three white wires are printed '16 GAU' on the insulation and end in insulated female quick-disconnects - one lavender/violet and two clear. The lavender one matters: a genuinely blue crimp is what you will find on the E-stop contact block inside the box, so do not confuse the two. For contrast, Genie's own toggle for this box is 128200GT 'SWITCH TOGGLE ASSY SPDT 3P MOM' and it comes with a short rubber boot 27246GT as part of the assembly (Parts Manual p.215 fig 605.1 items 1-2 and items 5-15; Parts Manual p.211 item 14 'includes boot and hardware').
-- *Source:* OM p.20 (114474.txt 1262-1263); OM p.26 (114474.txt 1573-1578); SM p.24 (1268557.txt 2398-2409); SM p.28 (1268557.txt 2610-2616); SM p.76 (1268557.txt 6013-6025); PM p.215 (106877.txt 10802-10810, 10821-10875); PM p.211 (106877.txt 10677-10689); photos 2026-09-12-aftermarket-toggle-terminals.jpg, -aftermarket-toggle-ac-rating.jpg, -platform-box-interior-pcb.jpg, -white-wire-to-toggle-in-box.jpg, -white-wire-scotchlok-boom.jpg, -white-wire-turntable-tilt-sensor-box.jpg
-
-**Set the machine to**
-
-- **Key:** Ground control key switch OFF and the key pulled out of the switch (Service Manual p.24 repair configuration). Do NOT use the bypass or recovery key positions - those belong to the calibration technician.
-- **E-stops:** Red Emergency Stop button (the big red mushroom button that kills everything) pushed IN to the off position at BOTH the ground control box and the platform control box, before any lid is opened (Service Manual p.28 step 1).
-- **Battery:** DISCONNECTED, all of them. The Operator's Manual says: disconnect the batteries under both turntable covers before service (Operator's Manual p.12), and decal 97865 repeats it (Operator's Manual p.5). The Service Manual treats this machine as having two battery sets: the auxiliary power unit batteries under one cover, and the engine starting/controls battery on the engine side of the machine (Service Manual p.76 steps 16-18). Open both turntable covers. Tag each cable with tape so you know where it came from, then disconnect the auxiliary power unit battery cables and the engine starting/controls battery cables. Check: the ground control display must be dark before you put a meter on anything. A meter reading ohms on a live circuit gives false numbers and can be damaged.
-- **Engine:** OFF, and it must not be started during this card. With the batteries off it cannot start.
-- **Also:** Machine parked on firm, level ground. Wheels chocked. Boom in the stowed (fully lowered and retracted) position. Turntable rotation lock engaged. All external AC power supply unplugged from the machine - this machine has a generator/AC option, so check for a shore-power lead (Service Manual p.24, all seven bullets). Axles are already retracted at 8 ft 1 in and stay that way. Work from the platform standing on the ground-level platform floor with the boom stowed; do not raise the platform. Dry the membrane panel and the inside of the box before you probe - the box was found wet.
-
-**Connector — Aftermarket toggle: six screw-and-blade terminals in two rows of three. Hold the switch with the lever pointing up and the terminal face toward you, then label them T-L, T-C, T-R (top row: left, centre, right) and B-L, B-C, B-R (bottom row). Only three carry wires. For reference, the Genie kit's own connectors are J24 (20-pin Molex connector on the LED/toggle switch interface printed circuit board; Molex is a connector brand) and J23 (10-pin ribbon connector, PCON to that board).**
-
-The aftermarket switch has no plug or connector at all. Three of its six terminals carry push-on female spade crimps on white 16 GA wire; the remaining three terminals are bare and unused (photo 2026-09-12-aftermarket-toggle-terminals.jpg). A six-terminal body is normally a double-pole switch - two separate switches inside one body, three terminals each - so do NOT assume 'the centre terminal is the common' the way you would on a three-terminal switch. The test below settles it by measuring, not by assuming. Genie's own toggle-switch lid kit for this machine is 237225GT 'KIT,TOGL SW PL BOX LID,ANSI', from serial number (SN) 779 to 2000, on Parts Manual figure 605.1 (Parts Manual p.215). It uses 128200GT switches on lid 229386GT with LED/toggle switch interface printed circuit board 232975GT (items 19 and 22). The Service Manual's connector legend calls that same board the 'LED driver board': J23 is '10 pin ribbon connector PCON to LED driver board' and J24 is '20 pin Molex connector LED driver board' (SM p.205, PDF page 219 - p.205, not p.206; p.206 starts at J87 and runs to J147). Schematic sheet ES0366J (SM p.229) carries a drawing captioned 'TOGGLE SWITCH AFTERMARKET KIT SCHEMATIC' (figure es-toggle-switch-aftermarket-kit.png). It shows SERVICE HORN (BN5) push button and toggles GENERATOR ON/OFF (TS17), AUXILIARY PUMP (TS1), START ASSIST (TS6), ENGINE START (TS2), DRIVE ENABLE (TS15), AXLE EXT/RET (TS23), ENGINE SPEED (TS4), DRIVE SPEED (TS5), STEER MODE SELECT (TS22) twice, and SPARE #1 (TSx). All of them land on the J24 20-pin block. Two dashed outlines are drawn: an inner one captioned 'LED/TOGGLE SWITCH INTERFACE PCB' around J24 and J23, and an outer one captioned 'TOGGLE SWITCH AFTERMARKET KIT SCHEMATIC'. Neither dashed line is labelled 'platform box' on the sheet - call it the kit boundary. No conductor crosses that outer boundary, so the Genie kit has no wire running to the turntable. And the only plain WHITE wire anywhere in the Genie kit is J24-18 SPARE-WH; every other kit wire is a different colour or a stripe. A white wire running out of the box to the turntable is therefore definitively not the Genie kit.
-
-*Source:* SM p.205 (1268557.txt 15416-15425, 15455-15459); SM p.229 (1268557.txt 19698-19706, 19707-19738, 19759-19800); PM p.215 (106877.txt 10788-10790, 10802-10810, 10888-10890, 10901-10903); figure es-toggle-switch-aftermarket-kit.png; photo 2026-09-12-aftermarket-toggle-terminals.jpg
-
-| Pin | Wire name | Harness colour | Sensor colour | What it is | Goes to |
-|---|---|---|---|---|---|
-| Aftermarket toggle, six terminals in two rows of three (T-L, T-C, T-R / B-L, B-C, B-R) | Three of the six carry white 16 GA wire on insulated female spade crimps (one lavender, two clear). The other three terminals are bare. | WH | n/a | Unknown until measured. A six-terminal body is likely a double-pole switch (two independent switches in one housing) [M] - do not assume any terminal is 'the common'. | UNKNOWN - the ring-out in steps 12-13 finds out. |
-| In-box joint: blue insulated female spade stacked on the E-stop 'NC 1' contact block terminal | White 16 GA wire in a BLUE insulated female spade, pushed onto the same contact-block terminal that already carries the red wire's own red insulated spade. A black wire leaves the other end of the block. | RD / BK (machine side); WH (the added wire) | n/a | Not a Scotchlok - corrected. There is no insulation-displacement tap to probe inside the box; the test point is the stacked blue spade itself, and pulling that spade off is how you isolate the white conductor. The E-stop contact block is Genie 66818GT 'CONTACT,NC', part of E-stop 66817GT, both sub-items of kit 122519GT 'KIT,ESTOP SVC LARGE BOOM'. Sheet ES0366J labels the platform E-stop wires ESTOP PWR-RD and ESTOP RET-BK at 'PCON E-STOP (P2)'. | Platform E-stop circuit - the specific wire is to be proved by the ring-out, not assumed. |
-| Scotchlok tap on the white wire, at the turntable end (harness side) | Orange wire with a black stripe (OR/BK). A red wire (RD) runs alongside. The red and OR/BK wires go into a grey two-pin plug; the white wire is tapped onto the OR/BK wire and carries on past the tap. | OR/BK (+ RD alongside) | n/a | Likely Genie circuit 64 'Power for operational switches', because OR/BK appears once in the Wire Color Legend - but sheet ES0366J also carries REAR STR-OR/BK inside the toggle kit, so colour alone does not name the circuit [M]. Prove it by ringing the wire through to a named connector pin. | Grey two-pin environmental plug near where the TILT SENSOR carton sits; which switch or sensor that plug serves has not been identified. The plug is GREY, not black, and nothing in the photo proves it is a Deutsch connector (Deutsch is a brand of sealed round-pin connector). |
-| Genie kit J24-1 | HORN PWR-RD | RD | n/a | Service horn (BN5) power | LED/toggle switch interface PCB, J24 20-pin block |
-| Genie kit J24-2 | HORN RET-GR | GR | n/a | Service horn return (the sheet spells the same wire HORN RTN-GR at the horn end) | J24 |
-| Genie kit J24-3 | GEN ON/OFF-GR/WH | GR/WH | n/a | Generator on/off toggle TS17 | J24 |
-| Genie kit J24-4 | AUX PUMP-RD | RD | n/a | Auxiliary pump toggle TS1 | J24 |
-| Genie kit J24-5 | START ASST-BK/WH | BK/WH | n/a | Start assist toggle TS6 | J24 |
-| Genie kit J24-6 | ENG START-BK | BK | n/a | Engine start toggle TS2 | J24 |
-| Genie kit J24-7 | DRV ENBL-BL/WH | BL/WH | n/a | Drive enable toggle TS15 | J24 |
-| Genie kit J24-8 | NOT USED | - | n/a | Not used | J24 |
-| Genie kit J24-9 | AXLE RET-GR | GR | n/a | Axle retract, one side of toggle TS23 | J24 |
-| Genie kit J24-10 | GND1-BR | BR | n/a | Ground / return bus 1 | J24 |
-| Genie kit J24-11 | ENG SPEED-BK/RD | BK/RD | n/a | Engine speed toggle TS4 | J24 |
-| Genie kit J24-12 | AXLE EXT-GR/WH | GR/WH | n/a | Axle extend, other side of toggle TS23 | J24 |
-| Genie kit J24-13 | DRV SPEED-RD/WH | RD/WH | n/a | Drive speed toggle TS5 | J24 |
-| Genie kit J24-14 | FRONT STR-OR | OR | n/a | Steer mode select TS22, front steer | J24 |
-| Genie kit J24-15 | REAR STR-OR/BK | OR/BK | n/a | Steer mode select TS22, rear steer. NOTE: this is a second OR/BK wire on the same sheet, so an orange/black wire is not automatically circuit 64. | J24 |
-| Genie kit J24-16 | CRAB STR-BL | BL | n/a | Steer mode select TS22, crab steer | J24 |
-| Genie kit J24-17 | CORD STR-BL/BK | BL/BK | n/a | Steer mode select TS22, coordinated steer | J24 |
-| Genie kit J24-18 | SPARE-WH | WH | n/a | Spare #1 toggle (TSx). This is the ONLY plain white wire in the whole Genie kit. | J24 |
-| Genie kit J24-19 | FUEL SEL-BL/RD | BL/RD | n/a | Fuel select | J24 |
-| Genie kit J24-20 | GND2-BR | BR | n/a | Ground / return bus 2 | J24 |
-| Genie kit J23 (10-pin ribbon) | Ribbon cable | ribbon | n/a | PCON (platform controller) to the LED driver board. On the kit drawing the two labelled leads at this block are PCON PWR and HRN RLY CNTRL; those labels sit on the mating block below J23, and no pin numbers are printed on J23 at all. | PCON (platform controller) |
-
-**Do this**
-
-1. Stand the machine down. Park it on firm, level ground. Chock the wheels. Boom stowed. Turntable rotation lock engaged. Unplug any external AC power lead from the machine. Ground key switch OFF and pull the key out. Push the red Emergency Stop button IN at the ground control box AND at the platform control box (Service Manual p.24, all seven bullets; Service Manual p.28 step 1). Do not touch the bypass or recovery key positions and do not fit the calibration jumper or toggle - those belong to the calibration technician, not to this card.
-2. Disconnect every battery. The Operator's Manual p.12: 'Before performing service on this machine, disconnect the batteries under both turntable covers.' Open both turntable covers. The Service Manual p.76 treats this machine as having two battery sets: step 16-17 'Remove the cover from the auxiliary power unit batteries. Tag and disconnect the cables from the auxiliary power unit batteries.' and step 18 'Tag and disconnect the cables from the engine starting/controls battery located on the engine side of the machine.' Wrap a tape flag round each cable as you take it off so it goes back on the same post. Take off all rings, watches and other jewellery first (Service Manual p.28). CHECK: the ground control display must be completely dark before you put a meter on anything.
-3. Climb into the platform, boom stowed, platform at ground level. Undo the platform control box lid retaining fasteners and open the lid (Service Manual p.28 step 2). These are steps 1-2 of the manual's 'How to Remove the LED Circuit Board' procedure - STOP after opening the lid. Do not carry on into the later steps and do not unplug any ribbon cables. Clip a grounded wrist strap to the ground screw inside the control box (Service Manual p.27 step 7). ESD (electrostatic discharge, the static spark you get from a carpet) damages the green printed circuit boards in there. Keep the meter probes off the circuit boards altogether.
-4. Before you touch a thing, photograph: the switch where it sits, all six of its terminals, the three white wires and where each one goes, the blue spade stacked on the E-stop 'NC 1' contact block, and the Scotchlok tap out at the turntable. Then tape-flag the switch terminals. Hold the switch with the lever pointing up and the terminal face toward you. There are two rows of three. Flag the top row T-L, T-C, T-R (left, centre, right as you see them) and the bottom row B-L, B-C, B-R. Write down which three of the six carry a wire, and which three are bare. Flag each white wire's crimp with the same code as the terminal it came off. Note which way the lever points against a fixed landmark, e.g. 'lever toward the E-stop button = position 1'.
-5. Pull the three spade crimps off the switch. Grip the plastic crimp body, not the wire, and pull straight off. Slide a short piece of insulating sleeve or a wire nut over each bare crimp, or bag them and tie the bag clear of metal - tape alone is not enough in a box that was found wet. The switch is now electrically alone in your hand.
-6. Set the multimeter to the ohms / continuity setting - the one that beeps when the probes touch. Touch the two probes together. It must beep and read close to 0 ohms. Write that number down. Subtract it from every later reading to get true contact resistance.
-7. Plain-words glossary before you read the switch. POLE = one independent switch inside the body. THROW = one position a pole can connect to. SPST (single pole single throw) = a plain on/off, two terminals. SPDT (single pole double throw) = three terminals, one common that connects to either of the other two. DPST / DPDT (double pole) = two of the above inside one body, six terminals, the two halves working together but electrically separate. MOMENTARY = the lever springs back on its own when you let go. MAINTAINED = the lever stays where you put it. OL on the meter (sometimes '1' or a blank) = open line, no connection, no beep. This switch has six terminals, so it is very likely a double-pole body [M] - which is exactly why you probe every pair rather than assuming which terminal is the common. Genie's own switch is described in the Parts Manual only as 'SWITCH TOGGLE ASSY SPDT 3P MOM'; the manual never says what '3P' stands for, so do not assume it means three positions or a centre-off [M].
-8. Lever in position 1. Probe EVERY pair of the six terminals - all 15 pairs: T-L/T-C, T-L/T-R, T-C/T-R, B-L/B-C, B-L/B-R, B-C/B-R, T-L/B-L, T-C/B-C, T-R/B-R, T-L/B-C, T-L/B-R, T-C/B-L, T-C/B-R, T-R/B-L, T-R/B-C. Put one probe tip on the metal blade or screw plate of each terminal - firm contact on bare metal, not on plastic. Write each pair down as 'beep + ohm reading' or 'OL'. Draw it as a little grid on your notepad so nothing is missed.
-9. Lever in position 2. Repeat all 15 pairs. Write them all down again.
-10. Let the lever go from each side in turn. Does it spring back on its own (momentary), or stay where you left it (maintained)? If it springs back from one side only, note which side. If the lever has a middle rest position, put it there and probe all 15 pairs a third time.
-11. Decode using the Expected table. The pattern of which pairs beep in which position tells you how many poles and throws it has; the spring tells you momentary or maintained. Write the verdict on a tape flag on the switch, for example 'double pole, double throw, maintained, 2 positions; only 3 of 6 terminals wired, on terminals T-L, T-C, B-R'.
-12. Now ring out the three white wires. The run from the platform box to the turntable is far longer than your meter leads, so make a long test lead first: a spare length of insulated wire with an alligator clip at each end. Prove the test lead itself - probes on its two ends must beep - and note its own resistance. Clip one end of the long lead to the first tagged white crimp. Carry the meter and the free end to each candidate far point and touch the other probe there. A beep means it is the same conductor. Do all three wires. The candidate far points are: (a) the blue insulated spade stacked on the E-stop 'NC 1' contact block inside the box - pull that spade off its terminal and probe the spade's own metal; (b) the point where the white wire leaves the box, so you know which conductor goes outbound; (c) the blue Scotchlok tap at the turntable end, on the orange/black wire beside the red wire - probe the exposed metal blade of the Scotchlok, or a bared strand at the crimp. NOTE, corrected: earlier notes listed a 'mid-boom Scotchlok' and a separate 'turntable end' as two different places. Both photographs show the same blue Scotchlok, the same white + orange/black + red trio, the same grey two-pin plug and the same rusty-tube and blue-plate background, with the TILT SENSOR carton in frame in one of them. They are very likely one splice in one place [M]. Trace the wire physically with your hand before you treat any 'OL' as a broken wire. Also note that in the photo the white wire carries on PAST the Scotchlok - so its own far end is somewhere further along and has not been seen yet; find it. Never pierce a wire's insulation to make a test point.
-13. For each white conductor write one line: 'Terminal <code> -> <where it lands>'. Then check each white conductor against bare machine steel: clip the long lead to the conductor, scrape a clean spot on a bolt head on the platform weldment (the welded steel frame of the platform) and touch the probe there. Expect OL.
-14. Name the machine wires that were tapped, and be careful about it. The Wire Color Legend is Service Manual p.198. Orange with a black stripe = circuit 64 'Power for operational switches' - BUT sheet ES0366J also carries REAR STR-OR/BK in the toggle kit, so an orange/black wire is not automatically circuit 64. Red is worse: red serves circuit 56, 87, 96 and others, so red alone names nothing. Green/white is used twice: circuit 83 'Tilt signal X axis' and circuit 109 'Sensor Power'. And white is used for circuit 77 'Lower Angle #1 operational', circuit 94 'Load Sensor' AND circuit 98 'J1708 + (high)' (J1708 is a data link, the wiring that lets the controllers talk to each other). So colour is a starting hint only. Ring each tapped conductor through to a named connector pin before you write a circuit number down. Compare the result against the safety list in the Expected table. Record the outcome. Do not cut, unsplice, untap or reconnect anything on this card.
-15. Finish and hand over. Leave the three crimps OFF the switch, sleeved or bagged, not just taped. Leave every Scotchlok and the stacked blue spade exactly where they are - they are evidence for the removal card. Close the lid loosely to keep water out. Leave all batteries disconnected. Photograph the tagged crimps and the tagged switch. Write on the machine tag and tell the next person: THIS MACHINE MUST NOT BE RE-POWERED OR OPERATED until the next card has decided what the switch was doing and the harness has been put right. The next card decides removal and Genie-method harness repair.
-
-**You should see**
-
-| Measurement | Expected | If that is what you get | If not |
-|---|---|---|---|
-| Probes touched together, meter on ohms / continuity | **Beep, roughly 0 to 0.5 ohms** | Meter and leads are good. Carry on. | Change the meter battery or the leads before you trust any reading. |
-| How many of the six terminals carry a wire | **Three wired, three bare (that is what the photo shows)** | Record which three. A wire on a terminal that never connects to anything does nothing, but you still need to know it is there. | If more or fewer are wired than the photo showed, somebody has been at it since - photograph it again and say so on the card. |
-| All 15 terminal pairs, lever in position 1 | **On a double-pole body you should see two separate groups: one pair beeping within the top row and one pair beeping within the bottom row, with nothing beeping between the two rows. On a single-pole body only one pair beeps at all.** | Write down which pairs beep and their ohm readings. Go to position 2. | If nothing beeps in either lever position the switch is dead or its contacts are corroded - recheck every pair with firm probe pressure before you call it dead. |
-| All 15 terminal pairs, lever in position 2 | **The beeping partner within each row changes to the other end terminal. The two rows still never beep to each other.** | Two throws per pole. Write the verdict: how many poles are live, how many throws. | If the same pair beeps in both positions and nothing else changes, that pole is behaving as a plain on/off (or its other throw contact is dead). Record which terminals never connect to anything. |
-| Any pair that beeps between the TOP row and the BOTTOM row, in any lever position | **OL - the two poles of a double-pole switch are electrically separate by design** | Normal for a double-pole switch. | A beep between the rows means either the body is not double-pole after all, or someone has bridged two terminals outside the switch with a jumper, a blob of solder or a second tap. Look for it and photograph it. Do not remove it - record it. |
-| Lever released from each side; readings in any middle rest position | **Springs back on its own = momentary. Stays put = maintained. In a middle rest position, expect every pair to read OL.** | Record 'momentary' or 'maintained', and '2-position' or '3-position'. | A maintained (stay-put) switch wired into a circuit that is meant to receive a brief command can hold that command on permanently. Flag it clearly. Note: which Genie functions require a momentary command is not stated in the manuals [M] - flag the concern, do not state it as manufacturer fact. |
-| Ohm reading of any pair that beeps (contact resistance) | **Under about 1 ohm once you subtract the probe-to-probe reading** | Contacts are clean. | Several ohms, or a reading that jumps about when you waggle the lever, means a worn, corroded or water-damaged contact. The switch has no boot and the box was wet. Either way this switch is not going back in. |
-| Continuity from each tagged white crimp to each candidate far point, through the long test lead | **Each white conductor beeps at exactly one far point, reading under about 1 ohm plus the long lead's own resistance** | Write 'Terminal <code> -> <point>' for all three. Likely destinations from the photos: one white wire to the blue spade stacked on the E-stop 'NC 1' contact block inside the box; one white wire out of the box, along the machine, to the blue Scotchlok on the orange/black wire at the turntable end [M]. | OL at every candidate means either you have not found the far end yet, or the conductor is broken. Follow the wire physically with your hand before calling it broken. Remember the two Scotchlok photos are probably ONE place, not two - an 'OL everywhere' result is far more likely to mean the far end is somewhere you have not looked than that the wire is cut. |
-| Each white conductor against bare machine steel | **OL** | Nothing is tied to the frame. | A beep means the wire is rubbed through to the frame or has been deliberately grounded. Record it. A grounded conductor on a power circuit explains blown fuses or a supply that sags. |
-| Identity of the machine wires that were tapped - traced to a named connector pin, not guessed from colour | **Circuits to watch for, from the Wire Color Legend (Service Manual p.198): RD 56 'Foot switch/TCON estop power' (TCON = turntable controller, the main computer in the ground control box); OR/BK 64 'Power for operational switches'; WH 77 'Lower Angle #1 operational'; GR/WH 83 'Tilt signal X axis'; GR/BK 84 'Tilt signal Y axis'; GR 85 'Tilt sensor power'; WH 94 'Load Sensor'; WH 98 'J1708 + (high)'; GR/WH 109 'Sensor Power'; BK 110 'Sensor Return'.** | If any white conductor lands on ANY of those, the toggle is spliced into a control or safety circuit and it is a bypass. Record it. The next card removes it and repairs the harness with Genie-method splices. Do not reconnect it. Do not operate the machine with it in place. | If a far end proves to be J24-18 SPARE-WH on a Genie interface board, somebody was reaching for the Genie kit's spare input - but the Genie kit has no wire leaving the kit boundary, so a run to the turntable is still not the kit. If a far end is dead-ended and joined to nothing, that terminal currently does nothing; the other two terminals still decide the verdict. Either way the switch does not go back in. |
-
-**Why we are doing this.** The machine has seven live boom-angle and calibration faults and propel (drive) is dead. A home-made toggle switch wired into the platform control box, with plain white wire running away to the turntable area, is either a bypass of a control or safety circuit or a botched attempt at Genie's own toggle-switch kit. Which machine wires it touches decides whether the next card is "remove a bypass and repair the harness" or "harmless add-on, leave it". Nothing on the boom-angle circuit can be trusted until this is known, and the machine must not go back to work with an unidentified switch spliced into it.
-
-**Safety**
-
-- Key OFF and the key removed; red Emergency Stop button pushed IN at both the ground and the platform controls before the lid comes off; external AC power supply unplugged from the machine (Service Manual p.24 repair configuration; Service Manual p.28 step 1).
-- All batteries disconnected before any ohms test - the auxiliary power unit batteries AND the engine starting/controls battery, under both turntable covers (Operator's Manual p.12; decal 97865 Operator's Manual p.5; Service Manual p.76 steps 16-18). An ohmmeter on a live circuit gives false readings and can be damaged.
-- Remove all rings, watches and other jewellery. The Service Manual prints an electrocution/burn hazard warning at this point in the procedure (Service Manual p.28).
-- Wear a grounded wrist strap clipped to the ground screw inside the control box (Service Manual p.27 step 7) and keep the meter probes off the printed circuit boards. ESD (electrostatic discharge - a static spark) damages them (Service Manual p.28).
-- Never pierce a wire's insulation to make a test point. Never add a jumper. Never reconnect the aftermarket switch. Never bridge any pair of its wires. This plan REMOVES bypasses; it never adds one.
-- Never bypass, jumper or defeat a safety circuit, limit switch, angle sensor, tilt sensor or load cell - not to get a reading, not to get the machine to move.
-- Do not use the bypass or recovery key positions and do not fit the calibration jumper or toggle. Those belong to the calibration technician.
-- Machine on firm level ground, wheels chocked, boom stowed, turntable rotation lock engaged (Service Manual p.24). Work from the platform only at ground level. Do not raise it on a machine with live boom-angle faults set.
-- Dry the membrane panel and the inside of the box before probing, and do not do this test in rain. A wet membrane panel is already suspected in the 'both axle buttons pressed' fault, whose recovery action is 'Check ribbon and connector from membrane switch. If necessary replace membrane switch.' (Service Manual p.176).
-- The white wire, the Scotchlok tap and the stacked blue spade are evidence. Photograph before and after, tag every end, and leave them in place for the removal card.
-- Hand-off: the three crimps are left disconnected and sleeved or bagged inside a box that was found wet. Tag the machine and tell the next person in plain words: do not re-power or operate this machine until the next card is done.
-
-**Open questions on this card**
-
-- The switch type is unknown until measured. It has six terminals in two rows of three (verified from the photo), which makes a double-pole body likely [M] - but no nameplate, part number or manual entry names the type. All 15 terminal pairs must be probed in every lever position before anyone writes 'SPDT' or 'DPDT' on the card.
-- Why three of the six terminals are bare is unknown. It may be a double-pole switch with only one pole used, or a three-position body wired on one side only. Do not guess - report the measured pattern.
-- Which exact machine wires the three white conductors land on is unknown until the ring-out is done. The photo-based guesses (a red wire at the E-stop NC contact block; an orange/black wire at the Scotchlok) are 'likely' only [M] and must be replaced by measured results traced to a named connector pin.
-- The 'mid-boom Scotchlok' and the 'turntable white wire end' are likely one and the same splice [M]. The two photographs show the same tap, the same white + orange/black + red trio, the same grey two-pin plug and the same background, with the TILT SENSOR carton in frame in one of them. Confirm physically in the field, and note that the white wire's own far end has not been seen in any photo - it continues past the tap.
-- The grey two-pin plug that the red and orange/black wires enter has not been identified. It is grey, not black, and nothing in the photo proves it is a Deutsch connector [M]. It does not match any connector-legend entry on description alone. Identify it physically.
-- Whether the aftermarket toggle was actually mounted inside the platform control box is a field report, not photographed [M]. Both switch photos show it loose in the hand. Photograph it in place if it is ever found in situ.
-- The 'TILT SENSOR' carton lying at the turntable: the turntable's own tilt sensing is inside the SCON (safety controller) - redundant dual-axis tilt sensors plus safety switch logic for function cut-off, alarm at plus/minus 4.5 degrees (SM p.203) - and the only tilt-sensor connector in the legend is J55, the 6-pin Deutsch on the PLATFORM tilt sensor (SM p.205). Whether the carton is a spare, a part already fitted, or unrelated is unknown.
-- Contact-resistance threshold (under about 1 ohm) and the probe-to-probe value are general meter practice, not Genie specifications [M]. Never quote them to a customer as a Genie limit.
-- The Parts Manual never expands '3P' in 'SWITCH TOGGLE ASSY SPDT 3P MOM'. Earlier notes read it as 'three positions, on-off-on with a centre off'; that expansion appears nowhere in either manual and has been removed. Treat any expansion as unverified [M].
-- Whether Genie functions like axle extend/retract, engine start and auxiliary pump require a momentary command is not stated in the manuals [M]. A stay-put switch on such a circuit is still worth flagging, but as a concern, not as manufacturer fact.
-- Colour alone cannot name a circuit on this machine. GR/WH serves both circuit 83 (Tilt signal X axis) and circuit 109 (Sensor Power); WH serves 77, 94 and 98; RD serves 56, 87, 96 and more; and OR/BK appears both as circuit 64 and as REAR STR-OR/BK inside the toggle kit. Every identification must be traced to a named connector pin.
-- The Genie kit drawing shows the toggle commons joined by a bus and two brown ground wires (GND1-BR at J24-10, GND2-BR at J24-20). Whether every kit toggle simply pulls its J24 input to ground is read off the drawing, not stated in any text [M].
-- The Service Manual abbreviation legend defines 'TS' as 'Temp Switches' while ES0366J uses TSnn for the kit toggles. This card uses the schematic designators.
-- The aftermarket switch's DC rating is not printed on it - only AC ratings are visible. No claim is made here about its electrical suitability, only that it carries no Genie part number and no Genie boot.
-- Previous notes cited the J23/J24 connector legend as SM p.206; the extracted text puts it on SM p.205 (PDF 219). Corrected. SM p.206 holds J87 through J147.
-
-<details><summary>Sources for this card (57 checked statements)</summary>
-
-- `[V]` The aftermarket switch has SIX terminals in two rows of three (screw with square brass pressure plate plus a blade tab at each position); only three carry white-wire crimps, the other three are bare — *2026-09-12-aftermarket-toggle-terminals.jpg photo 2026-09-12-aftermarket-toggle-terminals.jpg (verified by my own enlargement)*
-- `[V]` The three white wires are printed '16 GAU' and end in insulated female quick-disconnects: one lavender/violet, two clear — *2026-09-12-aftermarket-toggle-terminals.jpg photo 2026-09-12-aftermarket-toggle-terminals.jpg*
-- `[V]` The aftermarket switch body is moulded 10A 250VAC, 15A 125VAC, 3/4HP 125-250VAC, MEXICO, 9614, with a bare metal bushing and lever and no boot fitted — *2026-09-12-aftermarket-toggle-ac-rating.jpg photo 2026-09-12-aftermarket-toggle-ac-rating.jpg*
-- `[V]` Inside the box the white wire ends in a BLUE insulated female spade terminal stacked on the same E-stop contact-block terminal that carries the red wire's own red insulated spade. It is NOT a Scotchlok insulation-displacement tap. — *2026-09-12-white-wire-to-toggle-in-box.jpg photo 2026-09-12-white-wire-to-toggle-in-box.jpg (verified by my own enlargement)*
-- `[V]` The platform control box interior shows two joystick bases with rubber boots and grey plug bodies, a green printed circuit board with two blue ribbon headers, and a black contact block moulded 'NC 1' in one corner — *2026-09-12-platform-box-interior-pcb.jpg photo 2026-09-12-platform-box-interior-pcb.jpg*
-- `[V]` A blue Scotchlok insulation-displacement tap joins the white wire to an orange wire with a black stripe; a red wire runs alongside; the red and orange/black wires enter a GREY two-pin plug; the white wire carries on past the tap — *2026-09-12-white-wire-scotchlok-boom.jpg photo 2026-09-12-white-wire-scotchlok-boom.jpg (verified by my own enlargement)*
-- `[V]` The same blue Scotchlok, the same white + orange/black + red trio and the same grey two-pin plug appear again with a carton printed TILT SENSOR in frame, against the same rusty-tube and blue-plate background - so the 'boom' photo and the 'turntable' photo are very likely one and the same splice — *2026-09-12-white-wire-turntable-tilt-sensor-box.jpg photo 2026-09-12-white-wire-turntable-tilt-sensor-box.jpg (verified by my own comparison of the two photos)*
-- `[V]` Genie's toggle switch part is 128200GT 'SWITCH TOGGLE ASSY SPDT 3P MOM'; on fig 605.1 item 1 it is captioned 'Platform Rotate Toggle Switch' — *106877.txt 10802-10805*
-- `[V]` The lid-kit toggles proper are fig 605.1 items 5-15, each 128200GT: Optional equipment, Generator ON/OFF, Drive Enable, Emergency Power, Axle Extend/Retract, Glow Plug, Engine Start, Hi/Low RPM, Drive Speed, and two Steer Mode toggle switches — *106877.txt 10821-10875*
-- `[V]` Boot 27246GT 'BOOT,TOGGLE SWITCH,SHORT' is part of toggle switch 128200 (fig 605.1 item 2) — *106877.txt 10807-10810*
-- `[V]` The toggle switch lid kit for this machine is 237225GT 'KIT,TOGL SW PL BOX LID,ANSI' from SN 779 to 2000 (SN = serial number) — *106877.txt 10788-10790*
-- `[V]` These parts are on Parts Manual figure 605.1 Toggle Switch Lid Option, printed page 215 — *106877.txt 10913-10916*
-- `[V]` Kit lid is 229386GT 'LID, PCON, TOG SW, Z135' (item 19) and the interface board is 232975GT 'PCB, LED/TOGGLE SWITCH, ALC100' (item 22) — *106877.txt 10888-10903*
-- `[V]` Genie DOES fit a toggle switch in the platform control box figure: PM p.211 item 14 is 128200GT '(Platform Level; includes boot and hardware)', with bare switch 128580-SGT and boot 27246GT as sub-items — *106877.txt 10677-10689 (page marker 10672 = PM p.211)*
-- `[V]` The Parts Manual never expands the abbreviation '3P' - 'three positions', 'on-off-on' and 'centre off' appear nowhere in either manual — *106877.txt 10804 (and negative search of both manuals)*
-- `[V]` The E-stop contact block is 66818GT 'CONTACT,NC', sub-item 8C of E-stop 66817GT 'E-STOP W/ NC CONTACT', both under kit 122519GT 'KIT,ESTOP SVC LARGE BOOM'; the box itself is 106513GT 'CONTROL BOX ASSY,PCON' and the lid 107798GT (PM p.209) — *106877.txt 10612-10624, 10636-10637, 10565-10566 (page marker 10534 = PM p.209)*
-- `[V]` Inside the box: PCON harness 94966GT and membrane/LED PCB 62399GT (PM p.213) — *106877.txt 10715-10725 (page marker 10709 = PM p.213)*
-- `[V]` J23 = 10 pin ribbon connector PCON to LED driver board; J24 = 20 pin Molex connector LED driver board — *1268557.txt 15455-15459*
-- `[V]` That J23/J24 legend entry is on SM printed page 205 (PDF 219), not p.206; SM p.206 (PDF 220) starts at J87 — *1268557.txt 15416-15425*
-- `[V]` Sheet ES0366J is on SM printed page 229 (PDF 243) and carries the LED/TOGGLE SWITCH INTERFACE PCB with J23 10PIN and J24 20PIN — *1268557.txt 19698-19706 (page marker 16964 = PDF 243 = SM p.229)*
-- `[V]` The drawing is captioned TOGGLE SWITCH AFTERMARKET KIT SCHEMATIC — *1268557.txt 19800*
-- `[V]` Kit toggles and designators: SERVICE HORN (BN5), GENERATOR ON/OFF (TS17), AUXILIARY PUMP (TS1), START ASSIST (TS6), ENGINE START (TS2), DRIVE ENABLE (TS15), AXLE EXT/RET (TS23), ENGINE SPEED (TS4), DRIVE SPEED (TS5), STEER MODE SELECT (TS22) x2, SPARE #1 (TSx) — *1268557.txt 19707-19738*
-- `[V]` J24 pin map 1-20: 1 HORN PWR-RD, 2 HORN RET-GR, 3 GEN ON/OFF-GR/WH, 4 AUX PUMP-RD, 5 START ASST-BK/WH, 6 ENG START-BK, 7 DRV ENBL-BL/WH, 8 NOT USED, 9 AXLE RET-GR, 10 GND1-BR, 11 ENG SPEED-BK/RD, 12 AXLE EXT-GR/WH, 13 DRV SPEED-RD/WH, 14 FRONT STR-OR, 15 REAR STR-OR/BK, 16 CRAB STR-BL, 17 CORD STR-BL/BK, 18 SPARE-WH, 19 FUEL SEL-BL/RD, 20 GND2-BR — *es-toggle-switch-aftermarket-kit.png figure es-toggle-switch-aftermarket-kit.png (verified by my own read of the figure)*
-- `[V]` The same wire names appear in the extracted schematic text, including SPARE-WH, GND1-BR, GND2-BR, NOT USED, FUEL SEL-BL/RD (the horn return is spelled HORN RTN-GR at the horn end and HORN RET-GR at the J24 end) — *1268557.txt 19771-19792*
-- `[V]` SPARE-WH at J24-18 is the only plain WHITE wire anywhere in the Genie toggle kit — *es-toggle-switch-aftermarket-kit.png figure es-toggle-switch-aftermarket-kit.png (verified by my own read)*
-- `[V]` The drawing has two dashed outlines - an inner one captioned LED/TOGGLE SWITCH INTERFACE PCB around J24/J23, and an outer one captioned TOGGLE SWITCH AFTERMARKET KIT SCHEMATIC. Neither is labelled 'platform box'. No conductor crosses the outer boundary, so the kit has no wire to the turntable. — *es-toggle-switch-aftermarket-kit.png figure es-toggle-switch-aftermarket-kit.png (verified by my own read)*
-- `[V]` On the kit drawing only PCON PWR and HRN RLY CNTRL are labelled at the J23 block, and those two labels sit on the mating block below J23, not on the J23 header; no pin numbers are printed on J23 — *1268557.txt 19798-19800; figure es-toggle-switch-aftermarket-kit.png*
-- `[V]` Platform E-stop wires on ES0366J are ESTOP PWR-RD and ESTOP RET-BK at PCON E-STOP (P2), next to the PCON MEMBRANE PANEL (MS1) — *1268557.txt 17282-17292*
-- `[V]` C64LS-OR/BK is a wire on ES0366J — *1268557.txt 18389*
-- `[V]` Wire Color Legend is SM printed page 198 (PDF 212) — *1268557.txt 14532-14538*
-- `[V]` Circuit 56 RD = Foot switch/TCON estop power — *1268557.txt 14550-14552*
-- `[V]` Circuit 64 OR/BK = Power for operational switches — *1268557.txt 14575-14577*
-- `[V]` Circuit 77 WH = Lower Angle #1 operational — *1268557.txt 14615-14617*
-- `[V]` Circuits 83 GR/WH tilt signal X, 84 GR/BK tilt signal Y, 85 GR tilt sensor power — *1268557.txt 14633-14641*
-- `[V]` Circuit 94 WH = Load Sensor — *1268557.txt 14671-14673*
-- `[V]` Circuit 98 WH = J1708 + (high) - a THIRD white circuit, added because a white conductor landing on the J1708 data link would otherwise not be recognised as a control-circuit splice — *1268557.txt 14683-14685*
-- `[V]` Circuit 109 GR/WH = Sensor Power; 110 BK = Sensor Return - note GR/WH is used twice in the legend (83 and 109), so colour alone cannot separate them — *1268557.txt 14718-14723*
-- `[V]` Red is not unique either: RD serves circuit 56, and also 87 'Platform Level Safety Power' and 96 'Tether Power' — *1268557.txt 14651-14653, 14677-14679*
-- `[V]` SM p.28: push in the red E-stop at both ground and platform controls, then remove the platform control box lid retaining fasteners and open the lid - these are steps 1-2 of 'How to Remove the LED Circuit Board' — *1268557.txt 2607-2616 (page marker 2596 = PDF 42 = SM p.28)*
-- `[V]` SM p.28: remove rings, watches, jewelry; ESD can damage the printed circuit boards - stay grounded or use a wrist strap — *1268557.txt 2621-2635*
-- `[V]` SM p.27 step 7: attach a grounded wrist strap to the ground screw inside the control box — *1268557.txt 2566-2568 (page marker 2518 = PDF 41 = SM p.27)*
-- `[V]` SM p.24 repair configuration has SEVEN bullets, including 'All external AC power supply disconnected from the machine' which earlier notes omitted — *1268557.txt 2398-2409 (page marker 2361 = PDF 38 = SM p.24)*
-- `[V]` SM p.76 steps 16-18 treat the auxiliary power unit batteries as present, not optional, and are followed by the engine starting/controls battery — *1268557.txt 6013-6025 (page marker 5990 = PDF 90 = SM p.76)*
-- `[V]` OM p.12: disconnect the batteries under both turntable covers before service — *114474.txt 796-798 (page marker 745 = PDF 14 = OM p.12)*
-- `[V]` OM p.5 decal 97865: disconnect all the batteries before performing service — *114474.txt 324-328 (page marker 244 = PDF 7 = OM p.5)*
-- `[V]` OM p.20 machine layout item 7 is 'Platform controls' - the manual gives the label only; the 'blue box on the railing with joysticks and membrane panel' description comes from the field photos, not the manual — *114474.txt 1262-1263 (page marker 1245 = PDF 22 = OM p.20)*
-- `[V]` OM p.26 platform control panel item 17: red Emergency Stop button, push in to stop all functions and turn the engine off — *114474.txt 1573-1576 (page marker 1510 = PDF 28 = OM p.26)*
-- `[V]` SM p.176: 'both axle buttons pressed' fault disables axle extend/retract; the FULL recovery action is 'Check ribbon and connector from membrane switch. If necessary replace membrane switch.' — *1268557.txt 12493-12499 (page marker 12437 = PDF 190 = SM p.176)*
-- `[V]` Turntable tilt sensing is inside the SCON (safety controller): redundant dual-axis tilt sensors, plus safety switch logic for function cut-off, with an alarm at plus or minus 4.5 degrees — *1268557.txt 15317-15320 (page marker 15270 = PDF 217 = SM p.203)*
-- `[V]` J55 = 6 pin Deutsch connector on platform tilt sensor - the only connector in the whole legend described with the word 'tilt' — *1268557.txt 15477-15479*
-- `[M]` The six-terminal body means the switch is likely a double-pole type (two independent switches in one housing) — *a n/a*
-- `[M]` The two Scotchlok photographs are likely one splice in one place, near where the TILT SENSOR carton sits, rather than a mid-boom tap plus a separate turntable end — *a n/a*
-- `[M]` The aftermarket toggle was likely fitted in the platform control box; no photograph shows it mounted there — *a n/a*
-- `[M]` A closed switch contact should read under about 1 ohm, and a probe-to-probe check should read roughly 0 to 0.5 ohm — *a n/a*
-- `[M]` The red wire tapped inside the box is likely ESTOP PWR-RD and the orange/black wire at the Scotchlok is likely C64LS-OR/BK (circuit 64); both to be proved by the ring-out — *a n/a*
-- `[M]` The grey two-pin plug at the Scotchlok is likely a sealed environmental connector, possibly a Deutsch; its make is not readable in the photo — *a n/a*
-- `[M]` Genie functions such as axle extend/retract, engine start and auxiliary pump are expected to receive a momentary (press-and-release) command, so a stay-put switch on one of them could hold a command on — *a n/a*
-
-</details>
-
-
-### B3-B4: Read the printed name on the factory wire under each tap, then check it against the stop-list
-
-**What this finds out.** Find out which factory wire the added white toggle-switch wire has been joined onto at every improvised joint - the blue "Scotchlok" clip-on tap out at the turntable, and the blue butt splice inside the control box. You do it by reading the name printed along the factory wire's plastic jacket and decoding it with Genie's own naming system. Then you compare that circuit against the stop-list below to decide whether work can carry on or the machine must be stopped until the tap is taken off and the wire repaired properly.
-
-**Where it is**
-
-- *What it is:* The white 16 gauge wire added to the aftermarket toggle switch, and every improvised joint on it. CONFIRMED IN PHOTOGRAPHS: (a) one blue butt splice inside the control box, where the white wire joins a red wire; (b) one blue Scotchlok clip-on tap out on the machine, on a pair made up of one plain red wire and one orange wire with a black stripe, next to an unplugged grey 2-pin Deutsch connector whose far end is cut and frayed, with a 'TILT SENSOR ... PCON' carton lying on the casting below. NOT YET CONFIRMED: a separate second tap partway along the boom. The field note records 'one Scotchlok tap en route' down the boom [F], and two photographs exist - one close-up, one wider - but they show the same red + orange/black pair, the same single blue Scotchlok and the same grey 2-pin connector against the same background, so they are most likely one tap shot twice, not two taps. Treat a second boom tap as unconfirmed and go looking for it.
-- *Where on the machine:* Control box site: the platform control box, the box on the platform rail that the operator drives from [F]. Parts book figure 603.1 'Platform Control Box, View 1' covers it on PM pp.208-211 - lid 107798GT with its decal, membrane decal 106509GT, and the panel overlay 82841GT that must be ordered with the membrane (PM p.209). Figure 604.1 'Platform Control Box, View 2' covers the inside on PM pp.212-213 - the green membrane/LED circuit board 62399GT (item 3), the box gasket 81488GT (item 5) and the PCON harness 94966GT (item A). Boom route: from the platform box the wiring runs as three harness sections joined end to end - jib composite harness 94962GT (item 10) along the jib, primary composite harness 94961GT (item 9) the length of the primary boom, then secondary composite harness 94960GT (item 3, marked 'J1') down the secondary/riser boom into the ground control box (PM figure 308.1, pp.74-77). Those harnesses most likely run inside the steel cable tracks [M]: jib boom cable track (PM figure 516.1, p.190), primary boom cable track 61852GT, 27 links (PM figure 512.1, pp.172-173) and secondary boom cable track 236168GT, 57 links, in tray 217431GT for serial 1854 and up (PM figure 507.1, pp.152-153). Open the tray covers to look for taps. The primary boom angle sensor connector J114 is at the primary boom pivot - parts figure 511.2 'Primary Boom Angle Sensor and Retract Limit Switch (from SN 1854)', PM pp.168-171, which is the right serial group for this machine; figure 511.1 on PM pp.166-167 is the older 'to SN 1853' version and does not apply. Turntable site: the turntable is the rotating deck the boom is bolted to. The SCON (safety controller - the second, independent computer that watches the safety signals) sits on the hydraulic tank side of the turntable: part 1258463GT, item 22 of PM figure 304.1 'Hydraulic Tank Side Components', PM pp.54-55; the Limit Switch Legend drawing on SM p.201 also shows the SCON (item 16) on the turntable. A separate lower limit switch harness 226496GT (item 6, fitted from serial 1419 to 2000) runs from the ground control box to the SCON and on to switches LSS1RO, LSS1RS and sensor RSS1AO (PM figure 308.1 drawing, p.74; the placement of those switches near the secondary boom pivot comes from the SM p.201 drawing, not from the parts diagram).
-- *How to find it:* Control box: stand in the platform with the machine stowed on the ground - you do not need to raise anything. Undo the lid fasteners, lift the lid with its rubber membrane keypad, and look inside. You are looking for a small black toggle switch that is obviously not Genie: it has white wires on flat push-on blade terminals and no rubber boot. Follow each white wire and write down where it ends. The field photograph shows one white wire running to a blue butt splice, then on as a red wire to a small black block with a red bar on its face that sits near the green circuit board; a joystick with a rubber boot and a grey multi-pin Deutsch plug is alongside. Another white wire leaves the box and heads down the boom. Turntable: stand on the ground at the turntable, under the stowed boom, beside the hydraulic hoses and the grey corrugated plastic loom. Look for the red + orange/black pair crossing a horizontal blue frame member with a blue Scotchlok clamped on it and a white wire running into it. Follow that pair to a grey 2-pin Deutsch connector that is unplugged, with the wires beyond it cut off and frayed. A cardboard carton printed 'TILT SENSOR', 'DEGREES' and 'PCON' lies on the casting below. Boom: walk the stowed boom from the platform end back to the primary pivot, open the cable-track tray covers and look along the whole length for any further white wire, Scotchlok, butt splice or tape.
-- *What it looks like:* A blue Scotchlok is a small blue plastic clip with a fold-over lid and a metal blade inside. The factory wire runs straight through one channel and the added wire dead-ends in the other; closing the lid drives the blade through both insulations to make the joint. Genie's own repair parts for these harnesses are crimped Deutsch pin terminals, part 73713GT 'TERMINAL, PIN, DT, 14-18 AWG, NICKEL... DEUTSCH' (PM figure 306.1 area) - the manuals nowhere list a clip-on tap, so a Scotchlok here is very likely not factory work [M]. The factory wire under each joint carries printing along its jacket in the form PREFIX-NUMBER-SUFFIX-COLOUR, for example P109ANG-GR/WH or C64LS-OR/BK. The added wire's own jacket is printed '16 GAUGE'. The toggle switch itself is a mains-rated switch, its body stamped '10A, 250VAC / 15A, 125VAC / 3/4HP, 125-250VAC / MEXICO / 9614' with a UL mark. Its terminal end carries TWO ROWS OF THREE flat blade terminals - six in all. Only the three in one row are wired, each with a crimped insulated push-on spade (one lilac, two clear); the other three blades are bare and unused. That matters: a six-terminal switch has two separate sets of contacts, so it can be making or breaking two circuits at once. It is not the Genie part 128200GT 'SWITCH TOGGLE ASSY SPDT 3P MOM' (SPDT = single pole double throw, i.e. one moving contact that flips between two fixed ones; 3P = three terminals; MOM = momentary, springs back when released), which the parts book lists as 'includes boot and hardware' - a booted switch, with the rubber boot 27246GT listed separately as part of it.
-- *Source:* PM 106877GT: figure 308.1 pp.74-77 (harness items 3, 6, 7, 9, 10, 13, 14), figure 507.1 pp.152-153, figure 512.1 pp.172-173, figure 516.1 p.190, figure 511.2 pp.168-171, figure 603.1 pp.208-211, figure 604.1 pp.212-213, figure 605.1 pp.214-216, figure 304.1 pp.54-55. SM 1268557GT: p.27, p.99, p.201 Limit Switch Legend, p.203. OM 114474: p.64. Photos 2026-09-12-*.jpg in cases/Z13513-1861/photos/.
-
-**Set the machine to**
-
-- **Key:** Both keys OFF and pulled out. The Service Manual says the turntable control box has two key switches: 'The main key switch towards the top of the control box is for selection of ground or platform controls. The key switch at the bottom of the control box is the Bypass/Recovery key switch' (SM p.99). A note on the same page says that key switch sits on the lower right of the box from serial number Z13512-1712. Take out both keys. Do not turn the Bypass or Recovery key at all. The manual's own words: 'Bypass and Recovery modes are only intended for certain circumstances and are not part of normal machine operation... Contact trained personnel immediately' (SM p.99).
-- **E-stops:** Both red Emergency Stop buttons (the big red mushroom buttons, one at the ground control box on the turntable and one in the platform) pushed IN before you touch any connector, tap or splice. SM p.27: 'Push in the red Emergency Stop button to the off position at both the ground and platform controls.'
-- **Battery:** Leave the battery connected while you only look at wires, read printing and take photographs. Disconnect the battery negative (-) cable before any resistance test (ohms / continuity) between a tap and a connector pin. Reconnect only after both meter leads are off the machine.
-- **Engine:** OFF. Do not start the engine at any point in this card.
-- **Also:** Machine on firm level ground, wheels chocked, boom stowed (lowered and pulled in), axles still RETRACTED - 8 ft 1 in / 2.5 m across (OM p.64). With the axles retracted the boom functions are locked out by design: the manual says of limit switch LSFA1ES, 'Prevents boom functions with the axles retracted' (SM p.203, and the same for LSRA1ES). So nothing should move - but still treat every wire as live until both E-stops are in. Take off rings and watches (SM p.27 electrocution/burn warning).
-
-**Connector — Whichever factory plug or module pin is nearest each joint. The plugs and modules on this path, with their descriptions straight out of the manual's Circuit Connector Legend: J114 '6 pin Deutsch connector for primary boom angle sensor'; J154 '6 pin Deutsch connector for secondary boom angle sensor'; J20 '12 pin Deutsch connector lower/upper limit switch harness'; J121 '12 pin Deutsch gray SCON connector' and J122 '12 pin Deutsch black SCON connector' on the safety controller; J11 to J15 on the TCON (turntable controller - the main computer in the ground control box); J21 'Black 23 pin AMP connector on PCON' and J22 'White 35 pin AMP connector on PCON' (PCON = platform controller, the board in the platform box); J31/J32 on the DCON (drive chassis controller, the computer that looks after the axles, steering and drive); J55 '6 pin Deutsch connector on platform tilt sensor'; J24 '20 pin Molex connector LED driver board'; J124/J125, the 2-pin plugs on the drive-enable limit switches; J46 and J49, the 4-pin plugs on secondary boom switches LSS1RS and LSS1RO. If the cut 2-pin stub at the turntable turns out to be a harness-to-harness joint, the candidates in the legend are J146 (lower limit switch harness to engine harness), J149 (boom composite), J153 (engine and manifold harness) and J157 (PCON manifold to boom composite harness) - J153 is an engine/manifold joint, not a boom one, so do not assume.**
-
-HOW TO READ A GENIE WIRE NAME (SM p.192): 'Circuit numbers consist of three parts: the circuit prefix, circuit number and circuit suffix.' The first letter is the type of circuit: C = Control, D = Data, E = Engine, G = Gauges, N = Neutral, P = Power, R = Relay Output, S = Safety, V = Valve. The number is the circuit - the manual warns 'The circuit number may be used more than once in a circuit', so the same number can turn up in several places. The letters after the number are a short mnemonic: ANG = Angle, PBS = Primary Boom Angle Sensor, SBS = Sec Boom Angle Sensor, CAL = Calibrate, LDS = Load Sensor, PTS = Platform Tilt Sensor, TTS = Turntable Tilt Sensor, TAY = Tilt Alarm Y axis, FTS = Foot switch Signal, HRN = Horn, LS = Limit Switch, GND = Ground, SP = Spare, PLL = Propel Lockout, AXE = Axle Extend Valve, AXR = Axle Retract Valve, DCN = Drive Chassis Controller, EDC = Electrical Displacement Control, PSE = Program Setup Enable, PCE = Pressure Comp Enable. After the dash comes the colour: WH White, BK Black, RD Red, GR Green, BL Blue, OR Orange, BR Brown, YL Yellow; a slash means a stripe, so GR/WH is green with a white stripe. Worked example straight from the manual: 'V61AXR - V stands for valve power. Number 61 stands for axle retracted circuit; AXR stands for Axle retracted.' Another: P109ANG-GR/WH = Power, circuit 109 (Sensor Power), Angle, green with a white stripe. NOTE ON THE TABLE BELOW: the 'pin' column below is really the CIRCUIT NUMBER off the wire print, not a connector cavity number - the two are different things and this card uses both, so read carefully. 'color_harness' is the colour the manual's generic Wire Color Legend (SM pp.196-200) gives for that circuit number; 'color_sensor' is the colour actually printed in this machine's own pin legends or on wiring sheet ES0366J. Where the two disagree, the print on the wire and the pin legend win - the colour table is a generic Genie list covering many models. Known disagreements on this machine: circuit 23 (table WH, legend P23PCON-BK), circuit 52 (table BL/RD, legend P52PCON-WH), circuit 124 (table RD/WH, legend C124SBS-OR/BK) and circuit 132 (table GR, legend S132LDS-BL/WH). The Wire Color Legend runs from circuit 1 to 199, then 226 to 228, and ends with a brown 'Ground or Return' row, so it does cover circuit 155 (OR/RD, Pressure Comp. Enable).
-
-*Source:* SM p.192 (Wire Circuit Legend: circuit numbering, prefix table, worked examples), pp.193-195 (suffix table), pp.196-200 (Wire Color Legend), p.205-207 (Circuit Connector Legend), pp.208-210 (Drive Chassis and Platform Controller, Safety Controller, and Turntable Controller pin legends), p.229 sheet ES0366J via the rendered crops.
-
-| Pin | Wire name | Harness colour | Sensor colour | What it is | Goes to |
-|---|---|---|---|---|---|
-| Circuit 56 | S56PRV-RD / P56PRV-RD/WH / C56FTS-RD | RD | RD for S56PRV (TCON J11-6 and J12-5, SCON J121-9 and J122-11, PCON J21-4, DCON J31-5); RD/WH for P56PRV (TCON J11-7, PCON J21-7); RD for C56FTS, the foot switch signal (PCON J22-17) | Colour legend calls circuit 56 'Foot switch/TCON estop power'. This is the emergency-stop and foot-switch power chain that every controller watches. STOP-LIST: a tap here defeats the E-stop or foot-switch chain. Stop, do not operate, remove the tap and repair the wire. | TCON J11-6 and J12-5; SCON J121-9 and J122-11; PCON J21-4, J21-7 and J22-17; DCON J31-5 |
-| Circuit 64 | C64LS-OR/BK | OR/BK | OR/BK (TCON J12-13 and J12-18; PCON J22-16, labelled 'LIMIT SWITCH PWR P22-16' on sheet ES0366J; it feeds LSP1RO at J44, LSP1EO at J45, LST1O at J124, LST2O at J125 and the low fuel switch) | Colour legend calls circuit 64 'Power for operational switches'. This is the SUPPLY that is fed OUT to the limit switches - it is not a return path, and the foot switch is not on it (the foot switch signal is C56FTS on circuit 56). Each switch sends its answer back on its own separate wire: C70PBR-BL/WH, C71PBE-BL/BK, C143DEL-BL/RD and C144DER-BL/WH. STOP-LIST: a tap here can put power where a switch should be deciding, so a limit switch can look closed when it is open. Stop, do not operate, remove. Note: the photographed Scotchlok at the turntable is clamped on an orange wire with a black stripe. If the print on it reads C64LS, this is the circuit. | TCON J12-13 and J12-18; PCON J22-16; out to the limit switches by way of J20 |
-| Circuit 60 | C60AXE-GR/WH (also C60FAP and C60RAP, both GR/WH, at the DCON) | GR/WH | GR/WH (SCON J122-4, which sheet ES0366J labels 'AXLE EXTENDED'; DCON J31-20 and J31-21) | Colour legend calls circuit 60 'Axle extend'; the suffix AXE means 'Axle Extend Valve'. On this machine the wire lands on the safety controller at J122-4, so the safety computer is watching it. The Genie factory toggle-lid kit uses the same colour for its own AXLE EXT-GR/WH switch wire, which is exactly the kind of thing someone might have been trying to copy. STOP-LIST: stop, do not operate, remove. | SCON J122-4; DCON J31-20 and J31-21 |
-| Circuit 61 | C61AXR-GR (C61AXRT-GR at the DCON) | GR | GR (SCON J122-12; TCON J12-10; DCON J31-6) | Colour legend calls circuit 61 'Axle retract'; the suffix AXR means 'Axle Retract Valve'. It lands on both the safety controller and the main computer. The factory toggle kit uses AXLE RET-GR. STOP-LIST: stop, do not operate, remove. | SCON J122-12; TCON J12-10; DCON J31-6 |
-| Circuit 77 | no wire numbered 77 exists anywhere in this machine's pin legends or on sheet ES0366J | WH | not applicable - on this machine the boom angle signals are numbered 123, 124, 141 and 142 | Colour legend calls circuit 77 'Lower Angle #1 operational'. It is in the generic colour table but is likely not used on the Z-135/70 [M]. STOP-LIST anyway: if a white wire printed with 77 is ever found, treat it as a boom angle signal - stop and remove. | not present in the SM pp.208-210 pin legends |
-| Circuit 83 | no wire numbered 83 exists anywhere in this machine's pin legends or on sheet ES0366J | GR/WH | not applicable | Colour legend calls circuit 83 'Tilt signal X axis'. Likely not used on this machine [M]: on the Z-135/70 the turntable tilt sensing is built INSIDE the SCON module, and the only separate tilt sensor is the platform one, which uses circuits 84, 85 and 87. STOP-LIST anyway: if a wire printed with 83 is found, it is a tilt sensor circuit - stop and remove. | not present in the SM pp.208-210 pin legends or on sheet ES0366J |
-| Circuit 84 | C84TAY-GR/BK | GR/BK | GR/BK at PCON J22-20, shown on sheet ES0366J going to the 'PLATFORM TILT SENSOR ASSEMBLY' | Colour legend calls circuit 84 'Tilt signal Y axis'; the suffix TAY means 'Tilt Alarm Y axis'. This is the platform tilt sensor's Y signal into the platform controller. The platform tilt sensor cuts boom and platform-level functions at plus or minus 10 degrees. STOP-LIST: stop and remove. | PCON J22-20 |
-| Circuit 85 (and its safety twin, circuit 87) | P85PTS-GR power and P85RET-BR return; safety half P87PTS-RD and P87RET-BR | GR | GR power at PCON J22-21, BR return at J22-19; safety power P87PTS-RD at J22-23 and safety return P87RET-BR at J22-22 | Colour legend calls circuit 85 'Tilt sensor power'; the suffix PTS means 'Platform Tilt Sensor'. This is the platform tilt sensor's supply, and circuit 87 is the second, independent safety supply and return to the same sensor. Sheet ES0366J labels the four 'PL TILT SNSR PWR', 'PL TILT SNSR GND', 'SAFE PL TILT PWR', 'SAFE PL TILT GND'. STOP-LIST: stop and remove. | PCON J22-21 (power) and J22-19 (return); J22-23 and J22-22 for the safety half |
-| Circuit 94 (and circuit 132, the load wire actually used here) | no wire numbered 94 on this machine; the load sensing wire is S132LDS-BL/WH | WH for 94; the table gives GR for 132, which disagrees with the pin legend | BL/WH for S132LDS at SCON J121-1, which sheet ES0366J labels 'LOAD SENSE' | Colour legend calls circuit 94 'Load Sensor' and circuit 132 'Platform Load Input'. On this machine the load signal into the safety controller is S132LDS-BL/WH. STOP-LIST: this is the load cell circuit - the sensor that decides whether the platform is overloaded. If you find a wire printed 94, or a blue/white one printed S132LDS, stop and remove. | SCON J121-1 |
-| Circuit 109 | P109ANG-GR/WH (P109JBS-GR/WH where it feeds the jib sensor at the PCON) | GR/WH | GR/WH at TCON J12-26, DCON J32-20 and PCON J22-30; inside the boom harness it reaches J114 and J154 pins 1 and 6 (the short jumper wires inside connector J114 are coloured RD to pin 1 and OR to pin 6 for Unit #130 and higher) | Colour legend calls circuit 109 'Sensor Power'. This is the 5 volt supply that feeds BOTH boom angle sensors from one pair of computer pins. STOP-LIST: a tap here loads or shorts the shared 5 volts and can produce exactly the 'shorted / 0 V' and crosscheck faults now on the display. Stop, remove. | TCON J12-26; DCON J32-20; PCON J22-30; on to J114 pins 1 and 6 and J154 pins 1 and 6 |
-| Circuit 110 | P110RT-BK / P110JBS-BK; the boom angle sensors' own ground is printed SNSR GND-BR | BK | BK at DCON J32-19 and PCON J22-31; the boom angle sensor ground is SNSR GND-BR at TCON J12-25, reaching J114 and J154 pins 2 and 5 | Colour legend calls circuit 110 'Sensor Return' - the sensor ground, the return path for the 5 volt supply. Like the 5 volts, one ground is shared between both boom angle sensors. STOP-LIST: stop, remove. Related field finding: a long green wire outside the loom, running from connector J114 to a pink butt splice at a bolt on the pivot bracket, was found on this machine [F]. Why someone added it is not known [M] - do not assume it was a ground repair. Card C deals with it. | DCON J32-19; PCON J22-31; TCON J12-25 for the SNSR GND-BR that feeds both boom sensors |
-| Circuit 123 | C123PBS-RD/BK | RD/BK | RD/BK at TCON J12-32; it arrives from J114 pin 4 (the short jumper inside J114 is white, the sensor's own tail is yellow on the original-type sensor) | Colour legend calls circuit 123 'Primary Boom Angle Signal Operational'; the suffix PBS means 'Primary Boom Angle Sensor'. This is the working copy of the primary boom angle, read by the main computer. STOP-LIST: stop, remove. | TCON J12-32, from J114 pin 4 |
-| Circuit 124 | C124SBS-OR/BK | RD/WH in the generic colour table | OR/BK at TCON J12-33 and on sheet ES0366J at J154 pin 4 - the table and the pin legend disagree; trust the print on the wire | Colour legend calls circuit 124 'Secondary Boom Angle Signal Operational'; the suffix SBS means 'Sec Boom Angle Sensor'. The working copy of the secondary boom angle. STOP-LIST: stop, remove. | TCON J12-33, from J154 pin 4 |
-| Circuit 141 | C141PBS-RD | RD | RD at SCON J122-3; it arrives from J114 pin 3 (the short jumper inside J114 is blue) | Colour legend calls circuit 141 'Primary Boom Angle Signal Safety'. This is the SECOND, independent copy of the same primary boom angle, read by the safety controller. The two computers compare their copies; if the copies disagree you get a 'crosscheck' fault. STOP-LIST: stop, remove. If circuit 141 were ever bridged to circuit 123 the two computers would be reading one signal instead of two, which destroys the whole point of the crosscheck. | SCON J122-3, from J114 pin 3 |
-| Circuit 142 | C142SBS-OR | OR | OR at SCON J122-2; it arrives from J154 pin 3 | Colour legend calls circuit 142 'Secondary Boom Angle Signal Safety' - the safety controller's own copy of the secondary boom angle. STOP-LIST: stop, remove. | SCON J122-2, from J154 pin 3 |
-| Circuit 145 | C145CAL-RD/WH | RD/WH | RD/WH at TCON J11-11 and SCON J121-4, which sheet ES0366J labels 'CALIBRATION IN' | Colour legend calls circuit 145 'Calibrate'; the suffix CAL means 'Calibrate'. This is the line that puts the machine into calibration. STOP-LIST: a toggle switch here is a home-made calibration switch. Stop, remove. Only the calibration technician fits the proper calibration device - you do not fit a jumper or toggle here. | TCON J11-11; SCON J121-4 |
-| Circuit 137 | S137PLL-RD/WH | RD/WH | RD/WH at SCON J121-10 and TCON J13-17 | Colour legend calls circuit 137 'Drive Power (P_38)'; the suffix PLL means 'Propel Lockout'. The manual's power circuit list gives 'P38 / Propel (drive) valves'. This is the safety controller's switched drive power output - the very output the crosscheck faults are switching OFF right now (SM p.189 fault matrix). STOP-LIST: a tap here is an attempt to get drive back around the safety controller. Stop, remove. | SCON J121-10; TCON J13-17 |
-| Circuit 30 | C30EDC-WH | WH | WH at TCON J13-10 | Colour legend calls circuit 30 'Forward/EDC-A'. EDC means 'Electrical Displacement Control' - the electrical command that tells the drive pump how hard and which way to push oil. STOP-LIST: a switch here could stroke the drive pump. Stop, remove. | TCON J13-10 |
-| Circuit 4 | V04TRL-WH | WH | WH at TCON J14-25 | Colour legend calls circuit 4 'Turntable rotate left valve driver'. STOP-LIST: a switch here could swing the turntable with nobody commanding it. Stop, remove. | TCON J14-25 |
-| Circuit 21 | C21IGN-WH at the engine side; P21DCON-WH as the controller supply | WH | WH for C21IGN at TCON J13-3; WH for P21DCON at TCON J12-2, SCON J122-1 and DCON J31-2 | Colour legend calls circuit 21 '12V DC ignition supply'. Two different wires carry this number and both matter at the turntable. C21IGN is the engine ignition feed. P21DCON is the 12 volt supply that runs the drive chassis controller AND the safety controller - so a white wire printed P21DCON found at the turntable is a module power feed, not an ignition wire. STOP-LIST for either: a tap can back-feed power or keep something live. Stop, remove. | C21IGN: TCON J13-3. P21DCON: TCON J12-2, SCON J122-1, DCON J31-2 |
-| Circuit 46 | C46HN-WH / C46HRN-WH | WH | WH at TCON J11-3 and PCON J21-16 (C46HN), and TCON J13-7 (C46HRN) | Colour legend calls circuit 46 'Horn'; the suffix HRN means 'Horn'. This is the only harmless answer a white wire can give. Still remove the tap and repair the wire properly, but you do not have to stop the diagnosis. | TCON J11-3 and J13-7; PCON J21-16 |
-| Circuit 23 | P23PCON-BK | WH in the generic colour table | BK at TCON J11-5 and PCON J21-23 - table and pin legend disagree; trust the pin legend | Colour legend calls circuit 23 'Power to platform'. It is the platform controller's supply. A tap here is stealing power from the platform box. Remove and repair before operating. | TCON J11-5; PCON J21-23 |
-| Circuit 52 | P52PCON-WH | BL/RD in the generic colour table, which calls it 'Auxiliary Platform' | WH at TCON J11-2 and PCON J21-2 - table and pin legend disagree; trust the pin legend | A white wire inside the platform box printed P52PCON is a platform controller supply. Remove the tap and repair before operating. | TCON J11-2; PCON J21-2 |
-| Circuits 98 / 174 / 184 / 185 / 197 | the remaining plain-white rows in the colour legend | WH | no wire with these numbers appears in this machine's pin legends | 98 'J1708 + (high)' is a data line; 174 'Key Switch Power, Ground Position'; 184 'Program setup Enable'; 185 'Encode A'; 197 'Hour Meter'. 184 would be a programming enable - treat that one as STOP. The others: remove and repair before operating. | see the colour legend; none of these appear in the SM pp.208-210 pin legends |
-| SPARE (connector J24 cavity 18) | SPARE-WH | WH | WH, cavity 18 of the 20-pin J24 on the LED/toggle switch interface circuit board | The Genie factory toggle-lid kit does have a white 'SPARE #1' switch wire, but it stays inside the platform box and lands on the toggle board - it never runs down the boom. So it cannot explain a white wire running out to the turntable. Useful only to rule that idea out. | J24 cavity 18 on circuit board 232975GT, part of kit 237225GT |
-
-**Do this**
-
-1. Shut the machine down. Turn both key switches off and pull both keys out - the main one at the top of the ground control box and the Bypass/Recovery one at the bottom. Push both red E-stop buttons IN, one at the ground control box and one in the platform. Engine off. Wheels chocked, boom stowed. Take off rings and watches.
-2. Before touching anything, photograph every tap, splice and cut wire end from two angles with a tape measure or ruler in the shot, and photograph enough of the surroundings in each frame to prove WHERE on the machine you were standing. This is evidence of what a previous person did. Do not cut or pull anything yet.
-3. Control box: stand in the platform with the machine stowed at ground level. Undo the lid fasteners and lift the lid with its rubber keypad. Find the black mains-rated toggle. Look at its terminal end: you should see two rows of three flat blades, with three white wires on one row and three bare blades on the other. Note which row is wired, and note that a six-terminal switch can be switching two circuits at once. Count and trace each white wire to its end and write down what each one lands on.
-4. At each joint, get at the printing on the FACTORY wire. At a Scotchlok, the factory wire is the one running straight through; the added white wire dead-ends in the other channel. At the butt splice in the box, it is the wire on the far side of the splice. Wipe the jacket, slide the loom back, and turn the wire until you can read the print. Read it as PREFIX - NUMBER - SUFFIX - COLOUR, for example C64LS-OR/BK or P109ANG-GR/WH.
-5. Decode the name. First letter = type (C control, P power, S safety, V valve, R relay output, D data). The number = the circuit. The letters after it = the mnemonic (ANG angle, PBS and SBS boom angle sensors, CAL calibrate, LDS load sensor, PTS platform tilt sensor, FTS foot switch, HRN horn, LS limit switch, DCN drive chassis controller). The part after the dash = the colour, with '/' meaning a stripe. Then check the colour you read against the colour of the jacket in your hand.
-6. Compare the circuit number against the stop-list in the table above. Any of 56, 64, 60, 61, 77, 83, 84, 85, 87, 94, 132, 109, 110, 123, 124, 141, 142, 145, 137, 30, 4, 21 or 184 = STOP. 46 (horn) = harmless. 23 or 52 = stolen power; remove before operating.
-7. If the print is unreadable, identify the wire by its plug instead. Follow the tapped wire to the nearest Deutsch connector, read the connector number if it is tagged, count the cavity position, and look it up in the Circuit Connector Legend (SM pp.205-207) and the pin legends (SM pp.208-210). Deutsch connectors usually carry small moulded cavity numbers on the face [M], but on small shells only one or two may be marked, so count from the keyway (the flat or ridge that only lets the plug go together one way) rather than trusting the numbers.
-8. Confirm with the meter. Disconnect the battery negative (-) cable first. Set the meter to ohms, or to the continuity setting with the beeper. Put one probe on the metal blade of the Scotchlok (or on bare conductor right beside the joint) and the other probe on the connector cavity you suspect, with that connector unplugged. Less than 1 ohm, or a steady beep, means it is the same wire. Anything higher, or 'OL' on the display (OL = over limit, meaning no connection at all), means you guessed wrong - try the next candidate. Reconnect the battery only once both probes are off the machine.
-9. Turntable joint: stand on the ground at the turntable, under the stowed boom. Find the red + orange/black pair with the blue Scotchlok and the white wire, running to the unplugged grey 2-pin Deutsch connector whose far end is cut and frayed. Read the print on BOTH the red and the orange/black wire. Write down which of the two the Scotchlok blade actually bites into - the photograph suggests the orange/black one, but confirm it by eye. Write down the full label on the tilt-sensor carton beside it, including any part number. Do not fit anything out of that carton.
-10. Boom: walk the stowed boom from the platform end to the primary pivot. Open the cable-track tray covers and look along the whole length for any further white wire, Scotchlok, butt splice or tape. Be aware that the two existing photographs of 'the boom tap' and 'the turntable tap' look like the same joint shot twice, so a separate boom tap has NOT yet been proved - you are looking to either find it or rule it out. Check especially around connector J114 at the primary pivot, where two more Scotchloks with a green jumper and a loose pin terminal were already found - those are Card C's job, only photograph them here.
-11. In the control box, read the print on the red wire that joins the white wire at the blue butt splice, and on the wires at the small black block with the red bar. A red wire printed with 56 (S56PRV, P56PRV or C56FTS) is the E-stop and foot-switch chain: STOP. What that black block actually is has not been established [M] - identify it by the wire print or by the parts list for figures 603.1 and 604.1 before drawing any conclusion.
-12. Write a table: site, tapped wire name exactly as printed, colour you saw, circuit number, decoded function, verdict (STOP / harmless / stolen power). Photograph the table page.
-13. Verdict: if ANY joint is on a stop-list circuit, tag the machine out of service, keep both keys out, and do not operate it until the tap is removed and the wire repaired with a proper sealed joint - never another Scotchlok. That removal and repair is the next card; do not start it here without the photographs and table from steps 2 and 12.
-14. If every joint turns out to be on the horn circuit only, note it, still plan the removal, and carry on to Card C (the J114 circuit).
-
-**You should see**
-
-| Measurement | Expected | If that is what you get | If not |
-|---|---|---|---|
-| The printing on the factory wire under each joint, read by eye | **A readable name in the form PREFIX-NUMBER-SUFFIX-COLOUR, for example C64LS-OR/BK, P109ANG-GR/WH, S56PRV-RD, C145CAL-RD/WH or C46HN-WH. The colour letters after the dash should match the jacket colour in your hand.** | Decode it, place it on the stop-list, and write it in the table. | If it is unreadable, identify the wire by its plug and cavity (step 7) and confirm with the resistance check (step 8). If the printed colour does not match the jacket, that is a known error in the manual's generic colour table for certain circuits - the confirmed disagreements on this machine are circuits 23, 52, 124 and 132. Trust the print on the wire and the pin legend, not the colour table. |
-| Resistance (ohms / continuity), battery negative disconnected, between the Scotchlok blade (or bare conductor beside it) and the suspected connector cavity, that connector unplugged | **Less than 1 ohm, with the beeper sounding, to exactly ONE cavity; open circuit (the meter shows OL, meaning no connection) to every other cavity.** | The tap is confirmed on that circuit. Apply the stop-list verdict for that number. | More than a few ohms, or OL everywhere: wrong candidate. Try the other wires in the same plug, then the plug at the other end of that harness section. If you get continuity to TWO cavities, the tap or a splice is bridging two circuits - STOP; that is either a short or a defeat of the two-computer crosscheck. |
-| Stop-list comparison of the decoded circuit number | **Circuit 46 (horn) is the only harmless answer. Everything else on the list is a safety, sensor, calibration, drive or power-supply circuit.** | Horn: note it, plan the removal, carry on to Card C. | Any of 56, 64, 60, 61, 77, 83, 84, 85, 87, 94, 132, 109, 110, 123, 124, 141, 142, 145, 137, 30, 4, 21 or 184: STOP. Tag the machine out of service. Do not operate. Removal and a proper repair must come before any function test. If the number is 109 or 110, or 123/124/141/142, the toggle is very likely part of the cause of the boom-angle crosscheck and 'shorted / 0 V' faults, because the 5 volt supply and the sensor ground are shared between connectors J114 and J154 - so a fault at one sensor shows up at the other. |
-| How far the Wire Color Legend runs - does it reach circuit 155? | **Yes. The table runs from 1 to 199, then 226 to 228, then a brown 'Ground or Return' row. Row 155 reads OR/RD, 'Pressure Comp. Enable'. The TCON pin legend calls the same wire V155PCE-OR/RD at J14-34; wiring sheet ES0366J prints it V155PSE-OR/RD beside 'Y74 FUNCTION ENABLE VALVE (J166)'.** | If a white wire is found spliced near the function enable valve, use 155 = OR/RD. The manual says 'The function enable valve is mounted behind the medium pressure filter' (SM p.135), so that is where to look for that valve. | Not applicable. |
-| Where the turntable tilt sensing actually lives, so you can judge the 'TILT SENSOR' carton | **On this machine the turntable tilt sensing is built INSIDE the safety controller module: 'Safety Controller (SCON): Redundant dual axis tilt sensors measuring the X and Y tilt angles of the turntable. Also provides safety switch logic for function cut-off. Alarm sounds at plus or minus 4.5 degrees' (SM p.203). The only separate tilt sensor in the whole parts book is the platform one, 50813GT 'SENSOR,TILT,PCON (PLASTIC)', wired on circuits 84, 85 and 87 into the platform controller.** | A carton marked 'TILT SENSOR ... PCON' lying at the turntable is most likely a PLATFORM tilt sensor that was bought for the platform [M], not a turntable part. It does not belong at the safety controller. | Write down the carton's printed part number before concluding anything, and check it against the parts manual. If the number is not 50813GT, do not assume what it is. |
-
-**Why we are doing this.** The printed name tells you exactly what the home-made toggle switch was doing. If it sits on the horn circuit it is only a nuisance to remove. If it sits on any safety or sensor circuit - the emergency-stop and foot-switch power, the power feed to the limit switches, the 5 volt sensor supply, a boom angle signal, a tilt sensor, the load sensor, an axle input, the calibrate line or the drive power - then the machine must not be operated until the tap is removed and the wire repaired, and the finding changes what you measure next at connector J114 (Card C). This card is where you learn whether the toggle is part of the cause of the seven live fault codes or a separate piece of bad work.
-
-**Safety**
-
-- Both keys OFF and out, and both red E-stop buttons pushed IN, before you unplug any connector or touch any tap or splice. SM p.27: 'Push in the red Emergency Stop button to the off position at both the ground and platform controls.'
-- Disconnect the battery negative (-) cable before every resistance (ohms / continuity) reading. Reconnect only after both meter leads are off the machine.
-- Electrocution and burn hazard: 'Contact with electrically charged circuits could result in death or serious injury. Remove all rings, watches and other jewelry.' (SM p.27).
-- Machine on firm level ground, wheels chocked, boom stowed. Do not raise or operate a machine that is carrying boom angle crosscheck faults.
-- Never add, jumper or defeat a safety circuit, limit switch, angle sensor, tilt sensor or load cell. This card only finds and records the existing bad work; it exists to REMOVE a bypass, never to add one. Do not re-make any joint with a Scotchlok.
-- Do not turn the Bypass or Recovery key, and do not fit any calibration jumper or toggle. The manual says Bypass and Recovery 'are only intended for certain circumstances and are not part of normal machine operation. If either the Bypass or the Recovery function is required, this indicates there may be faults with the machine. Contact trained personnel immediately' (SM p.99). Bypass is for an out-of-level platform and for calibrating certain parameters; Recovery is a last-resort way to lower a platform in an emergency. Neither belongs in this card.
-- Do not cut the white wire or the factory wire yet. Cutting before the circuit is identified destroys the evidence of what was bridged.
-- Do not swap the platform circuit board while you are in the box. The manual warns: 'When the platform circuit board is replaced, jib bellcrank and platform level will need to be calibrated.' (SM p.27).
-- If any joint lands on a stop-list circuit, tag the machine out of service and keep both keys out until the repair card is finished.
-
-**Open questions on this card**
-
-- Which of the two factory wires the Scotchlok blade actually bites into - the photograph suggests the orange/black one, which would be C64LS-OR/BK, but the print has not been read. What the red wire beside it is printed as is also unknown. The 2-pin stub they end in is unplugged with a cut, frayed far end; its connector number (J146, J149, J153, J157 or another) cannot be settled until the print is read.
-- Whether a SECOND, separate Scotchlok tap exists partway along the boom. The field note records 'one Scotchlok tap en route' [F], but the two existing photographs appear to show a single joint from two distances (same red + orange/black pair, same single blue Scotchlok, same grey 2-pin Deutsch, same background). Step 10 exists to settle this. Photograph any new find with enough surroundings in frame to prove the location.
-- What the small black block with the red bar inside the control box is, and what the red wire reaching it through the blue butt splice is printed as. It looks like a push-button contact block (emergency stop or horn) but nothing confirms it [M]. If the red wire is printed with 56 it is the E-stop and foot-switch chain.
-- Where the third white wire from the toggle's third wired terminal goes - not photographed. Also worth settling: the toggle has six terminals in two rows, only one row wired, so check whether the unused row is truly dead or is bridged to something.
-- The 'TILT SENSOR ... DEGREES ... PCON' carton: likely a platform tilt sensor 50813GT [M]. Its printed part number is not legible in the photograph. Whether it was ever fitted, and why it is lying at the turntable when the turntable tilt sensing is inside the SCON module, is unknown.
-- Circuits 77 (Lower Angle #1 operational), 83 (Tilt signal X axis) and 94 (Load Sensor) exist in the manual's generic colour table but no wire carrying those numbers appears anywhere in this machine's pin legends or on sheet ES0366J. They are likely not used on the Z-135/70 [M]. They stay on the stop-list only in case a wire so printed is ever found; their 'goes to' is honestly blank.
-- Disagreements inside the manual between the generic colour table and this machine's pin legends: circuit 124 is RD/WH in the table but C124SBS-OR/BK in the legend and on ES0366J; circuit 23 is WH in the table but P23PCON-BK in the legend; circuit 52 is BL/RD 'Auxiliary Platform' in the table but P52PCON-WH in the legend; circuit 132 is GR in the table but S132LDS-BL/WH in the legend. The wire print and the pin legend are treated as authoritative. (Circuit 132 was missing from the previous card's list.)
-- V155PSE versus V155PCE: sheet ES0366J prints the function enable valve feed as V155PSE-OR/RD; the TCON pin legend at J14-34 says V155PCE-OR/RD; the suffix table has both PSE (Program Setup Enable) and PCE (Pressure Comp Enable), and colour row 155 reads 'Pressure Comp. Enable', so PCE is likely intended [M]. Separately, J166 is listed as the jib bellcrank sensor plug while ES0366J labels the function enable coil Y74 '(J166)' - an unresolved conflict inside the manual. Identify that valve by its location (behind the medium pressure filter, SM p.135) and by coil resistance, not by connector number.
-- Whether the boom harness physically runs inside the cable tracks of PM figures 507.1, 512.1 and 516.1 is inferred from the figure titles and the harness diagram [M]; the manuals never say it in words. Step 10's instruction to open the tray covers is therefore a reasonable place to search, not a manual-backed routing statement.
-- The 216061GT kit sensor's own pigtail wire colours are not in the three manuals [M]. The RD BK BL OR BR YL tails drawn on ES0366J are for the original 94980-type sensor.
-- The Operator's Manual note placing the bypass/recovery key switch on the lower right applies 'from serial number Z13512-1712'; this machine's serial reads Z13513-1861, a different prefix. Whether the note's serial range is meant to cover it is not certain [M] - so just check the box for a second key switch and remove whatever keys are there.
-
-<details><summary>Sources for this card (71 checked statements)</summary>
-
-- `[V]` Genie wire names have three parts: prefix, circuit number, suffix (SM p.192). — *1268557.txt 13825-13826 (PDF 206 = SM p.192)*
-- `[V]` The prefix letter states the type of circuit; the suffix is an abbreviation that further defines the function. — *1268557.txt 13827-13832*
-- `[V]` Prefix table: C Control, D Data, E Engine, G Gauges, N Neutral, P Power, R Relay Output, S Safety, V Valve. — *1268557.txt 13859-13877*
-- `[V]` Worked example of the naming system for a valve wire (V61AXR). — *1268557.txt 13852-13854*
-- `[V]` The same circuit number may appear more than once in a circuit - which is why circuit 21 carries both C21IGN and P21DCON. — *1268557.txt 13835-13836 (corrected from the previous card's 13834-13835)*
-- `[V]` Suffix meanings used in this card: ANG Angle, PBS Primary Boom Angle Sensor, SBS Sec Boom Angle Sensor, CAL Calibrate, LDS Load Sensor, PTS Platform Tilt Sensor, TAY Tilt Alarm Y axis, TTS Turntable Tilt Sensor, FTS Foot switch Signal, HRN Horn, GND Ground, LS Limit Switch, PLL Propel Lockout, PSE Program Setup Enable, PCE Pressure Comp Enable, SP Spare, AXE Axle Extend Valve, AXR Axle Retract Valve, EDC Electrical Displacement Control, DE Drive Enable. — *1268557.txt 13904, 13912, 13916, 13928, 13938, 13948, 13982, 13988, 13992, 14045, 14061, 14080, 14084, 14104, 14122, 14130, 14192, 14210, 14226, 14246 (SM pp.193-195)*
-- `[V]` The suffix DCN means 'Drive Chassis Controller' - backing for expanding DCON in plain words. — *1268557.txt 13936-13937*
-- `[V]` TCON stands for the turntable control box, and the manual calls it the machine's communication and operations centre. — *1268557.txt 7569-7571 (PDF 113 = SM p.99)*
-- `[V]` The pin-legend page titles back the plain-words names: J21/J22 belong to the 'Plat Controller', J31/J32 to the 'Drive Chassis', J121/J122 to the 'Safety Controller', J11-J15 to the 'Turntable Controller'. — *1268557.txt 15742, 15755, 15923, 15979, 16049*
-- `[V]` Colour abbreviations: WH White, BK Black, RD Red, GR Green, BL Blue, OR Orange, BR Brown, YL Yellow, with a slash meaning a stripe (SM p.196). — *1268557.txt 14275-14318 (PDF 210 = SM p.196)*
-- `[V]` P38 is the propel (drive) valve power circuit, which is what circuit 137 'Drive Power (P_38)' switches. — *1268557.txt 14332-14333*
-- `[V]` The Wire Color Legend occupies SM printed pp.196-200 (PDF pages 210-214). — *1268557.txt 14252-14258, 14924-14931*
-- `[V]` Colour legend rows used in the stop-list: 4 WH Turntable rotate left valve driver; 21 WH 12V DC ignition supply; 23 WH Power to platform; 30 WH Forward/EDC-A; 46 WH Horn; 52 BL/RD Auxiliary Platform; 56 RD Foot switch/TCON estop power; 60 GR/WH Axle extend; 61 GR Axle retract; 64 OR/BK Power for operational switches; 77 WH Lower Angle #1 operational; 83 GR/WH Tilt signal X axis; 84 GR/BK Tilt signal Y axis; 85 GR Tilt sensor power; 94 WH Load Sensor; 98 WH J1708 + (high); 109 GR/WH Sensor Power; 110 BK Sensor Return. — *1268557.txt 14365, 14421, 14427, 14453, 14501, 14519, 14550, 14562, 14565, 14575, 14615, 14633, 14636, 14639, 14671, 14683, 14718, 14721 (SM pp.197-198)*
-- `[V]` Colour legend rows continued: 123 RD/BK Primary Boom Angle Signal Operational; 124 RD/WH Secondary Boom Angle Signal Operational; 132 GR Platform Load Input; 137 RD/WH Drive Power (P_38); 141 RD Primary Boom Angle Signal Safety; 142 OR Secondary Boom Angle Signal Safety; 145 RD/WH Calibrate; 155 OR/RD Pressure Comp. Enable; 174 WH Key Switch Power Ground Position; 184 WH Program setup Enable; 185 WH Encode A; 197 WH Hour Meter. — *1268557.txt 14779, 14783, 14810, 14825, 14844, 14848, 14858, 14888, 14964, 14996, 14999, 15040 (SM pp.199-200)*
-- `[V]` The legend ends with rows 226-228 and a brown 'Ground or Return' row, so it does cover circuit 155. — *1268557.txt 15049-15062 (corrected from the previous card's 15047)*
-- `[V]` All plain-white (WH) rows in the legend are circuits 4, 21, 23, 30, 46, 77, 94, 98, 174, 184, 185 and 197 - twelve rows, no others. — *1268557.txt 14365, 14421, 14427, 14453, 14501, 14615, 14671, 14683, 14964, 14996, 14999, 15040*
-- `[V]` No wire named with circuit 77, 83 or 94 exists anywhere in the Service Manual text - a whole-file search for those circuit-name patterns returns nothing. So the goes_to for 77, 83 and 94 must read 'not present', and the previous card's 'platform tilt sensor J55 area' for circuit 83 was unsupported. — *1268557.txt whole file (verified by regex search)*
-- `[V]` TCON J12: cavity 2 = P21DCON-WH, 5 = S56PRV-RD, 10 = C61AXR-GR, 13 and 18 = C64LS-OR/BK, 15 = C144DER-BL/WH, 25 = SNSR GND-BR, 26 = P109ANG-GR/WH, 28 = C143DEL-BL/RD, 32 = C123PBS-RD/BK, 33 = C124SBS-OR/BK. — *1268557.txt 16129-16192 (PDF 224 = SM p.210)*
-- `[V]` TCON J11: 2 = P52PCON-WH, 3 = C46HN-WH, 5 = P23PCON-BK, 6 = S56PRV-RD, 7 = P56PRV-RD/WH, 11 = C145CAL-RD/WH. TCON J13: 3 = C21IGN-WH, 7 = C46HRN-WH, 10 = C30EDC-WH, 17 = S137PLL-RD/WH. TCON J14: 25 = V04TRL-WH, 34 = V155PCE-OR/RD. — *1268557.txt 16064-16088, 16204-16233, 16296-16315*
-- `[V]` SCON J121: 1 = S132LDS-BL/WH, 4 = C145CAL-RD/WH, 9 = S56PRV-RD, 10 = S137PLL-RD/WH, 12 = GNDSCON-BR. SCON J122: 1 = P21DCON-WH, 2 = C142SBS-OR, 3 = C141PBS-RD, 4 = C60AXE-GR/WH, 11 = S56PRV-RD, 12 = C61AXR-GR. — *1268557.txt 15987-16042 (PDF 223 = SM p.209)*
-- `[V]` PCON J21: 2 = P52PCON-WH, 4 = S56PRV-RD, 7 = P56PRV-RD/WH, 16 = C46HN-WH, 23 = P23PCON-BK. PCON J22: 16 = C64LS-OR/BK, 17 = C56FTS-RD, 19 = P85RET-BR, 20 = C84TAY-GR/BK, 21 = P85PTS-GR, 22 = P87RET-BR, 23 = P87PTS-RD, 30 = P109JBS-GR/WH, 31 = P110JBS-BK. — *1268557.txt 15754-15865 (PDF 222 = SM p.208)*
-- `[V]` DCON J31: 2 = P21DCON-WH, 5 = S56PRV-RD, 6 = C61AXRT-GR, 20 = C60FAP-GR/WH, 21 = C60RAP-GR/WH. DCON J32: 19 = P110RT-BK, 20 = P109ANG-GR/WH. — *1268557.txt 15912-15965*
-- `[V]` The foot switch signal is on circuit 56 (C56FTS-RD at PCON J22-17), not on circuit 64 - so the previous card's description of circuit 64 as the path 'every limit switch and the foot switch return to the controllers' was wrong on both counts. — *1268557.txt 15836-15837*
-- `[V]` Circuit 64 is a power FEED out to the switches, not a return: sheet ES0366J labels PCON cavity 22-16 'LIMIT SWITCH PWR'. — *1268557.txt 17075 (PDF 243 = SM p.229)*
-- `[V]` The limit switches' answers come back on their own separate wires: C70PBR-BL/WH, C71PBE-BL/BK, C143DEL-BL/RD and C144DER-BL/WH, all fed from C64LS-OR/BK. The drive-enable pairing is LST1O (right, J124) with C144DER-BL/WH and LST2O (left, J125) with C143DEL-BL/RD - the previous card listed these the wrong way round. — *es-scon-boomsensors.png figure (crop of sheet ES0366J, SM p.229); cross-checked against 1268557.txt 16155-16156 (J12-15 C144DER-BL/WH) and 16181-16182 (J12-28 C143DEL-BL/RD)*
-- `[V]` Circuit 21 also carries P21DCON-WH, the 12 volt module supply, at TCON J12-2, SCON J122-1 and DCON J31-2 - so a white wire printed P21DCON at the turntable is a controller power feed, not an ignition wire. — *1268557.txt 16130 (TCON J12-2), 15996 (SCON J122-1), 15927 (DCON J31-2)*
-- `[V]` Circuit connector descriptions: J114 and J154 are the 6-pin Deutsch plugs on the primary and secondary boom angle sensors; J20 is the 12-pin Deutsch limit switch harness plug; J21 black 23-pin and J22 white 35-pin are on the PCON; J23 is the 10-pin ribbon to the LED driver board and J24 its 20-pin Molex; J55 is the 6-pin Deutsch on the platform tilt sensor; J121 grey 12-pin and J122 black 12-pin are the SCON plugs; J124/J125 are the 2-pin drive-enable switch plugs; J126 the 4-pin drive-enable safety switch plug; J46 and J49 the 4-pin plugs on LSS1RS and LSS1RO. — *1268557.txt 15448-15478, 15597-15620, 15685-15687 (SM pp.205-207)*
-- `[V]` The 2-pin harness-to-harness Deutsch plugs a cut stub could belong to: J146 lower limit switch harness to engine harness; J149 boom composite; J153 engine and manifold harness; J157 PCON manifold to boom composite. J153 is an engine/manifold joint, not a boom one. — *1268557.txt 15646-15689*
-- `[V]` The turntable tilt sensing is inside the SCON module on this model, and the platform tilt sensor cuts out at plus or minus 10 degrees. — *1268557.txt 15308-15320 (PDF 217 = SM p.203)*
-- `[V]` LSFA1ES and LSRA1ES prevent boom functions with the axles retracted - why nothing should move during this card. — *1268557.txt 15322-15325 (LSRA1ES identical at 15326-15330)*
-- `[V]` The machine is 8 ft 1 in / 2.5 m wide with the axles retracted. (The Operator's Manual printed page is 64, not 58: the extracted PDF page 66 carries the footer '64'.) — *114474.txt 3967-3970 (PDF 66, footer '64' at line 3950 = OM p.64)*
-- `[V]` Sheet ES0366J shows a 'PLATFORM TILT SENSOR ASSEMBLY' wired on C84TAY-GR/BK, P85PTS-GR, P85RET-BR, P87PTS-RD and P87RET-BR, labelled platform tilt sensor power, ground, safe power and safe ground. — *1268557.txt 17117-17127, 17444-17446 (PDF 243 = SM p.229)*
-- `[V]` SCON fault matrix: a primary boom angle crosscheck fault switches OFF P_38, P_39, P_10, P_11 and P_30; a secondary crosscheck switches OFF P_38, P_39, P_11 and P_30; P_38 is propel. — *1268557.txt 13630, 13654-13667 (PDF 203 = SM p.189)*
-- `[V]` The manual itself names circuit P56PRV as red/white in the P22 safety switch fault row. — *1268557.txt 12398-12403 (PDF 189 = SM p.175)*
-- `[V]` For a boom angle sensor reading 0 V, the manual's recovery action is to check the 5 volts at the sensor, the wiring, and the 5 volt LED on the TCON board. — *1268557.txt 12591-12598 (PDF 191 = SM p.177; the '%' is an OCR error for '5')*
-- `[V]` The turntable control box has TWO key switches - the main ground/platform one at the top and the Bypass/Recovery one at the bottom - so both keys must come out. Recovery is an emergency-lowering mode, NOT a calibration mode; the previous card's gloss ('those are for the calibration technician') was wrong about Recovery. — *1268557.txt 7569-7590 (PDF 113 = SM p.99)*
-- `[V]` A note on the same page places the bypass/recovery key switch on the lower right of the control box from serial number Z13512-1712. — *1268557.txt 7593-7597*
-- `[V]` E-stop IN at both stations, jewellery off, and the warning against swapping the platform circuit board without recalibration (SM p.27). — *1268557.txt 2533-2547 (PDF 41 = SM p.27)*
-- `[V]` The function enable valve is mounted behind the medium pressure filter (SM p.135) - the previous card asserted this location without a citation. — *1268557.txt 10018 (PDF 149 = SM p.135)*
-- `[V]` J166 is listed as the 6-pin jib bellcrank sensor connector, while sheet ES0366J labels the function enable valve coil 'Y74 FUNCTION ENABLE VALVE (J166)' beside V155PSE OR/RD - a conflict inside the manual. — *1268557.txt 15708-15710; 18598-18599*
-- `[V]` The SM p.201 Limit Switch Legend drawing places the SCON (item 16) on the turntable, LSS1RS/LSS1RO/RSS1AO/RSS1AS (items 7-10) at the secondary boom pivot area, RSP1AO/RSP1AS (1-2) at the primary boom, and the Plat Angle Sensor (14) and PCON (15) at the platform. The boom-section placements are read off leader lines, not off text. — *sm201-limitswitch-legend.png figure (SM p.201; item list mirrored at 1268557.txt 15079-15098)*
-- `[V]` J114 wiring on sheet ES0366J for Unit #130 and higher: J20 cavities 11/12/2/10/7/6 carry P109ANG-GR/WH, SNSR GND-BR, C141PBS-RD, P109ANG-GR/WH, SNSR GND-BR, C123PBS-RD/BK, through jumper wires coloured RD, WH/BK, BL, OR, GR, WH to J114 cavities 1, 2, 3, 6, 5, 4; the sensor tails are RD BK BL OR BR YL; the pots are S18 primary safety and S17 primary operational. — *es-j114-primary-sensor.png figure (crop of ES0366J, SM p.229)*
-- `[V]` J154 wiring: cavity 1 P109ANG-GR/WH, 2 SNSR GND-BR, 3 C142SBS-OR, 6 P109ANG-GR/WH, 5 SNSR GND-BR, 4 C124SBS-OR/BK; sensor tails RD BK BL OR BR YL; pots S20 secondary safety and S19 secondary operational. — *es-j154-secondary-sensor.png figure (crop of ES0366J, SM p.229)*
-- `[V]` The 5 volt sensor power and the sensor ground are shared between J114 and J154 from one pair of TCON cavities, so a tap or short at one boom sensor can fault the other. — *es-boom-sensors-wide.png figure (ES0366J crop), with 1268557.txt 16175-16178*
-- `[V]` The Genie factory toggle-lid kit schematic has a SPARE #1 switch on SPARE-WH at J24 cavity 18, AXLE RET-GR at cavity 9 and AXLE EXT-GR/WH at cavity 12, and DRIVE ENABLE on DRV ENBL-BL/WH at cavity 7, all landing on the 20-pin J24 of the LED/toggle switch interface board, with a 10-pin J23 to the PCON. — *es-toggle-switch-aftermarket-kit.png figure (ES0366J, SM p.229)*
-- `[V]` PM figure 308.1 draws the platform control box fed by harness 10, joined to harness 9, joined to harness 3 from the ground control box; harness 13 serves the platform level sensor, foot switch and platform level & rotate; harness 6 runs from the ground control box to the SCON and on to LSS1RO/LSS1RS and RSS1AO; harness 7 to LSP1RO/LSP1EO/RSP1AO. — *pm074-harness-diagram.png figure (PM p.74)*
-- `[V]` Harness part numbers: item 3 = 94960GT secondary composite 'J1'; item 9 = 94961GT primary composite; item 10 = 94962GT jib composite; item 6 = 226496GT lower limit switch harness, fitted from SN 1419 to 2000 (which covers this machine); item 7 = 119792GT upper limit switch harness; item 13 = 94963GT platform harness 'J2'. — *106877.txt 3767-3769, 3826-3834, 3840-3846, 3878-3881 (PM pp.75, 77)*
-- `[V]` In PM figure 308.1 the item 14 harness 94966GT applies only 'to SN 439'; from SN 440 that item is 119674GT. The previous card listed 94966GT for this machine's boom diagram without the serial split. (94966GT does still apply, without a serial restriction, as item A of figure 604.1 inside the platform box.) — *106877.txt 3882-3893 (PM p.77); compare 10714-10716 (PM p.213)*
-- `[V]` Figure 511.2 'Primary Boom Angle Sensor and Retract Limit Switch (from SN 1854)' - the right serial group for this machine - runs PM pp.168-171. PM pp.166-167 carry figure 511.1, the superseded '(to SN 1853)' version. The previous card's 'PM 511.2 pp.167-169' was wrong. — *106877.txt 8494-8750 (page markers and footers for PM pp.167-172)*
-- `[V]` Cable track figures: secondary boom 236168GT 57 links in tray 217431GT, both 'from SN 1854' (PM figure 507.1, pp.152-153); primary boom 61852GT 27 links (PM figure 512.1, pp.172-173); jib boom cable track (PM figure 516.1, p.190). — *106877.txt 7902, 7924-7949, 8753, 8764-8766, 9635*
-- `[M]` That the boom wiring physically runs INSIDE those three cable tracks is an inference from the figure titles and the harness diagram - the manuals never say it in words. — *106877.txt 7902, 8753, 9635 (inference from figure titles)*
-- `[V]` Platform control box figure page ranges: figure 603.1 'Platform Control Box, View 1' runs PM pp.208-211; figure 604.1 'Platform Control Box, View 2' runs PM pp.212-213; figure 605.1 'Toggle Switch Lid Option' runs PM pp.214-216. The previous card's 'fig 603.1 pp.208-213' was wrong. — *106877.txt 10525-10771 (page markers and footers for PM pp.208-214)*
-- `[V]` Figure 603.1 (PM p.209) carries the lid 107798GT, the membrane decal 106509GT and the panel overlay 82841GT. Figure 604.1 (PM p.213) - NOT 603.1 - carries the PCON harness 94966GT (item A), the membrane/LED circuit board 62399GT (item 3) and the box gasket 81488GT (item 5). The previous card put the board and gasket on 603.1 p.208. — *106877.txt 10564-10575 (PM p.209); 10714-10732 (PM p.213)*
-- `[V]` Genie's platform-level toggle is 128200GT 'SWITCH TOGGLE ASSY SPDT 3P MOM', listed as including a boot; the boot itself is a separate line, 27246GT, 'Part of toggle switch 128200'. The manual never calls it 'sealed' - the previous card did. — *106877.txt 10677-10680 (PM p.211); 10805-10808 (PM p.215)*
-- `[V]` Toggle Switch Lid Option kit 237225GT is the ANSI kit for SN 779 to 2000 - the right one for this machine - using 128200GT switches, circuit board 232975GT and lid 229386GT. — *106877.txt 10787-10903 (PM p.215)*
-- `[M]` Genie's own harness repair terminal is a crimped Deutsch pin, part 73713GT. That factory joints are Deutsch pins or crimped terminals and NEVER clip-on taps is an inference from the parts book - no manual sentence says Genie does not use Scotchloks. — *106877.txt 3350-3351 (part number verified); 'Genie does not use Scotchloks' is inference*
-- `[V]` The SCON on this machine is 1258463GT (from SN 1712), item 22 of PM figure 304.1 'Hydraulic Tank Side Components', and the machine must be fully recalibrated if it is replaced. — *106877.txt 2784-2787 (PM p.55; corrected from the previous card's 2783-2786)*
-- `[V]` The only separate tilt sensor in the whole parts book is the platform one, 50813GT 'SENSOR,TILT,PCON (PLASTIC)', PM p.199 item 8. — *106877.txt 10053-10055 (PM p.199)*
-- `[V]` The original dual-output angle sensor 94980GT is no longer available; first replacement is kit 217246GT, and PM figure 511.2 lists 216061GT 'SENSOR, ANGLE, 180 DEG, CW' with a matched magnet and calibration required after fitting. — *106877.txt 3954-3958 (PM p.77); 8691-8695 (PM p.169)*
-- `[V]` PHOTO, CORRECTED: the aftermarket toggle switch has TWO ROWS OF THREE flat spade terminals - six in all. The three white wires all land on one row, each on a crimped insulated push-on spade (one lilac, two clear); the other three blades are bare and unused. The previous card and the case file both said 'three spade terminals', which the photograph refutes. The wire jacket is printed '16 GAUGE'. — *2026-09-12-aftermarket-toggle-terminals.jpg photo (read directly)*
-- `[V]` PHOTO: the toggle body is stamped '10A, 250VAC / 15A, 125VAC / 3/4HP, 125-250VAC / MEXICO / 9614' with a UL mark - a mains-rated switch on a 12 volt DC machine. — *2026-09-12-aftermarket-toggle-ac-rating.jpg photo (read directly)*
-- `[V]` PHOTO: inside the open control box the white wire joins a BLUE BUTT SPLICE - not a Scotchlok - then continues as a red wire to a small black block with a red bar on its face; a green circuit board is to the right and a joystick with a rubber boot and a grey multi-pin Deutsch plug is below. — *2026-09-12-white-wire-to-toggle-in-box.jpg photo (read directly)*
-- `[V]` PHOTOS, CORRECTED: the two photographs previously described as a 'boom tap' and a separate 'turntable tap' show the same thing - one solid red wire and one orange wire with a black stripe, ONE blue Scotchlok on the orange wire, one white wire entering it, and one GREY (not black) 2-pin Deutsch connector with cut, frayed wires beyond it, against the same rusty hydraulic tube, blue frame and corrugated loom. They are most likely one joint photographed close-up and wide. Nothing in either frame shows a boom section, cable track or tray. — *2026-09-12-white-wire-scotchlok-boom.jpg photos (both read directly and compared)*
-- `[F]` The field note records 'one Scotchlok tap en route' down the boom - a field observation, not a manufacturer statement, and not independently confirmed by the photographs. — *README.md section 'Field observation 2026-09-12 (later): aftermarket toggle switch and white wire'*
-- `[M]` The black block with the red bar in the control box is most likely a push-button contact block, but nothing identifies it; the red wire on it has not been read. — *2026-09-12-white-wire-to-toggle-in-box.jpg photo (interpretation)*
-- `[M]` The carton at the turntable is likely a platform (PCON) tilt sensor 50813GT, not a turntable part; whether it was ever fitted is unknown, and its printed part number is not legible in the photograph. — *106877.txt 10053-10055 (interpretation of the photo)*
-- `[M]` If the Scotchlok is on the orange/black wire and its print reads C64LS, the toggle taps circuit 64 'Power for operational switches'. The print has not been read, so this is still a guess. — *1268557.txt 14575-14577, 16151-16152 (conditional on the wire print)*
-- `[F]` Machine: Z13513-1861, 2013, 2162.4 hours, parts group from SN 1854; seven live boom-angle/SCON codes; propel dead; axles retracted. — *README.md line 1 and sections 'Field update 2026-09-10 (later)', 'Field observation 2026-09-12'*
-- `[F]` At the J114 pivot, two blue Scotchloks with a green jumper looped between them, a loose pin terminal outside a DT04-6P connector half, and a long green wire to a pink butt splice were found. Card C handles these; only photograph them here. — *README.md section 'Field observation 2026-09-12: primary boom angle sensor J114 has been modified'*
-- `[M]` Why a previous person added the green wire at J114 is unknown - the case file lists a bad sensor ground as only one of three competing hypotheses. The previous card stated the ground theory as fact inside a manual-cited table entry. — *README.md section 'Hypotheses for the modification'*
-- `[M]` Deutsch cavity numbers are usually moulded into the connector face, but on small shells only one or two may be marked - general connector practice, stated nowhere in the three manuals. — *a n/a*
-
-</details>
-
-
-### B5: Find and test the function enable valve (Y74)
-
-**What this finds out.** This card finds the function enable valve. That is the one small electric valve (solenoid valve) that lets the lift pump build oil pressure for every boom, steer and axle function. The card checks two things. First, that the valve's electric coil is sound, measured in ohms (a meter setting that tests whether a wire path is unbroken). Second, that nothing is switching that coil on when no operator is pressing a function enable button, measured in volts. It also checks whether the added white wire from the toggle switch in the basket is tied into this valve's wiring.
-
-**Where it is**
-
-- *What it is:* Function enable valve. Its electric coil is called Y74 on the wiring sheet. On the hydraulic drawings the valve is schematic item A. Parts: the whole block is 106454GT VALVE,FUNCTION ENABLE (item 2 of Parts Manual figure 707.1); the screw-in cartridge with its coil is 107742GT VALVE,SOLENOID 2 POS 2 WAY (item 1), and 106454GT includes it.
-- *Where on the machine:* On the turntable, inside the engine compartment, behind the medium pressure filter. The Parts Manual files figure 303.1 Engine Compartment Components inside its section '300 Turntable Components', which is why the engine compartment counts as part of the turntable.
-- *How to find it:* Walk around the turntable (the part that swings on top of the tracks/chassis) until you find the compartment door with the battery behind it. That compartment also holds the horn, the plate carrying the fuses and relays, and on Cummins and Perkins machines the plastic coolant recovery bottle. Which side of the turntable this door is on is not stated in the manuals; find it by the battery, not by a side (field guidance). Only trained maintenance staff may open it. Inside, look for the medium pressure filter: an upright cylindrical hydraulic filter canister sitting on a steel bracket that also carries a hydraulic pressure test point. ('Medium pressure' is just the manual's name for this filter; do not confuse it with the engine oil filter, which is a different canister.) The Service Manual says the function enable valve is mounted behind that filter. If you cannot find the filter, use the parts drawing instead: in Parts Manual figure 303.1 the valve (item 25) is drawn low in the compartment on its own small flat bracket plate, below and to the right of the battery box and near the battery tray, held by a 1/4-20 x 2 inch hex-head screw (4266GT), a flat washer (6638GT) and a nylock nut (6091GT - a nut with a nylon insert that stops it working loose). The parts list does not print how many of each, so do not expect exactly one. Confirm you have the right valve by two things: it is a single valve with only one coil, and its coil reads 3.5 to 5.5 ohms. Do not identify it by a J-number on the sheet, and do not identify it by wire colour alone: orange-with-a-red-stripe is used for two different circuits on this machine (see connector and open questions).
-- *What it looks like:* A square aluminium block with one hydraulic port face showing, one cylindrical screw-in cartridge standing up out of it, a finned coil slid over that cartridge, a hex nut on top holding the coil down, and a moulded plastic plug on the side of the coil. The Service Manual drawing on p.135 and the Parts Manual drawing on p.244 both show the plug as a plain hollow shell with no pins drawn, so the number of pins cannot be read from either drawing; the wiring sheet ES0366J is what shows the coil has two terminals, numbered 1 and 2. No size or weight is printed anywhere, so judge it by shape, not by size. It is a single small valve, not the big multi-valve function manifold.
-- *Source:* Service Manual p.135, section 8-7 Function Enable Valve (extract line 10018, table lines 10025-10032; figure func-enable-valve.png). Parts Manual figure 303.1 Engine Compartment Components: drawing on PM p.46 (figure pm046-engine-compartment.png), list on PM p.49 lines 2353-2363. Parts Manual figure 707.1 on PM p.244 (figure pm244-func-enable-manifold.png), list on PM p.245 lines 12216-12225. Medium pressure filter parts: PM p.95 lines 4811-4838, PM p.99 lines 5042-5047, PM p.109 lines 5656-5682, PM p.113 lines 5863-5864; drawing of one such filter on PM p.112 (figure pm112-perkins-1104c-engine-fig.png).
-
-**Set the machine to**
-
-- **Key:** Key OFF and pulled out for the ohms readings and the white-wire check. Key to the ground-controls position for the first volts reading, then to the platform position for the repeat. Do not touch the bypass/recovery key switch at any point.
-- **E-stops:** Both red E-stop buttons (E-stop = emergency stop, the big red push button) pushed IN whenever a plug is pulled off or pushed on, and for every ohms reading. Pull both OUT only for the volts readings, with nobody at the platform controls, no button pressed, and nobody touching the added toggle switch.
-- **Battery:** Battery negative (minus) cable disconnected and taped back for the ohms readings (steps 1-9) and for the white-wire check (steps 13-14). Reconnect it only for the volts readings (steps 10-12). The battery is item 22 in the same engine compartment as the valve (Parts Manual figure 303.1, list on PM p.47).
-- **Engine:** OFF for this whole card. Do not start it. With the engine off the pumps cannot turn, so no hydraulic pressure can build and nothing can move.
-- **Also:** Firm level ground, wheels chocked, boom stowed, axles left exactly as found (retracted). The coil plug stays OFF the coil for both the ohms and the volts readings, and goes back on at the end. Photograph the plug and both wires before touching anything. Do not operate the added toggle switch in the basket at any point in this card.
-
-**Connector — Y74 coil plug, two terminals, tagged '(J166)' on ES0366J**
-
-A two-terminal moulded plug on the side of the coil body. The wiring sheet ES0366J numbers the coil terminals 1 and 2; terminal 1 is the feed side (the wire named V155PSE, coloured orange with a red stripe) and terminal 2 is the return side. The sheet draws only a plain two-terminal coil symbol, so it does not say what brand or family of connector this is; do not assume it is a Deutsch (a common sealed connector brand). Warning about the number: the sheet tags this plug '(J166)', but the connector legend says J166 is the 6-pin Deutsch connector for the jib bellcrank sensor, and says J162 is the 3-pin Deutsch connector for the jib bellcrank angle sensor. The same sheet also draws a second, 3-pin J166 (terminals 1 RD, 2 BK, 3 BL) over at the jib bellcrank sensor. The manual therefore uses J166 twice and contradicts its own legend. Identify this plug by where it is - on the coil of the single valve behind the medium pressure filter - not by the number.
-
-*Source:* ES0366J (SM p.229): extract lines 18598-18599 'V155PSE OR/RD' / 'Y74 FUNCTION ENABLE VALVE (J166)'; figures es-y74-coil.png, es-y74-coil-diode.png, es-y74-return-vlvrtn6.png. Connector legend SM p.207: J166 at lines 15708-15710, J162 at lines 15697-15699, J153 at lines 15682-15684. Second, 3-pin J166 on the same sheet: figure es-j166-jib-bellcrank.png.
-
-| Pin | Wire name | Harness colour | Sensor colour | What it is | Goes to |
-|---|---|---|---|---|---|
-| 1 | V155PSE-OR/RD on the schematic sheet = V155PCE-OR/RD in the TCON pin legend | Orange with a red stripe (written OR/RD) | Coil terminal, no wire of its own - the plug is moulded onto the coil | Feed. Battery-level voltage on this wire switches the coil on and lets the lift pump build pressure for all boom and steer/axle functions. This is circuit 155, named 'Pressure Comp. Enable' in the colour legend. The letters after the number are printed PSE on the wiring sheet and PCE on the TCON pin legend; the legend of letter codes says PCE means 'Pressure Comp Enable' and PSE means 'Program Setup Enable'. It is the same circuit-155 orange/red wire either way; treat the PSE printing as a misprint on the sheet. | TCON connector J14 pin 34. J14 is described in the connector legend as a 'White 35 pin AMP connector on TCON' (AMP is the connector brand; it is not a Deutsch). On the sheet that pin is labelled 'PRESS COMP ENABLE VLV / P14-34', and the TCON pin legend lists pin 34 as 'V155PCE - OR/RD'. On its way there the wire crosses J153, a 2-pin Deutsch connector that joins the engine harness to the manifold harness. |
-| 2 | VLVRTN6-BR (sheet, at the valve) = VLVRET6-BR (TCON pin legend, at the controller) | Brown (BR) | Coil terminal | Return side of the coil. This is the path the coil current takes back to the controller. | The wire is named VLVRTN6-BR on the sheet at the valve end and VLVRET6-BR at the controller end. It lands on TCON connector J14 pin 30, labelled 'VALVE_RTN6' on the sheet. On the sheet this return is shared with the Y75 welder/generator bypass valve coil, and lower down with the Y52 and Y53 turntable rotate valve coils. It is NOT shared with the bank of boom and secondary-boom valve coils: those return on a separate line, VLVRTN7-BR, which lands on TCON J14 pin 27. |
-| J153 (a join; its own pin numbers are not printed on the sheet) | V155PSE-OR/RD | Orange with a red stripe on both sides of the join | Not applicable - this is a harness-to-harness join, not part of the valve | Pass-through. The orange/red feed crosses this two-pin join on its way from the TCON to the valve. If the feed is missing at the valve plug, this join is the first place to look for it. The connector legend calls J153 a '2 pin Deutsch connector for engine and manifold harness'. Its two pins carry the Y74 feed (V155PSE-OR/RD) and the Y75 feed (V150HG-GR/BK, green with a black stripe). | TCON J14 pin 34 on one side, Y74 coil terminal 1 on the other |
-
-**Do this**
-
-1. Set up. Machine on firm, level ground, wheels chocked, boom stowed. Push both red E-stop buttons IN, the one on the ground control box and the one in the basket. Turn the key OFF and pull it out. The engine stays off for this whole card.
-2. Open the engine compartment on the turntable. It is the compartment with the battery, the horn, the fuse and relay plate and (on Cummins and Perkins machines) the plastic coolant recovery bottle. Only trained maintenance staff may open it.
-3. Disconnect the battery negative (minus) cable. The battery is item 22 in that compartment. Tape the cable end so it cannot spring back and touch the post.
-4. Find the medium pressure filter: an upright cylindrical hydraulic filter canister on a steel bracket that also carries a hydraulic pressure test point. Look behind it for the function enable valve: a square aluminium block with one screw-in cartridge standing up, a finned coil with a hex nut on top, and a moulded plug on the side of the coil. It is a single valve with one coil, not the large multi-valve function manifold. If you cannot find the filter, use Parts Manual figure 303.1 instead and look low in the compartment, below and to the right of the battery box, for a small valve on its own flat bracket plate.
-5. Before touching anything, photograph the plug and the two wires going into it. One wire should be orange with a red stripe. Follow both wires by eye as far as you can and note any added wire, any blue insulation-piercing tap (a Scotchlok - a small plastic clip that bites through insulation to steal a connection), any butt splice, and any tape.
-6. Unplug the two-terminal plug from the coil: press the latch and pull it straight off. Tag it so it goes back the same way round. The Service Manual's own coil test starts the same way: 'Tag and disconnect the wiring from the coil to be tested.'
-7. Measure the coil. Set the multimeter to ohms, 200 ohm range, or to auto-range. Touch one probe to each of the two metal terminals on the coil itself, not on the harness half of the plug. Hold the probes still and read. Then swap the probes over and read again, and write down the higher of the two readings. Reason: the sheet shows a small diode (a one-way electrical valve) wired across this coil, which can make one probe direction read low. This probe-swap step is practical advice, not a manual instruction - the manual just says to test the coil resistance. Note that not every coil on the sheet has a diode; the five proportional coils marked 'P' are drawn without one.
-8. Compare with the specification: 3.5 to 5.5 ohms at 68 F / 20 C. The manual allows plus or minus 30 percent, which gives a pass band of about 2.5 to 7.2 ohms (2.45 to 7.15 exactly - if you land between 7.15 and 7.2, call it a fail). Coil resistance moves about 4 percent for every 18 F / 10 C the air is above or below 68 F, so write down the air temperature next to the reading.
-9. Look into the harness half of the plug. The socket that the orange/red wire feeds is the feed socket; the other one is the return socket. Mark which is which in your notes. Identify them by tracing the wire, not by the colour alone: orange/red is used for two different circuits on this machine.
-10. Reconnect the battery negative cable. Leave the coil plug OFF the coil.
-11. Volts with nothing commanded, ground controls. Turn the key to the ground-controls position. Pull the ground E-stop OUT and the basket E-stop OUT. Do not start the engine. Do not press any button. Nobody stands at the platform controls, and nobody touches the added toggle switch. Set the meter to DC volts, 20 V range. Put the red probe into the feed (orange/red) socket of the harness plug and the black probe into the return socket, and read. Then move the black probe to the battery negative post and read again.
-12. Volts with nothing commanded, platform controls. Turn the key to the platform position, both E-stops still OUT, foot switch NOT pressed, no button pressed, toggle switch untouched. Take the same two readings as in step 11.
-13. Key OFF and out, both E-stops IN. Disconnect the battery negative cable again and tape it.
-14. White-wire tie-in check. Set the meter to ohms or to continuity (the beeper setting). Put one probe on the white wire. In the field photo the white wire is not a loose bare end: it is spliced into the harness through a blue insulation-piercing tap on the turntable, and its other end runs to the toggle switch in the basket. So probe whichever of these you can reach safely without cutting anything: the metal of the tap itself, a stripped point you were going to repair anyway, or the spade terminal in the basket that the white wire lands on. Put the other probe into the feed (orange/red) socket of the Y74 harness plug and read. Then move that probe to the return socket and read. A reading of a few ohms or less means the white wire is joined to that circuit.
-15. Push the coil plug back onto the coil until it clicks. Reconnect the battery negative cable. Close and secure the compartment unless the next card needs it open.
-16. Write down: coil ohms and the air temperature; volts at the ground-controls position (plug-to-plug and feed-to-battery-negative); volts at the platform position (same two); white-wire ohms to the feed socket and to the return socket; and what your photographs show, including how many terminals the basket toggle switch has and how many of them are wired.
-
-**You should see**
-
-| Measurement | Expected | If that is what you get | If not |
-|---|---|---|---|
-| Coil resistance in ohms, across the two coil terminals, plug off the coil, battery negative disconnected | **3.5 to 5.5 ohms at 68 F / 20 C. Pass band about 2.5 to 7.2 ohms (3.5 x 0.7 = 2.45; 5.5 x 1.3 = 7.15 - this arithmetic is the card's, not printed in the manual).** | The coil is electrically sound. This does not prove the valve actually moves oil; proving that needs the engine running and is not part of this card. | OL (that is 'over limit' - the meter shows no reading at all, meaning the path is broken) or a reading well above 7.15 ohms means the coil is open; replace the solenoid valve 107742GT, or the whole 106454GT assembly which includes it. A reading near zero (0 to about 2 ohms) means the coil windings are shorted together; replace it too. Before removing anything, note which socket the orange/red wire sits in so the new coil goes back the same way round. Do not loosen the cartridge just to test the coil. |
-| DC volts at the harness half of the plug: feed (orange/red) socket to return socket, then feed socket to the battery negative post. Key at ground controls, both E-stops out, engine off, nothing pressed. | **Likely 0 V - in practice anything under about 0.5 V - on both readings (feed socket to return socket, and feed socket to battery negative). Tag M: no manual states what this circuit should read with the engine off.** | Nothing on the ground-controls side is holding the master hydraulic enable on. | A reading near battery voltage (about 12 to 13 V) means the feed is live with nothing commanded. Either an added wire is feeding this circuit - go to the white-wire readings below - or the TCON output at J14 pin 34 is stuck on. Do not run any hydraulic function until the source is found. The added wire is the first suspect; the TCON is the last. |
-| DC volts at the harness half of the plug, the same two readings, key at platform controls, both E-stops out, foot switch off, engine off, nothing pressed. | **Likely 0 V (tag M, same reason)** | Nothing on the platform side is holding the master hydraulic enable on while the toggle switch is left alone. Do not flip the toggle switch to see what happens. The field photo shows a switch with six spade terminals in two rows of three, so it can switch two separate circuits, and only one of them has been looked at. Operating an unidentified added switch on a machine whose safety wiring is already suspect is not a test this card allows. | Same as the reading above. If it read 0 V with the key at ground controls but reads battery voltage with the key at platform controls, the source is on the platform side: the basket control box, the added toggle switch, or the white wire. |
-| Ohms from the white wire (at its tap on the turntable, or at its spade terminal on the toggle switch in the basket) to the feed (orange/red) socket of the Y74 harness plug, battery disconnected | **OL - open circuit, no continuity, no beep** | The white wire does not feed the function enable valve. It still has to be traced and identified (card B2). In the field photo the white wire is tapped with a blue insulation-piercing clip onto one of two wires - they read as plain red and plain orange in the photo, with no stripe that can be made out - which run into a small dark two-way connector. A cardboard carton marked '...LT SENSOR' is lying nearby, but that is a spare-part box on the machine, not the sensor itself, so it does not tell you what the tapped wires are. Photo colours are not proof of a circuit either way; only this ohms reading settles whether the white wire touches Y74. | Continuity (a few ohms or less) means the toggle switch in the basket is a hand-operated master hydraulic enable: whoever flips it forces the lift pump to build pressure for every boom, steer and axle function no matter what the TCON has decided, which defeats the controller's hydraulic lock-out. Remove the white wire and the toggle switch completely - both ends, every insulation-piercing tap - repair the insulation on the orange/red wire, then repeat the two volts readings above. |
-| Ohms from the white wire to the return socket of the Y74 harness plug, battery disconnected | **OL - open circuit** | The white wire is not on the return side either. | The white wire is sitting on the valve return line VLVRTN6-BR. That is still an added wire on a controller circuit, and that same return is shared by the Y75 welder/generator bypass valve and the Y52 and Y53 turntable rotate valves, all landing on TCON J14 pin 30. Remove it and repeat the two volts readings. |
-
-**Why we are doing this.** If the coil is broken open, no boom, steer or axle function can get oil, no matter what the computers command. If the coil's feed wire shows battery voltage when nothing is pressed, then something is holding the master hydraulic enable switched on. That something is either the added white wire or a stuck output from the TCON (TCON = turntable controller, the machine's main computer, in its own control box at the ground controls). Either way it takes away the controller's decision about when hydraulic pressure is allowed. These readings decide whether the white wire and toggle switch must come out before anything else is done, and whether a new valve or a new TCON belongs on the parts list.
-
-**Safety**
-
-- Never bypass, jumper, hold on, or feed this valve or any other safety circuit, limit switch, angle sensor, tilt sensor or load cell. This card exists to take an added wire out; it never puts one in.
-- Key OFF and both E-stops IN before pulling or pushing any plug. Battery negative disconnected for every ohms reading.
-- The engine stays off for the whole card. Do not press a function enable button or any function button during the volts readings - the whole point is to see the circuit with nothing commanded.
-- Do not operate the added toggle switch in the basket. The field photo shows six spade terminals in two rows of three, with only three wired, so it can switch a second circuit that nobody has traced.
-- Manual warning that goes with coil testing: electrocution and burn hazard; contact with electrically charged circuits could result in death or serious injury; remove all rings, watches and other jewelry.
-- Manual warning that goes with opening covers: improper contact with components under any cover will cause serious injury; only trained maintenance personnel should access compartments; all compartments must remain closed and secured during operation.
-- Do not loosen the valve cartridge, the coil nut, the hoses or the filter. If a cartridge is ever refitted, the manual's torque is 20-25 ft-lbs / 27-34 Nm, but that is a different job with the system depressurised.
-- Do not use the bypass or recovery key switch, and do not fit any calibration jumper or toggle. Those belong to the calibration technician.
-- Firm level ground, wheels chocked, boom stowed. The axles are retracted, so boom functions are locked out by design. Do not try to work around that.
-- Measure at the valve plug, not at the TCON. J14 is a 35-pin connector with the pins close together, and probing it risks shorting an output (practical advice, not from the manual).
-
-**Open questions on this card**
-
-- Which engine is fitted is still not proven. The 62 kW on the serial plate does not decide it - the Perkins 1104C-44 is also 62 kW net - and Deutz and Cummins engines are listed for this model too. What the parts figures do say is that the 1104C-44 break is 'to SN 952' and the 804D-33T break is 'from SN 953', so if this machine (Z13513-1861) has a Perkins it is the 804D-33T. That matters only because the Parts Manual draws the hydraulic medium pressure filter on the Cummins, Deutz and 1104C-44 engine figures but lists none on the 804D-33T pages (PM pp.114-119 and 124-129). If you cannot find the filter, find the valve from parts figure 303.1 item 25 instead: low in the engine compartment, on its own flat bracket plate near the battery tray.
-- Whether the TCON energises Y74 at all when a function enable button is held with the engine OFF, the axles retracted and the current fault set, is not stated anywhere in the manuals. The manual only exercises this path with the engine running (SM p.117). So a 0 V reading while holding the button would prove nothing, while battery voltage with the button held would confirm the TCON drives the valve. Treat that as an optional extra observation, never as a pass or fail.
-- The 0 V expectation for the volts readings, and the 0.5 V allowance, are the card's own reasoning (tag M). No manual prints a voltage for this circuit with the engine off. A reading between about 0.5 V and battery voltage needs a second opinion rather than an immediate conclusion.
-- J166 numbering is contradictory in the manual: the sheet tags the Y74 coil plug '(J166)', the connector legend says J166 is the 6-pin jib bellcrank sensor connector and J162 the 3-pin jib bellcrank angle sensor connector, and the same sheet also draws a 3-pin J166 at the jib bellcrank sensor. Which printing is the error is unknown. Nothing in this card depends on the number.
-- The letters after circuit 155 are printed PSE on the sheet at the valve and PCE on the TCON pin legend; the code legend makes PSE mean 'Program Setup Enable' and PCE 'Pressure Comp Enable'. Same orange/red wire on the same two pins, so this is treated as a print inconsistency, but it has not been resolved with the manufacturer.
-- Orange-with-a-red-stripe is not unique on this machine: it is circuit 155 (the Y74 feed) and also circuit 63, 'Power to boom envelope safety switch'. The card therefore identifies the feed socket by tracing the wire at the coil plug and across J153, not by colour. If in doubt, do not guess from colour.
-- Where the white wire's turntable end actually goes has not been traced. The photo shows it tapped onto one of a red-and-orange pair at a small dark two-way connector; the colours in the photo are not proof of a circuit, and the nearby 'TILT SENSOR' carton is a spare-part box, not the sensor. The ohms readings in step 14 only tell you whether it touches Y74; card B2 still has to identify the other end.
-- The basket toggle switch has six spade terminals in two rows of three and only three are wired, so it can switch a second circuit that nobody has traced. This card deliberately does not flip it. That second pole must be identified before the switch is touched, and the switch and its wire are to be removed, not tested in service.
-- The moulded terminal numbers on the Y74 coil plug itself were not readable: both the Service Manual and the Parts Manual draw the connector as a plain hollow shell. The terminal numbers 1 and 2 come only from the wiring sheet. Identify the feed socket by tracing the wire, not by a moulded number.
-- The title block of sheet ES0366J reads 'w/ Deutz Engine', and the Service Manual carries a separate Perkins engine schematic on SM p.216. The machine's serial plate names ES0366, so the sheet is right for this machine, but if the engine turns out to be a Perkins then the engine-harness side of J153 may be drawn for a different engine. The Y74 coil, its feed and its return are on the main sheet and are unaffected.
-
-<details><summary>Sources for this card (48 checked statements)</summary>
-
-- `[V]` Service Manual section 8-7 'Function Enable Valve' says the valve is mounted behind the medium pressure filter (SM p.135). — *1268557.txt 10018 (page marker '===== PAGE 149 =====' at 10004, printed page footer '135' at 10013)*
-- `[V]` SM 8-7 table row: index 1, solenoid valve 2 position 2 way, schematic item A; it enables the lift pump to provide hydraulic pressure for all boom and steer/axle functions; torque 20-25 ft-lbs / 27-34 Nm. — *1268557.txt 10025-10032*
-- `[V]` The SM p.135 drawing shows a single valve: a square block with one screw-in cartridge, a finned coil with a hex nut on top, and a moulded plug on the side of the coil, callout 1 with letter A. The plug is drawn as a plain hollow shell - no terminals and no terminal numbers are drawn, so the number of pins cannot be read from this drawing. — *func-enable-valve.png figure (1268557.pdf page 149)*
-- `[V]` Coil resistance specification for schematic item A is 3.5 to 5.5 ohms. It is the last row of the Valve Coil Resistance Specification table on SM p.150. — *1268557.txt 10773-10776 (page marker '===== PAGE 164 =====' at 10683; printed page header '150' at 10689; next page marker at 10779)*
-- `[V]` Coil resistance alone cannot identify this valve. Three other rows of the same table read 3.5 to 5.5 ohms or overlap the card's 2.5-7.2 ohm pass band: proportional solenoid valves (items N, P, R, T, V) 3.5-5.5; solenoid valve 3 position 4 way (item B) 4-6; solenoid valve 2 position 3 way (items H, J) 3.5-5.5; and 2 position 3 way (items F, AD) 5.5-7.5. — *1268557.txt 10739-10742, 10743-10745, 10757-10760, 10765-10768*
-- `[V]` The manual accepts coil resistance within plus or minus 30 percent of specification, and says to replace the coil outside that. — *1268557.txt 10723-10728*
-- `[V]` The pass band of about 2.5 to 7.2 ohms is the card author's arithmetic on the two verified figures: 3.5 x 0.7 = 2.45 and 5.5 x 1.3 = 7.15. It is not printed in the manual, and a reading between 7.15 and 7.2 fails the manual's rule even though it falls inside the rounded band. — *1268557.txt 10775-10776 and 10723-10724 (arithmetic is the card author's)*
-- `[V]` Coil specifications are quoted at 68 F / 20 C and move about 4 percent for each 18 F / 10 C away from that. — *1268557.txt 10731-10737*
-- `[V]` The manual's coil test procedure is two steps: tag and disconnect the wiring, then test the coil resistance. It does not tell the technician to swap the probes or to take the higher reading. — *1268557.txt 10717-10721*
-- `[M]` Taking the higher of the two probe directions is the card author's practical advice, not a manual step. It is justified only because Y74's coil has a diode drawn across it. — *1268557.txt 10696-10728 (absence of the instruction)*
-- `[V]` Y74's coil is drawn on ES0366J with a suppression diode wired across it, its bar (cathode) end at terminal 1, the feed side. This is NOT true of every coil on the sheet: the five proportional coils marked 'P' (Y45, Y76, Y77, Y46, Y78) are drawn as a plain coil rectangle with no diode, while the on/off coils beside them (Y22, Y21, Y79, Y80, Y74, Y75, Y52, Y53) each have one. — *es-y74-coil-diode.png figure (1268557.pdf page 243, clip x3735-3775 y995-1045; and es-return-bus-split.png, clip x3440-3800 y1180-1270)*
-- `[V]` The manual has a separate coil diode test on SM p.151. — *1268557.txt 10791-10793 (page marker '===== PAGE 165 =====' at 10779; printed page header '151' at 10788)*
-- `[V]` Manual hazard warning that accompanies the coil test: electrocution/burn hazard, remove all rings, watches and jewelry. — *1268557.txt 10712-10716*
-- `[V]` ES0366J labels this coil 'Y74 FUNCTION ENABLE VALVE (J166)' with 'V155PSE OR/RD' as the adjacent wire name in the extracted text. — *1268557.txt 18598-18599 (ES0366J, PDF page 243 = SM p.229)*
-- `[V]` On the sheet, the V155PSE OR/RD wire leaves TCON pin P14-34 (labelled 'PRESS COMP ENABLE VLV'), crosses J153 between the words 'MANIFOLD HARNESS' and 'ENGINE HARNESS', and enters the Y74 coil at terminal 1; terminal 2 leaves the coil downward to a return line. — *es-y74-coil.png figure (1268557.pdf page 243), text positions read with PyMuPDF*
-- `[V]` J153 is a two-pin connector and both of its pins are identifiable on the sheet: the label 'J153' appears twice on page 243, once on the V155PSE OR/RD line (Y74's feed) and once on the V150HG GR/BK line (Y75's feed). — *1268557.txt 15682-15684 (legend, SM p.207); sheet positions read with PyMuPDF from 1268557.pdf page 243*
-- `[V]` TCON pin P14-34 'PRESS COMP ENABLE VLV' has its own output driver fed from 'uP' (the TCON's microprocessor). Its neighbour P14-35 'HYD WELDER PROPEL BYPASS' carries V150HG GR/BK. — *es-tcon-p14-34-press-comp-enable.png figure (1268557.pdf page 243, around x3602-3888 y649-849)*
-- `[V]` CORRECTED: Y74 terminal 2 does NOT share a return with the bank of boom and secondary-boom valve coils. ES0366J draws two separate return lines at the same height (y=1248.7) with a deliberate gap between them. The left line (x3466.8-3691.7) collects the pin-2 drops of Y45, Y76, Y77, Y46, Y78, Y22, Y21, Y79, Y80 and the Y82/Y81/Y65/Y66 group, and ends on the vertical labelled VLVRTN7-BR. The right line (x3717.7-3761.2) is tapped by the vertical labelled VLVRTN6-BR and collects Y74 terminal 2 (junction dot at x3752.5) and Y75 terminal 2 (x3761.2). The VLVRTN6-BR vertical carries on down to a second short line at y=1320.6 which collects Y52 and Y53. — *es-y74-return-vlvrtn6.png figure (also es-return-bus-split.png); geometry read directly from 1268557.pdf page 243 with PyMuPDF*
-- `[V]` CORRECTED: the Y74 return wire IS named and coloured on the sheet. It is VLVRTN6-BR - brown - and it lands on TCON connector J14 pin 30, printed VLVRET6-BR / VALVE_RTN6 at the controller end. The boom coil bank's return, VLVRTN7-BR, lands on J14 pin 27. Both are brown. No guess is needed. — *1268557.txt 16301 and 16307 (SM p.210, J14 heading at 16246); figure cases/Z13513-1861/figs/es-tcon-p14-27-30-valve-rtn.png*
-- `[V]` Y74's return is shared with Y75 WELDER GEN BYPASS VLV (J167), and lower down with Y53 TT ROT CCW VLV (J71) and Y52 TT ROT CW VLV (J70). Note that Y77, which some earlier readings grouped with the boom coils, is labelled on the sheet as a turntable rotate flow control, not a boom valve. — *es-y74-return-vlvrtn6.png figure (also es-y74-return-bus.png); text line 18597 'Y75 WELDER GEN BYPASS VLV (J167)'*
-- `[V]` TCON pin legend (SM p.210): J14 pin 34 = V155PCE - OR/RD. J14 is a 'White 35 pin AMP connector on TCON' - AMP, not Deutsch. — *1268557.txt 16315 (J14 heading at 16246; page marker '===== PAGE 224 =====' at 16046, printed header '210' at 16052) and 15441-15442*
-- `[V]` Wire colour legend, on the page headed 'Wire Color Legend' (SM p.199): circuit 155 = Pressure Comp. Enable, colour OR/RD. The columns are Color, Circuit #, Primary Function, so in this text extraction the colour comes before the number. — *1268557.txt 14758-14760 (column headers) and 14888-14890 (page marker '===== PAGE 213 =====' at 14745, printed footer '199' at 14754)*
-- `[V]` COLOUR TRAP, newly flagged: orange-with-a-red-stripe is used for two different circuits on this machine. Circuit 155 is OR/RD 'Pressure Comp. Enable' (the Y74 feed) and circuit 63 is also OR/RD, 'Power to boom envelope safety switch'. Circuit 64, orange with a black stripe, is 'Power for operational switches'. Wire colour alone therefore does not identify the Y74 feed. — *1268557.txt 14572-14574 and 14575-14577 (SM p.198, page marker '===== PAGE 212 =====' at 14532) and 14888-14890 (SM p.199)*
-- `[V]` Letter-code legend, on the page headed 'Wire Circuit Legend' (SM p.194): PCE = Pressure Comp Enable; PSE = Program Setup Enable. The sheet prints PSE at the valve while the TCON pin legend prints PCE for the same circuit-155 orange/red wire, so one of the two printings is wrong. — *1268557.txt 14085 and 14123 (page marker '===== PAGE 208 =====' at 14025, title 'Wire Circuit Legend' at 14028, printed header '194' at 14031)*
-- `[V]` Connector legend (SM p.207): J166 = 6 pin Deutsch connector for jib bellcrank sensor; J162 = 3 pin Deutsch connector for jib bellcrank angle sensor. Neither matches the two-terminal coil plug the sheet tags J166. — *1268557.txt 15708-15710 and 15697-15699 (page marker '===== PAGE 221 =====' at 15655, printed header '207' at 15664)*
-- `[V]` ES0366J also draws a second J166, a 3-pin plug (1 RD, 2 BK, 3 BL), at the jib bellcrank sensor next to J165 and the 'LSJ1RO JIB NOT RETRACTED' switch. The sheet therefore uses the number J166 twice. — *es-j166-jib-bellcrank.png figure (1268557.pdf page 243); 'J166' also occurs twice in the extracted text of that page, at lines 18599 and 18950*
-- `[V]` Parts list for figure 707.1 (PM p.245): item 1 = 107742GT VALVE,SOLENOID 2 POS 2 WAY; item 2 = 106454GT VALVE,FUNCTION ENABLE, which includes item 1. — *106877.txt 12216-12225 (page marker '===== PAGE 245 =====' at 12211; part numbers at 12217 and 12221)*
-- `[V]` Parts drawing 707.1 (PM p.244) shows the function enable valve as a square block (item 2) with one cartridge and coil (item 1); the platform rotator manifold is a separate block on the same page. As on SM p.135, the connector on the coil is drawn as a plain moulded shell with no terminals, so the pin count does not come from this drawing either. — *pm244-func-enable-manifold.png figure (106877.pdf page 244)*
-- `[V]` Parts list for figure 303.1 Engine Compartment Components (PM p.49): item 25 'Ref. Function Enable Manifold (refer to 707.1)'; item 26 4266GT SCREW,HHC,1/4-20 X 2; item 27 6638GT WASHER, FLAT, USS, 1/4"Y; item 28 6091GT NUT,NYLOCK,1/4-20. No quantity figures are printed for items 25-28, so the card does not state how many of each. — *106877.txt 2353-2363 (page marker '===== PAGE 49 =====' at 2348; column headers Item/Part No./Description/Qty. at 2349-2352, with no Qty. values on these four rows)*
-- `[V]` In the 303.1 drawing (PM p.46), item 25 is a small valve drawn low in the compartment on its own flat bracket plate, below and to the right of the battery box (callout 22) and near the battery tray (callout 14). Callouts 25-28 sit in the bottom callout row with long leader lines, not immediately beside the valve. — *pm046-engine-compartment.png figure (106877.pdf page 46)*
-- `[V]` The engine compartment is part of the turntable: the Parts Manual files figure 303.1 'Engine Compartment Components' inside its section '300 Turntable Components'. The Service Manual also refers to a component 'located in the engine compartment'. — *106877.txt 2366-2367 (PM p.49 footer); Service Manual line 10648 in /home/user/starry-shine-sheets/docs/genie-z135-70/extracted/1268557.txt*
-- `[M]` CORRECTED: neither manual says the engine compartment is behind a turntable cover on the engine side. The Service Manual quotes previously used for this say only that a jib pivot pin is 'on the engine side of the machine' and that a fixed turntable cover exists 'at the ground controls side' - the opposite side. Which side to stand on is therefore field guidance, not a manufacturer statement. — *1268557.txt 4268 and 5947-5949 (neither sentence is about the engine compartment)*
-- `[V]` Landmarks in the same compartment (Parts Manual figure 303.1 list, PM p.47): item 22 1303581GT BATTERY, 12V, 950CCA, FLA; item 23 81578GT HORN,12VDC,SPADE TERMINALS; item 7 60721GT COOLANT,RECOVERY BOTTLE, 4 QT, Cummins and Perkins models; item 6 107525PGT PLATE,RELAY MOUNT; item 14 107512PGT BATTERY TRAY FORMING,PAINTED; items 16-19 the maxi fuses and plug-in relays on that plate. — *106877.txt 2320, 2324, 2229, 2225, 2278 (part numbers; page marker '===== PAGE 47 =====' at 2204)*
-- `[V]` Medium pressure filter parts, on the Cummins B4.5L engine list (PM p.95): item 35 FILTER ASY,M PRESS,SAE8,WOIND (77139), marked 'component no longer available'; 35A 1267807GT ASSEMBLY, MED. PRESS. FILTER, SAE8; item 38 70517GT BRACKET,FILTER/TEST PORT. ('SAE8' is the port size code, sometimes written SAE -8.) — *106877.txt 4811-4838 (part numbers at 4822 and 4836; page marker '===== PAGE 95 =====' at 4776)*
-- `[V]` The same filter appears with bracket 128525GT BRCKT,MED.FILTER,TEST PORT on the Cummins B3.3T list (PM p.99) and the Deutz list (PM p.109), and as item 29 on the Perkins 1104C-44 list (PM p.113). The bracket carrying a test port is what makes the filter findable by eye. — *106877.txt 5043 (p.99), 5681 (p.109), 5863-5864 (p.113)*
-- `[V]` Parts drawing 405.1 Perkins 1104C-44 Engine, View 1 (to SN 952), on PM p.112, shows the medium pressure filter (callout 29) as an upright cylindrical canister on a bracket at the side of the engine, below the air cleaner. The engine oil filter on the same drawing is a different canister (item 26, 102632GT FILTER,OIL,PERKINS 1104C-44), which is why the card warns not to confuse them. — *pm112-perkins-1104c-engine-fig.png figure (106877.pdf page 112); oil filter part number at 106877.txt line 5830*
-- `[V]` CORRECTED: the Perkins 804D-33T pages are PM pp.114-119 (figure 405.2) and pp.124-129 (figure 406.2) - pp.120-123 in between are figure 406.1, a different engine. Those 804D-33T lists carry fuel, air AND engine oil filters, not 'fuel and air filters only'. What they do not carry is any hydraulic medium pressure filter: the string 'FILTER ASY,M PRESS' occurs in the Parts Manual only at lines 4812, 5047, 5657 and 5864, all before the p.114 marker. — *106877.txt page markers at 5923 (p.114), 6217 region (p.120), 6420 region (p.124), 6666 (p.129); oil filter entry at 6629; no 'FILTER ASY,M PRESS' between 5923 and 6666*
-- `[V]` CORRECTED: the 62 kW figure on the serial plate does NOT single out one engine. The Service Manual rates the Perkins 1104C-44 at 86 hp / 64 kW gross and 83 hp / 62 kW net, and the Perkins 804D-33T at 83 hp / 62 kW. What does discriminate is the serial break printed on the parts figures: 1104C-44 'to SN 952', 804D-33T 'from SN 953'. This machine is Z13513-1861, above SN 953, so if it has a Perkins it is the 804D-33T. Deutz and Cummins engines are also listed for this model, so the engine is still not proven. — *1268557.txt 1766-1767 and 1913 (SM engine specification pages); figure captions in 106877.txt at 5848 and 5926; serial Z13513-1861 and plate 'nominal power 62 kW' from 01-machine-identity.md line 9*
-- `[V]` Operator's Manual ground control panel: item 14 is the high speed function enable button (OM p.22) and item 15 the low speed function enable button (OM p.23). Pressing one enables the ground panel functions - this is the button the operator holds to allow hydraulic movement. — *114474.txt 1421-1424 (PDF 24 = OM p.22) and 1440-1443 (PDF 25 = OM p.23)*
-- `[V]` The only way the manual ever energises this path is with the engine running from the ground controls and a function enable button held (pressure compensator adjustment, SM p.117). There is no engine-off electrical test of Y74 anywhere in the Service Manual; Y74 appears exactly once in the whole extracted text, on the schematic. — *1268557.txt 8986-8998 (page marker '===== PAGE 131 =====' at 8952, printed header '117' at 8961); 'Y74' occurs only at line 18599*
-- `[V]` Fault table (SM p.174): the Safety Switch P7R fault is caused by the function enable button being held down during start-up; the recovery action is to recycle power with the button released. Relevant here because it shows the controller watches this button, and because it is a reason not to press the button during these readings. — *1268557.txt 12316-12322 (page marker '===== PAGE 188 =====' at 12272, printed header '174' at 12278)*
-- `[V]` Operator's Manual warning about opening covers (OM p.16). — *114474.txt 1064-1069 (page marker '===== PAGE 18 =====' at 1007, printed header '16' at 1010)*
-- `[V]` The TCON is its own control box assembly at the ground controls, not a board inside the ground control box lid: the Parts Manual lists 'CONTROL BOX ASSY,TCON' (106512GT, to SN 1711) and 'ASSY,CONTROL BOX,TCON,Z135' (237069GT, from SN 1712) as item 6 of figure 305.1 Ground controls, separate from item 7, the ground control box lid 107714GT. — *106877.txt 3055-3069 (figure 305.1 Ground controls, caption at 3017)*
-- `[F]` CORRECTED, field photo: the toggle switch fitted in the basket has SIX brass spade terminals arranged in two rows of three, of which only three carry wires (one lilac-insulated crimp and two clear ones) on white wire printed '16 GAU...'. It is therefore a two-pole switch capable of switching a second, untraced circuit. The six-terminal body is itself what rules out the Genie three-terminal SPDT part; the photo carries no part number. — *2026-09-12-aftermarket-toggle-terminals.jpg photo (enlarged crop x0.34-0.66 / y0.32-0.70)*
-- `[F]` CORRECTED, field photo: at the turntable the white wire is joined by a blue insulation-piercing tap onto one of a pair of wires that run into a small dark two-way connector. Enlarged, the pair reads as plain red and plain orange - no stripe can be made out on the orange, and nothing in the photo identifies the connector's brand. The white wire is spliced at the tap, not terminated in a bare end. A cardboard carton marked '...LT SENSOR' lies on the machine nearby, but that locates a spare-part box, not the turntable tilt sensor. — *2026-09-12-white-wire-turntable-tilt-sensor-box.jpg photo (enlarged crop x0.36-0.78 / y0.28-0.58; also 2026-09-12-white-wire-scotchlok-boom.jpg)*
-- `[M]` Repository house rule followed by this card (not a manufacturer statement): key OFF and E-stop IN before unplugging any connector, battery disconnected for resistance tests. The manufacturer-backed half of this is the Service Manual's own instruction to tag and disconnect the wiring before testing a coil. — *README.md 59-60 (under the heading 'Non-negotiable safety rules' at line 55)*
-- `[M]` Case file conclusion (a knowledge-base document, not a manual): the function enable valve is why energising one axle valve coil on its own moves nothing, and the valve should be identified by location and coil resistance rather than by the connector number. The case file's own page citation for the J166/J162 legend, SM p.206, is wrong; the legend is on SM p.207. — *README.md 101-103 (section heading at line 87; the 'SM p.206' error at line 100)*
-- `[V]` Sheet identity caveat: the title block of ES0366J reads 'Genie Z-135 / Electrical Schematic / w/ Deutz Engine / ES0366J', and the Service Manual carries a separate 'Perkins 1104C-44 and 804D-33T Engine Electrical Schematic' on SM p.216. The machine's serial plate names schematic ES0366, so this is the right sheet family, but the engine-harness side of J153 may be drawn for the Deutz. The Y74 coil, its feed from TCON P14-34 and its return to P14-30 are all on the main sheet and are not affected. — *1268557.txt 19695-19698 (title block on PDF 243) and 16642 (separate Perkins sheet, SM p.216); serial plate reference from 01-machine-identity.md line 9*
-
-</details>
-
+## A. Stand down
+
+Two short items, both before any measurement:
+
+1. **Tag out the toggle.** The generic AC-rated toggle switch in the platform control box, and the
+   white wire running from it down the boom, are to be treated as a live bypass of an unidentified
+   circuit until card B proves otherwise. Hang a "do not operate" tag on the ground controls, write on
+   it that the platform controls must not be used, and tell everyone on site in plain words. The
+   Service Manual's own instruction covers this: "Immediately tag and remove from service a damaged or
+   malfunctioning machine" and "Repair any machine damage or malfunction before operating the machine"
+   [V, SM p.171]. The tag stays on for the whole of today — every card in this plan measures and
+   records; none of them returns the machine to service.
+
+2. **Photograph every splice before touching it.** Before anything is unplugged, opened, lifted or
+   even wiped clean, photograph — from two angles each, with something in frame that proves where on
+   the machine you were standing: the J114 connector half and its loose gold pin terminal; both blue
+   Scotchlok taps and the green jumper looped between them; the bare frayed copper strands at the loom
+   mouth beside the lower tap; the long green wire and the pink crimp under its bolt; the aftermarket
+   toggle switch in the platform box, its terminal face and all three white wires; the blue butt
+   splice inside the platform box; and the blue tap at the turntable with the two-pin plug beside it.
+   These are evidence of what a previous person did to this machine, and once a tap is opened or a pin
+   is reseated that evidence is gone. Nothing is cut, unclipped, reseated or tidied today.
 
 ---
 
+## B. Identify the toggle switch
+
+### B1-B2 — Work out what kind of switch the non-Genie toggle is, and where its three white wires go
+
+**(from card `b1-toggle`)**
+
+#### Where it is
+
+**Component.** A non-Genie (aftermarket) toggle switch and its three white 16 GA wires (16 GA = 16
+American Wire Gauge, a size code; a smaller number means a thicker wire). Plus the single white wire
+that leaves the platform control box and runs along the boom toward the turntable. Reported to have
+been found in the platform control box, also called the PCON box (PCON = platform controller, the
+small computer in the basket control box). **No photograph shows the switch actually mounted in the
+box** — both switch photos show it already loose in the technician's hand — so treat "it was in the
+box" as a field report, not as photographed fact [M].
+
+**Where on the machine.** The platform control box is the blue box on the platform (basket) railing
+that carries the joysticks, the membrane push-button panel and a red E-stop button (OM p.20 item 7;
+OM p.26 item 17). The description "blue box on the railing" comes from the field photographs, not
+from the manual. The far end of the white wire is down at the turntable end of the machine, at a blue
+Scotchlok tap, close to where a cardboard carton printed TILT SENSOR is sitting.
+
+**How to find it.** Stand on the platform floor with the boom stowed. Undo the platform control box
+lid retaining fasteners and lift the lid (SM p.28 step 2) — these are steps 1 and 2 of "How to Remove
+the LED Circuit Board"; **stop after step 2**, do not carry on into the later steps and do not pull
+any ribbon cables. Inside you will see: two round joystick bases with black rubber boots and grey plug
+bodies, a green printed circuit board with two blue ribbon-cable sockets along one edge, and in one
+corner a small black contact block moulded "NC 1" with a red push-piece (NC = normally closed: the
+contact conducts until the E-stop button is pushed in). At that block a white wire arrives, ending in
+a blue insulated female push-on spade terminal, and that blue spade is stacked on the same block
+terminal as the red wire's own red spade. Follow the white wire out of the box and along the machine
+to the turntable end, where a blue Scotchlok tap joins it to an orange wire with a black stripe; a red
+wire runs alongside, and the red and orange/black wires go into a grey two-pin plug.
+
+**What it looks like.** Black rectangular body. Threaded metal bushing with a bare metal lever and a
+hex nut, and no rubber boot. Moulded into the body: "10A 250VAC 15A 125VAC 3/4HP 125-250VAC MEXICO
+9614", with RU and CSA approval marks. **IMPORTANT and corrected:** the terminal face carries SIX
+terminals in two rows of three, not three in a row. Each terminal is a small screw with a square brass
+pressure plate, and a flat brass blade tab beside it. Only three of the six are wired; the other three
+are bare. The three white wires are printed "16 GAU" and end in insulated female quick-disconnects —
+one lavender/violet and two clear. The lavender one matters: a genuinely blue crimp is what you will
+find on the E-stop contact block inside the box, so do not confuse the two. For contrast, Genie's own
+toggle for this box is 128200GT "SWITCH TOGGLE ASSY SPDT 3P MOM" and it comes with a short rubber boot
+27246GT as part of the assembly. (Note: Genie DOES fit toggle switches in this box — PM p.211 item 14
+is a 128200GT toggle in the platform control box figure — so the point is not "no toggle belongs
+here", it is "this particular switch is not a Genie part".)
+
+**Cite.** OM p.20, p.26; SM p.24, p.27, p.28, p.76; PM p.209, p.211, p.213, p.215; photos
+2026-09-12-aftermarket-toggle-terminals.jpg, -aftermarket-toggle-ac-rating.jpg,
+-platform-box-interior-pcb.jpg, -white-wire-to-toggle-in-box.jpg, -white-wire-scotchlok-boom.jpg,
+-white-wire-turntable-tilt-sensor-box.jpg.
+
+#### Set the machine to
+
+- **Key:** ground control key switch OFF and the key pulled out (SM p.24). Do NOT use the bypass or
+  recovery key positions.
+- **E-stops:** red E-stop pushed IN at BOTH the ground control box and the platform control box,
+  before any lid is opened (SM p.28 step 1).
+- **Battery:** DISCONNECTED, all of them. OM p.12: disconnect the batteries under both turntable
+  covers; decal 97865 repeats it. SM p.76 steps 16-18: auxiliary power unit batteries first, then the
+  engine starting/controls battery. Tag each cable. **Check: the ground control display must be dark
+  before you put a meter on anything.**
+- **Engine:** OFF, and it cannot start with the batteries off.
+- **Other:** firm level ground, wheels chocked, boom stowed, turntable rotation lock engaged, all
+  external AC power supply unplugged (this machine has a generator/AC option — check for a shore-power
+  lead). Axles stay retracted. Work from the platform standing on the ground-level platform floor with
+  the boom stowed; do not raise the platform. Dry the membrane panel and the inside of the box before
+  you probe — the box was found wet.
+
+#### Connector and wires
+
+The aftermarket switch has no plug or connector at all. Three of its six terminals carry push-on
+female spade crimps on white 16 GA wire; the remaining three are bare and unused. A six-terminal body
+is normally a double-pole switch — two separate switches in one body, three terminals each — so do NOT
+assume "the centre terminal is the common" the way you would on a three-terminal switch. The test
+below settles it by measuring, not by assuming.
+
+Hold the switch with the lever pointing up and the terminal face toward you, then label the terminals
+T-L, T-C, T-R (top row) and B-L, B-C, B-R (bottom row).
+
+For reference, Genie's own toggle-switch lid kit for this machine is 237225GT "KIT,TOGL SW PL BOX
+LID,ANSI", from SN 779 to 2000, on PM figure 605.1. It uses 128200GT switches on lid 229386GT with
+LED/toggle switch interface board 232975GT. The Service Manual's connector legend calls that same
+board the "LED driver board": J23 is "10 pin ribbon connector PCON to LED driver board" and J24 is
+"20 pin Molex connector LED driver board" (SM p.205 — p.205, not p.206; p.206 starts at J87).
+Schematic sheet ES0366J (SM p.229) carries a drawing captioned "TOGGLE SWITCH AFTERMARKET KIT
+SCHEMATIC". Two dashed outlines are drawn: an inner one captioned "LED/TOGGLE SWITCH INTERFACE PCB"
+around J24 and J23, and an outer one captioned "TOGGLE SWITCH AFTERMARKET KIT SCHEMATIC". Neither is
+labelled "platform box" — call it the kit boundary. **No conductor crosses that outer boundary, so the
+Genie kit has no wire running to the turntable. And the only plain WHITE wire anywhere in the Genie
+kit is J24-18 SPARE-WH.** A white wire running out of the box to the turntable is therefore
+definitively not the Genie kit.
+
+| Pin / terminal | Wire | Colour | What it is | Goes to |
+|---|---|---|---|---|
+| Aftermarket toggle, six terminals (T-L, T-C, T-R / B-L, B-C, B-R) | three white 16 GA wires on insulated female spades (one lavender, two clear); three terminals bare | WH | Unknown until measured. Likely a double-pole body [M] — do not assume any terminal is "the common". | UNKNOWN — the ring-out in steps 12-13 finds out |
+| In-box joint: blue insulated female spade stacked on the E-stop "NC 1" contact block terminal | white 16 GA in a BLUE spade, piggybacked on the terminal already carrying the red wire's red spade; a black wire leaves the other end | RD / BK machine side, WH added | **Not a Scotchlok — corrected.** There is no insulation-displacement tap inside the box; the test point is the stacked blue spade itself, and pulling it off is how you isolate the white conductor. The block is Genie 66818GT "CONTACT,NC", part of E-stop 66817GT under kit 122519GT. ES0366J labels the platform E-stop wires ESTOP PWR-RD and ESTOP RET-BK at "PCON E-STOP (P2)". | platform E-stop circuit — the specific wire to be proved by the ring-out, not assumed |
+| Scotchlok tap on the white wire, turntable end (harness side) | orange with a black stripe (OR/BK); a red wire (RD) alongside; red and OR/BK go into a grey two-pin plug; the white wire carries on PAST the tap | OR/BK + RD | Likely Genie circuit 64 "Power for operational switches", because OR/BK appears once in the Wire Color Legend — but ES0366J also carries REAR STR-OR/BK inside the toggle kit, so colour alone does not name the circuit [M]. Prove it by ringing through to a named connector pin. | grey two-pin environmental plug near the TILT SENSOR carton; which switch or sensor it serves has not been identified. The plug is GREY, not black, and nothing proves it is a Deutsch. |
+| Genie kit J24-1 … J24-20 (reference only) | 1 HORN PWR-RD, 2 HORN RET-GR, 3 GEN ON/OFF-GR/WH, 4 AUX PUMP-RD, 5 START ASST-BK/WH, 6 ENG START-BK, 7 DRV ENBL-BL/WH, 8 NOT USED, 9 AXLE RET-GR, 10 GND1-BR, 11 ENG SPEED-BK/RD, 12 AXLE EXT-GR/WH, 13 DRV SPEED-RD/WH, 14 FRONT STR-OR, 15 REAR STR-OR/BK, 16 CRAB STR-BL, 17 CORD STR-BL/BK, **18 SPARE-WH**, 19 FUEL SEL-BL/RD, 20 GND2-BR | as listed | the factory toggle kit's own wiring. Note pin 15 is a SECOND OR/BK wire on the same sheet, so an orange/black wire is not automatically circuit 64. Pin 18 is the only plain white wire in the whole kit. | LED/toggle switch interface PCB, 20-pin J24 block; J23 10-pin ribbon back to the PCON |
+
+#### Do this
+
+1. **Stand the machine down.** Firm level ground, wheels chocked, boom stowed, turntable rotation lock
+   engaged, external AC lead unplugged. Ground key OFF and the key out. Red E-stop IN at the ground
+   control box AND at the platform control box. Do not touch the bypass or recovery key positions and
+   do not fit the calibration jumper or toggle.
+2. **Disconnect every battery.** Open both turntable covers. Auxiliary power unit battery cover off,
+   tag and disconnect those cables; then tag and disconnect the engine starting/controls battery on
+   the engine side. Tape a flag round each cable as it comes off. Take off all rings, watches and other
+   jewellery first. CHECK: the ground control display must be completely dark.
+3. **Climb into the platform**, boom stowed, platform at ground level. Undo the lid fasteners and open
+   the lid — steps 1-2 of SM p.28's LED-board procedure. **STOP after opening the lid.** Clip a
+   grounded wrist strap to the ground screw inside the control box (SM p.27 step 7). ESD
+   (electrostatic discharge — the static spark you get off a carpet) damages the green boards. Keep the
+   meter probes off the circuit boards altogether.
+4. **Photograph before you touch anything:** the switch where it sits, all six of its terminals, the
+   three white wires and where each one goes, the blue spade stacked on the E-stop "NC 1" block, and
+   the Scotchlok tap at the turntable. Then tape-flag the switch terminals T-L, T-C, T-R / B-L, B-C,
+   B-R. Write down which three of the six carry a wire and which three are bare. Flag each white wire's
+   crimp with the same code as the terminal it came off. Note which way the lever points against a
+   fixed landmark, e.g. "lever toward the E-stop button = position 1".
+5. **Pull the three spade crimps off the switch.** Grip the plastic crimp body, not the wire, and pull
+   straight off. Slide a short piece of insulating sleeve or a wire nut over each bare crimp, or bag
+   them and tie the bag clear of metal — tape alone is not enough in a box that was found wet. The
+   switch is now electrically alone in your hand.
+6. **Set the meter** to ohms / continuity — the setting that beeps. Touch the probes together: it must
+   beep and read close to 0 ohms. Write that number down and subtract it from every later reading.
+7. **Plain-words glossary before you read the switch.** POLE = one independent switch inside the body.
+   THROW = one position a pole can connect to. SPST = plain on/off, two terminals. SPDT = three
+   terminals, one common that connects to either of the other two. DPST / DPDT = two of the above in
+   one body, six terminals, the halves working together but electrically separate. MOMENTARY = the
+   lever springs back. MAINTAINED = the lever stays put. OL on the meter (sometimes "1" or a blank) =
+   open line, no connection, no beep. This switch has six terminals, so it is very likely a double-pole
+   body [M] — which is exactly why you probe every pair rather than assuming which terminal is common.
+   Genie's own switch is described in the Parts Manual only as "SWITCH TOGGLE ASSY SPDT 3P MOM"; the
+   manual never says what "3P" stands for, so do not assume it means three positions or a centre-off [M].
+8. **Lever in position 1.** Probe EVERY pair of the six terminals — all 15: T-L/T-C, T-L/T-R, T-C/T-R,
+   B-L/B-C, B-L/B-R, B-C/B-R, T-L/B-L, T-C/B-C, T-R/B-R, T-L/B-C, T-L/B-R, T-C/B-L, T-C/B-R, T-R/B-L,
+   T-R/B-C. Probe bare metal — the blade or the screw plate — not plastic. Write each pair down as
+   "beep + ohm reading" or "OL". Draw it as a grid so nothing is missed.
+9. **Lever in position 2.** Repeat all 15 pairs. Write them all down again.
+10. **Let the lever go from each side in turn.** Does it spring back (momentary) or stay put
+    (maintained)? If it springs back from one side only, note which. If it has a middle rest position,
+    put it there and probe all 15 pairs a third time.
+11. **Decode** using the Expected table. The pattern of which pairs beep in which position tells you
+    how many poles and throws; the spring tells you momentary or maintained. Write the verdict on a
+    tape flag, e.g. "double pole, double throw, maintained, 2 positions; only 3 of 6 terminals wired,
+    on T-L, T-C, B-R".
+12. **Ring out the three white wires.** The run from the platform box to the turntable is far longer
+    than your meter leads, so make a long test lead: insulated wire with an alligator clip at each end.
+    Prove the test lead itself and note its own resistance. Clip one end to the first tagged white
+    crimp; carry the meter and the free end to each candidate far point. A beep means it is the same
+    conductor. Candidates: (a) the blue insulated spade stacked on the E-stop "NC 1" contact block —
+    pull that spade off its terminal and probe the spade's own metal; (b) the point where the white
+    wire leaves the box, so you know which conductor goes outbound; (c) the blue Scotchlok tap at the
+    turntable end, on the orange/black wire beside the red wire — probe the exposed metal blade of the
+    Scotchlok, or a bared strand at the crimp. **NOTE, corrected:** earlier notes listed a "mid-boom
+    Scotchlok" and a separate "turntable end" as two different places. Both photographs show the same
+    blue Scotchlok, the same white + orange/black + red trio, the same grey two-pin plug and the same
+    rusty-tube and blue-plate background, with the TILT SENSOR carton in frame in one of them. They are
+    very likely one splice in one place [M]. Trace the wire physically with your hand before you treat
+    any "OL" as a broken wire. Also note that in the photo the white wire carries on PAST the Scotchlok
+    — so its own far end is somewhere further along and has not been seen yet; find it. **Never pierce
+    a wire's insulation to make a test point.**
+13. For each white conductor write one line: "Terminal <code> -> <where it lands>". Then check each
+    white conductor against bare machine steel: clip the long lead to the conductor, scrape a clean
+    spot on a bolt head on the platform weldment (the welded steel frame of the platform) and touch the
+    probe there. Expect OL.
+14. **Name the machine wires that were tapped, and be careful about it.** The Wire Color Legend is SM
+    p.198. Orange with a black stripe = circuit 64 "Power for operational switches" — BUT sheet ES0366J
+    also carries REAR STR-OR/BK in the toggle kit, so an orange/black wire is not automatically circuit
+    64. Red is worse: red serves circuits 56, 87, 96 and others. Green/white is used twice: circuit 83
+    "Tilt signal X axis" and circuit 109 "Sensor Power". And white is used for circuit 77 "Lower Angle
+    #1 operational", circuit 94 "Load Sensor" AND circuit 98 "J1708 + (high)" (J1708 is a data link).
+    So colour is a starting hint only. Ring each tapped conductor through to a named connector pin
+    before you write a circuit number down. Compare against the stop-list. Record the outcome. **Do not
+    cut, unsplice, untap or reconnect anything on this card.**
+15. **Finish and hand over.** Leave the three crimps OFF the switch, sleeved or bagged, not just taped.
+    Leave every Scotchlok and the stacked blue spade exactly where they are — they are evidence for the
+    removal card. Close the lid loosely to keep water out. Leave all batteries disconnected. Photograph
+    the tagged crimps and the tagged switch. Write on the machine tag and tell the next person: THIS
+    MACHINE MUST NOT BE RE-POWERED OR OPERATED until the next card has decided what the switch was
+    doing and the harness has been put right.
+
+#### You should see
+
+| Measurement | Expected | If OK it means | If not it means | Cite |
+|---|---|---|---|---|
+| Probes touched together, meter on ohms / continuity | Beep, roughly 0 to 0.5 ohms | Meter and leads are good. Carry on. | Change the meter battery or the leads before you trust any reading. | General practice; no Genie spec exists [M] |
+| How many of the six terminals carry a wire | Three wired, three bare (what the photo shows) | Record which three. A wire on a terminal that never connects does nothing, but you still need to know it is there. | If more or fewer are wired than the photo showed, somebody has been at it since — photograph it again and say so. | photo 2026-09-12-aftermarket-toggle-terminals.jpg |
+| All 15 terminal pairs, lever in position 1 | On a double-pole body: two separate groups — one pair beeping within the top row, one within the bottom row, nothing beeping between the rows. On a single-pole body only one pair beeps at all. | Write down which pairs beep and their ohm readings. Go to position 2. | If nothing beeps in either position the switch is dead or corroded — recheck every pair with firm probe pressure before calling it dead. | Standard switch behaviour; six-terminal body from the photo [M] for the double-pole reading |
+| All 15 terminal pairs, lever in position 2 | The beeping partner within each row changes to the other end terminal. The two rows still never beep to each other. | Two throws per pole. Write the verdict. | If the same pair beeps in both positions and nothing else changes, that pole behaves as a plain on/off (or its other throw contact is dead). Record which terminals never connect to anything. | Standard switch behaviour |
+| Any pair that beeps between the TOP row and the BOTTOM row, in any lever position | OL — the two poles of a double-pole switch are electrically separate by design | Normal for a double-pole switch. | A beep between the rows means either the body is not double-pole, or someone has bridged two terminals outside the switch with a jumper, solder or a second tap. Look for it, photograph it, **do not remove it** — record it. | Standard switch behaviour |
+| Lever released from each side; readings in any middle rest position | Springs back = momentary. Stays put = maintained. In a middle rest position, expect every pair OL. | Record "momentary" or "maintained", and "2-position" or "3-position". | A maintained switch wired into a circuit meant to receive a brief command can hold that command on permanently. Flag it clearly. Note: which Genie functions require a momentary command is not stated in the manuals [M] — flag the concern, do not state it as fact. | PM p.215 lists Genie's switch as "SWITCH TOGGLE ASSY SPDT 3P MOM"; "3P" is not expanded [M] |
+| Ohm reading of any pair that beeps (contact resistance) | Under about 1 ohm once you subtract the probe-to-probe reading | Contacts are clean. | Several ohms, or a reading that jumps when you waggle the lever, means a worn, corroded or water-damaged contact. The switch has no boot and the box was wet. Either way this switch is not going back in. | General practice threshold, not a Genie spec [M]; boot 27246GT is "part of toggle switch 128200" PM p.215 |
+| Continuity from each tagged white crimp to each candidate far point, through the long test lead | Each white conductor beeps at exactly one far point, under about 1 ohm plus the long lead's own resistance | Write "Terminal <code> -> <point>" for all three. Likely destinations from the photos: one white wire to the blue spade on the E-stop "NC 1" block; one white wire out of the box, along the machine, to the blue Scotchlok on the orange/black wire at the turntable end [M]. | OL at every candidate means either you have not found the far end yet, or the conductor is broken. Follow the wire physically before calling it broken. Remember the two Scotchlok photos are probably ONE place. | photos -white-wire-to-toggle-in-box.jpg, -white-wire-scotchlok-boom.jpg, -white-wire-turntable-tilt-sensor-box.jpg |
+| Each white conductor against bare machine steel | OL | Nothing is tied to the frame. | A beep means the wire is rubbed through to the frame or deliberately grounded. Record it. A grounded conductor on a power circuit explains blown fuses or a sagging supply. | General practice [M] |
+| Identity of the machine wires that were tapped — traced to a named connector pin, not guessed from colour | See the stop-list in card B3-B4 below | If any white conductor lands on a stop-list circuit, the toggle is spliced into a control or safety circuit and it is a bypass. Record it. The next card removes it and repairs the harness with Genie-method splices. Do not reconnect it. Do not operate the machine with it in place. | If a far end proves to be J24-18 SPARE-WH on a Genie interface board, somebody was reaching for the Genie kit's spare input — but the Genie kit has no wire leaving the kit boundary, so a run to the turntable is still not the kit. If a far end is dead-ended and joined to nothing, that terminal currently does nothing; the other two still decide the verdict. Either way the switch does not go back in. | SM p.198; SM p.229; fig es-toggle-switch-aftermarket-kit.png |
+
+#### Why we are doing this
+
+The machine has seven live boom-angle and calibration faults and propel is dead. A home-made toggle
+switch wired into the platform control box, with plain white wire running away to the turntable area,
+is either a bypass of a control or safety circuit or a botched attempt at Genie's own toggle-switch
+kit. Which machine wires it touches decides whether the next card is "remove a bypass and repair the
+harness" or "harmless add-on, leave it". Nothing on the boom-angle circuit can be trusted until this
+is known, and the machine must not go back to work with an unidentified switch spliced into it.
+
+#### Safety
+
+- Key OFF and the key removed; red E-stop pushed IN at both the ground and the platform controls before
+  the lid comes off; external AC power supply unplugged from the machine (SM p.24; SM p.28 step 1).
+- All batteries disconnected before any ohms test — the auxiliary power unit batteries AND the engine
+  starting/controls battery, under both turntable covers (OM p.12; decal 97865 OM p.5; SM p.76).
+- Remove all rings, watches and other jewellery — the Service Manual prints an electrocution/burn
+  hazard warning at this point in the procedure (SM p.28).
+- Wear a grounded wrist strap clipped to the ground screw inside the control box (SM p.27 step 7) and
+  keep the meter probes off the printed circuit boards (SM p.28).
+- **Never pierce a wire's insulation to make a test point. Never add a jumper. Never reconnect the
+  aftermarket switch. Never bridge any pair of its wires.** This plan REMOVES bypasses; it never adds one.
+- Never bypass, jumper or defeat a safety circuit, limit switch, angle sensor, tilt sensor or load cell
+  — not to get a reading, not to get the machine to move.
+- Do not use the bypass or recovery key positions and do not fit the calibration jumper or toggle.
+- Machine on firm level ground, wheels chocked, boom stowed, turntable rotation lock engaged. Work from
+  the platform only at ground level. Do not raise it on a machine with live boom-angle faults.
+- Dry the membrane panel and the inside of the box before probing, and do not do this test in rain. A
+  wet membrane panel is already suspected in the "both axle buttons pressed" fault, whose recovery
+  action is "Check ribbon and connector from membrane switch. If necessary replace membrane switch."
+  (SM p.176).
+- The white wire, the Scotchlok tap and the stacked blue spade are evidence. Photograph before and
+  after, tag every end, leave them in place for the removal card.
+- **Hand-off:** the three crimps are left disconnected and sleeved or bagged inside a box found wet.
+  Tag the machine and tell the next person in plain words: do not re-power or operate this machine
+  until the next card is done.
+
+#### Sources
+
+- [V] Photo: six terminals in two rows of three, only three wired — photos/2026-09-12-aftermarket-toggle-terminals.jpg (verified by enlargement)
+- [V] Photo: white wires printed "16 GAU"; one lavender/violet crimp, two clear — same photo
+- [V] Photo: body moulded "10A 250VAC / 15A 125VAC / 3/4HP 125-250VAC / MEXICO / 9614", bare bushing, no boot — photos/2026-09-12-aftermarket-toggle-ac-rating.jpg
+- [V] Photo: in the box the white wire ends in a BLUE insulated female spade stacked on the E-stop "NC 1" contact block beside the red wire's red spade — NOT a Scotchlok — photos/2026-09-12-white-wire-to-toggle-in-box.jpg
+- [V] Photo: box interior — two joystick bases with grey plugs, green PCB with two blue ribbon headers, black contact block moulded "NC 1" — photos/2026-09-12-platform-box-interior-pcb.jpg
+- [V] Photo: blue Scotchlok joins the white wire to an orange/black wire; a red wire alongside; red and OR/BK into a GREY two-pin plug; the white wire continues past the tap — photos/2026-09-12-white-wire-scotchlok-boom.jpg
+- [V] Photo: the same tap, trio, plug and background appear again with a "TILT SENSOR" carton in frame — photos/2026-09-12-white-wire-turntable-tilt-sensor-box.jpg
+- [V] "1 128200GT SWITCH TOGGLE ASSY SPDT 3P MOM / Platform Rotate Toggle Switch" — PM p.215 (10802-10805)
+- [V] Lid-kit toggles are fig 605.1 items 5-15, each 128200GT — PM p.215 (10821-10875)
+- [V] "2 27246GT BOOT,TOGGLE SWITCH,SHORT* / Part of toggle switch 128200" — PM p.215 (10807-10810)
+- [V] "237225GT KIT,TOGL SW PL BOX LID,ANSI / from SN 779 to 2000" — PM p.215 (10788-10790)
+- [V] Kit lid 229386GT and interface board 232975GT — PM p.215 (10888-10903)
+- [V] Genie DOES fit a toggle in the platform control box figure: PM p.211 item 14 128200GT "(Platform Level; includes boot and hardware)" with 128580-SGT and 27246GT as sub-items — PM p.211 (10677-10689)
+- [V] The Parts Manual never expands "3P"; "three position", "on-off-on" and "center off" appear nowhere for any switch — PM p.215 (10804) plus negative search of both manuals
+- [V] E-stop contact block 66818GT "CONTACT,NC", sub-item of E-stop 66817GT under kit 122519GT; box 106513GT; lid 107798GT — PM p.209 (10612-10637, 10565-10566)
+- [V] PCON harness 94966GT and membrane/LED PCB 62399GT — PM p.213 (10715-10725)
+- [V] "J23 10 pin ribbon connector PCON to LED driver board / J24 20 pin Molex connector LED driver board" — SM p.205 (15455-15459); that legend page is SM p.205 (PDF 219), not p.206, which starts at J87
+- [V] Sheet ES0366J is SM p.229 (PDF 243) and carries the LED/TOGGLE SWITCH INTERFACE PCB with J23 10PIN and J24 20PIN — SM p.229 (19698-19706)
+- [V] "TOGGLE SWITCH AFTERMARKET KIT SCHEMATIC" caption — SM p.229 (19800)
+- [V] Kit toggles and designators: SERVICE HORN (BN5), GENERATOR ON/OFF (TS17), AUXILIARY PUMP (TS1), START ASSIST (TS6), ENGINE START (TS2), DRIVE ENABLE (TS15), AXLE EXT/RET (TS23), ENGINE SPEED (TS4), DRIVE SPEED (TS5), STEER MODE SELECT (TS22) x2, SPARE #1 (TSx) — SM p.229 (19707-19738)
+- [V] Full J24 pin map 1-20 — figs/es-toggle-switch-aftermarket-kit.png (read pin by pin, incl. the easily swapped 9/10/11 order)
+- [V] The same wire names appear in the extracted schematic text — SM p.229 (19771-19792)
+- [V] SPARE-WH at J24-18 is the only plain WHITE wire anywhere in the Genie kit — figs/es-toggle-switch-aftermarket-kit.png
+- [V] Two dashed outlines; neither is labelled "platform box"; no conductor crosses the outer boundary, so the kit has no wire to the turntable — same figure
+- [V] Only PCON PWR and HRN RLY CNTRL are labelled at the J23 block, on the mating block below it; no pin numbers are printed on J23 — SM p.229 (19798-19800)
+- [V] Platform E-stop wires ESTOP PWR-RD and ESTOP RET-BK at "PCON E-STOP (P2)" — SM p.229 (17282-17292)
+- [V] "C64LS-OR/BK" is a wire on ES0366J — SM p.229 (18389)
+- [V] Wire Color Legend is SM p.198 (PDF 212) (14532-14538)
+- [V] Circuit 56 RD "Foot switch/TCON estop power" — SM p.198 (14550-14552)
+- [V] Circuit 64 OR/BK "Power for operational switches" — SM p.198 (14575-14577)
+- [V] Circuit 77 WH "Lower Angle #1 operational" — SM p.198 (14615-14617)
+- [V] Circuits 83 GR/WH, 84 GR/BK, 85 GR (tilt) — SM p.198 (14633-14641)
+- [V] Circuit 94 WH "Load Sensor" — SM p.198 (14671-14673)
+- [V] Circuit 98 WH "J1708 + (high)" — SM p.198 (14683-14685)
+- [V] Circuit 109 GR/WH "Sensor Power" / 110 BK "Sensor Return" — SM p.198 (14718-14723); GR/WH is used twice (83 and 109)
+- [V] RD also serves circuits 87 "Platform Level Safety Power" and 96 "Tether Power" — SM p.198 (14651-14679)
+- [V] "Push in the red Emergency Stop button ... at both the ground and platform controls. 2 Remove the platform control box lid retaining fasteners. Open the control box lid." — SM p.28 (2607-2616), steps 1-2 of "How to Remove the LED Circuit Board"
+- [V] Jewellery and ESD warnings — SM p.28 (2621-2635)
+- [V] "Attach a grounded wrist strap to the ground screw inside the control box." — SM p.27 (2566-2568)
+- [V] SM p.24 repair configuration has SEVEN bullets, including "All external AC power supply disconnected from the machine" — SM p.24 (2398-2409)
+- [V] SM p.76 steps 16-18 treat the auxiliary power unit batteries as present, not optional — SM p.76 (6013-6025)
+- [V] "Before performing service on this machine, disconnect the batteries under both turntable covers." — OM p.12 (796-798); decal 97865 OM p.5 (324-328)
+- [V] "7 Platform controls" — OM p.20 (1262-1263); the blue-box description comes from the photos, not the manual
+- [V] "17 Red Emergency Stop button ..." — OM p.26 (1573-1576)
+- [V] "Axle Extend/Retract Buttons Fault Check (both buttons pressed) ... Check ribbon and connector from membrane switch. If necessary replace membrane switch." — SM p.176 (12493-12499)
+- [V] Turntable tilt sensing is inside the SCON; alarm at ±4.5 degrees — SM p.203 (15317-15320)
+- [V] "J55 6 pin Deutsch connector on platform tilt sensor" — the only connector in the legend described with the word "tilt" — SM p.205 (15477-15479)
+- [M] The six-terminal body means the switch is likely double-pole — inference from the photo; no nameplate or manual entry identifies the type
+- [M] The two Scotchlok photographs are likely one splice in one place, near the TILT SENSOR carton
+- [M] The toggle was likely fitted in the platform control box; no photograph shows it mounted there
+- [M] A closed contact should read under about 1 ohm, probe-to-probe roughly 0 to 0.5 ohm — general practice, no Genie spec
+- [M] The red wire tapped in the box is likely ESTOP PWR-RD and the orange/black wire at the Scotchlok likely C64LS-OR/BK — both to be proved by the ring-out
+- [M] The grey two-pin plug is likely a sealed environmental connector, possibly a Deutsch; its make is not readable
+- [M] Genie functions such as axle extend/retract, engine start and auxiliary pump are expected to receive a momentary command — not stated in the manuals
+
+---
+
+### B3-B4 — Read the printed name on the factory wire under each tap, then check it against the stop-list
+
+**(from card `b3-host-wire`)**
+
+#### Where it is
+
+**Component.** The white 16 gauge wire added to the aftermarket toggle switch, and every improvised
+joint on it. **CONFIRMED IN PHOTOGRAPHS:** (a) one blue butt splice inside the control box, where the
+white wire joins a red wire; (b) one blue Scotchlok clip-on tap out on the machine, on a pair made up
+of one plain red wire and one orange wire with a black stripe, next to an unplugged grey 2-pin Deutsch
+connector whose far end is cut and frayed, with a "TILT SENSOR … PCON" carton lying on the casting
+below. **NOT YET CONFIRMED:** a separate second tap partway along the boom. The field note records
+"one Scotchlok tap en route" down the boom [F], and two photographs exist — one close-up, one wider —
+but they show the same red + orange/black pair, the same single blue Scotchlok and the same grey 2-pin
+connector against the same background, so they are most likely one tap shot twice, not two taps.
+
+**Where on the machine.** *Control box site:* the platform control box, the box on the platform rail
+the operator drives from [F]. PM figure 603.1 "Platform Control Box, View 1" covers it on PM pp.208-211
+— lid 107798GT with its decal, membrane decal 106509GT, and the panel overlay 82841GT that must be
+ordered with the membrane. Figure 604.1 covers the inside on PM pp.212-213 — the green membrane/LED
+circuit board 62399GT (item 3), the box gasket 81488GT (item 5) and the PCON harness 94966GT (item A).
+*Boom route:* from the platform box the wiring runs as three harness sections joined end to end — jib
+composite harness 94962GT (item 10) along the jib, primary composite harness 94961GT (item 9) the
+length of the primary boom, then secondary composite harness 94960GT (item 3, marked "J1") down the
+secondary/riser boom into the ground control box (PM figure 308.1, pp.74-77). Those harnesses most
+likely run inside the steel cable tracks [M]: jib boom cable track (PM fig 516.1, p.190), primary boom
+cable track 61852GT, 27 links (PM fig 512.1, pp.172-173) and secondary boom cable track 236168GT, 57
+links, in tray 217431GT for serial 1854 and up (PM fig 507.1, pp.152-153). Open the tray covers to
+look for taps. The primary boom angle sensor connector J114 is at the primary boom pivot — parts
+figure 511.2 "(from SN 1854)", PM pp.168-171, which is the right serial group for this machine; figure
+511.1 on PM pp.166-167 is the older "to SN 1853" version and does not apply. *Turntable site:* the
+turntable is the rotating deck the boom is bolted to. The SCON sits on the hydraulic tank side: part
+1258463GT, item 22 of PM figure 304.1, PM pp.54-55; the Limit Switch Legend drawing on SM p.201 also
+shows the SCON (item 16) on the turntable. A separate lower limit switch harness 226496GT (item 6,
+fitted from serial 1419 to 2000) runs from the ground control box to the SCON and on to switches
+LSS1RO, LSS1RS and sensor RSS1AO.
+
+**How to find it.** *Control box:* stand in the platform with the machine stowed on the ground — you
+do not need to raise anything. Undo the lid fasteners, lift the lid with its rubber membrane keypad,
+and look inside for a small black toggle switch that is obviously not Genie: white wires on flat
+push-on blade terminals, no rubber boot. Follow each white wire and write down where it ends. The
+field photograph shows one white wire running to a blue butt splice, then on as a red wire to a small
+black block with a red bar on its face near the green circuit board; a joystick with a rubber boot and
+a grey multi-pin Deutsch plug is alongside. Another white wire leaves the box and heads down the boom.
+*Turntable:* stand on the ground at the turntable, under the stowed boom, beside the hydraulic hoses
+and the grey corrugated plastic loom. Look for the red + orange/black pair crossing a horizontal blue
+frame member with a blue Scotchlok clamped on it and a white wire running into it. Follow that pair to
+a grey 2-pin Deutsch connector that is unplugged, wires beyond it cut off and frayed. A cardboard
+carton printed "TILT SENSOR", "DEGREES" and "PCON" lies on the casting below. *Boom:* walk the stowed
+boom from the platform end back to the primary pivot, open the cable-track tray covers and look along
+the whole length for any further white wire, Scotchlok, butt splice or tape.
+
+**What it looks like.** A blue Scotchlok is a small blue plastic clip with a fold-over lid and a metal
+blade inside. The factory wire runs straight through one channel and the added wire dead-ends in the
+other; closing the lid drives the blade through both insulations. Genie's own repair parts for these
+harnesses are crimped Deutsch pin terminals, part 73713GT — the manuals nowhere list a clip-on tap, so
+a Scotchlok here is very likely not factory work [M]. The factory wire under each joint carries
+printing along its jacket in the form PREFIX-NUMBER-SUFFIX-COLOUR, for example P109ANG-GR/WH or
+C64LS-OR/BK. The added wire's own jacket is printed "16 GAUGE".
+
+**Cite.** PM figs 308.1 (pp.74-77), 507.1, 511.2, 512.1, 516.1, 603.1, 604.1, 605.1, 304.1; SM p.27,
+p.99, p.201, p.203; OM p.64; photos 2026-09-12-*.jpg.
+
+#### Set the machine to
+
+- **Key:** both keys OFF and pulled out. The turntable control box has two key switches — the main one
+  at the top for ground/platform, and the Bypass/Recovery one at the bottom (on the lower right from
+  serial Z13512-1712). Take out both keys. **Do not turn the Bypass or Recovery key at all.** SM p.99:
+  "Bypass and Recovery modes are only intended for certain circumstances and are not part of normal
+  machine operation… Contact trained personnel immediately." Bypass is for an out-of-level platform and
+  for calibrating certain parameters; Recovery is a last-resort way to lower a platform in an
+  emergency. Neither belongs in this card.
+- **E-stops:** both red E-stops pushed IN before you touch any connector, tap or splice (SM p.27).
+- **Engine:** OFF. Do not start it at any point.
+- **Battery:** leave the battery connected while you only look at wires, read printing and photograph.
+  **Disconnect the battery negative (-) cable before any resistance (ohms) test** between a tap and a
+  connector pin. Reconnect only after both meter leads are off the machine.
+- **Other:** firm level ground, wheels chocked, boom stowed, axles still RETRACTED at 8 ft 1 in (OM
+  p.64). With the axles retracted the boom functions are locked out by design — "Prevents boom
+  functions with the axles retracted" (SM p.203) — so nothing should move, but still treat every wire
+  as live until both E-stops are in. Take off rings and watches (SM p.27 electrocution/burn warning).
+
+#### Connector and wires
+
+**HOW TO READ A GENIE WIRE NAME (SM p.192).** "Circuit numbers consist of three parts: the circuit
+prefix, circuit number and circuit suffix." The first letter is the type: C = Control, D = Data, E =
+Engine, G = Gauges, N = Neutral, P = Power, R = Relay Output, S = Safety, V = Valve. The number is the
+circuit — the manual warns "The circuit number may be used more than once in a circuit". The letters
+after the number are a mnemonic: ANG = Angle, PBS = Primary Boom Angle Sensor, SBS = Sec Boom Angle
+Sensor, CAL = Calibrate, LDS = Load Sensor, PTS = Platform Tilt Sensor, TTS = Turntable Tilt Sensor,
+TAY = Tilt Alarm Y axis, FTS = Foot switch Signal, HRN = Horn, LS = Limit Switch, GND = Ground, SP =
+Spare, PLL = Propel Lockout, AXE = Axle Extend Valve, AXR = Axle Retract Valve, DCN = Drive Chassis
+Controller, EDC = Electrical Displacement Control, PSE = Program Setup Enable, PCE = Pressure Comp
+Enable. After the dash comes the colour: WH White, BK Black, RD Red, GR Green, BL Blue, OR Orange, BR
+Brown, YL Yellow; a slash means a stripe. Worked example from the manual: "V61AXR — V stands for valve
+power. Number 61 stands for axle retracted circuit; AXR stands for Axle retracted."
+
+**NOTE ON THE STOP-LIST TABLE BELOW:** the first column is the CIRCUIT NUMBER off the wire print, not
+a connector cavity number. The two are different things and this card uses both. "Harness colour" is
+the colour the generic Wire Color Legend (SM pp.196-200) gives for that circuit number; "pin-legend
+colour" is the colour actually printed in this machine's own pin legends or on ES0366J. **Where the
+two disagree, the print on the wire and the pin legend win.** Known disagreements on this machine:
+circuit 23 (table WH, legend P23PCON-BK), circuit 52 (table BL/RD, legend P52PCON-WH), circuit 124
+(table RD/WH, legend C124SBS-OR/BK) and circuit 132 (table GR, legend S132LDS-BL/WH).
+
+**THE STOP-LIST.**
+
+| Circuit | Wire name | Harness colour | Pin-legend colour | What it is | Goes to | Verdict |
+|---|---|---|---|---|---|---|
+| 56 | S56PRV-RD / P56PRV-RD/WH / C56FTS-RD | RD | RD (S56PRV); RD/WH (P56PRV); RD (C56FTS, foot switch signal) | "Foot switch/TCON estop power" — the E-stop and foot-switch power chain every controller watches | TCON J11-6, J12-5; SCON J121-9, J122-11; PCON J21-4, J21-7, J22-17; DCON J31-5 | **STOP** — a tap here defeats the E-stop or foot-switch chain |
+| 64 | C64LS-OR/BK | OR/BK | OR/BK | "Power for operational switches" — the SUPPLY fed OUT to the limit switches. Not a return path, and the foot switch is not on it. Each switch answers on its own wire (C70PBR-BL/WH, C71PBE-BL/BK, C143DEL-BL/RD, C144DER-BL/WH). | TCON J12-13, J12-18; PCON J22-16 ("LIMIT SWITCH PWR"); out to LSP1RO J44, LSP1EO J45, LST1O J124, LST2O J125 and the low fuel switch | **STOP** — a tap can put power where a switch should be deciding |
+| 60 | C60AXE-GR/WH (also C60FAP, C60RAP) | GR/WH | GR/WH | "Axle extend"; suffix AXE = Axle Extend Valve. Lands on the SCON, so the safety computer watches it. | SCON J122-4 ("AXLE EXTENDED"); DCON J31-20, J31-21 | **STOP** |
+| 61 | C61AXR-GR (C61AXRT-GR at the DCON) | GR | GR | "Axle retract"; suffix AXR = Axle Retract Valve. Lands on both the SCON and the main computer. | SCON J122-12; TCON J12-10; DCON J31-6 | **STOP** |
+| 77 | no wire numbered 77 exists on this machine | WH | n/a | "Lower Angle #1 operational" — in the generic table but likely not used on the Z-135/70 [M] | not present in the SM pp.208-210 pin legends | **STOP** if ever found |
+| 83 | no wire numbered 83 exists on this machine | GR/WH | n/a | "Tilt signal X axis" — likely not used [M]; turntable tilt sensing is inside the SCON, and the only separate tilt sensor is the platform one (circuits 84, 85, 87) | not present | **STOP** if ever found |
+| 84 | C84TAY-GR/BK | GR/BK | GR/BK | "Tilt signal Y axis"; TAY = Tilt Alarm Y axis. The platform tilt sensor's Y signal. The platform tilt sensor cuts boom and platform-level functions at ±10 degrees. | PCON J22-20 | **STOP** |
+| 85 (with its safety twin 87) | P85PTS-GR power, P85RET-BR return; safety half P87PTS-RD and P87RET-BR | GR | GR / BR / RD / BR | "Tilt sensor power"; PTS = Platform Tilt Sensor. Circuit 87 is the second, independent safety supply and return. Sheet labels: "PL TILT SNSR PWR", "PL TILT SNSR GND", "SAFE PL TILT PWR", "SAFE PL TILT GND". | PCON J22-21 and J22-19; J22-23 and J22-22 | **STOP** |
+| 94 (and 132, the load wire actually used) | no wire numbered 94; the load wire is S132LDS-BL/WH | WH for 94; table says GR for 132 | BL/WH for S132LDS ("LOAD SENSE") | 94 = "Load Sensor"; 132 = "Platform Load Input" — the load cell circuit, which decides whether the platform is overloaded | SCON J121-1 | **STOP** |
+| 109 | P109ANG-GR/WH (P109JBS-GR/WH at the jib sensor) | GR/WH | GR/WH | "Sensor Power" — the 5 V supply feeding BOTH boom angle sensors from one pair of computer pins | TCON J12-26; DCON J32-20; PCON J22-30; on to J114 pins 1/6 and J154 pins 1/6 | **STOP** — a tap here loads or shorts the shared 5 V and can produce exactly the "shorted / 0 V" and crosscheck faults now showing |
+| 110 | P110RT-BK / P110JBS-BK; the boom angle sensors' own ground is printed SNSR GND-BR | BK | BK; SNSR GND-BR | "Sensor Return" — the sensor ground. One ground is shared between both boom angle sensors. | DCON J32-19; PCON J22-31; TCON J12-25 | **STOP.** Related field finding: a long green wire outside the loom from J114 to a pink butt splice at a bolt on the pivot bracket [F]. Why someone added it is not known [M] — do not assume it was a ground repair. |
+| 123 | C123PBS-RD/BK | RD/BK | RD/BK | "Primary Boom Angle Signal Operational" — the working copy of the primary boom angle read by the TCON | TCON J12-32, from J114 pin 4 | **STOP** |
+| 124 | C124SBS-OR/BK | RD/WH (generic table) | OR/BK (pin legend and schematic) | "Secondary Boom Angle Signal Operational" | TCON J12-33, from J154 pin 4 | **STOP** |
+| 141 | C141PBS-RD | RD | RD | "Primary Boom Angle Signal Safety" — the SECOND, independent copy read by the safety controller. If 141 were ever bridged to 123 the two computers would read one signal instead of two, destroying the crosscheck. | SCON J122-3, from J114 pin 3 | **STOP** |
+| 142 | C142SBS-OR | OR | OR | "Secondary Boom Angle Signal Safety" | SCON J122-2, from J154 pin 3 | **STOP** |
+| 145 | C145CAL-RD/WH | RD/WH | RD/WH ("CALIBRATION IN") | "Calibrate" — the line that puts the machine into calibration | TCON J11-11; SCON J121-4 | **STOP** — a toggle here is a home-made calibration switch |
+| 137 | S137PLL-RD/WH | RD/WH | RD/WH | "Drive Power (P_38)"; PLL = Propel Lockout. The SCON's switched drive power output — the very output the crosscheck faults are switching off. | SCON J121-10; TCON J13-17 | **STOP** — a tap here is an attempt to get drive back around the safety controller |
+| 30 | C30EDC-WH | WH | WH | "Forward/EDC-A". EDC = Electrical Displacement Control — the electrical command telling the drive pump how hard and which way to push oil. | TCON J13-10 | **STOP** — a switch here could stroke the drive pump |
+| 4 | V04TRL-WH | WH | WH | "Turntable rotate left valve driver" | TCON J14-25 | **STOP** — a switch here could swing the turntable |
+| 21 | C21IGN-WH (engine side); P21DCON-WH (controller supply) | WH | WH | "12V DC ignition supply". Two different wires carry this number. C21IGN is the engine ignition feed; **P21DCON is the 12 V supply that runs the DCON AND the SCON** — so a white wire printed P21DCON found at the turntable is a module power feed, not an ignition wire. | C21IGN: TCON J13-3. P21DCON: TCON J12-2, SCON J122-1, DCON J31-2 | **STOP** for either |
+| 46 | C46HN-WH / C46HRN-WH | WH | WH | "Horn" — the only harmless answer a white wire can give | TCON J11-3, J13-7; PCON J21-16 | **Harmless.** Still remove the tap and repair the wire properly, but the diagnosis can carry on. |
+| 23 | P23PCON-BK | WH (generic table) | BK (pin legend) | "Power to platform" — the platform controller's supply | TCON J11-5; PCON J21-23 | Stolen power — remove and repair before operating |
+| 52 | P52PCON-WH | BL/RD ("Auxiliary Platform") | WH | a platform controller supply | TCON J11-2; PCON J21-2 | Stolen power — remove and repair before operating |
+| 98 / 174 / 184 / 185 / 197 | remaining plain-white rows | WH | none of these appear in this machine's pin legends | 98 "J1708 + (high)" is a data line; 174 "Key Switch Power, Ground Position"; **184 "Program setup Enable"**; 185 "Encode A"; 197 "Hour Meter" | see the colour legend | 184 = **STOP**. The others: remove and repair before operating. |
+| J24-18 | SPARE-WH | WH | WH | The Genie kit's own white "SPARE #1" wire — it stays inside the platform box and lands on the toggle board. It never runs down the boom, so it cannot explain a white wire reaching the turntable. | J24 cavity 18 on board 232975GT, part of kit 237225GT | Useful only to rule that idea out |
+
+If the cut 2-pin stub at the turntable turns out to be a harness-to-harness joint, the candidates in
+the legend are J146 (lower limit switch harness to engine harness), J149 (boom composite), J153
+(engine and manifold harness) and J157 (PCON manifold to boom composite harness) — J153 is an
+engine/manifold joint, not a boom one, so do not assume.
+
+#### Do this
+
+1. **Shut the machine down.** Both key switches off, both keys out — the main one at the top of the
+   ground control box and the Bypass/Recovery one at the bottom. Both red E-stops IN, one at the ground
+   control box and one in the platform. Engine off. Wheels chocked, boom stowed. Take off rings and
+   watches.
+2. **Before touching anything, photograph** every tap, splice and cut wire end from two angles with a
+   tape measure or ruler in the shot, and photograph enough of the surroundings in each frame to prove
+   WHERE on the machine you were standing. This is evidence of what a previous person did. Do not cut
+   or pull anything yet.
+3. **Control box:** stand in the platform with the machine stowed at ground level. Undo the lid
+   fasteners and lift the lid with its rubber keypad. Find the black mains-rated toggle. Look at its
+   terminal end: two rows of three flat blades, three white wires on one row, three bare blades on the
+   other. Note which row is wired, and note that a six-terminal switch can be switching two circuits at
+   once. Count and trace each white wire to its end and write down what each one lands on.
+4. **At each joint, get at the printing on the FACTORY wire.** At a Scotchlok, the factory wire is the
+   one running straight through; the added white wire dead-ends in the other channel. At the butt
+   splice in the box, it is the wire on the far side of the splice. Wipe the jacket, slide the loom
+   back, and turn the wire until you can read the print. Read it as PREFIX - NUMBER - SUFFIX - COLOUR.
+5. **Decode the name.** First letter = type. The number = the circuit. The letters after it = the
+   mnemonic. The part after the dash = the colour, "/" meaning a stripe. Then check the colour you read
+   against the colour of the jacket in your hand.
+6. **Compare the circuit number against the stop-list above.** Any of 56, 64, 60, 61, 77, 83, 84, 85,
+   87, 94, 132, 109, 110, 123, 124, 141, 142, 145, 137, 30, 4, 21 or 184 = **STOP**. 46 (horn) =
+   harmless. 23 or 52 = stolen power; remove before operating.
+7. **If the print is unreadable, identify the wire by its plug instead.** Follow the tapped wire to the
+   nearest Deutsch connector, read the connector number if it is tagged, count the cavity position, and
+   look it up in the Circuit Connector Legend (SM pp.205-207) and the pin legends (SM pp.208-210).
+   Deutsch connectors usually carry small moulded cavity numbers on the face [M], but on small shells
+   only one or two may be marked, so count from the keyway rather than trusting the numbers.
+8. **Confirm with the meter.** Disconnect the battery negative (-) cable first. Meter on ohms, or
+   continuity with the beeper. One probe on the metal blade of the Scotchlok (or on bare conductor
+   right beside the joint), the other on the connector cavity you suspect, with that connector
+   unplugged. Less than 1 ohm, or a steady beep, means it is the same wire. Anything higher, or "OL"
+   (over limit — no connection at all), means you guessed wrong; try the next candidate. Reconnect the
+   battery only once both probes are off the machine.
+9. **Turntable joint:** stand on the ground at the turntable, under the stowed boom. Find the red +
+   orange/black pair with the blue Scotchlok and the white wire, running to the unplugged grey 2-pin
+   Deutsch connector whose far end is cut and frayed. Read the print on BOTH the red and the
+   orange/black wire. Write down which of the two the Scotchlok blade actually bites into — the
+   photograph suggests the orange/black one, but confirm it by eye. Write down the full label on the
+   tilt-sensor carton, including any part number. **Do not fit anything out of that carton.**
+10. **Boom:** walk the stowed boom from the platform end to the primary pivot. Open the cable-track
+    tray covers and look along the whole length for any further white wire, Scotchlok, butt splice or
+    tape. Be aware that the two existing photographs of "the boom tap" and "the turntable tap" look like
+    the same joint shot twice, so a separate boom tap has NOT yet been proved — you are looking to
+    either find it or rule it out. Check especially around J114 at the primary pivot, where two more
+    Scotchloks with a green jumper and a loose pin terminal were already found — those are card C's job;
+    only photograph them here.
+11. **In the control box**, read the print on the red wire that joins the white wire at the blue butt
+    splice, and on the wires at the small black block with the red bar. A red wire printed with 56
+    (S56PRV, P56PRV or C56FTS) is the E-stop and foot-switch chain: **STOP**. What that black block
+    actually is has not been established [M] — identify it by the wire print or by the parts list for
+    figures 603.1 and 604.1 before drawing any conclusion.
+12. **Write a table:** site, tapped wire name exactly as printed, colour you saw, circuit number,
+    decoded function, verdict (STOP / harmless / stolen power). Photograph the table page.
+13. **Verdict:** if ANY joint is on a stop-list circuit, tag the machine out of service, keep both keys
+    out, and do not operate it until the tap is removed and the wire repaired with a proper sealed joint
+    — never another Scotchlok. That removal and repair is the next card; do not start it here without
+    the photographs and table from steps 2 and 12.
+14. If every joint turns out to be on the horn circuit only, note it, still plan the removal, and carry
+    on to card C (the J114 circuit).
+
+#### You should see
+
+| Measurement | Expected | If OK it means | If not it means | Cite |
+|---|---|---|---|---|
+| The printing on the factory wire under each joint, read by eye | A readable name PREFIX-NUMBER-SUFFIX-COLOUR, e.g. C64LS-OR/BK, P109ANG-GR/WH, S56PRV-RD, C145CAL-RD/WH or C46HN-WH. The colour letters should match the jacket in your hand. | Decode it, place it on the stop-list, write it in the table. | If unreadable, identify by plug and cavity (step 7) and confirm by resistance (step 8). If the printed colour does not match the jacket, that is a known error in the generic colour table — confirmed disagreements on this machine are circuits 23, 52, 124 and 132. Trust the print on the wire and the pin legend. | SM p.192; SM pp.196-200; SM pp.208-210 |
+| Resistance, battery negative disconnected, between the Scotchlok blade (or bare conductor beside it) and the suspected connector cavity, that connector unplugged | Less than 1 ohm with the beeper sounding, to exactly ONE cavity; open circuit (OL) to every other cavity | The tap is confirmed on that circuit. Apply the stop-list verdict. | More than a few ohms or OL everywhere: wrong candidate. Try the other wires in the same plug, then the plug at the other end of that harness section. **If you get continuity to TWO cavities, the tap or a splice is bridging two circuits — STOP;** that is either a short or a defeat of the two-computer crosscheck. | SM p.210 J12 cavities 25, 26, 32, 33; SM p.209; SM p.208 |
+| Stop-list comparison of the decoded circuit number | Circuit 46 (horn) is the only harmless answer. | Horn: note it, plan the removal, carry on to card C. | Any stop-list number: **STOP.** Tag the machine out of service. Removal and a proper repair must come before any function test. If the number is 109 or 110, or 123/124/141/142, the toggle is very likely part of the cause of the boom-angle crosscheck and "shorted / 0 V" faults, because the 5 V supply and the sensor ground are shared between J114 and J154. | SM p.198; SM p.199; SM p.189; SM p.177; figs es-j114-primary-sensor.png, es-j154-secondary-sensor.png |
+| How far the Wire Color Legend runs — does it reach circuit 155? | Yes. The table runs 1 to 199, then 226 to 228, then a brown "Ground or Return" row. Row 155 reads OR/RD, "Pressure Comp. Enable". The TCON pin legend calls the same wire V155PCE-OR/RD at J14-34; ES0366J prints V155PSE-OR/RD beside "Y74 FUNCTION ENABLE VALVE (J166)". | If a white wire is found spliced near the function enable valve, use 155 = OR/RD. "The function enable valve is mounted behind the medium pressure filter" (SM p.135). | n/a | SM p.199; SM p.200; SM p.210; SM p.135; SM p.229 |
+| Where the turntable tilt sensing actually lives, so you can judge the "TILT SENSOR" carton | On this machine the turntable tilt sensing is built INSIDE the safety controller module (SM p.203). The only separate tilt sensor in the whole parts book is the platform one, 50813GT "SENSOR,TILT,PCON (PLASTIC)", wired on circuits 84, 85 and 87 into the platform controller. | A carton marked "TILT SENSOR … PCON" lying at the turntable is most likely a PLATFORM tilt sensor bought for the platform [M], not a turntable part. It does not belong at the safety controller. | Write down the carton's printed part number before concluding anything and check it against the parts manual. If the number is not 50813GT, do not assume what it is. | SM p.203; PM p.199 item 8; SM p.208 J22 cavities 19-23 |
+
+#### Why we are doing this
+
+The printed name tells you exactly what the home-made toggle switch was doing. If it sits on the horn
+circuit it is only a nuisance to remove. If it sits on any safety or sensor circuit — the E-stop and
+foot-switch power, the power feed to the limit switches, the 5 volt sensor supply, a boom angle
+signal, a tilt sensor, the load sensor, an axle input, the calibrate line or the drive power — then the
+machine must not be operated until the tap is removed and the wire repaired, and the finding changes
+what you measure next at J114. This card is where you learn whether the toggle is part of the cause of
+the seven live fault codes or a separate piece of bad work.
+
+#### Safety
+
+- Both keys OFF and out, and both red E-stops pushed IN, before you unplug any connector or touch any
+  tap or splice (SM p.27).
+- Disconnect the battery negative (-) cable before every resistance reading. Reconnect only after both
+  meter leads are off the machine.
+- "Contact with electrically charged circuits could result in death or serious injury. Remove all
+  rings, watches and other jewelry." (SM p.27).
+- Machine on firm level ground, wheels chocked, boom stowed. Do not raise or operate a machine carrying
+  boom angle crosscheck faults.
+- **Never add, jumper or defeat a safety circuit, limit switch, angle sensor, tilt sensor or load cell.
+  This card only finds and records the existing bad work; it exists to REMOVE a bypass, never to add
+  one. Do not re-make any joint with a Scotchlok.**
+- Do not turn the Bypass or Recovery key, and do not fit any calibration jumper or toggle. Bypass is
+  for an out-of-level platform and for calibrating certain parameters; Recovery is a last-resort
+  emergency lowering. Neither belongs in this card.
+- **Do not cut the white wire or the factory wire yet.** Cutting before the circuit is identified
+  destroys the evidence of what was bridged.
+- Do not swap the platform circuit board while you are in the box: "When the platform circuit board is
+  replaced, jib bellcrank and platform level will need to be calibrated." (SM p.27).
+- If any joint lands on a stop-list circuit, tag the machine out of service and keep both keys out
+  until the repair card is finished.
+
+#### Sources
+
+- [V] "Circuit numbers consist of three parts: the circuit prefix, circuit number and circuit suffix." — SM p.192 (13825-13826); prefix meanings (13859-13877); worked example V61AXR (13852-13854); "The circuit number may be used more than once in a circuit." (13835-13836)
+- [V] Suffix meanings ANG, AXE, AXR, CAL, DE, EDC, FTS, GND, HRN, LDS, LS, PBS, PCE, PLL, PSE, PTS, SBS, SP, TAY, TTS — SM pp.193-195
+- [V] "DCN Drive Chassis Controller" — SM p.193 (13936-13937)
+- [V] "The turntable control box (TCON) is the communication and operations center for the machine." — SM p.99 (7569-7571)
+- [V] Pin-legend page titles confirm the plain-words names: "Plat Controller", "Drive Chassis", "Safety Controller Pin Legend", "Turntable Controller Pin Legend" — SM pp.208-210
+- [V] Colour abbreviations, slash = stripe — SM p.196 (14275-14318)
+- [V] "P38 / Propel (drive) valves" — SM p.196 (14332-14333)
+- [V] Wire Color Legend occupies SM pp.196-200 (14252-14931)
+- [V] Stop-list colour/function rows for circuits 4, 21, 23, 30, 46, 52, 56, 60, 61, 64, 77, 83, 84, 85, 94, 98, 109, 110 — SM pp.197-198
+- [V] Rows 123, 124, 132, 137, 141, 142, 145, 155, 174, 184, 185, 197 — SM pp.199-200
+- [V] Legend ends with rows 226-228 and a brown "Ground or Return" row, so it does cover circuit 155 — SM p.200 (15049-15062)
+- [V] All plain-white rows are circuits 4, 21, 23, 30, 46, 77, 94, 98, 174, 184, 185, 197 — twelve rows, no others — SM pp.197-200
+- [V] No wire named with circuit 77, 83 or 94 exists anywhere in the Service Manual — whole-file regex search, zero matches
+- [V] TCON J12 cavities 2, 5, 10, 13, 15, 18, 25, 26, 28, 32, 33 — SM p.210 (16129-16192)
+- [V] TCON J11 cavities 2, 3, 5, 6, 7, 11; J13 cavities 3, 7, 10, 17; J14 cavities 25, 34 — SM p.210 (16064-16315)
+- [V] SCON J121 cavities 1, 4, 9, 10, 12; J122 cavities 1, 2, 3, 4, 11, 12 — SM p.209 (15987-16042)
+- [V] PCON J21 cavities 2, 4, 7, 16, 23; J22 cavities 16, 17, 19, 20, 21, 22, 23, 30, 31 — SM p.208 (15754-15865)
+- [V] DCON J31 cavities 2, 5, 6, 20, 21; J32 cavities 19, 20 — SM p.208 (15912-15965)
+- [V] The foot switch signal is on circuit 56 (C56FTS-RD at PCON J22-17), not circuit 64 — SM p.208 (15836-15837)
+- [V] Circuit 64 is a power FEED: ES0366J labels PCON cavity 22-16 "LIMIT SWITCH PWR" — SM p.229 (17075)
+- [V] Limit switches answer on their own wires; the drive-enable pairing is LST1O (right, J124) with C144DER-BL/WH and LST2O (left, J125) with C143DEL-BL/RD — figs/es-scon-boomsensors.png cross-checked with SM p.210 (16155-16156, 16181-16182)
+- [V] Circuit 21 also carries P21DCON-WH, the 12 V module supply, at TCON J12-2, SCON J122-1 and DCON J31-2 — SM pp.209-210
+- [V] Connector descriptions J20, J21, J22, J23, J24, J46, J49, J55, J114, J121, J122, J124, J125, J126, J154 — SM pp.205-207
+- [V] 2-pin harness-to-harness candidates J146, J149, J153, J157 — SM p.207 (15646-15689)
+- [V] Turntable tilt sensing is inside the SCON; the platform tilt sensor cuts out at ±10 degrees — SM p.203 (15308-15320)
+- [V] LSFA1ES / LSRA1ES prevent boom functions with the axles retracted — SM p.203 (15322-15329)
+- [V] "Width, axles retracted / 8 ft 1 in / 2.5 m" — OM p.64 (3967-3970)
+- [V] ES0366J shows a "PLATFORM TILT SENSOR ASSEMBLY" on C84TAY-GR/BK, P85PTS-GR, P85RET-BR, P87PTS-RD, P87RET-BR — SM p.229 (17117-17127, 17444-17446)
+- [V] SCON fault matrix: primary crosscheck OFF on P_38, P_39, P_10, P_11, P_30; secondary OFF on P_38, P_39, P_11, P_30; P_38 is propel — SM p.189 (13630, 13654-13667)
+- [V] "Safety Switch P22 … Check for wiring damage on circuit P56PRV (red/white)." — SM p.175 (12398-12403)
+- [V] "Value at 0 V … Check for 5.0 VDC at the sensor. Check for damaged wiring going to the sensor. Check that the 5.0 VDC LED is lit on the TCON board." — SM p.177 (12591-12598)
+- [V] The turntable control box has TWO key switches; Recovery is an emergency-lowering mode, NOT a calibration mode — SM p.99 (7569-7590)
+- [V] "The bypass/recovery key switch is located on the lower right side of the control box from serial number Z13512-1712." — SM p.99 (7593-7597)
+- [V] E-stops IN at both stations; jewellery off; "When the platform circuit board is replaced, jib bellcrank and platform level will need to be calibrated." — SM p.27 (2533-2547)
+- [V] "The function enable valve is mounted behind the medium pressure filter." — SM p.135 (10018)
+- [V] Manual conflict: J166 is listed as the 6-pin jib bellcrank sensor connector while ES0366J labels the function enable valve coil "Y74 FUNCTION ENABLE VALVE (J166)" — SM p.207 (15708-15710); SM p.229 (18598-18599)
+- [V] SM p.201 Limit Switch Legend places SCON (16) on the turntable, LSS1RS/LSS1RO/RSS1AO/RSS1AS (7-10) at the secondary boom pivot area, RSP1AO/RSP1AS (1-2) at the primary boom, Plat Angle Sensor (14) and PCON (15) at the platform — figs/sm201-limitswitch-legend.png
+- [V] J114 wiring on ES0366J, UNIT #130+ variant — figs/es-j114-primary-sensor.png
+- [V] J154 wiring — figs/es-j154-secondary-sensor.png
+- [V] 5 V supply and sensor ground are shared between J114 and J154 from one pair of TCON cavities — figs/es-boom-sensors-wide.png with SM p.210 (16175-16178)
+- [V] The Genie toggle kit's SPARE-WH sits at J24 cavity 18 and stays inside the kit boundary — figs/es-toggle-switch-aftermarket-kit.png
+- [V] PM fig 308.1 harness routing and part numbers 94960GT, 226496GT, 119792GT, 94961GT, 94962GT, 94963GT — PM pp.74-77 (3767-3881)
+- [V] PM fig 308.1 item 14 is 94966GT only "to SN 439"; from SN 440 it is 119674GT. (94966GT still applies, unrestricted, as item A of fig 604.1 inside the platform box.) — PM p.77 (3882-3893); PM p.213 (10714-10716)
+- [V] Fig 511.2 "(from SN 1854)" runs PM pp.168-171; 511.1 "(to SN 1853)" is pp.166-167 — PM (8494-8750)
+- [V] Cable tracks: secondary 236168GT 57 links in tray 217431GT (fig 507.1, pp.152-153); primary 61852GT 27 links (fig 512.1, pp.172-173); jib (fig 516.1, p.190) — PM (7902-9635)
+- [M] That the boom wiring physically runs INSIDE those cable tracks is inference from the figure titles and the harness diagram; the manuals never say it
+- [V] Platform control box figures: 603.1 runs PM pp.208-211; 604.1 pp.212-213; 605.1 pp.214-216 — PM (10525-10771)
+- [V] Fig 603.1 (PM p.209) carries lid 107798GT, membrane decal 106509GT, panel overlay 82841GT "required when replacing membrane 106509"; fig 604.1 (PM p.213) carries PCON harness 94966GT, membrane/LED board 62399GT, gasket 81488GT — PM (10564-10732)
+- [V] Genie's platform-level toggle is 128200GT, listed as including a boot; the boot 27246GT is a separate line "Part of toggle switch 128200". The manual never calls it "sealed". — PM p.211 (10677-10680), PM p.215 (10805-10808)
+- [V] Toggle Switch Lid Option kit 237225GT is the ANSI kit for SN 779 to 2000 — PM p.215 (10787-10903)
+- [V] Genie's harness repair terminal is a crimped Deutsch pin, 73713GT — PM p.169 (3350-3351)
+- [M] That factory joints are Deutsch pins and NEVER clip-on taps is inference from the parts book; no manual sentence says Genie does not use Scotchloks
+- [V] SCON on this machine is 1258463GT (from SN 1712), item 22 of fig 304.1; the machine must be fully recalibrated if it is replaced — PM p.55 (2784-2787)
+- [V] The only separate tilt sensor in the whole parts book is the platform one, 50813GT — PM p.199 (10053-10055)
+- [V] Original dual-output sensor 94980GT no longer available; first replacement kit 217246GT; fig 511.2 lists 216061GT with a matched magnet and calibration required — PM p.77 (3954-3958), PM p.169 (8691-8695)
+- [F] PHOTO, CORRECTED: the toggle has TWO ROWS OF THREE spade terminals, six in all, only three wired, on white wire printed "16 GAU" — photos/2026-09-12-aftermarket-toggle-terminals.jpg
+- [F] PHOTO: body stamped "10A 250VAC / 15A 125VAC / 3/4HP 125-250VAC / MEXICO / 9614" with a UL mark — photos/2026-09-12-aftermarket-toggle-ac-rating.jpg
+- [F] PHOTO: inside the box the white wire joins a BLUE BUTT SPLICE — not a Scotchlok — then continues as a red wire to a small black block with a red bar — photos/2026-09-12-white-wire-to-toggle-in-box.jpg
+- [F] PHOTOS, CORRECTED: the "boom tap" and "turntable tap" photographs show one red + orange/black pair, ONE blue Scotchlok, one white wire and one GREY 2-pin Deutsch connector with frayed cut wires beyond it, against the same background. Nothing in either frame shows a boom section, cable track or tray. — photos/2026-09-12-white-wire-scotchlok-boom.jpg and -white-wire-turntable-tilt-sensor-box.jpg
+- [F] "one Scotchlok tap en route" down the boom — case README (field observation, not independently confirmed by the photographs)
+- [M] The black block with the red bar in the control box is most likely a push-button contact block, but nothing identifies it
+- [M] The carton at the turntable is likely a platform (PCON) tilt sensor 50813GT, not a turntable part; whether it was ever fitted is unknown
+- [M] If the Scotchlok is on the orange/black wire and its print reads C64LS, the toggle taps circuit 64 — the print has not been read, so this is still a guess
+- [F] Machine: Z13513-1861, 2013, 2162.4 hours, parts group from SN 1854; seven live codes; propel dead; axles retracted — case README
+- [F] At the J114 pivot: two blue Scotchloks with a green jumper, a loose pin terminal outside a DT04-6P half, and a long green wire to a pink butt splice — case README
+- [M] Why the green wire was added is unknown — the case file lists three competing hypotheses
+- [M] Deutsch cavity numbers are usually moulded into the connector face, but on small shells only one or two may be marked — general connector practice, not in the manuals
+
+---
+
+### B5 — Find and test the function enable valve (Y74)
+
+**(from card `b5-y74`)**
+
+#### Where it is
+
+**Component.** The function enable valve — the one small electric valve (solenoid valve) that lets the
+lift pump build oil pressure for every boom, steer and axle function. Its electric coil is called Y74
+on the wiring sheet; on the hydraulic drawings the valve is schematic item A. Parts: the whole block is
+106454GT VALVE,FUNCTION ENABLE (item 2 of PM figure 707.1); the screw-in cartridge with its coil is
+107742GT VALVE,SOLENOID 2 POS 2 WAY (item 1), and 106454GT includes it.
+
+**Where on the machine.** On the turntable, inside the engine compartment, behind the medium pressure
+filter. The Parts Manual files figure 303.1 "Engine Compartment Components" inside its section "300
+Turntable Components", which is why the engine compartment counts as part of the turntable.
+
+**How to find it.** Walk around the turntable until you find the compartment door with the battery
+behind it. That compartment also holds the horn, the plate carrying the fuses and relays, and on
+Cummins and Perkins machines the plastic coolant recovery bottle. **Which side of the turntable this
+door is on is not stated in the manuals; find it by the battery, not by a side (field guidance).** Only
+trained maintenance staff may open it. Inside, look for the medium pressure filter: an upright
+cylindrical hydraulic filter canister on a steel bracket that also carries a hydraulic pressure test
+point. ("Medium pressure" is just the manual's name for this filter; do not confuse it with the engine
+oil filter, which is a different canister.) The Service Manual says the function enable valve is
+mounted behind that filter. If you cannot find the filter, use the parts drawing instead: in PM figure
+303.1 the valve (item 25) is drawn low in the compartment on its own small flat bracket plate, below
+and to the right of the battery box and near the battery tray, held by a 1/4-20 x 2 inch hex-head screw
+(4266GT), a flat washer (6638GT) and a nylock nut (6091GT — a nut with a nylon insert that stops it
+working loose). The parts list does not print how many of each, so do not expect exactly one. Confirm
+you have the right valve by two things: it is a single valve with only one coil, and its coil reads 3.5
+to 5.5 ohms. **Do not identify it by a J-number on the sheet, and do not identify it by wire colour
+alone: orange-with-a-red-stripe is used for two different circuits on this machine.**
+
+**What it looks like.** A square aluminium block with one hydraulic port face showing, one cylindrical
+screw-in cartridge standing up out of it, a finned coil slid over that cartridge, a hex nut on top
+holding the coil down, and a moulded plastic plug on the side of the coil. The SM p.135 drawing and the
+PM p.244 drawing both show the plug as a plain hollow shell with no pins drawn, so the number of pins
+cannot be read from either drawing; the wiring sheet ES0366J is what shows the coil has two terminals,
+numbered 1 and 2. No size or weight is printed anywhere, so judge it by shape, not by size. It is a
+single small valve, not the big multi-valve function manifold.
+
+**Cite.** SM p.135 section 8-7 and fig func-enable-valve.png; PM fig 303.1 (drawing p.46, list p.49);
+PM fig 707.1 (drawing p.244, list p.245); medium pressure filter parts PM pp.95, 99, 109, 113 and
+drawing pm112-perkins-1104c-engine-fig.png.
+
+#### Set the machine to
+
+- **Battery:** negative (minus) cable disconnected and taped back for the ohms readings (steps 1-9) and
+  for the white-wire check (steps 13-14). Reconnect it only for the volts readings (steps 10-12). The
+  battery is item 22 in the same engine compartment as the valve.
+- **Engine:** OFF for this whole card. Do not start it. With the engine off the pumps cannot turn, so
+  no hydraulic pressure can build and nothing can move.
+- **E-stops:** both red E-stops pushed IN whenever a plug is pulled off or pushed on, and for every
+  ohms reading. Pull both OUT only for the volts readings, with nobody at the platform controls, no
+  button pressed, and nobody touching the added toggle switch.
+- **Key:** OFF and pulled out for the ohms readings and the white-wire check. Key to the
+  ground-controls position for the first volts reading, then to the platform position for the repeat.
+  **Do not touch the bypass/recovery key switch at any point.**
+- **Other:** firm level ground, wheels chocked, boom stowed, axles left exactly as found (retracted).
+  The coil plug stays OFF the coil for both the ohms and the volts readings, and goes back on at the
+  end. Photograph the plug and both wires before touching anything. **Do not operate the added toggle
+  switch in the basket at any point in this card.**
+
+#### Connector and wires
+
+A two-terminal moulded plug on the side of the coil body. The wiring sheet numbers the coil terminals 1
+and 2; terminal 1 is the feed side (wire V155PSE, orange with a red stripe) and terminal 2 is the
+return side. The sheet draws only a plain two-terminal coil symbol, so it does not say what brand or
+family of connector this is — do not assume it is a Deutsch.
+
+**Warning about the number:** the sheet tags this plug "(J166)", but the connector legend says J166 is
+the 6-pin Deutsch connector for the jib bellcrank sensor, and says J162 is the 3-pin Deutsch connector
+for the jib bellcrank angle sensor. The same sheet also draws a second, 3-pin J166 (terminals 1 RD, 2
+BK, 3 BL) over at the jib bellcrank sensor. **The manual uses J166 twice and contradicts its own
+legend. Identify this plug by where it is — on the coil of the single valve behind the medium pressure
+filter — not by the number.**
+
+| Pin | Wire | Colour | What it is | Goes to | Cite |
+|---|---|---|---|---|---|
+| 1 | V155PSE-OR/RD on the schematic = V155PCE-OR/RD in the TCON pin legend | orange with a red stripe | Feed. Battery-level voltage here switches the coil on and lets the lift pump build pressure for all boom and steer/axle functions. Circuit 155, "Pressure Comp. Enable". The letters after the number are printed PSE on the sheet and PCE in the pin legend; the code legend makes PCE "Pressure Comp Enable" and PSE "Program Setup Enable". Same orange/red circuit-155 wire either way; treat PSE as a misprint on the sheet. | TCON connector J14 pin 34 — "White 35 pin AMP connector on TCON" (AMP, not Deutsch). Labelled "PRESS COMP ENABLE VLV / P14-34" on the sheet. On its way there the wire crosses J153, a 2-pin Deutsch joining the engine harness to the manifold harness. | ES0366J figs es-y74-coil.png, es-y74-coil-diode.png; SM p.210; SM p.199; SM p.194; SM p.207 |
+| 2 | VLVRTN6-BR on the sheet at the valve = VLVRET6-BR in the pin legend at the controller | brown | Return side of the coil — the path the coil current takes back to the controller. | TCON J14 pin 30, labelled "VALVE_RTN6". On the sheet this return is shared with the Y75 welder/generator bypass valve coil, and lower down with the Y52 and Y53 turntable rotate valve coils. It is **NOT** shared with the bank of boom and secondary-boom valve coils: those return on a separate line, VLVRTN7-BR, to TCON J14 pin 27. | figs es-y74-return-vlvrtn6.png, es-return-bus-split.png, es-tcon-p14-27-30-valve-rtn.png; SM p.210 (16307) |
+| J153 (a join; its own pin numbers are not printed) | V155PSE-OR/RD | orange/red on both sides | Pass-through. The feed crosses this two-pin join on its way from the TCON to the valve. If the feed is missing at the valve plug, this join is the first place to look. Its two pins carry the Y74 feed and the Y75 feed (V150HG-GR/BK). | TCON J14-34 on one side, Y74 coil terminal 1 on the other | SM p.207 (15682-15684); fig es-y74-coil.png |
+
+#### Do this
+
+1. **Set up.** Machine on firm, level ground, wheels chocked, boom stowed. Push both red E-stops IN,
+   ground and basket. Turn the key OFF and pull it out. The engine stays off for this whole card.
+2. **Open the engine compartment on the turntable** — the compartment with the battery, the horn, the
+   fuse and relay plate and (on Cummins and Perkins machines) the plastic coolant recovery bottle. Only
+   trained maintenance staff may open it.
+3. **Disconnect the battery negative (minus) cable.** The battery is item 22 in that compartment. Tape
+   the cable end so it cannot spring back onto the post.
+4. **Find the medium pressure filter:** an upright cylindrical hydraulic filter canister on a steel
+   bracket that also carries a hydraulic pressure test point. Look behind it for the function enable
+   valve: a square aluminium block with one screw-in cartridge standing up, a finned coil with a hex
+   nut on top, and a moulded plug on the side of the coil. It is a single valve with one coil, not the
+   large multi-valve function manifold. If you cannot find the filter, use PM figure 303.1 and look low
+   in the compartment, below and to the right of the battery box, for a small valve on its own flat
+   bracket plate.
+5. **Before touching anything, photograph the plug and the two wires going into it.** One wire should
+   be orange with a red stripe. Follow both wires by eye as far as you can and note any added wire, any
+   blue insulation-piercing tap (a Scotchlok), any butt splice, and any tape.
+6. **Unplug the two-terminal plug from the coil:** press the latch and pull it straight off. Tag it so
+   it goes back the same way round. The Service Manual's own coil test starts the same way: "Tag and
+   disconnect the wiring from the coil to be tested."
+7. **Measure the coil.** Meter on ohms, 200 ohm range or auto-range. One probe on each of the two metal
+   terminals on the coil itself, not on the harness half of the plug. Hold the probes still and read.
+   Then swap the probes over and read again, and **write down the higher of the two readings.** Reason:
+   the sheet shows a small diode (a one-way electrical valve) wired across this coil, which can make one
+   probe direction read low. This probe-swap step is practical advice, not a manual instruction — the
+   manual just says to test the coil resistance. Note that not every coil on the sheet has a diode; the
+   five proportional coils marked "P" are drawn without one.
+8. **Compare with the specification:** 3.5 to 5.5 ohms at 68 °F / 20 °C. The manual allows plus or
+   minus 30 percent, which gives a pass band of about 2.5 to 7.2 ohms (2.45 to 7.15 exactly — if you
+   land between 7.15 and 7.2, call it a fail). Coil resistance moves about 4 percent for every 18 °F /
+   10 °C the air is above or below 68 °F, so write down the air temperature next to the reading.
+9. **Look into the harness half of the plug.** The socket the orange/red wire feeds is the feed socket;
+   the other is the return socket. Mark which is which in your notes. **Identify them by tracing the
+   wire, not by the colour alone:** orange/red is used for two different circuits on this machine.
+10. **Reconnect the battery negative cable.** Leave the coil plug OFF the coil.
+11. **Volts with nothing commanded, ground controls.** Key to the ground-controls position. Pull the
+    ground E-stop OUT and the basket E-stop OUT. **Do not start the engine. Do not press any button.**
+    Nobody stands at the platform controls, and nobody touches the added toggle switch. Meter on DC
+    volts, 20 V range. Red probe into the feed (orange/red) socket of the harness plug, black probe into
+    the return socket — read. Then move the black probe to the battery negative post and read again.
+12. **Volts with nothing commanded, platform controls.** Key to the platform position, both E-stops
+    still OUT, foot switch NOT pressed, no button pressed, toggle switch untouched. Take the same two
+    readings as in step 11.
+13. **Key OFF and out, both E-stops IN.** Disconnect the battery negative cable again and tape it.
+14. **White-wire tie-in check.** Meter on ohms or continuity. One probe on the white wire. In the field
+    photo the white wire is not a loose bare end: it is spliced into the harness through a blue
+    insulation-piercing tap on the turntable, and its other end runs to the toggle switch in the basket.
+    So probe whichever of these you can reach safely **without cutting anything:** the metal of the tap
+    itself, a stripped point you were going to repair anyway, or the spade terminal in the basket that
+    the white wire lands on. Put the other probe into the feed (orange/red) socket of the Y74 harness
+    plug and read. Then move that probe to the return socket and read. A reading of a few ohms or less
+    means the white wire is joined to that circuit.
+15. **Push the coil plug back onto the coil until it clicks.** Reconnect the battery negative cable.
+    Close and secure the compartment unless the next card needs it open.
+16. **Write down:** coil ohms and the air temperature; volts at the ground-controls position
+    (plug-to-plug and feed-to-battery-negative); volts at the platform position (same two); white-wire
+    ohms to the feed socket and to the return socket; and what your photographs show, including how many
+    terminals the basket toggle switch has and how many of them are wired.
+
+#### You should see
+
+| Measurement | Expected | If OK it means | If not it means | Cite |
+|---|---|---|---|---|
+| Coil resistance across the two coil terminals, plug off, battery negative disconnected | 3.5 to 5.5 ohms at 68 °F / 20 °C. Pass band about 2.5 to 7.2 ohms (3.5 × 0.7 = 2.45; 5.5 × 1.3 = 7.15 — this arithmetic is the card's, not printed in the manual). | The coil is electrically sound. This does not prove the valve actually moves oil; proving that needs the engine running and is not part of this card. | OL ("over limit" — no reading at all, the path is broken) or well above 7.15 ohms means the coil is open; replace solenoid valve 107742GT, or the whole 106454GT assembly. Near zero (0 to about 2 ohms) means the windings are shorted; replace it too. Before removing anything, note which socket the orange/red wire sits in so the new coil goes back the same way round. Do not loosen the cartridge just to test the coil. | SM p.150 (10773-10776, 10723-10728, 10731-10737); PM p.245 |
+| DC volts at the harness half of the plug: feed socket to return socket, then feed socket to battery negative. Key at ground controls, both E-stops out, engine off, nothing pressed. | Likely 0 V — in practice anything under about 0.5 V — on both readings. **[M]: no manual states what this circuit should read with the engine off.** | Nothing on the ground-controls side is holding the master hydraulic enable on. | Near battery voltage (about 12 to 13 V) means the feed is live with nothing commanded. Either an added wire is feeding this circuit — go to the white-wire readings — or the TCON output at J14 pin 34 is stuck on. **Do not run any hydraulic function until the source is found.** The added wire is the first suspect; the TCON is the last. | Feed comes from TCON P14-34 on ES0366J; the manual only ever drives this path with the engine running and a function enable button held (SM p.117). The 0 V figure is the card's own expectation [M]. |
+| Same two readings, key at platform controls, foot switch off, engine off, nothing pressed | Likely 0 V [M, same reason] | Nothing on the platform side is holding the master hydraulic enable on while the toggle switch is left alone. **Do not flip the toggle switch to see what happens.** The field photo shows a switch with six spade terminals in two rows of three, so it can switch two separate circuits, and only one of them has been looked at. Operating an unidentified added switch on a machine whose safety wiring is already suspect is not a test this card allows. | Same as above. If it read 0 V at ground controls but battery voltage at platform controls, the source is on the platform side: the basket control box, the added toggle switch, or the white wire. | as above |
+| Ohms from the white wire (at its tap on the turntable, or at its spade terminal on the toggle) to the feed (orange/red) socket of the Y74 harness plug, battery disconnected | OL — open circuit, no continuity, no beep | The white wire does not feed the function enable valve. It still has to be traced and identified (card B2). In the field photo the white wire is tapped with a blue insulation-piercing clip onto one of two wires — they read as plain red and plain orange in the photo, with no stripe that can be made out — which run into a small dark two-way connector. A carton marked "…LT SENSOR" is lying nearby, but that is a spare-part box on the machine, not the sensor itself. Photo colours are not proof of a circuit either way; only this ohms reading settles whether the white wire touches Y74. | Continuity (a few ohms or less) means the toggle switch in the basket is a hand-operated master hydraulic enable: whoever flips it forces the lift pump to build pressure for every boom, steer and axle function no matter what the TCON has decided, which defeats the controller's hydraulic lock-out. **Remove the white wire and the toggle switch completely — both ends, every insulation-piercing tap — repair the insulation on the orange/red wire, then repeat the two volts readings.** | photo -white-wire-turntable-tilt-sensor-box.jpg [F]; colour trap: SM p.199 circuit 155 OR/RD vs SM p.198 circuit 63 OR/RD |
+| Ohms from the white wire to the return socket of the Y74 harness plug, battery disconnected | OL — open circuit | The white wire is not on the return side either. | The white wire is sitting on the valve return line VLVRTN6-BR. That is still an added wire on a controller circuit, and that same return is shared by Y75 and by Y52/Y53, all landing on TCON J14 pin 30. Remove it and repeat the two volts readings. | figs es-y74-return-vlvrtn6.png, es-return-bus-split.png; SM p.210 (16307) |
+
+#### Why we are doing this
+
+If the coil is broken open, no boom, steer or axle function can get oil, no matter what the computers
+command. If the coil's feed wire shows battery voltage when nothing is pressed, then something is
+holding the master hydraulic enable switched on — either the added white wire or a stuck output from
+the TCON. Either way it takes away the controller's decision about when hydraulic pressure is allowed.
+These readings decide whether the white wire and toggle switch must come out before anything else is
+done, and whether a new valve or a new TCON belongs on the parts list.
+
+#### Safety
+
+- **Never bypass, jumper, hold on, or feed this valve or any other safety circuit, limit switch, angle
+  sensor, tilt sensor or load cell. This card exists to take an added wire out; it never puts one in.**
+- Key OFF and both E-stops IN before pulling or pushing any plug. Battery negative disconnected for
+  every ohms reading.
+- The engine stays off for the whole card. Do not press a function enable button or any function button
+  during the volts readings — the whole point is to see the circuit with nothing commanded.
+- **Do not operate the added toggle switch in the basket.** Six spade terminals in two rows of three,
+  only three wired: it can switch a second circuit that nobody has traced.
+- Manual warning with coil testing: electrocution and burn hazard; contact with electrically charged
+  circuits could result in death or serious injury; remove all rings, watches and other jewelry.
+- Manual warning with opening covers: improper contact with components under any cover will cause
+  serious injury; only trained maintenance personnel should access compartments; all compartments must
+  remain closed and secured during operation.
+- Do not loosen the valve cartridge, the coil nut, the hoses or the filter. If a cartridge is ever
+  refitted, the manual's torque is 20-25 ft-lbs / 27-34 Nm, but that is a different job with the system
+  depressurised.
+- Do not use the bypass or recovery key switch, and do not fit any calibration jumper or toggle.
+- Firm level ground, wheels chocked, boom stowed. The axles are retracted, so boom functions are locked
+  out by design. Do not try to work around that.
+- Measure at the valve plug, not at the TCON. J14 is a 35-pin connector with the pins close together,
+  and probing it risks shorting an output (practical advice, not from the manual).
+
+#### Sources
+
+- [V] "The function enable valve is mounted behind the medium pressure filter." — SM p.135 (10018)
+- [V] "1 | Solenoid valve, 2 position 2 way | A | Enables lift pump to provide hydraulic pressure for all boom and steer/axle functions | 20-25 ft-lbs / 27-34 Nm" — SM p.135 (10025-10032)
+- [V] The SM p.135 drawing shows a single valve, callout 1 / letter A, connector drawn as an empty moulded shroud with no terminals — figs/func-enable-valve.png
+- [V] Coil resistance for schematic item A is 3.5 to 5.5 ohms, last row of the Valve Coil Resistance table — SM p.150 (10773-10776)
+- [V] Coil resistance alone cannot identify this valve: three other rows read 3.5-5.5 or overlap the 2.5-7.2 band (items N/P/R/T/V; item B 4-6; items H/J 3.5-5.5; items F/AD 5.5-7.5) — SM p.150 (10739-10768)
+- [V] "The resistance should be within specification, plus or minus 30%… otherwise replace the coil." — SM p.150 (10723-10728)
+- [V] "…specifications are at an ambient temperature of 68°F / 20°C… resistance will typically increase or decrease by 4% for each 18°F / 10°C…" — SM p.150 (10731-10737)
+- [V] "1 Tag and disconnect the wiring from the coil to be tested. 2 Test the coil resistance." — SM p.150 (10717-10721)
+- [M] Taking the higher of the two probe directions is the card's practical advice, not a manual step — justified only because Y74's coil has a diode across it
+- [V] Y74's coil is drawn with a suppression diode across it, bar end at terminal 1; the five proportional coils marked "P" are drawn without one — figs/es-y74-coil-diode.png, es-return-bus-split.png
+- [V] "How to Test a Coil Diode…" — SM p.151 (10791-10793)
+- [V] "Electrocution/burn hazard… Remove all rings, watches and other jewelry." — SM p.150 (10712-10716)
+- [V] "V155PSE OR/RD | Y74 FUNCTION ENABLE VALVE (J166)" — SM p.229 (18598-18599)
+- [V] On the sheet the feed leaves TCON pin P14-34 ("PRESS COMP ENABLE VLV"), crosses J153 between "MANIFOLD HARNESS" and "ENGINE HARNESS", and enters coil terminal 1; terminal 2 leaves downward to a return line — figs/es-y74-coil.png (text positions read with PyMuPDF)
+- [V] J153 is a two-pin connector and both pins are identifiable: "J153" appears twice on the page, once on the V155PSE OR/RD line and once on the V150HG GR/BK line — SM p.207 (15682-15684) plus sheet positions
+- [V] P14-34 has its own output driver fed from "uP"; its neighbour P14-35 is "HYD WELDER PROPEL BYPASS" carrying V150HG GR/BK — figs/es-tcon-p14-34-press-comp-enable.png
+- [V] **CORRECTED:** Y74 terminal 2 does NOT share a return with the boom valve coil bank. The sheet draws two separate return lines at y=1248.7 with a gap; the left one ends on VLVRTN7-BR, the right one is tapped by VLVRTN6-BR and collects Y74 and Y75, then continues down to Y52 and Y53 — figs/es-y74-return-vlvrtn6.png, es-return-bus-split.png (vector geometry read from PDF p.243)
+- [V] **CORRECTED:** the Y74 return wire IS named and coloured — VLVRTN6-BR, brown, landing on TCON J14 pin 30 (VLVRET6-BR / VALVE_RTN6). The boom coil bank's return VLVRTN7-BR lands on J14 pin 27. — SM p.210 (16301, 16307); fig es-tcon-p14-27-30-valve-rtn.png
+- [V] Y74's return is shared with Y75 WELDER GEN BYPASS VLV (J167), and lower down with Y53 TT ROT CCW VLV (J71) and Y52 TT ROT CW VLV (J70). Y77 is a turntable rotate flow control, not a boom valve. — figs/es-y74-return-vlvrtn6.png
+- [V] "34 | V155PCE - OR/RD"; "J14 | White 35 pin AMP connector on TCON" — SM p.210 (16315), SM p.205 (15441-15442)
+- [V] "OR/RD | 155 | Pressure Comp. Enable" — SM p.199 (14888-14890)
+- [V] **COLOUR TRAP:** orange/red serves TWO circuits — 63 "Power to boom envelope safety switch" and 155 "Pressure Comp. Enable"; circuit 64 is orange/black — SM p.198 (14572-14577), SM p.199 (14888-14890)
+- [V] "PCE Pressure Comp Enable / PSE Program Setup Enable" — SM p.194 (14085, 14123)
+- [V] "J166 6 pin Deutsch connector for jib bellcrank sensor / J162 3 pin Deutsch connector for jib bellcrank angle sensor" — SM p.207 (15697-15710)
+- [V] ES0366J also draws a second, 3-pin J166 (1 RD, 2 BK, 3 BL) at the jib bellcrank sensor — figs/es-j166-jib-bellcrank.png; "J166" occurs twice in the page text
+- [V] "1 | 107742GT | VALVE,SOLENOID 2 POS 2 WAY … 2 | 106454GT | VALVE,FUNCTION ENABLE | includes item 1" — PM p.245 (12216-12225)
+- [V] PM fig 707.1 (p.244) shows the function enable valve as a square block with one cartridge and coil; the connector is drawn as a plain shroud — figs/pm244-func-enable-manifold.png
+- [V] PM fig 303.1 list: item 25 "Ref. Function Enable Manifold (refer to 707.1)", 26 4266GT screw, 27 6638GT washer, 28 6091GT nylock nut — **no quantities printed** — PM p.49 (2353-2363)
+- [V] In the 303.1 drawing item 25 is a small valve low in the compartment on its own flat bracket plate, below and right of the battery box, near the battery tray — figs/pm046-engine-compartment.png
+- [V] The engine compartment is part of the turntable: PM files fig 303.1 inside section "300 Turntable Components" — PM p.49 (2366-2367)
+- [M] **CORRECTED:** neither manual says the engine compartment is behind a turntable cover on the engine side — the sentences previously quoted are about a jib pivot pin and about the ground-controls-side cover. Which side to stand on is field guidance.
+- [V] Landmarks in the same compartment: battery 1303581GT (item 22), horn 81578GT (23), coolant recovery bottle 60721GT (7, Cummins and Perkins), relay mount plate 107525PGT (6), battery tray 107512PGT (14), maxi fuses and plug-in relays (16-19) — PM p.47
+- [V] Medium pressure filter parts: 1267807GT assembly, bracket 70517GT / 128525GT "BRCKT,MED.FILTER,TEST PORT" — PM pp.95, 99, 109, 113
+- [V] PM fig 405.1 (p.112) shows the medium pressure filter as an upright canister on a bracket below the air cleaner; the engine oil filter is a different canister (item 26) — figs/pm112-perkins-1104c-engine-fig.png
+- [V] **CORRECTED:** the Perkins 804D-33T pages are PM pp.114-119 and 124-129; pp.120-123 are a different engine. Those lists carry fuel, air AND engine oil filters but no hydraulic medium pressure filter — PM (5923-6666)
+- [V] **CORRECTED:** 62 kW does not single out one engine — the Perkins 1104C-44 is 83 hp / 62 kW net and the 804D-33T is 83 hp / 62 kW. The serial break does discriminate: 1104C-44 "to SN 952", 804D-33T "from SN 953". This machine is 1861. Deutz and Cummins are also listed. — SM (1766-1913); PM figure captions
+- [V] OM ground control panel items 14 and 15 are the high and low speed function enable buttons — OM pp.22-23 (1421-1443)
+- [V] The only way the manual energises this path is with the engine running from the ground controls and a function enable button held (pressure compensator adjustment) — SM p.117 (8986-8998); "Y74" occurs exactly once in the whole extracted Service Manual, on the schematic
+- [V] "Safety Switch P7R … Function enable button was held down during startup. Recycle power with the function button released." — SM p.174 (12316-12322)
+- [V] "Improper contact with components under any cover will cause serious injury… All compartments must remain closed and secured during operation." — OM p.16 (1064-1069)
+- [V] The TCON is its own control box assembly at the ground controls — PM fig 305.1 items 6 (106512GT to SN 1711 / 237069GT from SN 1712) and 7 (lid 107714GT) — PM (3055-3069)
+- [F] **CORRECTED, field photo:** the basket toggle has SIX brass spade terminals in two rows of three, only three wired (one lilac crimp, two clear) on white wire printed "16 GAU". The six-terminal body is itself what rules out the Genie three-terminal SPDT part. — photos/2026-09-12-aftermarket-toggle-terminals.jpg
+- [F] **CORRECTED, field photo:** at the turntable the white wire is joined by a blue insulation-piercing tap onto one of a pair of wires running into a small dark two-way connector. Enlarged, the pair reads plain red and plain orange — no stripe can be made out, and nothing identifies the connector's brand. The white wire is spliced at the tap, not terminated. A carton marked "…LT SENSOR" lies nearby, which locates a spare-part box, not the turntable tilt sensor. — photos/2026-09-12-white-wire-turntable-tilt-sensor-box.jpg
+- [M] Repository house rule (not a manufacturer statement): key OFF and E-stop IN before unplugging any connector; battery disconnected for resistance tests. The manufacturer-backed half is SM p.150's "tag and disconnect the wiring before testing a coil".
+- [M] Case-file conclusion (knowledge-base document, not a manual): the function enable valve is why energising one axle valve coil on its own moves nothing, and the valve should be identified by location and coil resistance rather than by the connector number. (The case file's own page citation "SM p.206" for the J166/J162 legend is wrong; the legend is on SM p.207.)
+- [V] Sheet identity caveat: the ES0366J title block reads "Genie Z-135 / Electrical Schematic / w/ Deutz Engine / ES0366J", and a separate Perkins engine schematic exists on SM p.216. The serial plate names schematic ES0366, so this is the right sheet family, but the engine-harness side of J153 may be drawn for the Deutz. The Y74 coil, its feed from P14-34 and its return to P14-30 are on the main sheet and are unaffected. — SM p.229 (19695-19698), SM p.216 (16642)
 ## C. The J114 boom angle sensor circuit
 
 C1 and C2 together are the highest-value twenty minutes of the day: they tell you whether the fault is in the harness the previous tech patched, or past the plug in the new sensor.
@@ -2726,3 +3322,82 @@ Nothing today makes the machine drive. Propel stays off until the crosscheck fau
 ---
 
 *Built from Operator's Manual 114474, Parts Manual 106877GT Rev H.04 and Service and Repair Manual 1268557GT. Each card was drafted, then fact-checked by three independent reviewers against the manual text and the schematic sheet ES0366J, then corrected. Statements that survived are tagged [V]; statements the reviewers could not support are tagged [M] and worded as likely. Never bridge a safety crosscheck, and never return this machine to service on improvised wiring.*
+
+
+
+---
+
+# ⚠ Read this before you use the plan above
+
+An independent reviewer read all fifteen cards against the manuals and found **structural holes**. The cards are well sourced — but the plan as a set is incomplete in ways that matter. Fix these in your head before you start.
+
+## The three big holes
+
+**1. The plan never measures the thing the fault is actually about.** Every card stops at the 5 volt supply and the ground. *No card measures either angle signal* — `J114` cavity 3 (safety, to the SCON) or cavity 4 (operational, to the TCON), or the same two at `J154`. The whole fault set is those two copies disagreeing. You can prove supply and ground are perfect and still know nothing about why they disagree. **Add this:** with `J114` plugged, back-probe cavity 3 and cavity 4 to sensor ground and write down both voltages, boom stowed. They should be close to each other. How far apart they are *is* the fault.
+
+**2. There is no repair card.** Eight cards say "the repair card decides removal" — and that card does not exist. As written, a machine can pass through all fifteen cards with the Scotchlok bridge, the loose pin, the bonding wire and the toggle switch all still fitted. **Nothing in this plan removes a bypass or verifies it is gone.** Removal is a separate job, after the measurements, and it is not optional.
+
+**3. Nobody has followed the white wire to its actual end.** The card notes the wire *carries on past* the Scotchlok at the turntable — so its far end has still not been seen. Finding it is part of B, not an afterthought.
+
+## The hard stop nobody wrote down
+
+> **If the empty cavity at `J114` turns out to be cavity 3** — `C141PBS-RD`, the safety angle signal to SCON `J122-3` — **that is a defeated safety input.** Do not operate the machine, do not energise it further, photograph it and stop. Same if the Scotchlok loop joins cavity 3 to cavity 4.
+
+## Safety problems inside the cards themselves
+
+These are steps in the plan above that the reviewer judged unsafe as written. **Do not follow them as printed:**
+
+- The plan never removes the bypasses. Every card that finds one defers removal to a repair card that is not in the set, and the plan ends at a parts list. A machine can pass through all fifteen cards with the Scotchlok bridge (case-file hypothesis 3 is a deliberate pins 3-4 crosscheck defeat), the frame-bonded green wire, the butt splice and the aftermarket toggle still fitted, and with nothing having verified that factory terminations were restored. No card gates the calibration handoff on the bypasses being provably gone.
+- c2-j154 step 15 deliberately re-connects the modified J114 "exactly as found" and re-energises the machine to compare fault lists. That is putting a suspected safety-signal bridge back on under power. The card mitigates it (engine off, no function commands, platform E-stop in) but it does not make the step conditional on c3c4-bridge having first shown that pins 3 and 4 are NOT bridged, which is the one result that would make it unacceptable.
+- c6-led step 5 energises the ground control box with the lid open — a live board, four live AMP plugs and the calibration toggle all exposed — against SM p.103, which keeps both E-stops pushed in for all work inside that box, and against the setup card's explicit refusal to authorise it. Step 8 then power-cycles repeatedly with the sensor plugs pulled, deliberately generating new latched faults on a machine already carrying seven.
+- d1-joystick step 10 back-probes with the key at PLATFORM and BOTH E-stops OUT while the technician is standing in the basket with the control box open, inches from the joysticks. The platform controls are live at the operator's own position with the lid off. "Everybody clear of the handles" does not cover the person whose hands are in the box.
+- c7-bond works from superseded information about the machine's state — it tells the technician the axles are extended and that no axle boom-lockout can be relied on. The compensating controls it names (key off, E-stops in, battery disconnected) are correct, but a card that misstates the machine's configuration is one a technician may try to verify by moving something.
+- Battery isolation is inconsistent across cards that all take resistance readings. The setup card and b1-toggle disconnect BOTH battery sets and the setup card flags the 100 A dual battery separator as an unresolved back-feed path; c3c4-bridge and c7-bond disconnect a single negative cable. An ohm reading taken with the auxiliary set still on the separator can be wrong, and the Operator's Manual instruction is to disconnect the batteries under both turntable covers.
+- Work at height is required at the primary boom pivot — c1-j114, c3c4-bridge and c7-bond all establish that the work point is 8 to 10 ft up and call for a ladder, scaffold or second platform with fall protection. b3-host-wire step 10, c5-ground step 8 and the parts card step 2 send the technician to the same place with no access instruction at all.
+- Out-of-service tagging is inconsistent. c3c4-bridge and c5-ground require the machine tagged and the tag left on; the setup card, crosscheck, c1, c2, c6 and the d-cards do not. Between cards the machine can sit untagged with a connector open and possibly a safety signal disconnected.
+- No card states the hard stop plainly: if the empty cavity at J114 proves to be cavity 3 (C141PBS-RD, the safety angle signal to SCON J122-3), that is a defeated safety input and the machine must not be operated or energised for convenience until it is re-terminated. c3c4-bridge flags it to a supervisor; c1, c2, c6 and d4 continue to instruct power-ups regardless of what was found.
+- Nothing makes the platform control box safe before it is re-energised. b1-toggle leaves three live-capable conductors sleeved inside a box it has itself described as found wet, closes the lid "loosely to keep water out", and no later card dries it, replaces the gasket 81488GT, or checks the wet membrane before power is restored to that box.
+- No card carries the return-to-service gate. The knowledge base requires a full Operator's Manual function test and an annual inspection by a qualified person after control-system repair; the plan hands off to a calibration technician and stops. Nothing states that calibration alone is not a release to work.
+
+## Tests the fault list calls for that no card covers
+
+- **No card tests the secondary boom retract switches LSS1RS / LSS1RO at J46 and J49** — "Secondary boom switches fault" is one of the seven live display messages and it is the only one with a complete, dedicated recovery procedure in the manual — yet no card in the set touches it. The crosscheck card merely names the candidates, and c2-j154 says it "should not change", handing it to nobody. It also matters for propel: the p.189 matrix row "Secondary Boom length (crosscheck LSS1RS and LSS1RO)" cuts P_11, P_30 and P_9B (engine), and "LSS1RS disconnected" cuts P_11 and P_30, so this fault has its own lockout independent of the angle sensors. The manual's own recovery also requires clearing through the TCON display menu or WebGPI, which no card does. *(SM p.188 (1268557.txt 13540-13610: Secondary Boom Switch Timeout, Secondary Boom Switches Intermittence (LSS1RS Fault), LSS1RO Fault); SM p.205 lines 15472-15476 "J46 4 pin Deutsch connector on LSS1RS / J49 4 pin Deutsch connector on sec boom retract (LSS1RO)"; SM p.189 matrix rows at 13719 and 13733; SM p.202 lines 15251-15254; 04-fault-codes.md "Secondary boom switch faults (p.188)")*
+- **No card ever measures the boom angle signals themselves (J114-3, J114-4, J154-3, J154-4) live** — The whole fault set is a crosscheck disagreement between the two angle copies, and no card measures either copy. c1-j114 stops at the 5 V supply and its own if_ok promises "Next card: signal voltages on cavities 3 and 4 with J114 plugged and back-probed" — that card does not exist. c3c4-bridge measures resistance with the battery off; c5-ground measures only the ground legs; c7-bond measures the added wire. So the plan can prove supply and ground are good and still have nothing to say about why the two controllers disagree, and no way to distinguish the manual's "Value at 5.0 V", "Value Too High", "Value Too Low", "Value at 0 V" and "Out of Tolerance" error types, each of which has a different recovery action. *(SM pp.177-180 error-type rows (1268557.txt 12576-12862); SM pp.106-107 Machine Status readouts (primary-to-secondary boom angle, secondary boom angle) at 8097-8149; c1-j114 expected[0].if_ok, which names the missing card)*
+- **No harness continuity test from the sensor connectors back to the controller pins** — Case-file hypothesis 2 is "broken conductor in the boom harness bypassed with the external green wire", and nothing in the plan tests it. Nobody rings J114-3 through to SCON J122-3, or J114-4 through to TCON J12-32, or the J154 equivalents to J122-2 and J12-33. c3c4-bridge step 15 explicitly defers this to "the ground control box card", which is not in the set; c6-led opens that box but only looks at an indicator lamp. c5-ground rings only the two ground legs, so a broken or high-resistance SIGNAL conductor — the single most likely cause of a crosscheck fault — is never measured. *(SM p.209 Safety Controller Pin Legend (J122-2 C142SBS-OR, J122-3 C141PBS-RD); SM p.210 Turntable Controller Pin Legend (J12-32 C123PBS-RD/BK, J12-33 C124SBS-OR/BK); cases/Z13513-1861/README.md "Hypotheses for the modification" item 2; c3c4-bridge steps[15])*
+- **No card locates, opens or measures at J20, the 12-pin connector in the primary sensor's path** — All six primary-sensor conductors pass through J20 and the conductor colours change across it, so every J114 reading is really a reading through two J20 contacts. The setup card warns that "a continuity check that ignores J20 will point you at the wrong length of harness", c1-j114 puts J20 in three if_not branches, and c3c4-bridge makes the 1-6 and 2-5 continuity results depend on J20 being mated — yet no card sends anyone to find it. Every card that mentions J20 also records that its physical location is not given in any of the three manuals, and none resolves that. *(SM p.205 line 15448 "J20 12 pin Deutsch connector lower/upper limit switch harness"; figs/es-j114-primary-sensor.png (J20 pins 11, 12, 2, 10, 7, 6); setup card connector.description; c1-j114 open_questions)*
+- **No card follows the white wire to its actual far end, or identifies the cut 2-pin stub at the turntable** — b1-toggle step 12 records that the white wire "carries on PAST the Scotchlok — so its own far end is somewhere further along and has not been seen yet; find it", and b3-host-wire records an unplugged 2-pin connector whose far end is cut and frayed. Neither card has a step that reaches the end of the wire or ohms the stub, and no other card covers it. An unidentified conductor that runs the length of the boom to a safety-sensor area, and a cut harness stub, are both left in place with no owner. The connector legend offers named candidates for a 2-pin harness-to-harness joint that nobody checks. *(SM p.207 lines 15646-15689 (J146 lower limit switch harness/engine harness, J149 boom composite, J153 engine and manifold harness, J157 PCON manifold/boom composite); b1-toggle steps[12] and open_questions; b3-host-wire what_it_looks_like and steps[9])*
+- **No card tests the CAN bus between TCON and SCON** — "TCON-SCON calibration inconsistent" is a live message and the case file also carries an earlier "SCON CAN no response". Several cards reason FROM the CAN bus being healthy (a running engine means the SCON is on the bus, because Loss of CAN drops P_9B) but nothing verifies it, and the manual carries its own fault entry with a specific recovery action. No card reads D82CAN(+)-YL and D81CAN(-)-GR at SCON J121-6 and J121-7 or checks that wiring back to the TCON. *(SM p.176 "CAN Bus, Fault Check ... Check CAN wiring from TCON to SCON/PCON"; SM p.209 SCON pin legend, D82CAN(+)-YL and D81CAN(-)-GR (1268557.txt 16014, 16019); SM p.189 Loss of CAN row (13712-13718))*
+- **No card checks the physical installation of the new sensor — arm, rotator, magnet engagement, travel** — The manual's own recovery for "Value Too High" is "Sensor is out of range. Check sensor and actuating pin for proper installation. Repair or replace sensor and recalibrate", and the Parts Manual notes the 216061GT sensor and its magnet are matched. This machine has a visibly new sensor kit at the primary pivot and a live "primary boom angle zone fault" — exactly the picture a mis-clocked rotator or an arm not engaging the pivot pin would give. Every card instead says do not disturb the sensor, so the one manual-listed mechanical recovery action is never performed, and nothing measures the sensor's own output across its travel. *(SM p.177 lines 12583-12589 (Value Too High recovery); PM p.169 item 17 216061GT "Sensor and magnet are matched and must be replaced at the same time. Machine calibration is required after installation."; PM fig 511.2 items 8 233118GT rotator, 9 218757GT sensor pin weldment, 21 233116GT sensor arm)*
+- **No card clears the stored faults and re-reads the display after the work** — The crosscheck card is explicit that removing the bridge does not on its own restore propel — the latched fault has to be cleared — and the manual gives two different menus depending on software version plus the WebGPI route. d4-software records WHICH menu this machine has and then stops. Nothing in the set power-cycles with the fault corrected, clears, re-reads and confirms which messages actually go away, so the plan has no way to prove any repair worked. *(SM pp.107-108 Delete Faults / Clear Faults menus (1268557.txt 8177-8254); SM p.188 lines 13580-13582 and 13610-13612 "Use TCON display menu or laptop with WebGPI to clear faults"; 04-fault-codes.md "Clearing faults (pp.107-108)"; crosscheck card why_it_matters)*
+- **There is no removal / repair card at all, and no verification that the bypasses are gone** — Eight of the fifteen cards defer the actual work to a card that is not in the set: "the repair card", "the removal card", "the next card decides removal and Genie-method harness repair", "that removal and repair is the next card", "a separate card deals with them". So the plan identifies two Scotchlok taps, a green jumper, an external frame-bonded green wire, a butt splice, a loose pin terminal and a non-Genie toggle switch — and removes none of them, re-terminates nothing with Deutsch pins, and never confirms the factory arrangement has been restored before the machine is handed to calibration. The worklist's own section F, the calibration decision, has no card either. *(b1-toggle steps[15]; b3-host-wire steps[13]; crosscheck safety[3]; c1-j114 expected[0].if_ok; c3c4-bridge plain_purpose; c5-ground steps[15]; parts card steps[2]; cases/Z13513-1861/README.md worklist sections A-F)*
+- **No card inspects or tests the platform membrane panel and its two ribbon cables** — The case file's 2026-09-10 finding — both axle indicators lit at once, panel visibly wet, decal corner lifted — maps to a specific fault-table row whose recovery is "Check ribbon and connector from membrane switch. If necessary replace membrane switch." d1-joystick opens that same box and looks only at joysticks; the parts card prices 106509GT, 82841GT, 62399GT and 81488GT. Nobody checks the ribbons, the board or the wet overlay, so parts may be bought on a hunch and the same wet box will be re-energised. *(SM p.176 (1268557.txt 12493-12499) Axle Extend/Retract Buttons, both buttons pressed; SM p.29 steps 2-3 (ribbon cables at the membrane circuit board); PM p.209 and p.213 items; cases/Z13513-1861/README.md "Field observation 2026-09-10: both axle indicators lit")*
+- **No card looks at the primary boom retract / extend limit switches LSP1RO and LSP1EO** — They sit on the same pivot bracket the technician is already at — the parts card quotes their assembly 110913GT, its 4-way connector 119067GT, lock 60443GT and pin terminal 73713GT — and the manual ties them to "Primary Boom Length, Fault Check (unknown length)", which stops all boom functions. The live "primary boom angle zone fault" has no entry anywhere in the manual, and these envelope-length switches are the nearest documented input to a zone/envelope complaint. No card so much as photographs them. *(SM p.173 Primary Boom Length Fault Check (04-fault-codes.md "Boom length and speed calibration (p.173)"); SM p.203 line 15355 LSP1RO definition; PM p.169 items 2, 2- (110913GT, 119067GT, 60443GT, 73713GT); parts card steps[8])*
+- **No loaded test of the TCON supply or the 20 A system breaker** — The setup card describes the relay and fuse panel and says "just look for a blown fuse or a burnt relay socket" with no reading; c6-led measures at J15 only as a branch taken when the LCD is dead. Nothing measures battery voltage under load, the R21PIGN 20 A ignition fuse or the ground-panel 20 A breaker, and nothing compares the 5 V rail with the sensor plugs connected versus disconnected — which is the one measurement that would separate "TCON cannot make 5 V" from "something on the shared bus is pulling it down". The setup card's own arrival check offers 12-13 V as [M] with no follow-up. *(SM p.211 fuse panel legend (1268557.txt 16324-16378); SM p.177 recovery "Check that the 5.0 VDC LED is lit on the TCON board"; setup card steps[7] and expected[0]; c6-led steps[7])*
+- **No systematic survey for further non-factory wiring** — Three separate unauthorised modifications have already been found in three different places (primary pivot, boom loom, platform box), plus a possible fourth at the turntable. d1-joystick and d2-tilt each survey one item. No card walks the machine end to end — turntable covers off, cable-track trays open, ground control box, chassis manifold boxes — looking for more taps, splices or added switches. The worklist's "D survey" section is only half covered, and the missing d3 card is where this most likely belonged. *(cases/Z13513-1861/README.md field observations 2026-09-12 (J114 splices; aftermarket toggle and white wire); b3-host-wire steps[10]; PM figs 507.1, 512.1, 516.1 cable tracks)*
+
+## Places the sources contradict each other or the cards contradict each other
+
+Read these before you trust a colour, a page number or a pin in the cards above.
+
+- J114 seated wire colours and the identity of the loose pin — three cards read the same photograph three ways. c5-ground: the five seated conductors are RED, BLACK, YELLOW, GREEN, WHITE and "the BLUE wire does NOT enter the housing". c3c4-bridge agrees blue is the loose one and therefore infers the empty cavity is 3, i.e. C141PBS-RD, the safety signal to SCON J122-3. c1-j114 lists the five seated as blue, red, yellow, green, white (no black) and states the loose pin's conductor "is NOT established" because the lead is hidden behind the technician's thumb. This is the single most consequential disagreement in the set: it decides whether a safety angle signal is currently hanging disconnected.
+- The Scotchlok taps — b3-host-wire and c3c4-bridge read one conductor per tap (the lower tap plainly on a yellow conductor, the upper tap's conductor not callable) with a green jumper looped between them. c5-ground and c7-bond both state that EACH tap engages a yellow conductor AND a green conductor. Two bridged conductors versus four, from the same two photographs.
+- The pink crimp at the pivot bolt — c1-j114 states flatly it is a ring terminal under a bolt head and "not a butt splice"; c3c4-bridge says which of the two it is "cannot be told from the photo"; c5-ground and c7-bond and the case file all call it a butt splice. c1's own reasoning (a butt splice joins two wires end to end and cannot land on a bolt) is sound but is contradicted without being addressed by the later cards.
+- What the green wire is bolted to — c1-j114 "a bare steel plate ... not identified in any manual"; c3c4-bridge "a large bare grey machined plate at the pivot (not on the small blue sensor bracket)"; c7-bond "a grey machined pad welded at the corner of a plate"; b3-host-wire and the case file "a bolt on the pivot bracket". No card settles whether that plate is even electrically continuous with the boom or the turntable, which is the whole point of c7's Reading A.
+- The turntable tap pair — b1-toggle and b3-host-wire read the white wire tapped onto an ORANGE conductor with a BLACK stripe, which would make it circuit 64 "Power for operational switches" and put it straight on the stop-list. b5-y74 and d2-tilt read the same photo as a tap across a WHITE wire and a RED wire with a plain orange alongside and "no stripe can be made out". The stripe decides whether this is a safety-circuit bypass or something harmless.
+- The 2-pin plug at that tap — b1-toggle and b3-host-wire call it grey and explicitly say it is grey not black; d2-tilt calls it "a small black sealed two-way plug". b3 adds that nothing proves it is a Deutsch at all.
+- Axle position — c7-bond's machine_state instructs "CHECK THE AXLE POSITION ON SITE AND WRITE IT DOWN; do not assume. The case record says it measured 12.8 ft at the yard, which means the axles are extended, not retracted ... do not rely on any axle-out boom lockout". Every other card, the brief, and the case file's later update say the axles are retracted at 8 ft 1 in. c7 is citing a superseded line (README lines 8-9) over the 2026-09-10 update at lines 149-152.
+- Opening the ground control box under power — the setup card removes the lid-open 5 V LED reading from State A, records the conflict with SM p.103 ("Push in the red Emergency Stop button ... at both the ground and platform controls") and states "This setup card does not authorise it." c6-led then does exactly that in step 5, acknowledging it is "NOT a manual procedure" but proceeding. The two cards are in open disagreement about whether the reading may be taken.
+- E-stop state — the setup card's State A requires BOTH E-stops pulled OUT, and every later card claims to start from that setup; c1-j114, c2-j154, c6-led and d4-software all instruct that the PLATFORM E-stop stays pushed IN. The base card and its dependents give different instructions for the same state.
+- J15 — SM p.205 calls it "Black 4 pin DTP connector on PCON" while SM p.210 lists J15 under "Turntable Controller" and the schematic draws it feeding the TCON. The setup card says treat the ground-box receptacle as the TCON battery feed "until proven otherwise"; c6-led declares the p.205 line "a typo". Manual self-contradiction, resolved differently by two cards and never referred to Genie.
+- J166 — schematic ES0366J labels the function enable valve coil "Y74 FUNCTION ENABLE VALVE (J166)", the connector legend gives J166 as the 6-pin jib bellcrank sensor and J162 as the 3-pin jib bellcrank angle sensor, and the same sheet draws a SECOND, 3-pin J166 at the jib bellcrank. b5-y74 and the case file both flag it; no one has asked Genie.
+- V155PSE versus V155PCE — the schematic prints PSE at the valve, the TCON pin legend prints PCE at J14-34 for the same orange/red circuit-155 wire, and the suffix table defines PSE as Program Setup Enable and PCE as Pressure Comp Enable. Unresolved.
+- Wire-colour contradictions inside the manual, carried by several cards and never referred upward: circuit 124 is RD/WH in the SM p.199 wire legend but OR/BK in the SM p.210 pin legend and on the schematic; S140ENL is OR/RD in the pin legends but "orange/black" in the SM p.175 fault text; circuit 23 is WH in the table but P23PCON-BK in the legend; circuit 52 is BL/RD "Auxiliary Platform" but P52PCON-WH; circuit 132 is GR but S132LDS-BL/WH. Worst of all, the brown sensor ground SNSR GND-BR has NO circuit number anywhere — circuit 110 "Sensor Return" is listed as BK and BR is assigned to circuit 89.
+- SM p.189 matrix layout — the descriptive title boxes run P_38, P_39, P_10, P_11, P_9B, P_30 while the narrow data columns underneath run P_38, P_39, P_10, P_11, P_30, P_9B. Scoring the crosscheck row against the titles reverses P_9B and P_30 and would wrongly predict the engine should be dead. The crosscheck card caught it; nothing in the manual resolves it.
+- The two ES0366J harness colour variants — the sheet carries a "UNIT #130 OR HIGHER" J20-to-J114 block (RD, WH/BK, BL, OR, GR, WH) and a "UNIT #129 OR LOWER / VERSION S0675110 SOFTWARE (PHASE 2)" block (OR, GR, RD, RD/BK, BK, GR/BK). Nothing ties serial Z13513-1861 to either, and the conductors actually photographed at this machine's J114 match NEITHER set. Until the unit number is established, no colour on any pin table in this plan can be used.
+- Secondary sensor build mismatch — SM section 4-9 describes a bracket with two springs and a hex-shaped key, while PM figure 502.2 for the from-SN-1854 group (which is this machine) shows a base / race / holder / arm / rotator stack and lists no angle-sensor cover at all. c2-j154 flags it; the manual does not resolve which arrangement a SN 1861 machine has.
+- Parts availability questions never put to Genie — kit 217246GT is indexed only under the superseded figure 511.1 and this machine's figure 511.2 lists 215728GT and 216061GT instead; the PM p.77 note reads "no longer available ... after SN 12853" which is probably a misprint for 1853; and the Parts Manual contains NO 6-way Deutsch connector body, lock, seal or terminal anywhere, so 73713GT is an inference from 2-way and 4-way listings. The parts card states all three honestly and none is settled.
+
+## Reviewer's overall verdict
+
+> The set is unusually disciplined on sourcing — nearly every statement is tagged, cited to a printed page, and several cards visibly caught their own earlier errors. The weaknesses are structural rather than factual. Three holes stand out. First, the plan never measures the quantity the fault set is about: no card reads the operational and safety angle signals live, so it can prove supply and ground are healthy and still say nothing about why the two controllers disagree. Second, there is no repair card — eight cards defer removal of the Scotchlok bridge, the frame bond, the butt splice and the aftermarket toggle to a card that does not exist, and nothing verifies the bypasses are gone or clears the latched faults afterwards, so the plan cannot close its own loop. Third, one of the seven live faults, the secondary boom switches, has no card at all even though it is the fault with the most complete recovery procedure in the manual. Add J20 (routed through by three cards, located by none), the harness continuity from connector to controller pin, and the CAN link that several cards reason from but none tests. The most urgent single item is the disagreement over the loose pin at J114: c5 and c3c4 read the blue conductor as the one hanging out, which makes it cavity 3, the safety signal to SCON J122-3, while c1 says the conductor cannot be identified. If c3c4 is right, a safety input is currently disconnected and several cards are still instructing power-ups and one is instructing a deliberate reconnection of the modified connector. Settle that photograph first, then write the missing signal-measurement, LSS1RS/LSS1RO, harness-continuity and removal/verification cards.
+
