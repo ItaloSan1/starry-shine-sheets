@@ -183,3 +183,54 @@ sensors come *after* the axle angle sensors and steer sensors — and axle senso
 calibration requires **fully extending the axles again** (SM p.168). So the machine
 must be transported narrow and repaired at a shop, not calibrated in the yard.
 Immediate transport option is free-wheel and winch (OM p.58).
+
+## Field observation 2026-09-12: primary boom angle sensor J114 has been modified
+Photos `photos/2026-09-12-j114-*.jpg`. Machine was moved on site (free-wheel, OM p.58).
+
+What the owner found at the primary boom pivot:
+- Bright new Genie-blue sensor hardware against a faded machine — parts figure
+  **511.2 (from SN 1854)** items 8 `233118GT` sensor rotator and 9 `218757GT` primary
+  sensor pin weldment (PM p.169). Consistent with the parts-manual note that the
+  original `94980GT` dual-output sensor is NLA and first replacement is **kit
+  `217246GT`** with `216061GT` Hall sensor, matched magnet, calibration required
+  (PM pp.167, 169) `[V]`. So the sensor has been replaced with the kit at some point.
+- Deutsch `DT04-6P` half with **five wires seated and one pin terminal hanging loose**
+  outside the connector.
+- **Two blue Scotchlok IDC taps** with a green jumper looped between them — two
+  conductors bridged at the connector. Not a Genie method (Deutsch pins `73713GT`).
+- A **long green wire outside the loom** from the connector to a pink butt splice at a
+  bolt on the pivot bracket.
+
+### J114 / J154 factory wiring (ES0366J, SM p.229) `[V]`
+Figures `figs/es-j114-primary-sensor.png`, `figs/es-j154-secondary-sensor.png`,
+`figs/es-boom-sensors-wide.png`.
+
+| Pin | J114 harness wire (Unit #130+) | Circuit | Sensor wire (94980 type) | Half |
+|---|---|---|---|---|
+| 1 | RD | `P109ANG-GR/WH` 5 V, TCON J12-26 | RD | S18 safety, supply |
+| 2 | WH/BK | `SNSR GND-BR`, TCON J12-25 | BK | S18 safety, ground |
+| 3 | BL | `C141PBS-RD` → SCON J122-3 | BL | S18 safety **signal** |
+| 6 | OR | `P109ANG-GR/WH` 5 V | OR | S17 operational, supply |
+| 5 | GR | `SNSR GND-BR` | BR | S17 operational, ground |
+| 4 | WH | `C123PBS-RD/BK` → TCON J12-32 | YL | S17 operational **signal** |
+
+J154 (secondary, S19 oper / S20 safety) uses the same layout: pins 1/6 `P109ANG`,
+2/5 `SNSR GND`, 3 `C142SBS-OR` → SCON J122-2, 4 `C124SBS-OR/BK` → TCON J12-33.
+**The 5 V and sensor ground are shared between J114 and J154**, so a short at the
+primary can produce the secondary "shorted / 0 V" code.
+
+The 216061GT kit sensor's own pigtail colours are not in the three manuals `[M]`.
+
+### Hypotheses for the modification (`[M]`, in order)
+1. Pinout mismatch after the kit swap (or a non-Genie sensor) adapted with splices.
+2. Broken conductor in the boom harness bypassed with the external green wire.
+3. Deliberate crosscheck defeat — pins 3 and 4 bridged so SCON and TCON see one
+   signal. Would explain crosscheck + "TCON–SCON calibration inconsistent". Must be
+   undone; never leave a bridged safety signal.
+
+### Next measurements
+- J114 unplugged, harness side, key on: 5.0 V pin 1→2 and pin 6→5. If absent, check
+  the TCON 5 V LED (SM pp.177–178 recovery action).
+- Same at J154 with J114 still unplugged: if the secondary's 5 V and code recover,
+  the primary splice job is dragging the shared supply down.
+- Ohm which two pins the Scotchlok loop joins, and which pin the loose terminal is.
