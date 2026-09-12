@@ -3190,454 +3190,805 @@ and a disconnected safety signal is a defeated safety path that must be put righ
 - [M] Likely explanation for the bond: a previous technician followed the "open ground circuit" or "Value at 0 V" recovery action and grounded the sensor to the frame instead of repairing the broken harness conductor. This is an inference drawn in the case file, and **the newly identified out-of-cavity blue conductor is an equally live alternative explanation.**
 
 
-## D. Survey while you are in there
-
-### D1: Which joystick is new, and what that implies
-
-**What this finds out.** Find out which of the four platform joysticks was replaced, which connector it sits on (J25, J28, J127 or J128), whether it is a Genie part or an aftermarket one, and whether it has ever been calibrated. A replaced joystick that was never calibrated is a second, separate reason for a dead function on this machine, on top of the boom angle sensor faults.
-
-**Where it is**
-
-- *What it is:* The four proportional joysticks mounted through the lid of the platform control box (the box that holds the PCON = platform controller circuit board).
-- *Where on the machine:* In the platform (basket). Stand in the platform at the control panel, facing the panel, with the red mushroom E-stop button at the right-hand end of the panel.
-- *How to find it:* Facing the panel, the four joysticks sit in one row. Left to right: (1) primary boom up/down and turntable rotate joystick, with a thumb rocker on top for primary boom extend/retract; (2) jib boom up/down and platform rotate joystick, with a thumb rocker on top for jib extend/retract; (3) secondary boom up/extend and down/retract joystick, a single-axis stick with a plain ball knob; (4) drive/steer joystick, nearest the E-stop, marked by the blue and yellow drive arrows and blue/yellow steer triangles on the decal (SM p.26 figure; OM pp.27-28). To see the wiring, push both E-stops in, key off, remove the lid retaining fasteners and open the lid (SM p.27). The LED circuit board is on the underside of the lid; the PCON board is inside the box (SM p.26).
-- *What it looks like:* From above: a black rubber boot, a black grip; two of the four have a thumb rocker on the top of the grip. Each is held to the lid by four 1/4-20 screws on a square flange (PM p.209 items 2-4). From under the lid (photo 2026-09-12-platform-box-interior-pcb.jpg): a round black body about the size of a hockey puck with a square metal flange and a short pigtail ending in a grey 6-way Deutsch DT plug with an orange wedge. In the site photos the body next to the E-stop contact block is visibly cleaner than its neighbour, and from the top the drive/steer grip with the rocker top looks newest; the ball-knob secondary boom joystick next to it has chipped paint.
-- *Source:* SM p.26 (1268557.txt lines 2478-2513, figure sm026-platform-controls.png); SM p.27 lines 2537-2551; OM pp.27-28 (114474.txt lines 1596-1676); PM pp.208-209 (106877.txt lines 10527-10611, figure pm208-platform-box-view1.png); photos 2026-09-12-platform-panel-membrane.jpg and 2026-09-12-platform-box-interior-pcb.jpg
-
-**Set the machine to**
-
-- **Key:** OFF for the visual inspection and while the lid is open. ON in the PLATFORM position only for the optional 5 V back-probe check and to read the ground display; then OFF again. Never use the bypass or recovery key positions on this card.
-- **E-stops:** Both red E-stop buttons (ground and platform) pushed IN while the lid is opened and while looking at wiring. Pulled OUT only for the optional 5 V check and the display read, with nobody touching any joystick.
-- **Battery:** Connected. This card has no resistance (ohm) tests, so the battery stays connected; the battery must be disconnected only if the calibration tech later ohms anything.
-- **Engine:** OFF throughout. Do not start the engine.
-- **Also:** Machine on firm level ground, wheels chocked, boom fully stowed. Axles left RETRACTED as found; with the axles retracted the limit switches LSFA1ES / LSRA1ES prevent boom functions anyway (SM p.203). Platform control box lid opened; NO joystick connector is unplugged on this card, because the manual says a joystick that is disconnected must be recalibrated (SM p.30). Do not operate the aftermarket toggle switch in the box (that is another card).
-
-**Connector — J25 drive/steer joystick (most likely the new one) - or J28 / J127 / J128 if a different joystick turns out to be the new one**
-
-Each joystick has its own 6-pin Deutsch DT connector: J25 = drive/steer joystick, J28 = secondary boom up/extend and down/retract joystick (SM p.205); J127 = primary boom up/down, ext/ret and turntable joystick, J128 = jib boom up/down, ext/ret and platform rotate joystick (SM p.206). On the schematic they are labelled JC3 (J25), JC5 (J28), JC7 (J127) and JC6 (J128). Pin 2 of every joystick is the orange 5 V supply P162JPW-OR, pins 1 and 6 are brown grounds, and the signal wires sit on pins 3, 4 and 5. All four run to J29, the 16-pin Molex connector on the PCON circuit board (SM p.205). Genie sells a 6-pin to 7-pin adapter harness 119613GT for the aftermarket (H-suffix) joysticks 101174, 101175 and 101005 (PM p.209); an adapter in line is a sign of an aftermarket replacement.
-
-*Source:* 1268557.txt lines 15460-15467 (SM p.205), 15621-15626 (SM p.206); figure es-joysticks-j25-j28-j127-j128.png (ES0366J, SM p.229); 106877.txt lines 10538-10542 (PM p.209)
-
-| Pin | Wire name | Harness colour | Sensor colour | What it is | Goes to |
-|---|---|---|---|---|---|
-| J25-1 | JSGND1-BR | brown | joystick pigtail colours are not given in the manuals | joystick signal ground | PCON J29-16 |
-| J25-2 | P162JPW-OR | orange | not in manuals | Joystick 5V DC power (circuit 162) | PCON J29-13/14 (shared with the other joysticks) |
-| J25-3 | C159STC-BL/WH | blue/white | not in manuals | Steer Joystick Signal (circuit 159); STC = Steer Control Signal | PCON J29-7 |
-| J25-4 | C160JPL-WH/RD | white/red | not in manuals | Propel Joystick Signal (circuit 160); JPL = Propel Signal | PCON J29-8 |
-| J25-5 | C158STC-BL/RD | blue/red | not in manuals | Steer Signal Rocker (circuit 158) - the thumb rocker steer input | PCON J29-6 |
-| J25-6 | GND1-BR | brown | not in manuals | ground | ground bus on ES0366J |
-| J28-1 | JSGND2-BR | brown | not in manuals | joystick signal ground | PCON J29-1 |
-| J28-2 | P162JPW-OR | orange | not in manuals | Joystick 5V DC power | PCON J29-3/4 |
-| J28-3 | (empty on the schematic) | none | none | not used | nothing |
-| J28-4 | C161SB-WH/BK | white/black | not in manuals | Secondary Boom Joystick Signal (circuit 161); SB = Secondary Boom | PCON J29-9 |
-| J28-5 | (empty on the schematic) | none | none | not used | nothing |
-| J28-6 | GND2-BR | brown | not in manuals | ground | ground bus on ES0366J |
-| J127-1 | JSGND4-BR | brown | not in manuals | joystick signal ground | PCON J29-15 |
-| J127-2 | P162JPW-OR | orange | not in manuals | Joystick 5V DC power | PCON J29-13/14 |
-| J127-3 | C164PLS-RD/WH | red/white | not in manuals | circuit 164: wire legend says Primary Up/Down Signal; suffix legend says PLS = Primary Boom Extend/Retract Signal (manual conflict, see open questions) | PCON J29-11 |
-| J127-4 | C165TRS-WH/RD | white/red | not in manuals | TT Rotate Signal (circuit 165) - turntable rotate | PCON J29-12 |
-| J127-5 | C163PES-BL/WH | blue/white | not in manuals | circuit 163: wire legend says Primary Extend/Retract Signal; suffix legend says PES = Primary Boom Up/Down Signal (manual conflict, see open questions) | PCON J29-10 |
-| J127-6 | GND4-BR | brown | not in manuals | ground | ground bus on ES0366J |
-| J128-1 | JSGND3-BR | brown | not in manuals | joystick signal ground | PCON J29-2 |
-| J128-2 | P162JPW-OR | orange | not in manuals | Joystick 5V DC power | PCON J29-3/4 |
-| J128-3 | C156JUD-GR/WH | green/white | not in manuals | Jib Up/Down (circuit 156); JUD = Jib Up/Down Control | jib circuit on ES0366J (not through J29) |
-| J128-4 | C16PRL-OR/RD (as printed on the sheet) | orange/red | not in manuals | PRL = Platform Rotate Left (CCW) | platform rotate circuit on ES0366J |
-| J128-5 | C157JER-BK/RD | black/red | not in manuals | Jib Extend/Retract (circuit 157); JER = Jib Extend/Retract Control | jib circuit on ES0366J |
-| J128-6 | GND3-BR | brown | not in manuals | ground | ground bus on ES0366J |
-
-**Do this**
-
-1. Set up. Machine on firm level ground, wheels chocked, boom stowed, axles left retracted as found. Engine OFF, key OFF, both red E-stop buttons pushed IN (ground and platform).
-2. Stand in the platform at the control panel, facing it, E-stop at your right. Name the four joysticks left to right from the decal icons: primary boom/turntable (rocker on top), jib/platform rotate (rocker on top), secondary boom (single-axis ball knob), drive/steer (blue/yellow arrows and triangles, next to the E-stop). Write the four names on the record sheet in that order.
-3. Look at each joystick from above. Compare boots (cracked vs supple), grips (chipped vs clean), flange screws (rusty vs bright), and lid paint around the flange (fresh scratches). Circle the one that is clearly newer. From the site photos the drive/steer joystick looks newest, but confirm it with your own eyes. Photograph all four from the same angle.
-4. Write down which connector the new joystick is on: drive/steer = J25; secondary boom = J28; primary boom/turntable = J127; jib/platform rotate = J128.
-5. Open the box: with both E-stops still IN and the key OFF, remove the lid retaining fasteners and swing the lid open. Clip a grounded wrist strap to the ground screw inside the box before touching anything near the circuit boards (static can damage them).
-6. DO NOT unplug any joystick. The manual says a joystick that is disconnected must be recalibrated before that function will work, so unplugging one here would add another uncalibrated part. Do all checks with the plugs mated.
-7. Under the lid, find the body of the new joystick (the one directly below the grip you circled; it is the cleanest body, and if it is the drive/steer joystick it sits next to the E-stop contact block). Read and photograph any label on it. Write the part number exactly. Genie numbers are 101173GT (2-axis with rocker, used for the primary and jib positions), 101175GT (1-axis, secondary position), 101174GT (2-axis) or 101005GT (1-axis with rocker) for the drive/steer position; an H on the end (for example 101005HGT) means Genie's aftermarket version.
-8. Follow the new joystick's pigtail to its 6-way Deutsch plug. Note: is there a short adapter harness (6-pin to 7-pin, Genie 119613GT) spliced in? Is the orange wedge fitted? Are all wires seated flush at the back of the plug, none pulled back? Any Scotchlok taps, butt splices or added wires on this pigtail? Photograph the plug from the wire side.
-9. Without unplugging, read the wire colours entering the back of the harness-side plug and compare with the pin table for that connector. For J25 (drive/steer) you should see: 1 brown, 2 orange, 3 blue/white, 4 white/red, 5 blue/red, 6 brown. Write what you actually see next to each cavity.
-10. Optional 5 V check (only if you have a fine back-probe pin; do not pierce insulation). Everybody clear of the joysticks. Turn the key to the PLATFORM position and pull both E-stops OUT; engine stays OFF. Meter on DC volts, 20 V range. Red lead back-probed on cavity 2 (orange wire) of the new joystick's plug, black lead on cavity 1 (brown wire). Expect about 5 V. Write the number. Then push both E-stops IN and turn the key OFF.
-11. Read the faults. Turn the key to the GROUND position, pull the ground E-stop OUT (engine OFF), and go to the ground control box display. Scroll through every fault message and copy each one word for word, especially anything containing JOYSTICK, NOT CALIBRATED or CALIBRATE THRESHOLDS. Then turn the key to PLATFORM and read the display again (the joystick calibration procedure itself checks this display with the key in the platform position). Push the E-stop IN and turn the key OFF.
-12. Close the lid and refit its fasteners. Leave the machine key OFF, both E-stops IN.
-13. Record on the sheet: which joystick is new and its connector number; the part number and whether it is OEM, H-suffix aftermarket, or unlisted; adapter harness yes/no; wire colour per cavity; splices yes/no; the 5 V reading if taken; the full fault list from both key positions; photo numbers. Hand this to the calibration tech: that joystick's defaults must be deleted and re-learned as step 2 of the full calibration sequence, with the engine off, before any threshold or speed settings are made.
-14. Do not run the joystick calibration on this card, and do not swap joysticks between positions to test them: both make more uncalibrated parts. The calibration procedure in plain words, for reference only: key off; hold Enter on the ground panel while turning the key to platform, keep holding about 5 s; press Minus twice then Enter twice; scroll to DELETE <function> JOYSTICK DEFAULTS; press Plus for YES then Enter; do not start the engine; push that joystick full stroke one way and hold 5 s, back to centre; full stroke the other way and hold 5 s, back to centre; the ground alarm beeps once when it takes. One pass per function: drive, steer, secondary boom, primary extend/retract (rocker), primary up/down, jib up/down, turntable rotate. Then check the ground display shows no calibration fault.
-
-**You should see**
-
-| Measurement | Expected | If that is what you get | If not |
-|---|---|---|---|
-| Visual: which of the four joysticks is new, by position on the panel | **Exactly one joystick looks newer than the other three; you can name its function and connector (drive/steer = J25, secondary = J28, primary/turntable = J127, jib/platform rotate = J128).** | That joystick goes on the calibration list as a replaced part. If it is the drive/steer joystick, note that an uncalibrated propel joystick freezes propel at zero on its own (SM p.185), separate from the SCON P_38 cut. | If none looks new, or two do, record it and photograph all four; the calibration tech deletes and re-learns every joystick's defaults anyway (joysticks are step 2 of the full sequence). |
-| Label on the new joystick body (read, do not unplug) | **A Genie number: 101173GT, 101174GT, 101175GT or 101005GT (OEM), or the same number with an H suffix (Genie aftermarket). H-suffix 101174/101175/101005 types need the 119613GT 6-pin to 7-pin adapter harness.** | A listed part that can be calibrated with the normal procedure; note whether the adapter is present when it should be. | An unlisted brand or no label: treat the joystick as unknown; it may not calibrate. Report it and price the correct Genie part for that position before the calibration visit. |
-| Wire colours at the back of the harness-side plug, cavity by cavity, with the plug mated | **Colours match the pin table for that connector. J25: 1 BR, 2 OR, 3 BL/WH, 4 WH/RD, 5 BL/RD, 6 BR. J28: 1 BR, 2 OR, 3 empty, 4 WH/BK, 5 empty, 6 BR. J127: 1 BR, 2 OR, 3 RD/WH, 4 WH/RD, 5 BL/WH, 6 BR. J128: 1 BR, 2 OR, 3 GR/WH, 4 OR/RD, 5 BK/RD, 6 BR. No taps, splices or added wires on the pigtail.** | Factory pin-out intact; the joystick can be calibrated as is. | A wire in the wrong cavity, a backed-out terminal, a Scotchlok tap or a missing wedge: record it and photograph it. The fault table's first recovery action for a joystick fault is exactly this check ('connector terminals have not backed out'). The calibration tech must correct the wiring (key OFF, E-stop IN before unplugging) before calibrating. |
-| Optional: DC volts, cavity 2 (orange P162JPW) to cavity 1 (brown JSGND), key in PLATFORM, E-stops out, engine off | **About 5 V DC (the wire legend calls circuit 162 'Joystick 5V DC power'; the manual gives no tolerance).** | The PCON is feeding the joystick; any remaining joystick problem is the joystick, its wiring, or calibration. | 0 V or well under 5 V: the joystick has no supply and cannot be blamed yet. The orange P162JPW wire is shared by all four joysticks and lands on PCON J29 pins 3, 4, 13 and 14; report it for the electrical cards. Expect the fault table's 'Value at 0 V' entry for that joystick. |
-| Ground display fault list, key in GROUND and again in PLATFORM, engine off | **Every message copied word for word. Look for any joystick 'Not calibrated' message or 'Calibrate Thresholds'.** | If a joystick 'Not calibrated' message is present, that function is 'frozen at zero and neutral' regardless of the sensor faults; it confirms the replaced joystick was never calibrated and it goes on the calibration list. | If no joystick message appears, someone may already have run the joystick procedure, or the controller cannot tell. The calibration tech re-runs it anyway (it is required before thresholds, max-out or ramping can be set). Either way the boom angle crosscheck faults still switch off propel and boom power until they are cleared. |
-
-**Why we are doing this.** The calibration tech needs to know which joystick defaults to delete and re-learn; joysticks are step 2 of the full machine calibration sequence (SM p.105). It also explains the history: with the primary boom angle crosscheck fault live, the SCON switches off propel, turntable rotate, primary extend, and primary/secondary up (SM p.189), so a previous tech testing the controls would have found several joysticks "dead" and may have replaced one that was never faulty. If the new joystick is the drive/steer one (J25) and it was not calibrated, the TCON freezes propel at zero by itself (SM p.185), so propel cannot come back until both the crosscheck faults are cleared and the joystick is calibrated.
-
-**Safety**
-
-- Engine OFF, key OFF and both E-stops IN before the lid is opened and whenever hands are near wiring (SM p.27 step 1).
-- Clip a grounded wrist strap to the ground screw inside the box before touching the circuit boards; static discharge can destroy them (SM p.27). Remove rings and watches.
-- Do not unplug any joystick on this card. The manual says a disconnected joystick must be recalibrated before that function will operate (SM p.30). If the calibration tech later unplugs one, key OFF and E-stop IN first.
-- Do not move any joystick with the key on except during the actual calibration procedure run by the calibration tech, and even then only with the engine off as the procedure requires.
-- Do not use the bypass or recovery key positions and do not fit the calibration jumper or move the calibration toggle. Those steps belong to the calibration tech.
-- Never bridge, jumper or defeat any safety circuit, limit switch, angle sensor, tilt sensor or load cell. This plan removes bypasses; it never adds one. Do not operate the aftermarket toggle switch in this box.
-- Machine on firm level ground, wheels chocked, boom stowed. With the axles retracted the LSFA1ES / LSRA1ES limit switches prevent boom functions by design (SM p.203); do not try to work around that.
-- Tip-over hazard: full machine calibration must be done in the manufacturer's sequence by Genie factory-trained technicians (SM p.105). This card only gathers the facts they need.
-
-**Open questions on this card**
-
-- Which joystick is new is a photo inference (drive/steer, J25, looks cleanest and sits next to the E-stop); it must be confirmed on site by eye and by the label. Tagged M.
-- The brief said J25/J28 were on SM p.206; in the extracted text they are on printed p.205 (PDF 219). J127/J128 are on p.206 (PDF 220). Cite p.205 for J25 and J28.
-- Manual conflict on circuits 163/164: the Wire Color Legend (SM p.199) lists 163 as Primary Extend/Retract Signal and 164 as Primary Up/Down Signal, but the suffix legend (SM p.194) defines PES (used in C163PES) as Primary Boom Up/Down Signal and PLS (C164PLS) as Primary Boom Extend/Retract Signal. The card lists both; the calibration tech should not rely on either until checked on the sheet.
-- J128 pin 4 is printed 'C16PRL-OR/RD' on ES0366J; the circuit number looks truncated (likely 166). Colour orange/red and PRL = Platform Rotate Left are as printed.
-- The Wire Color Legend text extracts with its colour column one row offset (each colour printed after description N belongs to circuit N+1). Colours in this card were taken from the schematic wire names (e.g. P162JPW-OR), not from that column.
-- Deutsch DT cavity numbering on the wire-entry face is general knowledge, not from the manuals (M). If unsure, follow the row order 1-6 on the schematic and photograph both faces for the calibration tech.
-- The manual says a disconnected joystick must be recalibrated, but does not say how the TCON detects a like-for-like swap; a missing 'Not calibrated' message therefore does not prove the new joystick was calibrated.
-- The manual gives no tolerance for the joystick 5 V supply (circuit 162); 'about 5 V' is the only statement available.
-- Whether the joystick calibration should be run before the calibration visit: it needs no bypass key, no jumper and no engine, and it is step 2 of the sequence, but SM p.105 restricts calibration to Genie factory-trained technicians. Left to the calibration lead; this card only records.
-- The parts list allows either a 2-axis (101174GT) or a 1-axis-with-rocker (101005GT) drive/steer joystick; the photo suggests a rocker-top grip. Read the label to know which type is fitted and whether an H-suffix aftermarket unit with the 119613GT adapter is present.
-- The joystick's own pigtail wire colours are not given in any of the three manuals; only the harness-side names are.
-
-<details><summary>Sources for this card (59 checked statements)</summary>
-
-- `[V]` J25 is the 6 pin Deutsch connector on the drive/steer joystick — *1268557.txt 15460-15462 (SM p.205, PDF 219)*
-- `[V]` J28 is the 6 pin Deutsch connector on the secondary boom up/extend and down/retract joystick — *1268557.txt 15463-15465 (SM p.205)*
-- `[V]` J29 is the 16 pin Molex connector on the PCON PCB — *1268557.txt 15466-15467 (SM p.205)*
-- `[V]` J127 is the 6 pin Deutsch connector for the primary boom up/down, ext/ret and turntable joystick — *1268557.txt 15621-15623 (SM p.206, PDF 220)*
-- `[V]` J128 is the 6 pin Deutsch connector for the jib boom up/down, ext/ret and platform rotate joystick — *1268557.txt 15624-15626 (SM p.206)*
-- `[V]` Printed page 205 of the SM is PDF page 219 (the connector legend page carrying J25 and J28); printed 206 is PDF 220 — *1268557.txt 15416-15426 and 15538-15546*
-- `[V]` Schematic labels: J127 = PRIMARY BOOM UP/DOWN, EXT/RET AND TURNTABLE ROTATE JOYSTICK (JC7); J128 = JIB EXT/RET, UP/DOWN PLAT ROT JOYSTICK (JC6); J28 = SEC BM UP/DWN EXT/RET JOYSTICK (JC5); J25 = DRIVE & STEERING JOYSTICK (JC3) — *es-joysticks-upper.png figure (rendered from ES0366J, SM p.229, PDF page 243); text also at 1268557.txt lines 18282-18291*
-- `[V]` J25 pin-out: 1 JSGND1-BR, 2 P162JPW-OR, 3 C159STC-BL/WH, 4 C160JPL-WH/RD, 5 C158STC-BL/RD, 6 GND1-BR — *es-joysticks-j25-j28-j127-j128.png figure; wire names also at 1268557.txt lines 17179-17183*
-- `[V]` J28 pin-out: 1 JSGND2-BR, 2 P162JPW-OR, 3 empty, 4 C161SB-WH/BK, 5 empty, 6 GND2-BR — *es-joysticks-j25-j28-j127-j128.png figure; wire names also at 1268557.txt lines 17176-17178, 17183*
-- `[V]` J127 pin-out: 1 JSGND4-BR, 2 P162JPW-OR, 3 C164PLS-RD/WH, 4 C165TRS-WH/RD, 5 C163PES-BL/WH, 6 GND4-BR — *es-joysticks-j25-j28-j127-j128.png figure; wire names also at 1268557.txt lines 17160-17165 and 17837-17839*
-- `[V]` J128 pin-out: 1 JSGND3-BR, 2 P162JPW-OR, 3 C156JUD-GR/WH, 4 C16PRL-OR/RD (as printed), 5 C157JER-BK/RD, 6 GND3-BR — *es-joysticks-j25-j28-j127-j128.png figure; wire names also at 1268557.txt lines 17173-17175, 18497-18498*
-- `[V]` PCON J29 pin-out: 1 JSGND2-BR, 2 JSGND3-BR, 3 P162JPW-OR, 4 P162JPW-OR, 5 empty, 6 C158STC-BL/RD, 7 C159STC-BL/WH, 8 C160JPL-WH/RD, 9 C161SB-WH/BK, 10 C163PES-BL/WH, 11 C164PLS-RD/WH, 12 C165TRS-WH/RD, 13 P162JPW-OR, 14 P162JPW-OR, 15 JSGND4-BR, 16 JSGND1-BR — *es-joysticks-lower.png figure; wire names also at 1268557.txt lines 17833-17847*
-- `[V]` Circuit 162 is Joystick 5V DC power; 158 Steer Signal Rocker; 159 Steer Joystick Signal; 160 Propel Joystick Signal; 161 Secondary Boom Joystick Signal; 163 Primary Extend/Retract Signal; 164 Primary Up/Down Signal; 165 TT Rotate Signal; 156 Jib Up/Down; 157 Jib Extend/Retract (SM p.199) — *1268557.txt 14900-14921 (SM p.199, PDF 213)*
-- `[V]` Suffix legend: JPW = Joystick 5V DC Power; JPL = Propel Signal; JER = Jib Extend/Retract Control; JUD = Jib Up/Down Control; PES = Primary Boom Up/Down Signal; PLS = Primary Boom Extend/Retract Signal; PRL = Platform Rotate Left (CCW); SB = Secondary Boom; STC = Steer Control Signal (SM pp.193-194) — *1268557.txt 14010-14017, 14043-14044, 14092-14093, 14106-14107, 14114-14115, 14182-14183, 14214-14215 (SM p.193 = PDF 207 and following page)*
-- `[V]` The platform controls contain two circuit boards; the LED board is on the underside of the lid; the PCON sends data to the turntable control box (TCON) — *1268557.txt 2478-2485 (SM p.26, PDF 40)*
-- `[V]` Joysticks are Hall Effect, their operating parameters are stored in memory at the turntable controls, and a replaced joystick must be calibrated before that function will operate — *1268557.txt 2488-2496 (SM p.26)*
-- `[V]` SM p.26 figure: item 2 jib boom up/down, jib boom extend/retract and platform rotate joystick; 3 secondary boom up/extend and down/retract joystick; 4 drive/steer joystick controller; 6 primary boom up/down, primary boom extend/retract and turntable rotate joystick; drawn left to right 6, 2, 3, 4 with the E-stop at the right end — *sm026-platform-controls.png figure (SM p.26); text at 1268557.txt lines 2503-2513*
-- `[V]` Before opening the platform box: push in the red E-stop at both ground and platform controls; remove the lid retaining fasteners and open the lid; attach a grounded wrist strap to the ground screw inside the box — *1268557.txt 2537-2558 (SM p.27, PDF 41)*
-- `[V]` ESD warning and remove rings, watches and other jewelry (SM p.27) — *1268557.txt 2526-2532 and 2562-2570 (SM p.27)*
-- `[V]` A joystick that is disconnected or replaced must be calibrated before that function will operate (SM p.30) — *1268557.txt 2742-2746 (SM p.30, PDF 44)*
-- `[V]` The joystick must be calibrated before threshold, max-out or ramping can be set — *1268557.txt 2747-2748 (SM p.30)*
-- `[V]` After each joystick is calibrated, check the ground control box display for calibration faults; repeat if any — *1268557.txt 2749-2753 (SM p.30)*
-- `[V]` Joystick calibration is done with the engine off — *1268557.txt 2754 (SM p.30)*
-- `[V]` Drive joystick calibration steps: key off; hold Enter on the ground panel while turning the key to platform, about 5 s; Minus twice, Enter twice; scroll to DELETE DRIVE JOYSTICK DEFAULTS; Plus for YES, Enter; do not start the engine; full stroke forward hold 5 s, centre; full stroke reverse hold 5 s, centre; the ground alarm sounds on success — *1268557.txt 2765-2800 (SM p.30)*
-- `[V]` Steer calibration uses DELETE STEER JOYSTICK DEFAULTS and the joystick or thumb rocker switch (if equipped) full stroke left then right, 5 s each — *1268557.txt 2826-2846 (SM p.31, PDF 45)*
-- `[V]` Secondary boom joystick calibration uses DELETE SECONDARY BOOM JOYSTICK DEFAULTS, full stroke up/extend then down/retract, 5 s each — *1268557.txt 2864-2884 (SM p.31)*
-- `[V]` Primary extend/retract calibration uses DELETE PRIMARY BOOM EXTEND/RETRACT JOYSTICK DEFAULTS and the thumb rocker on top of the primary boom/turntable rotate joystick — *1268557.txt 2914-2934 (SM p.32, PDF 46)*
-- `[V]` Primary up/down calibration uses DELETE PRIMARY BOOM UP/DOWN JOYSTICK DEFAULTS; jib uses RESET JIB BOOM UP/DOWN JOYSTICK DEFAULTS; turntable uses DELETE TURNTABLE ROTATE JOYSTICK DEFAULTS — *1268557.txt 2952-2955, 3004-3006, 3038-3040 (SM pp.32-33)*
-- `[V]` Full machine calibration is required after TCON (ALC-1000 in the ground control box) or SCON replacement; it shall only be done by Genie factory-trained technicians; tip-over hazard if out of sequence; start with booms stowed and axles retracted — *1268557.txt 7967-8005 (SM p.105, PDF 119)*
-- `[V]` Joysticks are the second item in the full machine calibration sequence, after engine configuration — *1268557.txt 8006-8020 (SM p.105)*
-- `[V]` SCON fault matrix columns: P_38 Propel, P_39 Turntable Rotate, P_10 Primary Boom Extend, P_11 Primary/Secondary Up, P_9B Ignition/Fuel, P_30 Secondary Extend/Down — *1268557.txt 13629-13640 (SM p.189, PDF 203); figure scon-fault-matrix.png*
-- `[V]` Primary Boom angle (crosscheck) switches OFF P_38, P_39, P_10, P_11 and P_30 — *scon-fault-matrix.png figure (SM p.189); text at 1268557.txt lines 13654-13660*
-- `[V]` Secondary Boom angle (crosscheck) switches OFF P_38, P_39, P_11 and P_30 — *scon-fault-matrix.png figure (SM p.189); text at 1268557.txt lines 13661-13666*
-- `[V]` Fault table SM p.172: Primary Ext/Ret, Primary Up/Down and Steer joysticks - Value at 5.0 V gives limited speed, direction frozen at zero and neutral, alarm; recovery is check wiring, check terminals have not backed out, substitute a known good joystick, replace and recalibrate — *1268557.txt 12109-12118 (SM p.172, PDF 186)*
-- `[V]` Fault table SM p.172: joystick Not calibrated -> Joystick Speed and Direction frozen at zero and neutral -> Calibrate Joystick; Just calibrated -> one second beep, self-clearing — *1268557.txt 12119-12128 (SM p.172)*
-- `[V]` Fault table SM p.178: Secondary Boom Joystick Value at 5.0 V disables primary up, secondary up/down and extend with alarm; Not calibrated freezes speed and direction at zero — *1268557.txt 12668-12684 (SM p.178, PDF 192)*
-- `[V]` Fault table SM p.185: Propel Joystick Not calibrated -> Joystick Speed and Direction frozen at zero and neutral -> Calibrate Thresholds — *1268557.txt 13330-13347 (SM p.185, PDF 199)*
-- `[V]` Turntable Rotate Joystick faults are on SM p.181 and Jib Up/Down Joystick faults on SM p.183 with the same recovery wording — *1268557.txt 12923-12940 (SM p.181, PDF 195); 13156-13170 (SM p.183, PDF 197)*
-- `[V]` LSFA1ES and LSRA1ES prevent boom functions with the axles retracted (SM p.203) — *1268557.txt 15322-15329 (SM p.203, PDF 217)*
-- `[V]` SCON = Safety Controller: redundant dual axis tilt sensors for the turntable plus safety switch logic for function cut-off — *1268557.txt 15317-15320 (SM p.203)*
-- `[V]` PM fig 603.1 Platform Control Box, View 1 is on PM p.208 and its parts list on PM p.209 — *106877.txt 10525-10531 and 10534-10537*
-- `[V]` 119613GT HARN JOYSTICK ADAPTOR JS100 is a 6-pin to 7-pin adapter for 101174, 101175, 101005 — *106877.txt 10538-10542 (PM p.209)*
-- `[V]` Item 1 101173GT JOYSTICK,2 AXIS,ROCKER,DEUTSCH, OEM, calibration required after replacement, qty 2; 1A 101173HGT JOYSTICK, DUAL AXIS W/STEER aftermarket — *106877.txt 10543-10554 (PM p.209)*
-- `[V]` Item 6 101175GT JOYSTICK,1 AXIS,DEUTSCH OEM qty 1; 6A 101175HGT JOYSTICK,SINGLE AXIS W/KNOB aftermarket — *106877.txt 10579-10590 (PM p.209)*
-- `[V]` Item 7 101174GT JOYSTICK,2 AXIS,DEUTSCH OEM qty 1; 7 101174HGT aftermarket; 7B 101005GT JOYSTICK,1 AXIS ROCKER,DEUTSCH OEM; 7B 101005HGT JOYSTICK, SINGLE AXIS W/STEER aftermarket — *106877.txt 10591-10611 (PM p.209)*
-- `[V]` Joystick mounting hardware: item 2 8914GT SCREW, HHC, 1/4-20 X .625; 3 6356GT lock washer; 4 6638GT flat washer (PM p.209) — *106877.txt 10555-10563 (PM p.209)*
-- `[V]` PM fig 603.1 drawing shows two item-1 (rocker) joysticks, then item 6, then item 7, then item 8 (E-stop) in a row on the lid — *pm208-platform-box-view1.png figure (PM p.208)*
-- `[V]` Item 8 122519GT KIT,ESTOP SVC LARGE BOOM with 66812GT red mushroom head; item 10 106513GT CONTROL BOX ASSY,PCON; item 5 107798GT LID; 5A 106509GT membrane decal; 5B 82841GT DECAL,PLATFORM CONTROL PANEL — *106877.txt 10564-10578 and 10612-10640 (PM p.209)*
-- `[V]` PM fig 606.1 Joysticks (PM pp.218-219) lists the same eight joystick numbers A-H plus 128000GT SEAL, CONNECTOR (DT JOYSTICKS), 128001GT SLEEVE,CONNECTOR,DT JOYSTICKS, 139598GT BOOT,JOYSTICK and 1269502GT KIT, ISOLATION, 4 JOYSTICK — *106877.txt 10949-10958 and 10960-11044 (PM pp.218-219)*
-- `[V]` OM item 18: the drive/steer control is either a dual axis handle for drive and steer OR a drive handle with a thumb rocker for steer; blue arrow = forward, yellow arrow = backward, blue triangle = steer left, yellow triangle = steer right — *114474.txt 1618-1646 (OM p.27, PDF 29)*
-- `[V]` OM item 20: single axis handle for secondary boom up/extend and down/retract; item 23: dual axis handle for jib boom up/down and platform rotate; item 22: thumb rocker for jib extend/retract — *114474.txt 1590-1602 and 1647-1653 (OM p.27)*
-- `[V]` OM items 26 and 27: thumb rocker for primary boom extend/retract; dual axis handle for primary boom up/down and turntable rotate — *114474.txt 1660-1676 (OM p.28, PDF 30)*
-- `[V]` OM PDF page 29 is printed page 27 and PDF 30 is printed page 28 — *114474.txt 1581-1586 and 1657-1661*
-- `[F]` Site photo from above: red E-stop at the top right of the panel; the right-hand joystick has a rocker-top grip under blue/yellow steer triangles and blue/yellow up/down arrows; the ball-knob joystick beside it has chipped paint and secondary boom icons; the panel decal reads 82841 C — *2026-09-12-platform-panel-membrane.jpg photo*
-- `[F]` Site photo under the lid: two round black joystick bodies on square flanges with grey Deutsch plugs and orange wedges; the body next to the E-stop contact block (marked NC) is visibly cleaner than its neighbour; green LED circuit board with ribbon connectors on the lid — *2026-09-12-platform-box-interior-pcb.jpg photo*
-- `[F]` The aftermarket toggle switch in the platform box is wired with white wire and a blue Scotchlok tap near the joystick bodies — *2026-09-12-white-wire-to-toggle-in-box.jpg photo*
-- `[M]` The joystick that is new is most likely the drive/steer joystick on J25 — *2026-09-12-platform-box-interior-pcb.jpg inference from the two photos above; owner reported 'one joystick visibly newer'*
-- `[M]` Deutsch DT plugs carry cavity numbers moulded on the wire-entry face, so colours can be read per cavity without unplugging — *none general connector knowledge, not in the three manuals*
-- `[V]` Case file records J25/J28 and the joystick connectors, the SCON P_38 propel cut, and the observation that one joystick is visibly newer — *README.md Field observation 2026-09-12 (later) section*
-
-</details>
-
-
-### D2: Which tilt sensor is in that carton, and does it matter?
-
-**What this finds out.** Two different things on this machine get called "the tilt sensor": the small plastic PLATFORM tilt sensor bolted to the side of the platform rotator at the basket end, and the TURNTABLE level sensor, which on a Z-135/70 is not a separate part at all - it is built into the SCON safety-controller module on the turntable. This card identifies which one the carton at the turntable holds, checks whether either one on the machine has been changed, and records what that adds to the calibration list. It is a look, read and write-down card; nothing gets unplugged.
-
-**Where it is**
-
-- *What it is:* (A) PLATFORM tilt sensor: Genie 50813GT, described in the Parts Manual as SENSOR,TILT,PCON (PLASTIC), item 8 on figure 519.1 Platform Rotator. PCON = platform controller, the computer in the basket control box; this sensor reports to it. (B) TURNTABLE level sensor: not a separate part. The Service Manual calls it 'the turntable level sensor (SCON)' and says the SCON (safety controller) contains 'redundant dual axis tilt sensors measuring the X and Y tilt angles of the turntable'. SCON module part: 1258463GT MODULE,SCON,PROGRAMMED from SN 1712 (this machine is SN 1861); 139647-SGT was the part up to SN 1711. Item 22 on figure 304.1 Hydraulic Tank Side Components.
-- *Where on the machine:* (A) At the basket end: the platform hangs from a round hydraulic rotator body between the jib and the basket. The sensor is on the side of that rotator body, held by two 1/4-20 x 5/8 hex screws with flat washers (PM p.199 items 9 and 10). Its plug is J55, a 6-pin Deutsch. (B) At the turntable: the module is in the hydraulic-tank side of the turntable (the side that carries the hydraulic tank and filters, opposite the engine). It has two 12-pin Deutsch plugs, J121 grey and J122 black.
-- *How to find it:* (A) Stand at the basket with the boom stowed. Follow the round rotator body the platform is bolted to. Look on its side for a small rectangular sensor box with a short cable and a 6-way plug (see figure pm198-platform-rotator.png: item 8 is the boxed sensor drawn on the rotator side, items 9/10 its screws and washers). (B) Open the turntable cover on the hydraulic-tank side. Look for a sealed electronic module with two 12-way Deutsch plugs side by side (figure pm054-scon.png, item 22 near items 20/21 at the right of the drawing). It carries a Genie part-number label. It has NO tilt-sensor plug on it, because the tilt sensors are inside.
-- *What it looks like:* (A) Plastic-bodied sensor ('(PLASTIC)' in the Parts Manual name), six harness wires at its plug: brown, green/black, green, brown, red, red/black. The schematic draws it as PLATFORM TILT SENSOR ASSEMBLY with a '0-20 DEG Y AXIS' signal and two '10 DEG' safety-cutout channels. (B) The SCON: a box with two 12-pin plugs; the Service Manual's pin legends for J121 and J122 list power, ground, CAN bus, boom-angle safety signals and the six switched safety-power outputs - no tilt wires.
-- *Source:* SM p.42 (platform level sensor location); PM pp.198-199 fig 519.1 items 8-10; SM p.205 (J55); SM p.105 ('turntable level sensor (SCON)'); SM p.203 (SCON internal tilt sensors); PM pp.54-55 fig 304.1 item 22; SM p.206 (J121/J122); SM p.209 (SCON pin legend)
-
-**Set the machine to**
-
-- **Key:** Main key switch OFF and key removed while handling the carton, the platform sensor and the SCON. For the LCD read in step 9 only: main key to GROUND controls. Never turn the bypass/recovery key switch - it stays in RUN.
-- **E-stops:** Both red E-stop (emergency stop) buttons pushed IN while handling parts. Ground E-stop pulled OUT only for the LCD read in step 9, then pushed IN again.
-- **Battery:** Connected. This card takes no resistance (ohm) readings. If you decide to unplug any connector for a later card: key OFF and E-stop IN first; battery disconnected before any ohm test.
-- **Engine:** OFF for the whole card. The LCD read does not need the engine running.
-- **Also:** Firm level ground, boom stowed, wheels chocked. Axles stay RETRACTED as found (8 ft 1 in); boom functions are locked out by the axle switches and must stay that way. Do not fit the calibration jumper, do not move the calibration toggle at the top of the ground box, do not enter any calibration menu - that is the calibration technician's job.
-
-**Connector — J55 (platform tilt sensor) - and, for the turntable side, SCON plugs J121/J122 which carry no tilt wires**
-
-J55 is listed as '6 pin Deutsch connector on platform tilt sensor' (SM p.205). Its six harness wires come from the PCON's white 35-pin connector J22 (pins 15, 19, 20, 21, 22, 23). Three wires are the 'operational' channel (power, ground, tilt signal to the PCON) and three are the 'safety' channel (safety power in, safety ground, safety cutout output). The turntable level sensor has no connector of its own: J121 (grey 12-pin) and J122 (black 12-pin) on the SCON carry power, ground, CAN, boom-angle safety signals and safety-power outputs only.
-
-*Source:* SM p.205 line 15477-15479; SM p.208 PCON pin legend (figure sm208-dcon-pcon-pins.png); ES0366J SM p.229 (figure es-j55-platform-tilt.png); SM p.206 lines 15608-15611; SM p.209 (figure sm209-scon-pins.png)
-
-| Pin | Wire name | Harness colour | Sensor colour | What it is | Goes to |
-|---|---|---|---|---|---|
-| J55-1 | P85RET-BR | BR (brown) | not printed in the manuals | PL TILT SNSR GND - operational sensor ground (circuit 85 return) | PCON J22-19 (white 35-pin on the platform controller) |
-| J55-2 | C84TAY-GR/BK | GR/BK (green with black stripe) | not printed in the manuals | PL TILT SNSR - operational tilt signal, drawn as '0-20 DEG Y AXIS' (circuit 84 Tilt signal Y axis; suffix TAY = Tilt Alarm Y axis) | PCON J22-20 |
-| J55-3 | P85PTS-GR | GR (green) | not printed in the manuals | PL TILT SNSR PWR - operational sensor power (circuit 85 Tilt sensor power; suffix PTS = Platform Tilt Sensor) | PCON J22-21 |
-| J55-4 | P87RET-BR | BR (brown) | not printed in the manuals | SAFE PL TILT GND - safety-channel ground (circuit 87 return) | PCON J22-22 |
-| J55-5 | P87PTS-RD | RD (red) | not printed in the manuals | SAFE PL TILT PWR - Platform Level Safety Power (circuit 87) | PCON J22-23 |
-| J55-6 | C88PTS-RD/BK | RD/BK (red with black stripe) | not printed in the manuals | SAFE PL TILT OUT - Platform Level Safety Output (circuit 88); the '10 DEG' safety cutout channels drive this line | PCON J22-15 |
-| SCON J121 (grey) and J122 (black), all 24 pins | none is a tilt-sensor wire | - | - | The turntable tilt sensors are inside the SCON module. There is no external turntable tilt sensor plug on this machine. | - |
-
-**Do this**
-
-1. Stand down. Main key OFF and out, both E-stops IN, wheels chocked, boom stowed, axles left retracted. Do not touch the bypass/recovery key switch (leave it in RUN) and do not open the ground box to move the calibration toggle.
-2. The carton. Photograph all six faces of the carton at the turntable. Write down, exactly as printed: the Genie part number (you are looking for 50813 / 50813GT), the description line, any date or batch code, whether the seal is broken, and whether a sensor is inside or the box is empty. In the field photo the dirty label reads '...TILT SENSOR', '+/-10 DEGREE...' and '(PCON)', which matches the Parts Manual name SENSOR,TILT,PCON (PLASTIC) = the PLATFORM tilt sensor - but read the printed number yourself; do not rely on that photo reading.
-3. If a part is inside the carton: do not fit it. Count the pins on its plug (the platform sensor uses a 6-way Deutsch plug, J55), note that the body is plastic, photograph the plug face and the wire colours on its pigtail, and put it back in the carton.
-4. The platform sensor on the machine. From the ground, at the basket end, find the rectangular sensor on the side of the round rotator body (PM fig 519.1 item 8). Photograph it. Record: (a) does it look new (clean plastic, bright zinc screws) or original (faded, dirty like the rest of the machine); (b) is the 6-way plug J55 pushed fully home and latched; (c) any Scotchlok taps, butt splices, tape or extra wires within arm's reach of it; (d) which of the six harness colours you can see - brown, green/black, green, brown, red, red/black. Do not unplug it for this card.
-5. The SCON. Open the turntable cover on the hydraulic-tank side. Find the sealed module with two 12-way plugs (PM fig 304.1 item 22). Photograph its label and write the part number: expect 1258463GT (from SN 1712; this machine is SN 1861). Record: new or original appearance; J121 (grey) and J122 (black) both seated and latched; any splices or added wires; any loose or corroded ground/bond wire at the module. Note for the record: there is no tilt-sensor plug on the SCON, so a boxed 'turntable tilt sensor' could not be fitted anywhere on this machine - if anyone says they replaced the turntable tilt sensor, ask whether they mean the SCON module.
-6. The white wire. The white wire from the platform toggle ends near the turntable at a small Deutsch plug carrying red and orange wires, joined with a blue Scotchlok tap (photo 2026-09-12-white-wire-turntable-tilt-sensor-box.jpg). That plug is NOT a tilt-sensor plug - there is no turntable tilt sensor plug. Photograph it, count its pins and list its wire colours; compare with the secondary boom angle sensor J154 pigtail (1 red, 2 black, 3 blue, 6 orange, 5 brown, 4 yellow). Leave it for the J154/toggle cards; cut nothing yet.
-7. Ask the owner and, if reachable, the previous technician: was the part in the carton fitted, where, when, and was any calibration attempted afterwards? Write the answers down word for word.
-8. Software version. At the ground control box, main key to GROUND. Watch the LCD and pull the ground E-stop OUT: the software version is displayed as the screen powers up. Write it down. It decides which calibration procedures the shop will use: 4.01 and higher = 2-point procedures; before 4.01 = 6-point procedures with the digital level.
-9. LCD read (Operator's Manual 'Test the Tilt Sensor', OM p.33; engine not needed). Push the LCD screen control buttons until TURNTABLE LEVEL SENSOR X-DIRECTION shows and write the degrees. Do the same for TURNTABLE LEVEL SENSOR Y-DIRECTION and PLATFORM LEVEL SENSOR DEGREES. Then place a digital level (or a good bubble level) on the flat top of the turntable in both directions, and on a platform side rail, and write those readings next to the LCD values. Also scroll the fault list and note whether any line mentions TURNTABLE LEVEL SENSOR or PLATFORM LEVEL SENSOR.
-10. Push the ground E-stop IN, key OFF, key out, close the cover.
-11. Fill in the record: carton part number and whether it is full or empty; fitted or spare; platform sensor new/original and J55 seated; SCON part number and new/original; software version; the three LCD level values and the physical level readings; the answers from step 7.
-
-**You should see**
-
-| Measurement | Expected | If that is what you get | If not |
-|---|---|---|---|
-| Part number printed on the carton | **50813GT SENSOR,TILT,PCON (PLASTIC) - the PLATFORM tilt sensor** | It is the platform sensor. If it was fitted, the shop adds calibration step 4 'Platform level sensor' (SM p.42: firm level surface, boom stowed, digital level on a side rail, SET PLATFORM LEVEL SENSOR TO GRAVITY). That step has no axle-extended requirement. If it is a spare that was never fitted, it changes nothing. Either way it does not explain the seven live boom-angle faults. | If the carton says MODULE,SCON (1258463GT or 139647-SGT), the safety controller was replaced: the manual requires full machine calibration in order (SM p.105), and step 3 turntable level sensor (SM p.154) needs the axles fully extended - that is a shop job, not a yard job. Any other part number: photograph and look it up before deciding. |
-| Appearance of the sensor on the side of the platform rotator and seating of J55 | **Original-looking sensor, J55 latched, no splices** | No platform-sensor calibration step is added by this item. | New-looking sensor = it was replaced and 'must be calibrated prior to machine operation' (SM p.42): add step 4. Unlatched plug or splices: photograph and record; the calibration tech must see this before calibrating. |
-| Part number on the SCON label and its appearance | **1258463GT, original appearance, J121 grey and J122 black seated** | Treat the SCON as original. Full-machine calibration is then only forced if the TCON (ALC-1000 board) was replaced or the shop chooses to run it. | A visibly new module, or a module of a different number, means the turntable level sensor (SCON) has been replaced: full machine calibration in the manufacturer's order is mandatory, and it cannot be started until the axles can be fully extended. |
-| LCD: TURNTABLE LEVEL SENSOR X-DIRECTION and Y-DIRECTION, in degrees | **A degree value that agrees with the digital level on the turntable to within about a degree; on level ground, close to 0 degrees** | The SCON's internal tilt sensors are alive and reading; the turntable level sensor is not the cause of the live faults. | No value, a frozen value, or a value far from the physical level: record it. The manual's recovery for turntable level sensor faults is 'Check that SCON is grounded' (value at 5.0 V) or 'Replace SCON' (too high / too low / 0 V / out of tolerance). Do not buy a SCON on this alone - hand the reading to the calibration tech. |
-| LCD: PLATFORM LEVEL SENSOR DEGREES, in degrees | **A degree value that agrees with the level on the platform side rail to within about a degree** | The platform tilt sensor and its J55 wiring are alive; whatever is in the carton, the fitted sensor is reading. | No value or a wild value: the fault-table entry for Platform Level Sensor Y Direction says 'Primary up and extend disabled, Alarm sounds' and 'Check that SCON is grounded'. Record it and photograph J55; that becomes a probe job for a later card (key OFF, E-stop IN before unplugging). |
-| Fault list on the ground display | **No line naming TURNTABLE LEVEL SENSOR or PLATFORM LEVEL SENSOR (the seven live faults are all boom-angle, boom-switch and calibration items)** | Confirms the carton is a side issue: the tilt sensors are not generating faults. | Write the exact wording down; SM pp.180-182 give the recovery actions, and a 'SCON Tilt Sensor calibration check' (SM p.188) means the X and Y tilt matrix was never entered - a calibration-tech item. |
-
-**Why we are doing this.** If the carton is the platform tilt sensor (Genie 50813GT) and it was fitted, that adds only step 4 of the calibration order (SM p.42): boom stowed, level ground, no axle requirement. If instead someone changed "the turntable level sensor", they changed the SCON module, and the manual then requires the WHOLE machine to be calibrated in a fixed order, with step 3 (turntable level sensor, SM pp.154-157) needing the axles fully extended - which cannot be done in this yard with the axles at 8 ft 1 in. That decides yard-versus-shop. It also settles whether the carton has anything to do with the seven live faults: none of them is a level-sensor fault, so the carton is a side issue, not the cause.
-
-**Safety**
-
-- Key OFF, key out, both E-stops IN before touching any plug. This card does not unplug J55 or the SCON plugs; if a later card does, key OFF and E-stop IN first, and battery disconnected before any ohm test.
-- Do not turn the bypass/recovery key switch and do not fit the calibration jumper or move the calibration toggle. The Service Manual restricts calibration to 'qualified technicians that have Genie factory service training' and warns of tip-over if the machine is calibrated out of sequence.
-- Never bridge, jumper, tap or defeat the platform tilt sensor, the SCON, or any of their wires. The SCON's +/-4.5 degree alarm and the platform sensor's +/-10 degree cutout are safety functions. This plan removes bypasses; it never adds one.
-- Do not raise, extend or rotate the boom. The machine has live envelope faults and the axles are retracted; the axle safety switches are doing their job by locking boom functions.
-- Do not enter the platform of this machine. Do the platform-sensor inspection from the ground with the boom stowed.
-- Wheels chocked, firm level ground, engine off. The LCD read needs only the key and the E-stop.
-- Do not replace the SCON on a hunch. Fitting a new SCON forces a full machine calibration in the manufacturer's order, which needs the axles fully extended - impossible in this yard - and the fault-table recovery actions for level-sensor faults start with 'check that SCON is grounded', not with replacement.
-
-**Open questions on this card**
-
-- The carton's part number has not been read directly. My reading of the dirty label in the photo ('TILT SENSOR', '+/-10 DEGREE', '(PCON)') points to 50813GT, the platform sensor, but the printed number must be read on site (step 2).
-- Was the carton part fitted, and where? If it was fitted at the platform rotator, step 4 (platform level sensor, SM p.42) is owed; if it is a spare, nothing changes.
-- Is the SCON on this machine original? Its label (expect 1258463GT) and appearance decide whether a full in-order calibration is mandatory (SM p.105/154).
-- The Parts Manual marks 50813GT with '****' but the footnote text is not in the extracted text (it is probably a graphic or a notes page); read PM p.199 in the PDF to see what the four stars mean.
-- Step 25 of the turntable level sensor procedure calls for 'Maintenance Procedure, Test the Level Sensor', which lives in the Maintenance Manual - not one of the three documents in this knowledge base. The Operator's Manual 'Test the Tilt Sensor' (OM p.33) is the closest available check.
-- The live fault worded 'TCON-SCON calibration inconsistent' does not appear verbatim in the Service Manual fault tables. The nearest entry is 'SCON Tilt Sensor - Calibration check - Display X direction and Y direction not calibrated' (SM p.188). Record the exact on-screen wording.
-- The TCON block on ES0366J carries internal labels TT_TILT_SNSR_PWR/GND and TT_TILT_X/Y_AXIS on a P1 header, but the external J12 legend has no tilt wire. How the TCON receives turntable tilt values on this model (likely over CAN from the SCON) is not stated in the manuals; it does not change the field work.
-- The small Deutsch plug with red and orange wires that the white wire is tapped into near the turntable is unidentified. It is not a tilt-sensor plug (there is none on the turntable). Compare its colours and pin count with the J154 secondary boom angle sensor pigtail (RD, BK, BL, OR, BR, YL) in the J154/toggle cards.
-- The sensor-side pigtail colours of 50813GT are not printed in the manuals; only the harness colours at J55 are. Note the colours on the carton part if one is inside.
-- Does the carton part's plug physically match J55 (6-way Deutsch)? Expected yes since it is the Parts Manual item, but confirm by counting pins before anyone fits it.
-
-<details><summary>Sources for this card (51 checked statements)</summary>
-
-- `[V]` The platform level sensor is mounted to the side of the platform rotator and must be calibrated if replaced. — *1268557.txt 3658-3663 (SM p.42)*
-- `[V]` Platform tilt sensor part number 50813GT, SENSOR,TILT,PCON (PLASTIC), item 8, qty 1, PM p.199. — *106877.txt 10053-10056 (PM p.199)*
-- `[V]` The platform tilt sensor is fixed with 8914GT SCREW, HHC, 1/4-20 X .625 (item 9) and 6638GT WASHER, FLAT, USS, 1/4"Y (item 10). — *106877.txt 10057-10060 (PM p.199)*
-- `[V]` The platform tilt sensor is on Parts Manual figure 519.1 Platform Rotator, PM p.198; item 8 is drawn as a boxed sensor with a cable on the side of the rotator body. — *pm198-platform-rotator.png figure pm198-platform-rotator.png (PM p.198); text 106877.txt lines 10003-10008*
-- `[V]` J55 is the 6-pin Deutsch connector on the platform tilt sensor. — *1268557.txt 15477-15479 (SM p.205)*
-- `[V]` J55 pinout on ES0366J: 1 P85RET-BR, 2 C84TAY-GR/BK, 3 P85PTS-GR, 4 P87RET-BR, 5 P87PTS-RD, 6 C88PTS-RD/BK, drawn into the PLATFORM TILT SENSOR ASSEMBLY block. — *es-j55-platform-tilt.png figure es-j55-platform-tilt.png (ES0366J, SM p.229); text 1268557.txt lines 17108-17131, 17445-17447, 19320-19325*
-- `[V]` Schematic pin names at the PCON for the platform tilt sensor: SAFE PL TILT OUT, PL TILT SNSR, PL TILT SNSR PWR, PL TILT SNSR GND, SAFE PL TILT PWR, SAFE PL TILT GND on P22-15 and P22-19 to P22-23. — *1268557.txt 17108-17129 (SM p.229)*
-- `[V]` PCON J22 (white 35-pin) pins: 15 C88PTS-RD/BK, 19 P85RET-BR, 20 C84TAY-GR/BK, 21 P85PTS-GR, 22 P87RET-BR, 23 P87PTS-RD. — *sm208-dcon-pcon-pins.png figure sm208-dcon-pcon-pins.png (SM p.208); text 1268557.txt lines 15841-15849*
-- `[V]` J22 is the white 35-pin AMP connector on the PCON. — *1268557.txt 15458-15459 (SM p.205)*
-- `[V]` Wire circuit 84 = GR/BK Tilt signal Y axis; 85 = GR Tilt sensor power; 83 = GR/WH Tilt signal X axis. — *1268557.txt 14633-14641 (SM p.198)*
-- `[V]` Wire circuit 87 = RD Platform Level Safety Power; 88 = RD/BK Platform Level Safety Output; 89 = BR Platform Level Safety Ground. — *1268557.txt 14648-14656 (SM p.198)*
-- `[V]` Wire-name suffix PTS = Platform Tilt Sensor, PTA = Platform Tilt Alarm. — *1268557.txt 14129-14132 (SM p.194)*
-- `[V]` Wire-name suffix TAY = Tilt Alarm Y axis, TAX = Tilt Alarm X axis, TTS = Turntable Tilt Sensor, TTA = Turntable Tilt Alarm. — *1268557.txt 14225-14247 (SM p.195)*
-- `[V]` The platform angle sensor measures +/-20 degrees; its safety cutout is +/-10 degrees from gravity and disables primary and secondary boom up/down and platform level up/down. — *1268557.txt 15313-15317 (SM p.203)*
-- `[V]` The SCON contains redundant dual-axis tilt sensors measuring turntable X and Y tilt, provides safety-switch logic, and its alarm sounds at +/-4.5 degrees. — *1268557.txt 15318-15320 (SM p.203)*
-- `[V]` The Service Manual identifies the turntable level sensor with the SCON: full machine calibration is required when the TCON board or 'the turntable level sensor (SCON)' has been replaced. — *1268557.txt 7973-7978 (SM p.105)*
-- `[V]` Calibration is restricted to Genie-trained technicians and out-of-sequence calibration is a tip-over hazard. — *1268557.txt 7981-7989 (SM p.105)*
-- `[V]` Full machine calibration order: engine configuration, joysticks, turntable level sensor (3rd), platform level sensor (4th), axle angle sensors, steer sensors, secondary boom angle sensor, primary boom angle sensor, jib boom bellcrank angle sensor, option configuration. — *1268557.txt 8008-8040 (SM p.105)*
-- `[V]` Full machine calibration starts with booms fully stowed and the axles retracted, and needs a digital level (kit 58351). — *1268557.txt 7992-8006 (SM p.105)*
-- `[V]` Turntable level sensor calibration (SM 9-2, p.154): if the SCON has been replaced the whole machine must be calibrated in order; the procedure needs firm level ground, booms fully stowed and axles FULLY EXTENDED. — *1268557.txt PDF page 168 block (SM p.154)*
-- `[V]` Turntable level sensor procedure: E-stop in, open ground box, jumper (before SN 321) or calibration toggle left plus door fastener (after SN 320), key to ground, key into bypass position, hold Enter while pulling E-stop, (plus)(enter)(enter)(plus). — *1268557.txt PDF pages 168-169 (SM pp.154-155)*
-- `[V]` Turntable level sensor procedure: SET UNIT X AXIS LEVEL TO GRAVITY with a digital level on the turntable X axis, then SET UNIT Y AXIS LEVEL TO GRAVITY on the Y axis; the display must see a change to record the value. — *1268557.txt PDF pages 169-171 (SM pp.155-157)*
-- `[V]` Turntable level sensor procedure ends: EXIT YES, key back to run, wait 20 s, E-stop in, remove jumper/fastener (tip-over warning), start engine, confirm no calibration faults, perform the level sensor test from the Maintenance Manual. — *1268557.txt PDF page 171 (SM p.157), lines 11180-11214*
-- `[V]` Platform level sensor calibration (SM p.42): firm level surface, boom stowed, digital level on a platform side railing, start and level the platform to gravity, turn off, then jumper/toggle, key in bypass, hold Enter while turning key to ground, (plus)(enter)(enter)(plus). — *1268557.txt PDF page 56 block (SM p.42)*
-- `[V]` Platform level sensor calibration continues: SET PLATFORM LEVEL SENSOR TO GRAVITY, plus for YES, enter; EXIT YES; remove jumper/fastener. No axle position is required by this procedure. — *1268557.txt PDF page 57 block (SM p.43)*
-- `[V]` SCON module part numbers: 139647-SGT MODULE,SCON,V2.00,SERVICE to SN 1711; 1258463GT MODULE,SCON,PROGRAMMED from SN 1712; both say the machine needs recalibration after a new module. Item 22 on figure 304.1, PM p.55. — *106877.txt 2778-2787 (PM p.55); figure scon-pm55-list.png*
-- `[V]` Figure 304.1 is titled Hydraulic Tank Side Components (PM p.54) and item 22 (the SCON) is drawn at the right of the turntable near items 20/21. — *pm054-scon.png figure pm054-scon.png (PM p.54)*
-- `[V]` This machine is SN Z13513-1861, so the from-SN-1712 SCON part 1258463GT applies. — *106877.txt 2786-2787 (PM p.55)*
-- `[V]` J121 is the 12-pin Deutsch grey SCON connector; J122 is the 12-pin Deutsch black SCON connector. — *1268557.txt 15608-15611 (SM p.206)*
-- `[V]` The Safety Controller Pin Legend for J121 and J122 lists no tilt-sensor wire: J121 carries S132LDS, S73SLE, C145CAL, CAN, S59CNK, S56PRV, S137PLL, S139TRF, GNDSCON; J122 carries P21DCON, C142SBS, C141PBS, C60AXE, S12SB, S13DE, P53LS, S140ENL, P54ENG, P58LS, S56PRV, C61AXR. — *sm209-scon-pins.png figure sm209-scon-pins.png (SM p.209)*
-- `[V]` The TCON J12 (black 35-pin) legend has no tilt-sensor wire: pins 25 SNSR GND-BR, 26 P109ANG-GR/WH, 27-31 unused, 32 C123PBS-RD/BK, 33 C124SBS-OR/BK, 34 S140ENL-OR/RD, 35 GND16-BR. — *sm210-tcon-pins.png figure sm210-tcon-pins.png (SM p.210)*
-- `[V]` Inside the TCON block on ES0366J there are board-internal labels TT_TILT_SNSR_GND, TT_TILT_SNSR_PWR, TT_TILT_X_AXIS and TT_TILT_Y_AXIS on an internal P1-xx header, next to OIL_PRESSURE, ALTERNATOR RPM and AC GENERATOR; they are not on the external J12 legend. — *1268557.txt 17612-17620 (SM p.229); figure es-tcon-tt-tilt-labels.png*
-- `[V]` Fault table, turntable level sensor X direction (operational and safety): value at 5.0 V flashes the out-of-level icon and LED and sounds the alarm, recovery 'Check that SCON is grounded'; too high / too low / 0 V / out of tolerance: 'Replace SCON'. — *1268557.txt 12867-12890 (SM p.180)*
-- `[V]` Fault table, turntable level sensor Y direction (operational and safety): primary up and extend disabled, alarm; 'Check that SCON is grounded' / 'Replace SCON'. — *1268557.txt 12986-13000 and 13023-13040 (SM pp.181-182)*
-- `[V]` Fault table, Platform Level Sensor Y Direction: value at 5.0 V / too high / too low / 0 V -> primary up and extend disabled, alarm; recovery 'Check that SCON is grounded'. — *1268557.txt 13041-13056 (SM p.182)*
-- `[V]` Fault table, SCON Tilt Sensor calibration check: X and Y direction not calibrated; recovery is to re-power after entering the tilt X and Y axis matrix information. — *1268557.txt 13595-13600 (SM p.188)*
-- `[V]` SCON fault matrix includes 'Turntable tilt angle (crosscheck SCON internal sensors 3 in a delta configuration)' and 'Turntable tilt Y axis (+5°, secondary boom not stowed)'. — *1268557.txt 13647 and 13697-13698 (SM p.189)*
-- `[V]` The ground-display operator screens include Turntable level sensor X° direction, Turntable level sensor Y° direction and Platform level sensor degree. — *1268557.txt 8097-8106 (SM p.106)*
-- `[V]` Operator's Manual 'Test the Tilt Sensor': push an LCD screen control button until TURNTABLE LEVEL SENSOR X-DIRECTION, then Y-DIRECTION, then PLATFORM LEVEL SENSOR DEGREES appears; each should display the angle in degrees. — *114474.txt 1968-1985 (OM p.33)*
-- `[V]` The software version is displayed on the LCD when the red E-stop is pulled out; 4.01 and higher use 2-point calibration, earlier versions use 6-point calibration. — *1268557.txt 6491-6496 (SM p.83)*
-- `[V]` The ground-controls ECM levels the platform by comparing the platform angle sensor with the turntable level sensor - so the two sensors work as a pair. — *1268557.txt 3418-3424 (SM p.39)*
-- `[V]` If the platform angle is more than 10° from level, boom angle and platform level functions are disabled; the normal envelope is +/-4.5°. — *1268557.txt 7631-7636 (SM p.100)*
-- `[V]` Secondary boom angle sensor calibration requires the turntable level sensor to be calibrated first if it was replaced. — *1268557.txt 6972-6977 (SM p.89)*
-- `[V]` Jib boom bellcrank sensor calibration also requires the turntable level sensor first if it was replaced. — *1268557.txt 4758-4762 (SM p.58)*
-- `[V]` Operator's Manual: do not depend on the tilt alarm as a level indicator; it sounds only on a severe slope. — *114474.txt 826-832 (OM p.13)*
-- `[V]` The Parts Manual lists no turntable tilt/level sensor as a separate part; the only SENSOR,TILT entry is the platform one (50813GT), and the only other 'tilt' item is decal 33952GT DECAL,DANGER,TILT ALARM. — *106877.txt 394 and 10055 (whole-file search)*
-- `[F]` Field photo: the carton at the turntable carries a label that, read upside-down and enlarged, shows '...TILT SENSOR', '+/-10 DEGREE...' and '(PCON)', plus a barcode. — *2026-09-12-white-wire-turntable-tilt-sensor-box.jpg photo, lower-right corner (enlarged crop)*
-- `[F]` Field photo: the white wire from the platform is joined by a blue Scotchlok tap to an orange/red wire pair entering a small Deutsch plug on the turntable, near the carton. — *2026-09-12-white-wire-turntable-tilt-sensor-box.jpg photo, centre-right*
-- `[V]` For comparison with that plug: the secondary boom angle sensor J154 pigtail colours are 1 RD, 2 BK, 3 BL, 6 OR, 5 BR, 4 YL (S20 SEC BM ANG SAFETY / S19 SEC BM ANG OPER). — *es-j154-secondary-sensor.png figure es-j154-secondary-sensor.png (ES0366J, SM p.229)*
-- `[V]` None of the seven live faults on the ground display is a turntable level sensor or platform level sensor fault. — *README.md section 'Field update 2026-09-10 (later): axles retracted, chassis codes cleared' - remaining codes list*
-- `[M]` The kit-fitted 50813GT sensor pigtail colours are likely different from the harness colours; the manuals do not print the sensor-side colours for J55. — *es-j55-platform-tilt.png figure es-j55-platform-tilt.png*
-
-</details>
-
-
-### D4: Read the software version and decide 2-point or 6-point calibration
-
-**What this finds out.** Find out which version of operating software is loaded in the ground control computer (TCON = turntable controller, the main computer in the ground control box). The number appears on the little LCD screen the moment the ground red Emergency Stop button is pulled out. That one number tells the calibration technician which boom-angle-sensor calibration method this machine uses and which tools to bring.
-
-**Where it is**
-
-- *What it is:* LCD readout screen on the ground control panel (the membrane-button face of the ground control box). The Parts Manual calls the window the LCD lens, item 10, 62374GT, and the button face the membrane decal, item 13, 106510GT, which comes with the lid 107714GT.
-- *Where on the machine:* On the turntable, on the side Genie calls the ground controls side of the machine (the Service Manual names a fixed turntable cover on that side). Stand on the ground at the turntable, facing the box; no cover needs to be opened and the box lid stays closed.
-- *How to find it:* Look for the metal control box on the turntable with a blue lid. The lid face is a black membrane panel with white symbol buttons (boom up/down, rabbit/turtle, glow plug, etc.) and a grey rectangular LCD window near the top. Above the screen is a white decal 1263541 A that ends '...Improper calibration can result in death or serious injury.' The four LCD control buttons sit below-left of the screen: plus, minus, a return-arrow (enter) and an arrow button. The Service Manual names them Plus, Minus, Previous and Enter. The red mushroom-head Emergency Stop button and the 3-position main key switch are on the same lid face.
-- *What it looks like:* In the existing photo of this machine (ground-display-hours.jpg) the LCD is a pale grey window showing a black hourglass symbol and the hour meter 2162.4. The Operator's Manual says the LCD readout screen carries the low fuel, engine oil pressure, water temperature, auxiliary power, high engine rpm indicators and the hour meter. Fault messages and the software version appear as text/numbers in this same window.
-- *Source:* SM p.75 (PDF 89) line 5947-5949 'fixed turntable cover at the ground controls side of the machine'; OM p.22 (PDF 24) lines 1353-1360; PM p.61 lines 3119-3120 and p.63 lines 3156-3157; SM p.83 lines 6510-6513; photo ground-display-hours.jpg; figure pm060-ground-controls.png
-
-**Set the machine to**
-
-- **Key:** Main key switch (the 3-position off / ground / platform switch on the ground control box) turned to the GROUND position for the reading; OFF and key removed at the end. Bypass/recovery key switch: leave it in RUN and do not put a key in it.
-- **E-stops:** Start with the ground red Emergency Stop button pushed IN (off). It is pulled OUT (on) only for the reading, then pushed back IN at the end. Platform red Emergency Stop: leave it as found (pushed in); nobody is in the platform.
-- **Battery:** Connected (the display needs battery power). Nothing is unplugged on this card, so no resistance test and no battery disconnect are needed.
-- **Engine:** OFF the whole time. Do not press the engine start button. The version shows with the engine off.
-- **Also:** Machine on firm level ground, boom fully stowed, wheels chocked. Axles are currently retracted (8 ft 1 in); that is fine for this card because no boom function is used. Do not press any boom, drive or axle button. Nobody in the platform.
-
-**Connector — None. No connector is unplugged or probed on this card.**
-
-The reading is taken from the LCD screen with the box closed. For reference only: the ground control box contains a replaceable membrane decal with touch-sensitive buttons, an LCD circuit board mounted inside the lid that drives the screen, and the ECM circuit board (TCON, ALC-1000) which stores all operating parameters and option configuration. If the screen never lights, that is a job for the TCON power/ground card, not this one.
-
-*Source:* SM p.102 (PDF 116) lines 7766-7777
-
-| Pin | Wire name | Harness colour | Sensor colour | What it is | Goes to |
-|---|---|---|---|---|---|
-| none | none | n/a | n/a | No pin is probed on this card. The software version is read from the LCD; the LCD circuit board is inside the lid and the ECM board holds the software and parameters. | n/a |
-
-**Do this**
-
-1. Preparation. Machine on firm level ground, boom stowed, wheels chocked, nobody in the platform. Have a phone ready to video the LCD screen: the manual does not say how long the version stays on screen, so film it rather than trust your eyes.
-2. Go to the ground control box on the turntable (ground controls side). Confirm the ground red Emergency Stop button is pushed IN (off). Confirm the bypass/recovery key switch has no key in it and points to RUN; do not touch it.
-3. Put the key in the main 3-position key switch and turn it to the GROUND position (Operator's Manual: 'Turn the key switch to the ground position and the ground controls will operate').
-4. Start filming the LCD window. Pull the red Emergency Stop button OUT to the on position. Watch the screen immediately: Genie says 'The software version is displayed on the LCD screen when the red Emergency Stop button is pulled out to the on position.' In cold weather the LCD needs a moment to warm up before anything appears (Operator's Manual p.31).
-5. Write down the version exactly as shown, all digits (for example 3.12 or 4.02), plus any prefix text the screen shows. If you missed it: push the Emergency Stop IN, wait about five seconds, pull it OUT again and film it again. These are the normal operating controls; repeating this is safe. Do NOT press engine start. Do NOT press any function button.
-6. Leave the key on and let the screen run through its messages. Write down every fault message word for word, in the order shown, and the hour meter reading (this machine last showed 2162.4 h). Do not try to clear anything.
-7. Optional read-only record: with the key still on, press the Plus and Minus buttons at the same time. This opens the Machine Status screen (Service Manual p.107), which only displays values. Write down what it shows for 'Primary boom to secondary boom angle', 'Secondary boom angle', 'Primary boom length', 'Secondary boom length' and 'Jib bellcrank angle'. Do not press Enter on anything. Do not use the Plus-Enter-Enter-Plus, Minus-Minus-Previous-Previous or Minus-Previous-Previous-Minus sequences: those enter setting menus and are for the calibration technician.
-8. Push the red Emergency Stop button IN. Turn the key switch OFF and remove the key.
-9. Decide, using Genie's rule: version 4.01 or higher = 2 Point Calibration procedures for the primary and secondary boom angle sensors (no digital level needed for them). Version before 4.01 = 6 Point Calibration procedures, and the calibration technician must bring the digital level kit, Genie part number 58351 ('a digital level with a magnetic base and cable harnesses'). Note on the record that the turntable level sensor and jib boom bellcrank sensor calibrations need the digital level whatever the version.
-10. Record also which fault-clearing menu this software has (3.11 or lower and 4.01: 'Delete Faults' in the Default Reset menu; 3.12 and 4.02 or higher: 'Clear Faults' menu). Do not use either menu on this card; this is information for the person who clears faults after the repairs.
-11. Hand the calibration technician: the version number, the video, the full fault list, the hour meter reading, the Machine Status values, and the reminder that every boom-angle-sensor calibration procedure requires the machine 'in the drive enable zone and the axles fully extended' with the engine running, so the propel and axle problems must be fixed before the calibration visit.
-
-**You should see**
-
-| Measurement | Expected | If that is what you get | If not |
-|---|---|---|---|
-| LCD screen when the ground red Emergency Stop button is pulled out (key in GROUND, engine off) | **The screen lights and shows the software version number, then normal screens and any fault messages. Genie: 'The software version is displayed on the LCD screen when the red Emergency Stop button is pulled out to the on position.' Operator's Manual: 'The LCD screen will come on'.** | Record the number exactly. Go to the next expected item to make the 2-point / 6-point decision. | If the screen stays blank after a warm-up wait (cold weather note, OM p.31), or shows nothing but the hour meter with no version text, the reading has been missed or the LCD/TCON is not powering correctly. Repeat once with the video running. If still blank, stop this card and go to the TCON power/ground card; do not make a calibration decision. |
-| Software version number compared with 4.01 | **A number either 4.01 or higher, or lower than 4.01.** | 4.01 or higher: write '2 Point Calibration' on the record. The technician will set PRIMARY BOOM FULLY LOWERED / FULLY RAISED and SECONDARY BOOM FULLY LOWERED / FULLY RAISED on screen; no digital level is needed for the boom angle sensors. | Lower than 4.01: write '6 Point Calibration, bring kit 58351' on the record. The technician must read a digital level on top of the boom at six angles per sensor and needs the kit ('digital level with a magnetic base and cable harnesses'). Either way the turntable level and jib sensors need the digital level. |
-| Fault messages shown after the version | **The messages already seen on this machine come back (primary and secondary boom angle sensor crosscheck faults, primary boom angle zone fault, primary boom angle sensor not calibrated, secondary boom switches fault, secondary boom angle sensor shorted / 0 V, TCON-SCON calibration inconsistent). This is the field observation from the owner's display, not a manual value.** | Write them down word for word and in order. Nothing to fix on this card. | If different or extra messages appear, record them too; a message that does not return after the Emergency Stop is cycled was a stored (latched) fault rather than a live one. Do not clear anything here. |
-| Hour meter on the LCD | **About 2162.4 h, the value photographed on this machine (hourglass symbol next to the number).** | Record it; it confirms you are reading the right machine and the ECM memory is intact. | A wildly different reading suggests the TCON control box has been swapped; note it, because Genie needs the model, serial number and software revision to supply a TCON box and the version you just read is the only way to know what is fitted. |
-| Which fault-clearing menu the software has (record only, do not use) | **Software 3.11 or lower and 4.01: Default Reset menu containing 'Delete Faults' ('Delete faults will reset active latching faults. Delete faults will not clear fault history'). Software 3.12 and 4.02 or higher: separate 'Clear Faults' menu, 'Clear all safety switch faults'.** | Write the applicable menu name on the record for the person who clears faults after repair. | If the version is not one of the ranges the manual lists, write it down and ask Genie Product Support which menu applies. |
-
-**Why we are doing this.** Genie's rule (Service Manual p.83 and p.89): software 4.01 and higher uses the 2 Point Calibration procedure; software before 4.01 uses the 6 Point Calibration procedure. The 2-point method needs no measuring tool: the boom is simply put fully lowered and fully raised and the screen is answered YES. The 6-point method needs a digital level laid on top of the boom and read at six angles (primary boom 0, -50, -20, 10, 40 and 70 degrees; secondary boom -3.5, 20, 35, 50, 65 and 76 degrees), which means bringing Genie kit 58351 (digital level with magnetic base and cable harnesses) and planning a longer visit. Either way, the turntable level sensor and jib bellcrank sensor calibrations always need the digital level. The version also decides which fault-clearing menu exists on this machine (3.11-or-lower / 4.01 = "Delete Faults" menu; 3.12 / 4.02-or-higher = "Clear Faults" menu), and Genie requires the software revision when ordering a replacement TCON control box. This card only reads the screen. It does not start the engine, does not touch the bypass/recovery key switch, does not fit any calibration jumper or toggle, and does not enter any menu that changes settings.
-
-**Safety**
-
-- Pulling the red Emergency Stop button out powers the machine. Keep your hands off every function button; the Operator's Manual says the Emergency Stop 'to the on position' is what lets the machine operate.
-- Engine stays OFF. Do not press engine start. Nobody in the platform. Machine on firm level ground, boom stowed, wheels chocked.
-- Do not turn the bypass/recovery key switch and do not put a key in it. Leave it in RUN. Bypass and recovery are for the calibration technician and emergency recovery only.
-- Do not fit the calibration toggle switch, door fastener or any jumper, and do not enter the Sensor Calibration, Default Reset or Clear Faults menus on this card. Genie: 'The key switch must be in the off position before entering the programming mode' and calibration 'must be completed by a person trained and qualified on the repair of this machine' (tip-over hazard).
-- Never bypass, jumper or defeat any safety circuit, limit switch, angle sensor, tilt sensor or load cell. This card only reads a screen.
-- Key OFF and Emergency Stop IN before anyone opens the ground control box or unplugs anything on a later card. This card keeps the box closed.
-- Cold weather: the LCD needs to warm up before the display appears; wait rather than assuming the screen is dead.
-
-**Open questions on this card**
-
-- Display format and timing [M]: the manuals say only that the version 'is displayed on the LCD screen when the red Emergency Stop button is pulled out'. They do not say what prefix it carries or how many seconds it stays. That is why the card says to film the screen and repeat the E-stop cycle if it is missed.
-- Platform Emergency Stop [M]: the pages read do not say whether the platform E-stop must be pulled out for the ground LCD to power up. The Operator's Manual step only requires key to ground and the ground E-stop out. If the LCD stays dark, note the platform E-stop position before calling the LCD dead.
-- Which software this 2013 SN 1861 machine actually carries is unknown [M]. Genie requires the software revision when ordering a TCON box (PM p.61), so a replaced box could carry any version; the reading is the only reliable answer. A version below 3.0 would also change some menu wording (SM p.161/167 notes 'Models before software version 3.0').
-- Kit 58351 is not in the Parts Manual text; the only source is the Service Manual note 'available through Genie Product Support'. Confirm availability and lead time with Genie before scheduling a 6-point visit.
-- The 'Previous' button identity [M]: the photo shows an arrow button beside Plus, Minus and Enter; the manual names the fourth button 'Previous'. The pairing is inferred.
-- Whether the 'TCON-SCON calibration inconsistent' fault will require the turntable level sensor to be recalibrated (which always needs the digital level, SM p.154) is not decided by this card. If it does, kit 58351 is needed regardless of the 2-point / 6-point result.
-- All boom-angle calibration procedures require the axles fully extended, the drive enable zone and the engine running (SM p.83). Propel is dead and the axles are retracted, so those repairs must be complete before the calibration visit; this card does not cover how the axles are extended.
-
-<details><summary>Sources for this card (48 checked statements)</summary>
-
-- `[V]` For software 4.01 and higher use the 2 Point Calibration procedure; before 4.01 use the 6 Point procedure; the version is displayed on the LCD when the red Emergency Stop button is pulled out to the on position (primary boom angle sensor procedure, SM p.83). — *1268557.txt 6491-6496 (PDF page 97 = SM p.83)*
-- `[V]` The same version rule is repeated in the secondary boom angle sensor calibration procedure (SM p.89). — *1268557.txt 6985-6990 (PDF page 103 = SM p.89)*
-- `[V]` A digital level is only required for the 6 Point procedure. — *1268557.txt 6497-6498 (SM p.83)*
-- `[V]` Kit 58351 is available through Genie Product Support and contains a digital level with a magnetic base and cable harnesses (jib bellcrank procedure, SM p.58). — *1268557.txt 4771-4774 (PDF page 72 = SM p.58)*
-- `[V]` The same kit 58351 note appears in the primary boom angle sensor procedure (SM p.83). — *1268557.txt 6499-6502 (SM p.83)*
-- `[V]` The jib boom bellcrank angle sensor calibration always requires a digital level. — *1268557.txt 4769-4770 (SM p.58)*
-- `[V]` The turntable level sensor calibration always requires a digital level and cites kit 58351. — *1268557.txt 11010-11015 (PDF page 168 = SM p.154)*
-- `[V]` Full machine calibration (SM p.105) requires a digital level and cites kit 58351. — *1268557.txt 7990-7995 (PDF page 119 = SM p.105)*
-- `[V]` Kit 58351 is not listed in the Parts Manual text. — *106877.txt no match*
-- `[V]` The LCD control buttons used in the calibration procedures are named Plus, Minus, Previous and Enter. — *1268557.txt 6503-6513 (SM p.83)*
-- `[V]` The boom angle sensor calibration procedures must be performed on a firm level surface, booms fully stowed, in the drive enable zone and with the axles fully extended. — *1268557.txt 6514-6517 (SM p.83)*
-- `[V]` Axle sensors, secondary boom angle sensor and turntable level sensor must be calibrated before the primary boom angle sensor if they were removed or replaced. — *1268557.txt 6478-6481 (SM p.83)*
-- `[V]` The 6-point primary procedure places a digital level calibrated to gravity on top of the primary boom. — *1268557.txt 6587-6594 (PDF page 98 = SM p.84)*
-- `[V]` The 6-point primary procedure starts the engine and fully raises the secondary boom, then reads the level at -50, -20, 10, 40 and 70 degrees. — *1268557.txt 6601-6687 (PDF pages 98-99 = SM pp.84-85)*
-- `[V]` The 2 Point primary procedure is for software 4.01 and higher. — *1268557.txt 6767-6769 (PDF page 100 = SM p.86)*
-- `[V]` The 2-point primary procedure uses the boom stowed (PRIMARY BOOM FULLY LOWERED) and fully raised at end of cylinder stroke (PRIMARY BOOM FULLY RAISED) with the secondary boom fully raised first; no level reading. — *1268557.txt 6817-6830 (PDF page 101 = SM p.87)*
-- `[V]` The bypass/recovery key switch must be in the run position for normal operation. — *1268557.txt 6849-6850 (SM p.87)*
-- `[V]` The Sensor Calibration menu for software before 4.01 lists six secondary boom angles (-3.5, 20, 35, 50, 65, 76 degrees) and primary angles starting 0, -50, -20 degrees. — *1268557.txt 8521-8600 (PDF page 126 = SM p.112)*
-- `[V]` The Sensor Calibration menu for software 4.01 and higher lists only fully lowered / fully raised entries for the boom sensors and fully extended / retracted for the jib level cylinder. — *1268557.txt 8651-8721 (PDF page 127 = SM p.113)*
-- `[V]` The Sensor Calibration menu is entered with key OFF, hold Enter, key on, then (plus)(enter)(enter)(plus); this card tells the technician not to use it. — *1268557.txt 8521-8527 (SM p.112)*
-- `[V]` The key switch must be off before entering programming mode; calibration and parameter settings are for trained qualified persons (tip-over hazard). — *1268557.txt 8055-8060 (PDF page 120 = SM p.106)*
-- `[V]` Machine Status screen: with key on, press plus and minus at the same time; it shows hydraulic pressure, primary-to-secondary boom angle, primary boom length, secondary boom angle, secondary boom length, jib bellcrank angle. — *1268557.txt 8128-8146 (PDF page 121 = SM p.107)*
-- `[V]` Software 3.11 or lower and 4.01 have a Default Reset menu (minus)(minus)(previous)(previous) containing Delete Faults, which resets active latching faults but not fault history. — *1268557.txt 8177-8201 (SM p.107)*
-- `[V]` Software 3.12 and 4.02 or higher have a separate Clear Faults menu (minus)(previous)(previous)(minus) for all safety switch faults. — *1268557.txt 8220-8251 (PDF page 122 = SM p.108)*
-- `[V]` Overload Recovery menu exists only from software V3.07. — *1268557.txt 8171-8172 (SM p.107)*
-- `[V]` Recovery mode procedure applies to software 1.11 and later; for 1.01 contact Genie Product Support (shows software versions on this model go back to 1.01). — *1268557.txt 7712-7715 (PDF page 115 = SM p.101)*
-- `[V]` The ground control box contains a membrane decal with touch-sensitive buttons, an LCD circuit board inside the lid that controls the LCD display screen, and the ECM circuit board which stores all operating parameters and option configuration; ECM replacement requires full calibration. — *1268557.txt 7766-7780 (PDF page 116 = SM p.102)*
-- `[V]` Full machine calibration starts with booms fully stowed and axles retracted, and lists the ten-item sequence ending with the primary boom angle sensor then the jib bellcrank sensor. — *1268557.txt 8008-8041 (PDF page 119 = SM p.105)*
-- `[V]` The ground control box side of the machine is called the ground controls side and has a fixed turntable cover. — *1268557.txt 5947-5950 (PDF page 89 = SM p.75)*
-- `[V]` Operator's Manual ground control panel legend: item 1 LCD readout screen with low fuel, engine oil pressure, water temperature, auxiliary power, high engine rpm indicators and hour meter. — *114474.txt 1353-1365 (PDF page 24 = OM p.22)*
-- `[V]` Red Emergency Stop button: push in = off, stops all functions and engine; pull out = on to operate. — *114474.txt 1367-1371 (OM p.22)*
-- `[V]` Main key switch has off / ground / platform positions; ground position makes the ground controls operate. — *114474.txt 1376-1381 (OM p.22)*
-- `[V]` Bypass/recovery key switch is item 11 on the ground control panel; bypass is for platform-out-of-level (P22) only and recovery only for emergency recovery. — *114474.txt 1404-1410 (OM p.22)*
-- `[V]` Item 20 on the ground control panel is the LCD screen control buttons. — *114474.txt 1465 (PDF page 25 = OM p.23)*
-- `[V]` With key to ground and the Emergency Stop pulled out, the LCD screen comes on; in cold climates the LCD needs to warm up first. — *114474.txt 1829-1836 (PDF page 33 = OM p.31)*
-- `[V]` Replacement TCON control box: 106512GT to SN 1711, 237069GT from SN 1712 (this machine is SN 1861); Genie requires model, serial number and software revision when ordering. — *106877.txt 3054-3065 (PM p.61, section 305.1)*
-- `[V]` Ground control box lid 107714GT includes the membrane decal item 13. — *106877.txt 3067-3070 (PM p.61)*
-- `[V]` The ground Emergency Stop is a red mushroom-head push button (66812GT). — *106877.txt 3077-3079 (PM p.61)*
-- `[V]` The main key switch is a 3-position maintained key switch (66811GT). — *106877.txt 3094-3097 (PM p.61)*
-- `[V]` The LCD window on the ground control box is the LCD lens, item 10, 62374GT. — *106877.txt 3118-3120 (PM p.61)*
-- `[V]` The membrane decal (button face) of the ground control box is item 13, 106510GT. — *106877.txt 3155-3157 (PM p.63)*
-- `[V]` On this machine the LCD is a pale grey window in a blue lid, showing an hourglass symbol and 2162.4; Plus, Minus, Enter (return arrow) and an arrow button sit below-left of the screen; decal 1263541 A above the screen reads '...Improper calibration can result in death or serious injury.' — *ground-display-hours.jpg figure ground-display-hours.jpg*
-- `[V]` This machine's recorded hour reading is 2162.4 h. — *README.md 1-4*
-- `[V]` Parts Manual figure 305.1 shows the ground control box as a metal box with a hinged lid carrying the E-stop, key switches and LCD window, mounted on a bracket. — *pm060-ground-controls.png figure pm060-ground-controls.png*
-- `[V]` The bypass/recovery key switch decal shows three positions: Run, Bypass (P22) and Recovery. — *key-switch-decal.png figure key-switch-decal.png*
-- `[M]` The arrow button below the LCD in the photo is likely the 'Previous' button named in the manual. — *ground-display-hours.jpg figure ground-display-hours.jpg; 1268557.txt 6510-6513*
-- `[F]` The live fault list expected to reappear (boom angle crosscheck faults, zone fault, not calibrated, secondary boom switches fault, secondary sensor shorted / 0 V, TCON-SCON calibration inconsistent) is the owner's field observation on this machine's display. — *README.md case brief (field observation, not manual text)*
-- `[M]` The exact on-screen format of the version (for example 'VER 4.01') and how long it stays visible are not stated in the manuals; the case walkthrough only expects 'Version such as VER x.xx'. — *diagnosis-walkthrough.md 85*
-
-</details>
-
+## D. Survey
+
+### D1 — Which joystick is new, and what that implies
+
+**(from card `d1-joystick`)**
+
+#### Where it is
+
+**Component.** The four proportional control handles (joysticks) mounted through the lid of the platform
+control box — the grey/blue steel box on the basket rail that holds the PCON (platform controller, the
+circuit board in the basket box that reads the handles and sends the data to the turntable controls).
+
+**Where on the machine.** In the platform. Stand in the basket at the control panel, facing the panel.
+The red mushroom E-stop button is at the right-hand end of the panel (PM p.208 fig 603.1 callout 8 =
+122519GT E-stop kit; also visible in photo -platform-panel-membrane.jpg).
+
+**How to find it.** Facing the panel, the four handles sit in one row. Left to right they are: (1)
+primary boom up/down and turntable rotate handle, with a thumb rocker on top for primary boom
+extend/retract; (2) jib boom up/down and platform rotate handle, with a thumb rocker on top for jib
+extend/retract; (3) secondary boom up/extend and down/retract handle, a single-axis stick; (4)
+drive/steer handle, nearest the E-stop. That left-to-right order 6, 2, 3, 4 is the SM p.26 figure order.
+The drive/steer handle is marked on the decal by a blue arrow (forward) and yellow arrow (backward) and
+by a blue triangle (steer left) and yellow triangle (steer right) — **that decal description comes from
+OM p.27 item 18 and is visible in the site photo, NOT from the SM p.26 figure, which is a plain outline
+drawing with no decal icons.** To see the wiring: push both E-stops in, key off, remove the lid
+retaining fasteners and open the lid (SM p.27 step 5). The LED circuit board is on the underside of the
+lid (SM p.26); the PCON circuit board is mounted to the inside of the box (SM p.27 step 6).
+
+**What it looks like.** From above: a black rubber boot and a black grip; on this machine two of the
+four have a thumb rocker on top. From under the lid: a round black body about the size of a hockey
+puck, bolted to a square metal flange with a fastener at each corner, and a short pigtail ending in a
+grey 6-way Deutsch DT plug with an orange wedge lock clipped into its back. The Parts Manual lists screw
+8914GT, lock washer 6356GT and flat washer 6638GT as items 2, 3 and 4 on this page, **but it does not
+say how many go on each handle — four per handle is read off the drawing and the site photo, not from
+the parts list text.** In the site photos the right-hand body (next to the black E-stop contact block
+marked NC) is visibly cleaner than its neighbour, and its plug is fully populated with six wires while
+the neighbouring plug has two blanked cavities with white sealing plugs — which matches J28, the
+secondary boom handle, whose pins 3 and 5 are empty on the schematic. From the top, the drive/steer grip
+has a rocker top and looks newest; the plain ball-knob handle next to it has chipped paint.
+
+**Cite.** SM p.26 (fig sm026-platform-controls.png), p.27; OM p.27, p.28; PM p.208
+(fig pm208-platform-box-view1.png), p.209; fig es-joysticks-j25-j28-j127-j128.png; photos
+2026-09-12-platform-panel-membrane.jpg, -platform-box-interior-pcb.jpg.
+
+#### Set the machine to
+
+- **Key:** OFF for the visual inspection and while the lid is open. Turned ON to PLATFORM only for the
+  optional 5 V back-probe check, and to GROUND then PLATFORM to read the ground display; then OFF again.
+  **Never use the bypass or recovery key positions on this card.**
+- **Engine:** OFF throughout. Do not start it.
+- **E-stops:** both pushed IN while the lid is opened and while looking at wiring. Pulled OUT only for
+  the optional 5 V check and the display read, with nobody touching any handle.
+- **Battery:** connected. This card has no resistance tests. (If the calibration technician later
+  measures resistance, disconnect the battery first.)
+- **Other:** machine on firm level ground, wheels chocked, boom fully stowed. Axles left RETRACTED as
+  found; with the axles retracted LSFA1ES and LSRA1ES prevent boom functions by design (SM p.203).
+  Platform control box lid opened; **NO handle plug is unplugged on this card, because the manual says a
+  handle that is disconnected must be recalibrated (SM p.30).** Do not operate the aftermarket toggle
+  switch found in this box (that is card B).
+
+#### Connector and wires
+
+Each handle has its own 6-pin Deutsch DT plug. **J25** = drive/steer; **J28** = secondary boom
+up/extend and down/retract (both SM p.205). **J127** = primary boom up/down, extend/retract and
+turntable rotate; **J128** = jib boom up/down, extend/retract and platform rotate (both SM p.206). On
+ES0366J they are titled JC3 (J25), JC5 (J28), JC7 (J127) and JC6 (J128). On every one, pin 2 is the
+orange 5 V supply P162JPW-OR and pins 1 and 6 are brown grounds. Signal wires sit on pins 3, 4 and 5 —
+except on J28, where pins 3 and 5 are empty and the single signal wire C161SB-WH/BK is on pin 4.
+
+**Where they go:** J25, J28 and J127 land every one of their wires on J29, the 16-pin Molex connector on
+the PCON board. **J128 does NOT** — only its ground pins and its 5 V pin reach J29; its three signal
+wires do not appear anywhere on J29.
+
+Genie also lists a 6-pin to 7-pin adapter harness, 119613GT, described as being for joysticks 101174,
+101175 and 101005 — **the parts manual names those base numbers only; it does not say the adapter is for
+the H-suffix aftermarket versions and it does not say the adapter is required.** If you find such an
+adapter spliced in line, record it; it is a sign the handle is not the original fit.
+
+| Pin | Wire | Colour | What it is | Goes to |
+|---|---|---|---|---|
+| J25-1 | JSGND1-BR | brown | handle signal ground (the 0 V reference its output is measured against) | PCON J29-16 |
+| J25-2 | P162JPW-OR | orange | handle 5 V DC power (circuit 162; JPW = Joystick 5V DC Power) | one of the four orange P162JPW-OR wires at J29 pins 3, 4, 13 and 14 — **all four are the same circuit, so treat the 5 V feed as one shared supply; the sheet does not tie a handle to a cavity** |
+| J25-3 | C159STC-BL/WH | blue/white | Steer Joystick Signal (circuit 159) | PCON J29-7 |
+| J25-4 | C160JPL-WH/RD | white/red | Propel Joystick Signal (circuit 160) — the drive signal | PCON J29-8 |
+| J25-5 | C158STC-BL/RD | blue/red | Steer Signal Rocker (circuit 158) | PCON J29-6 |
+| J25-6 | GND1-BR | brown | ground | **not traced** — runs off to the left with the other three handle grounds; the landing point is outside the rendered crop |
+| J28-1 | JSGND2-BR | brown | handle signal ground | PCON J29-1 |
+| J28-2 | P162JPW-OR | orange | handle 5 V DC power | shared 5 V net at J29 pins 3, 4, 13, 14 |
+| J28-3 | (no wire drawn) | none — expect a blanking plug | not used | nothing |
+| J28-4 | C161SB-WH/BK | white/black | Secondary Boom Joystick Signal (circuit 161) | PCON J29-9 |
+| J28-5 | (no wire drawn) | none — expect a blanking plug | not used | nothing |
+| J28-6 | GND2-BR | brown | ground | not traced |
+| J127-1 | JSGND4-BR | brown | handle signal ground | PCON J29-15 |
+| J127-2 | P162JPW-OR | orange | handle 5 V DC power | shared 5 V net |
+| J127-3 | C164PLS-RD/WH | red/white | circuit 164. **The manual disagrees with itself:** the Wire Color Legend calls 164 "Primary Up/Down Signal", while the suffix legend defines PLS as "Primary Boom Extend/Retract Signal". Treat the function as unsettled. | PCON J29-11 |
+| J127-4 | C165TRS-WH/RD | white/red | TT Rotate Signal (circuit 165) | PCON J29-12 |
+| J127-5 | C163PES-BL/WH | blue/white | circuit 163. **Same conflict:** the legend calls 163 "Primary Extend/Retract Signal" while the suffix legend defines PES as "Primary Boom Up/Down Signal". | PCON J29-10 |
+| J127-6 | GND4-BR | brown | ground | not traced |
+| J128-1 | JSGND3-BR | brown | handle signal ground | PCON J29-2 |
+| J128-2 | P162JPW-OR | orange | handle 5 V DC power | shared 5 V net |
+| J128-3 | C156JUD-GR/WH | green/white | Jib Up/Down (circuit 156) | **NOT to J29** — leaves on its own branch; elsewhere on the sheet it sits beside the labels JIB UP / JIB DN. Exact landing not traced. |
+| J128-4 | C16PRL-OR/RD (exactly as printed — the circuit number looks truncated) | orange/red | PRL = Platform Rotate Left (counter-clockwise) | **NOT to J29** — own branch, beside the labels PLAT ROT L / PLAT ROT R. Landing not traced. |
+| J128-5 | C157JER-BK/RD | black/red | Jib Extend/Retract (circuit 157) | **NOT to J29** — own branch. Landing not traced. |
+| J128-6 | GND3-BR | brown | ground | not traced |
+
+#### Do this
+
+1. **Set up.** Firm level ground, wheels chocked, boom stowed, axles left retracted. Engine OFF, key
+   OFF, both red E-stops pushed IN.
+2. Stand in the basket at the control panel, red E-stop at your right. Name the four handles left to
+   right from the decal pictures: primary boom / turntable (thumb rocker), jib / platform rotate (thumb
+   rocker), secondary boom (single-axis), drive/steer (blue and yellow arrows and triangles, nearest the
+   E-stop). Write the four names on the record sheet in that order.
+3. **Look at each handle from above.** Compare the rubber boots (cracked versus supple), the grips
+   (chipped versus clean), the flange screws (rusty versus bright) and the lid paint around each flange
+   (fresh scratches). **Circle the one that is clearly newer.** In the site photos the drive/steer handle
+   looks newest, but confirm it with your own eyes. Photograph all four from the same angle.
+4. Write down which plug the new handle is on: drive/steer = J25; secondary boom = J28; primary
+   boom/turntable = J127; jib/platform rotate = J128.
+5. **Open the box.** With both E-stops still IN and the key OFF, remove the lid retaining fasteners and
+   swing the lid open (SM p.27 step 5). **Note: in the manual this is step 5 of a board-removal procedure
+   whose earlier steps label and unplug the cables at the bottom of the box — you are not doing those.**
+   Before touching anything near the circuit boards, clip a grounded wrist strap to the ground screw
+   inside the box. Static electricity can destroy the boards (SM p.27). Take off rings and watches.
+6. **DO NOT unplug any handle.** The manual says a handle that is disconnected must be calibrated before
+   that function will operate, so unplugging one here would create another uncalibrated part. Do every
+   check with the plugs still mated.
+7. Under the lid, find the body of the new handle — directly below the grip you circled. If it is the
+   drive/steer handle, it is the body closest to the black E-stop contact block. Read and photograph any
+   label on the body. **Write the part number exactly as printed.** Genie part numbers for this machine:
+   101173GT (2-axis with rocker, two fitted — primary and jib positions), 101175GT (1-axis, secondary
+   position), 101174GT (2-axis, drive/steer position) or, as the listed alternative for drive/steer,
+   101005GT (1-axis with rocker). **A letter H before the GT (e.g. 101005HGT) means Genie's aftermarket
+   version.** OEM means the factory-fit part.
+8. Follow the new handle's pigtail to its 6-way Deutsch plug. Check and note: is a short adapter harness
+   spliced in (119613GT)? Is the orange wedge lock fitted and fully home? Are all wires seated flush at
+   the back of the plug, with none pulled back? **Are there any Scotchlok taps, butt splices or added
+   wires on this pigtail?** Photograph the plug from the wire side.
+9. **Without unplugging**, read the wire colours entering the back of the plug and compare them with the
+   pin table. For J25 you should see: pin 1 brown, 2 orange, 3 blue/white, 4 white/red, 5 blue/red, 6
+   brown. Write what you actually see against each cavity. **If the cavity numbers are not readable from
+   the wire side (on many Deutsch sockets they are moulded on the mating face, which is hidden while the
+   plug is mated) do NOT unplug to read them.** Instead photograph the wire-side face square-on, count
+   the cavities in the same row order 1-6 as the schematic, and hand the photo to the calibration
+   technician.
+10. **Optional 5 V check — only if you have a fine back-probe pin** (a thin probe that slides in
+    alongside the wire at the back of the plug). **Do not pierce the insulation.** Everybody clear of the
+    handles. Turn the key to PLATFORM and pull both E-stops OUT; the engine stays OFF. Meter to DC volts,
+    20 V range. Red lead on cavity 2 (orange) of the new handle's plug, black lead on cavity 1 (brown).
+    Expect roughly 5 V. Write the number down. Then push both E-stops IN and turn the key OFF. **Be
+    aware: the manuals name this circuit "Joystick 5V DC power" but give no tolerance and never state
+    that it is live under these conditions, so "about 5 V" is an expectation from the circuit's name, not
+    a published specification.**
+11. **Read the faults.** Turn the key to GROUND, pull the ground E-stop OUT (engine OFF) and go to the
+    display on the ground control box. Scroll through every message and copy each one word for word,
+    especially anything containing JOYSTICK, NOT CALIBRATED or CALIBRATE THRESHOLDS. Then turn the key to
+    PLATFORM and read the display again (the manual's own calibration procedure is run with the key at
+    platform and checks this same display). Push the E-stop IN and turn the key OFF.
+12. Close the lid and refit its fasteners. Leave the machine key OFF with both E-stops IN.
+13. **Record:** which handle is new and its plug number; the part number and whether it is factory (GT),
+    H-suffix aftermarket, or an unlisted brand; adapter harness yes/no; the wire colour in each cavity;
+    splices yes/no; the 5 V reading if taken; the full fault list from both key positions; photo numbers.
+    Hand this to the calibration technician: **that handle's stored settings must be deleted and
+    re-learned as step 2 of the full calibration sequence, with the engine off, before any threshold,
+    max-out or ramping settings are made.**
+14. **Do not run the calibration on this card, and do not swap handles between positions to test them** —
+    both create more uncalibrated parts. For reference only, the manual's procedure in plain words: key
+    off; press and hold Enter on the ground control panel while turning the key to platform controls,
+    hold about 5 seconds; press Minus twice, then Enter twice; scroll to the DELETE … JOYSTICK DEFAULTS
+    line for that function (the jib line reads RESET JIB BOOM UP/DOWN JOYSTICK DEFAULTS, not DELETE);
+    press Plus to select YES, then Enter; **do not start the engine**; move that handle full stroke one
+    way and hold 5 seconds, return to centre; full stroke the other way and hold 5 seconds, return to
+    centre. The manual's stated result is that the alarm at the ground controls should sound for a
+    successful calibration — **it does not say how many beeps.** One pass per function: drive, steer,
+    secondary boom, primary boom extend/retract, primary boom up/down, jib boom up/down, turntable
+    rotate. Afterwards check the ground display shows no calibration faults; if any remain, repeat that
+    function.
+
+#### You should see
+
+| Measurement | Expected | If OK it means | If not it means | Cite |
+|---|---|---|---|---|
+| Visual: which of the four handles is new, by position | Exactly one handle looks newer than the other three, and you can name its function and its plug | That handle goes on the calibration list as a replaced part. **If it is the drive/steer handle, note that an uncalibrated propel handle leaves speed and direction frozen at zero and neutral on its own (SM p.185)** — separate from the SCON switching off P_38. | If none looks new, or two do, record it and photograph all four. The calibration technician deletes and re-learns every handle's settings anyway, because handles are step 2 of the full sequence. | SM p.26; SM p.205; SM p.206; SM p.185; SM p.105 |
+| Label on the new handle's body (read it, do not unplug) | A Genie number: 101173GT, 101174GT, 101175GT or 101005GT (factory), or the same with an H before the GT. **If the drive/steer position has a rocker-top grip, the fitted part is most likely the listed alternative 101005GT or 101005HGT, not the plain 2-axis 101174GT the parts drawing shows in that position.** | A listed part that can be calibrated with the normal procedure. Note whether a 119613GT adapter harness is present. | **An unlisted brand or no label at all: treat the handle as unknown; it may not calibrate.** Report it and price the correct Genie part for that position before the calibration visit. | PM p.209 (10539-10610); PM p.219; PM p.208 |
+| Wire colours at the back of the plug, cavity by cavity, plug still mated | Colours match the pin table. J25: 1 brown, 2 orange, 3 blue/white, 4 white/red, 5 blue/red, 6 brown. J28: 1 brown, 2 orange, 3 empty, 4 white/black, 5 empty, 6 brown. J127: 1 brown, 2 orange, 3 red/white, 4 white/red, 5 blue/white, 6 brown. J128: 1 brown, 2 orange, 3 green/white, 4 orange/red, 5 black/red, 6 brown. **No taps, splices or added wires on the pigtail.** | Factory wiring intact; the handle can be calibrated as it is. | A wire in the wrong cavity, a terminal backed out, a Scotchlok tap, or a missing orange wedge: record and photograph it. The fault table's recovery list for a handle fault starts with "Check for damaged wiring to the joystick" and this terminal check is second on that list. **The calibration technician must correct the wiring (key OFF, E-stops IN before unplugging) before calibrating.** | fig es-joysticks-j25-j28-j127-j128.png; SM p.172 (12113-12118) |
+| Optional: DC volts cavity 2 to cavity 1, key at PLATFORM, E-stops out, engine off | Roughly 5 V DC. **This is an expectation taken from the circuit's name in the Wire Color Legend ("162 / Joystick 5V DC power"); the manuals give no tolerance and do not state the test conditions.** | The PCON is feeding the handle. Any remaining problem with that handle is the handle itself, its wiring, or calibration. | 0 V, or well under 5 V: the handle has no supply, so it cannot yet be blamed. The orange circuit 162 wire is shared by all four handles and lands on J29 pins 3, 4, 13 and 14; report it for the electrical cards. Expect the fault table's "Value at 0 V" entry for that handle. | SM p.199 (14910-14911); SM p.193 (14016-14017); fig es-joysticks-j25-j28-j127-j128.png; SM p.172 (12119-12121) |
+| Ground display fault list, key at GROUND and again at PLATFORM, engine off | Every message copied word for word. Look for any handle "Not calibrated" message, or "Calibrate Thresholds". | If a handle "Not calibrated" message is present, **that function's speed and direction are frozen at zero and neutral regardless of the sensor faults.** It confirms the replaced handle was never calibrated. | If no handle message appears, someone may already have run the calibration, or the controller may not be able to tell. The calibration technician re-runs it anyway, because a handle must be calibrated before threshold, max-out or ramping can be set. Either way the boom angle crosscheck faults still switch off propel, turntable rotate, primary extend, primary/secondary up and secondary extend/down until they are cleared. | SM p.172 (12122-12125); SM p.185 (13344-13346); SM p.30 (2747-2753); SM p.189 |
+
+#### Why we are doing this
+
+The calibration technician needs to know which handle's stored settings to delete and re-learn. Handles
+are step 2 of the full machine calibration sequence (SM p.105). It also explains the history: with the
+primary boom angle crosscheck fault live, the SCON switches OFF five outputs — P_38 propel, P_39
+turntable rotate, P_10 primary boom extend, P_11 primary/secondary boom up, P_30 secondary boom
+extend/down (SM p.189). So a previous technician testing the controls would have found several handles
+"dead" and **may have replaced one that was never faulty.** Separately, if the new handle is the
+drive/steer one (J25) and it was never calibrated, the fault table says that handle's speed and
+direction stay frozen at zero and neutral on its own (SM p.185). In plain words: driving cannot come
+back until both the crosscheck faults are cleared AND that handle is calibrated. **Note the fault table
+names the effect but does not name which controller enforces it;** the manual only says the handles'
+settings are stored in memory at the turntable controls (SM p.26).
+
+#### Safety
+
+- Both E-stops pushed IN before the lid is opened — the manual's own step 1 (SM p.27). **Engine OFF and
+  key OFF as well whenever hands are near wiring: that part is this card's own precaution, not manual
+  text.**
+- Clip a grounded wrist strap to the ground screw inside the box before touching the circuit boards.
+  Remove all rings, watches and other jewelry (SM p.27).
+- **Do not unplug any handle on this card.** The manual says a handle that is disconnected or replaced
+  must be calibrated before that function will operate (SM p.30).
+- Do not move any handle with the key on, except during the calibration procedure itself, run by the
+  calibration technician — and even then only with the engine off.
+- Do not use the bypass or recovery key positions, and do not fit the calibration jumper or move the
+  calibration toggle.
+- **Never bridge, jumper or defeat any safety circuit, limit switch, angle sensor, tilt sensor or load
+  cell. This plan removes bypasses; it never adds one. Do not operate the aftermarket toggle switch
+  found in this box.**
+- Machine on firm level ground, wheels chocked, boom stowed. With the axles retracted LSFA1ES and
+  LSRA1ES prevent boom functions by design (SM p.203). Do not try to work around that.
+- **Tip-over hazard.** Full machine calibration must be done in the manufacturer's sequence and only by
+  technicians with Genie factory service training (SM p.105). This card only gathers the facts they need.
+
+#### Sources
+
+- [V] "J25 6 pin Deutsch connector on drive/steer joystick" — SM p.205 (15460-15462)
+- [V] "J28 6 pin Deutsch connector on secondary boom up/extend and down/retract joystick" — SM p.205 (15463-15465)
+- [V] "J29 16 pin Molex conn on PCON PCB" — SM p.205 (15466-15467)
+- [V] "J127 6 pin Deutsch connector for primary boom up/down, ext/ret and turntable joystick" — SM p.206 (15621-15623)
+- [V] "J128 6 pin Deutsch connector for jib boom up/down, ext/ret and platform rotate" — SM p.206 (15624-15626)
+- [V] SM printed p.205 is PDF 219 (J25, J28, J29); printed 206 is PDF 220 (J127, J128) — SM (15416-15544)
+- [V] Schematic titles JC7, JC6, JC5, JC3 — fig es-joysticks-j25-j28-j127-j128.png; SM p.229 (18282-18291)
+- [V] "Genie Z-135 / Electrical Schematic / w/ Deutz Engine / ES0366J" — SM p.229 (19695-19698)
+- [V] J25 pin-out 1-6 — fig es-joysticks-j25-j28-j127-j128.png; wire names SM p.229 (17179-17183)
+- [V] J28 pin-out with cavities 3 and 5 empty — same figure; SM p.229 (17176-17183)
+- [V] J127 pin-out — same figure; SM p.229 (17160-17165, 17839)
+- [V] J128 pin-out incl. C16PRL-OR/RD as printed — same figure; SM p.229 (17173-17175, 18497-18499)
+- [V] PCON J29 pin-out 1-16 — same figure; SM p.229 (17833-17847)
+- [V] **The three J128 signal wires do NOT appear anywhere on J29;** J29 carries 15 wires and none is a jib or platform-rotate signal — so "all four joysticks run to J29" is wrong — same figure
+- [V] Wire Color Legend circuits 156-165 — SM p.199 (14892-14920)
+- [V] The SM p.199 table columns are Color, Circuit #, Primary Function, so the colour printed before a number belongs to that number — matches the schematic wire names — SM p.199 (14758-14760)
+- [V] Suffix legend: JER, JPL, JPW (SM p.193); JUD, PES, PLS, PRL (SM p.194); SB, STC (SM p.195)
+- [V] "The platform controls contains two printed circuit boards… The circuit board (PCON) sends the data to the turntable control box (TCON) for processing." — SM p.26 (2478-2485)
+- [V] "6 Locate the circuit board mounted to the inside of the platform control box." — SM p.27 (2562-2564)
+- [V] "The joystick controllers… utilize Hall Effect technology… The operating parameters of the joysticks are stored in memory at the turntable controls. If a joystick controller error occurs or if a joystick is replaced, it will need to be calibrated before that particular machine function will operate." — SM p.26 (2488-2496)
+- [V] SM p.26 figure callouts 1-6, with leaders running 6, 2, 3, 4 left to right across the four joysticks — fig sm026-platform-controls.png; captions SM p.26 (2504-2513)
+- [V] **The SM p.26 figure shows NO E-stop and has no E-stop callout** — same figure
+- [V] PM fig 603.1 (p.208) draws the lid row as callouts 1, 1, 6, 7 on the four joysticks and 8 on the booted mushroom button at the far right — fig pm208-platform-box-view1.png
+- [V] PM p.209 item 8 is 122519GT KIT,ESTOP SVC LARGE BOOM with 8A 66812GT red mushroom head — so callout 8 is the E-stop — PM p.209 (10612-10616)
+- [V] Manual steps before looking at the wiring: both E-stops in (step 1); lid fasteners off, lid open (step 5); grounded wrist strap on the ground screw (step 7) — SM p.27 (2544-2568)
+- [V] **SM p.27 step 1 says nothing about the key or the engine** — key OFF and engine OFF are this card's own precaution — SM p.27 (2544-2547)
+- [V] Jewellery warning and ESD warning — SM p.27 (2536-2537, 2573-2584)
+- [V] "If a joystick controller is disconnected or replaced, it must be calibrated before that particular machine function will operate." — SM p.30 (2742-2746)
+- [V] "The joystick must be calibrated before the threshold, max-out or ramping can be set." — SM p.30 (2747-2748)
+- [V] "After each joystick is calibrated, check the display at the ground control box. There should be no calibration faults…" — SM p.30 (2749-2753)
+- [V] "Perform this procedure with the engine off… 6 Do not start the engine." — SM p.30 (2754, 2784-2785)
+- [V] Drive joystick calibration steps and result ("The alarm at the ground controls should sound for a successful calibration") — SM p.30 (2766-2798)
+- [V] **The "one second beep" wording belongs to the fault table's "Just calibrated" row, not to the calibration result line** — SM p.172 (12126-12129)
+- [V] Steer, secondary boom, primary extend/retract, primary up/down, jib (RESET, not DELETE) and turntable menu strings — SM pp.31-33
+- [V] Full machine calibration required after the ALC-1000 board (TCON) or the turntable level sensor (SCON) is replaced; Genie-factory-trained technicians only; tip-over hazard; start booms fully stowed and axle retracted — SM p.105 (7974-7989, 8009-8010)
+- [V] Joysticks are the second item in the full calibration sequence — SM p.105 (8016-8017)
+- [V] SCON fault matrix column headings and the two crosscheck rows — SM p.189 (13630-13666), fig scon-fault-matrix.png
+- [V] Fault table SM p.172: damaged wiring checked FIRST, connector terminals backing out SECOND, then substitute a known good joystick, then replace and recalibrate — SM p.172 (12113-12118)
+- [V] A joystick "Not calibrated" leaves Joystick Speed and Direction frozen at zero and neutral, recovery "Calibrate Joystick" — SM p.172 (12119-12125)
+- [V] Secondary Boom Joystick "Value at 5.0 V" disables primary up, secondary up/down and extend with the alarm — SM p.178 (12668-12684)
+- [V] Propel Joystick "Not calibrated" freezes speed and direction, recovery "Calibrate Thresholds". **The table names the effect but not which controller enforces it.** — SM p.185 (13330-13347)
+- [V] Turntable Rotate Joystick faults SM p.181; Jib Up/Down Joystick faults SM p.183, both ending "If necessary replace and recalibrate joystick."
+- [V] LSFA1ES and LSRA1ES prevent boom functions with the axles retracted — SM p.203 (15322-15329)
+- [V] SCON = Safety Controller — SM p.203 (15317-15320)
+- [V] PM fig 603.1 "Platform Control Box, View 1" is on PM p.208 with its parts list starting on p.209 — PM (10525-10538)
+- [V] "A- 119613GT HARN JOYSTICK ADAPTOR JS100 / 6-pin to 7-pin adapter (for 101174, 101175, 101005)" — **base part numbers, no H suffix, no statement that it is required** — PM p.209 (10539-10542); repeated PM p.219
+- [V] PM p.209 item 1 101173GT "JOYSTICK,2 AXIS,ROCKER,DEUTSCH", OEM, qty 2; 1A 101173HGT aftermarket — PM p.209 (10544-10554)
+- [V] Item 6 101175GT 1-axis OEM qty 1; 6A 101175HGT aftermarket — PM p.209 (10580-10590)
+- [V] Item 7 101174GT 2-axis OEM qty 1 with aftermarket 101174HGT; item 7B the alternative 101005GT "JOYSTICK,1 AXIS ROCKER,DEUTSCH" with aftermarket 101005HGT — PM p.209 (10591-10611)
+- [V] Items 2, 3, 4 are 8914GT screw, 6356GT lock washer, 6638GT flat washer. **The parts list does not state that these are the joystick mounts or how many are used per joystick.** — PM p.209 (10555-10563)
+- [V] Also on PM p.209: lid 107798GT, membrane decal 106509GT, panel decal 82841GT, control box 106513GT — PM (10564-10575, 10635-10637)
+- [V] PM fig 606.1 "Joysticks" (pp.218-219) lists the same eight joystick numbers plus isolation kit 1269502GT, boot 139598GT, connector seal 128000GT and sleeve 128001GT — PM (10949-11041)
+- [V] OM p.27 item 18: dual axis handle for drive and steer OR handle for drive with a thumb rocker for steer; blue arrow forward, yellow arrow backwards, blue triangle steer left, yellow triangle steer right — OM p.27 (1618-1641)
+- [V] OM p.27 items 20, 22, 23 and OM p.28 items 26, 27 — OM (1591-1670)
+- [F] Site photo from above: red mushroom E-stop at top right; the right-hand handle has a rocker-top grip with blue/yellow steer triangles and drive arrows beside it; the ball-knob handle next to it has chipped paint; decal marked 82841 C — photos/2026-09-12-platform-panel-membrane.jpg
+- [F] Site photo under the lid: two round black joystick bodies on square metal flanges with a fastener at each corner, each with a grey Deutsch plug and an orange wedge; the right-hand body (next to the black E-stop contact block marked NC) is visibly cleaner and its plug fully populated, while the left-hand plug has two blanked cavities with white sealing plugs — matching J28's empty pins 3 and 5 — photos/2026-09-12-platform-box-interior-pcb.jpg
+- [F] In photo -white-wire-to-toggle-in-box.jpg a plain white wire enters the box and is joined by a blue inline crimp splice to a red wire running to a black contact block with a red band. **No toggle switch and no Scotchlok tap are visible in this frame.**
+- [F] The case file records a generic AC-rated toggle switch in the platform control box wired with plain 16 GA white wire and blue Scotchlok IDC taps, and that one joystick is visibly newer — case README 254-261
+- [V] The case file contains **no** occurrence of J25, J28, J127, J128 or J29 — the connector identities here come from SM pp.205-206 and the schematic (knowledge-base copy at 03-control-system.md line 83)
+- [M] The new handle is likely the drive/steer joystick on J25 — inference from the two site photos plus the owner's report; confirm by eye and by the part label
+- [M] The drive/steer position likely carries the rocker-top alternative (101005GT or 101005HGT) rather than the plain 2-axis 101174GT shown in the parts drawing — the label settles it
+- [M] Deutsch DT plugs likely carry cavity numbers moulded on the connector face, but on many DT sockets those numbers are on the mating face, hidden while the plug is mated — so the cavity-by-cavity colour check may not be completable without unplugging, which this card forbids
 
 ---
+
+### D2 — Which tilt sensor is in that carton, and does it matter?
+
+**(from card `d2-tilt`)**
+
+#### Where it is
+
+**Component.** Two different things get called "the tilt sensor". (A) The **PLATFORM tilt sensor**:
+Genie part 50813GT, printed in the Parts Manual as "SENSOR,TILT,PCON (PLASTIC)", item 8 on figure 519.1
+Platform Rotator. (B) The **TURNTABLE level sensor**: there is no such separate part on this machine.
+The Service Manual writes it as "the turntable level sensor (SCON)" and says the SCON contains
+"redundant dual axis tilt sensors measuring the X and Y tilt angles of the turntable" — the tilt sensing
+is sealed inside that module. The module part number for this machine is 1258463GT MODULE,SCON,PROGRAMMED
+(from serial 1712; this machine is 1861). Machines up to 1711 used 139647-SGT. It is item 22 on PM
+figure 304.1.
+
+**Where on the machine.** (A) At the basket end, reachable from the ground with the boom stowed. The
+platform hangs off a round hydraulic rotator body (item 1, 88576GT ROTATOR,NON-JIB). **The sensor is NOT
+on the curved side of that cylinder:** on the drawing it sits on a bracket on the flat steel face
+immediately beside it, held by hex screws and flat washers (PM items 9 and 10, 8914GT and 6638GT —
+**how many of each is not printed, so count them on the machine**). Its plug is J55, a 6-pin Deutsch. (B)
+At the turntable, on the hydraulic-tank side — the opposite side from the engine compartment. The module
+carries two 12-pin Deutsch plugs: J121 grey and J122 black.
+
+**How to find it.** (A) Stand on the ground at the basket end with the boom stowed. Find the upright
+round rotator cylinder the platform sits on. Look just to one side of it, on the flat steel face, for a
+small rectangular box about the size of a matchbox. On PM fig 519.1 that box is item 8; **it is drawn
+with a moulded rectangular plug socket on its outer face and NO flying lead**, so look for a plug socket
+on the box itself, not a hanging cable. (B) Open the turntable cover on the hydraulic-tank side. Look
+for a small sealed rectangular module standing on the turntable deck with TWO 12-way Deutsch plugs side
+by side (PM fig 304.1 item 22, with items 20 and 21 — a 1/4 flat washer and a 1/4-20 nylock nut — called
+out beside it as its mounting hardware). It carries a Genie part-number label. **There is NO tilt-sensor
+plug on it, because the tilt sensing is inside the module.**
+
+**What it looks like.** (A) A plastic-bodied box — the Parts Manual name literally ends "(PLASTIC)". Six
+wires run to it through its plug: brown, green/black, green, brown, red, red/black. The diagram draws
+the sensor as a block labelled PLATFORM TILT SENSOR ASSEMBLY with one measuring channel marked "0-20 DEG
+Y AXIS" and two cut-out channels marked "10 DEG". (B) The SCON: a sealed module with two 12-pin Deutsch
+plugs, one grey (J121) and one black (J122). The pin lists show only module power, module ground, the
+two CAN bus wires (D82CAN(+) yellow and D81CAN(-) green), boom-angle signal wires, limit-switch wires and
+a calibration wire. **No tilt wire appears on either plug.**
+
+**Cite.** SM p.42, p.105, p.203, p.205, p.206, p.209; PM p.198 (fig pm198-platform-rotator.png), p.199,
+p.54 (fig pm054-scon.png), p.55.
+
+#### Set the machine to
+
+- **Key:** main key switch OFF and the key out while you handle the carton, look at the platform sensor,
+  or look at the SCON. For the display read in step 9 only: key to GROUND. **Do NOT touch the second key
+  switch, the Bypass/Recovery key switch — it must stay in RUN** ("Be sure that the bypass/recovery key
+  switch is in the run position before attempting to operate the machine", SM p.157).
+- **E-stops:** both pushed IN while handling parts. For the display read, pull the GROUND E-stop OUT,
+  take your readings, then push it back IN.
+- **Battery:** stays connected. This card takes no resistance readings. **Rule for any later card that
+  does unplug something: main key OFF and E-stop IN before pulling any connector apart, and the battery
+  disconnected before any ohm reading.**
+- **Engine:** OFF for all the looking and writing-down. **One honest warning about step 9:** the
+  Operator's Manual runs its "Test the Tilt Sensor" with the engine running — the step immediately before
+  it is step 24, "Start the engine" (OM p.33). **Whether the three level-sensor screens still show a
+  number with the engine off is likely but is NOT stated anywhere [M].** So try the read with the engine
+  off. If the numbers appear, write them down. If they do not appear, write down "no reading, engine off"
+  and STOP — **do not write down that a sensor is dead.**
+- **Other:** firm level ground, boom stowed, wheels chocked. Axles stay RETRACTED as found. With the
+  axles retracted the boom will not move, and that is correct. **Do not fit the calibration jumper wire,
+  do not move the calibration toggle switch, and do not enter any calibration menu.**
+
+#### Connector and wires
+
+"J55 / 6 pin Deutsch connector on platform tilt sensor" (SM p.205). Its six wires run back to the PCON
+and land on J22, "White 35 pin AMP connector on PCON" — pins 15, 19, 20, 21, 22 and 23. Three of the six
+are the everyday measuring channel; the other three are a separate safety channel.
+
+**On the turntable side there is no tilt-sensor plug to find:** J121 (grey 12-pin) and J122 (black
+12-pin) carry the SCON's own power and ground, the two CAN bus data wires, boom-angle signals,
+limit-switch wires and one calibration wire. **An earlier draft of this card said those two plugs carry
+"the six switched safety-power outputs". That was wrong and has been removed** — the pin legend names no
+such thing. The six power groups the SCON switches off when it faults (P_38, P_39, P_10, P_11, P_30,
+P_9B) are listed in a different place, the SCON fault matrix on SM p.189.
+
+| Pin | Wire | Colour | What it is | Goes to |
+|---|---|---|---|---|
+| J55-1 | P85RET-BR | brown | "PL TILT SNSR GND" — ground return for the everyday measuring channel (circuit 85 return) | PCON J22-19 |
+| J55-2 | C84TAY-GR/BK | green with a black stripe | "PL TILT SNSR" — the measuring signal, drawn as "0-20 DEG Y AXIS". Circuit 84 "Tilt signal Y axis"; TAY = Tilt Alarm Y axis | PCON J22-20 |
+| J55-3 | P85PTS-GR | green | "PL TILT SNSR PWR" — supply for the measuring channel. Circuit 85 "Tilt sensor power"; PTS = Platform Tilt Sensor | PCON J22-21 |
+| J55-4 | P87RET-BR | brown | "SAFE PL TILT GND" — ground return for the separate safety channel (circuit 87 return) | PCON J22-22 |
+| J55-5 | P87PTS-RD | red | "SAFE PL TILT PWR" — supply for the safety channel. Circuit 87 "Platform Level Safety Power" | PCON J22-23 |
+| J55-6 | C88PTS-RD/BK | red with a black stripe | "SAFE PL TILT OUT" — the safety cut-out output. Circuit 88 "Platform Level Safety Output". The two "10 DEG" cut-out channels drive this wire. | PCON J22-15 |
+| SCON J121 and J122 — all 24 pins | **none of them is a tilt-sensor wire** | — | The turntable tilt sensing is sealed inside the SCON module. **There is no external turntable tilt sensor plug anywhere on this machine.** J121 carries S132LDS, S73SLE, C145CAL, D82CAN(+), D81CAN(-), S59CNK, S56PRV, S137PLL, S139TRF and GNDSCON (pins 3 and 5 unused). J122 carries P21DCON, C142SBS, C141PBS, C60AXE, S12SB, S13DE, P53LS, S140ENL, P54ENG, P58LS, S56PRV and C61AXR. | — |
+| TCON J12 pins 25-35 — correction | **no tilt-sensor wire on this plug either** | — | An earlier draft said J12 pins 27 to 31 were all unused. **That was wrong: pin 28 is C143DEL - BL/RD.** The correct run is 25 SNSR GND-BR, 26 P109ANG-GR/WH, 27 unused, 28 C143DEL-BL/RD, 29 unused, 30 unused, 31 unused, 32 C123PBS-RD/BK, 33 C124SBS-OR/BK, 34 S140ENL-OR/RD, 35 GND16-BR. The point still holds: no wire on J12 is a tilt-sensor wire. | — |
+
+#### Do this
+
+1. **Set up.** Firm level ground beside the turntable. Main key OFF and out, both E-stops pushed IN,
+   wheels chocked, boom stowed, axles left retracted. **Do not touch the bypass/recovery key switch. Do
+   not open the ground control box to move the calibration toggle.**
+2. **Read the carton.** Photograph all six faces of the cardboard carton at the turntable. Write down,
+   exactly as printed: the Genie part number (you are looking for 50813 or 50813GT), the whole
+   description line, any date or batch code, whether the seal is broken or intact, and whether a part is
+   inside or the carton is empty. The field photo shows a dirty label with the fragments "…LT SENSOR",
+   "…10 DEGREE" and "…PCON)" plus a barcode, which matches the Parts Manual name SENSOR,TILT,PCON
+   (PLASTIC) — that is the PLATFORM sensor. **But that is a photo reading, not proof. Read the printed
+   number with your own eyes.**
+3. **If a part is inside the carton, DO NOT fit it.** Count the pins on its plug. Note whether the body
+   is plastic. Photograph the plug face and the wire colours on its short tail. Put it back in the carton.
+4. **Look at the platform sensor on the machine.** From the ground at the basket end, find the small
+   rectangular box on the bracket beside the round rotator cylinder. Photograph it. Write down: (a) does
+   it look NEW (clean plastic, bright unrusted screws) or ORIGINAL (faded and dirty like everything
+   around it); (b) is the 6-way plug pushed fully home with its latch clicked; (c) is there any blue
+   press-on tap splice, butt splice, tape or added wire within arm's reach of it; (d) which of the six
+   harness colours you can see. **Do not unplug it on this card.**
+5. **Look at the SCON.** Open the turntable cover on the hydraulic-tank side. Find the sealed module with
+   two 12-way plugs. Photograph its label and write the part number down: expect 1258463GT. Write down:
+   new or original appearance; whether J121 (grey) and J122 (black) are both seated and latched; any
+   splices or added wires; any loose, green or corroded ground/bonding wire at the module. **Also record,
+   for the file: there is no tilt-sensor plug on the SCON, so a boxed "turntable tilt sensor" could not
+   have been fitted anywhere on this machine.** If anyone says they replaced the turntable tilt sensor,
+   ask whether they mean this SCON module.
+6. **Look at the white wire near the turntable, but change nothing.** In the field photo a blue press-on
+   tap splice is clamped across a WHITE wire and a RED wire. The red wire and an orange wire run from that
+   tap into a small black sealed plug that appears to have only TWO ways. **That plug is NOT a tilt-sensor
+   plug** — there is no turntable tilt sensor plug on this machine — and nothing in the manuals identifies
+   a two-way red-and-orange plug at this spot. Photograph it, count its pins, and list its wire colours.
+   Note that it does not match J154, which is a SIX-way plug. **Leave the white wire, the tap and the plug
+   exactly as found; they belong to the J154 and toggle-switch cards. Cut nothing.**
+7. **Ask people.** Ask the owner, and the previous technician if you can reach them: was the part in the
+   carton ever fitted? Where? When? Was any calibration attempted afterwards? **Write the answers down
+   word for word, and write down who said them.**
+8. **Read the software version.** At the ground control box, key to GROUND, watch the LCD and pull the
+   ground E-stop OUT. The software version shows as it powers up. Write it down. It decides which BOOM
+   ANGLE SENSOR calibration procedure the shop will use: version 4.01 and higher use the 2 Point
+   procedure, versions before 4.01 use the 6 Point procedure, and only the 6 Point procedure needs the
+   digital level. **Note carefully: this 2-point/6-point choice applies only to the boom angle sensor
+   procedures. Neither the turntable level sensor procedure nor the platform level sensor procedure
+   offers a 2-point version, and both of them always need a digital level. Do not promise anyone a
+   "2-point turntable calibration".**
+9. **Read the three level values on the display.** With the key at GROUND and the ground E-stop out,
+   press the enter or previous button to scroll until TURNTABLE LEVEL SENSOR X-DIRECTION shows, and write
+   the degrees down. Do the same for TURNTABLE LEVEL SENSOR Y-DIRECTION and for PLATFORM LEVEL SENSOR
+   DEGREES. Then lay a digital level (or a good bubble level) on the flat top of the turntable in both
+   directions, and on a platform side rail, and write those physical readings alongside the screen
+   values. Also scroll the fault list and write down whether any line mentions TURNTABLE LEVEL SENSOR or
+   PLATFORM LEVEL SENSOR. **Important: the Operator's Manual runs this same test with the engine RUNNING.
+   If the screens show nothing with the engine off, write "no reading, engine off" and stop there — that
+   is not evidence of a dead sensor, and a proper engine-running test is a separate card.**
+10. **Close up.** Push the ground E-stop IN, turn the main key OFF, take the key out, close the turntable
+    cover.
+11. **Fill in the record sheet:** carton part number, and whether it holds a part or is empty; fitted or
+    spare, and who says so; platform sensor new or original and whether its plug is seated; SCON part
+    number and new or original; software version; the three screen values and the three physical level
+    readings beside them; the exact wording of any level-sensor line in the fault list; and the answers
+    from step 7.
+
+#### You should see
+
+| Measurement | Expected | If OK it means | If not it means | Cite |
+|---|---|---|---|---|
+| The part number printed on the carton | 50813GT, SENSOR,TILT,PCON (PLASTIC) — the PLATFORM tilt sensor | It is the platform sensor. **If it turns out it was actually fitted, the shop adds one calibration job: step 4 of the manufacturer's order, "Platform level sensor" (SM pp.42-43 — firm level ground, boom stowed, a digital level secured to a platform side rail, then SET PLATFORM LEVEL SENSOR TO GRAVITY). That procedure states no axle condition at all, so it can be done here.** If the carton is a spare that was never fitted, nothing changes. Either way it does not explain the seven faults now showing. | **If the carton says MODULE,SCON (1258463GT, or 139647-SGT for older machines), then an SCON was BOUGHT. A carton on its own does not prove anything was fitted** — check the module's own label in step 5 and the owner's answers in step 7 first. If an SCON really was fitted, SM p.105 requires full machine calibration in the set order, and step 3 of that order, the turntable level sensor (SM p.154), **must be done with the axles FULLY EXTENDED — a shop job, not a yard job.** Any other part number: photograph it and look it up before deciding anything. | PM p.199; SM p.42; SM p.105; SM p.154; PM p.55 |
+| How the sensor beside the platform rotator looks, and whether its 6-way plug is seated | A sensor as old and dirty as everything around it, plug fully latched, no added splices | Nothing is added to the calibration list by this item. | A sensor that looks new means it was replaced, and the Service Manual is explicit: "If a platform level sensor is replaced, it must be calibrated prior to machine operation" (SM p.42). Add step 4 to the list. An unlatched plug, or any splice or added wire near it: photograph it and write it down. | SM p.42; PM p.198 |
+| The part number on the SCON label, and how the module looks | 1258463GT, original weathered appearance, J121 grey and J122 black both seated and latched | Treat the SCON as original. Full-machine calibration is then forced only if the TCON was replaced, or if the shop chooses to run it anyway. | A module that looks visibly new, or a different part number, points to the turntable level sensor (SCON) having been replaced. **Then full machine calibration in the manufacturer's order becomes mandatory, and it cannot even be started until the axles can be fully extended.** | PM p.55; SM p.105; SM p.154 |
+| Screen values: TURNTABLE LEVEL SENSOR X-DIRECTION and Y-DIRECTION, in degrees | A degree number that agrees with the digital level laid on the turntable to within about a degree; on level ground, close to 0 degrees | The tilt sensors inside the SCON are alive and reading. The turntable level sensor is not causing the seven live faults. | No value, a value stuck at one number, or a value far from the physical level: write it down exactly. The fault table gives "Check that SCON is grounded" for a value sitting at 5.0 V, and "Replace SCON" for a value too high, too low, at 0 V, or out of tolerance. **Do NOT buy an SCON on the strength of one reading — hand the reading to the calibration technician.** | OM p.33 (1968-1979); SM p.106 (8097-8106); SM pp.180-182 |
+| Screen value: PLATFORM LEVEL SENSOR DEGREES | A degree number that agrees with the level laid on a platform side rail to within about a degree | The platform tilt sensor and its J55 wiring are alive and reading. Whatever is in the carton, the sensor on the machine is working. | No value or a wild value: the fault table entry for Platform Level Sensor Y Direction lists the effect as "Primary up and extend disabled, Alarm sounds" and the recovery as "Check that SCON is grounded" — **note this row gives no "Replace SCON" option, unlike the turntable rows.** Write it down, photograph the J55 plug, and hand it on as a meter job for a later card. | OM p.33 (1980-1985); SM p.182 (13041-13056); SM p.203 |
+| The fault list on the ground display | No line naming TURNTABLE LEVEL SENSOR or PLATFORM LEVEL SENSOR. The seven faults are all boom-angle, boom-switch and calibration items. | Confirms the carton is a side issue: neither tilt sensor is generating faults. | Write the exact on-screen wording down. The fault tables on SM pp.180-182 give the recovery actions, and an entry reading "SCON Tilt Sensor - Calibration check - Display X direction and Y direction not calibrated" (SM p.188) means the tilt X and Y axis matrix information was never entered. **That is a calibration-technician item, not a parts item.** | SM p.188 (13595-13600); SM pp.180-182 |
+
+#### Why we are doing this
+
+If the carton is the platform tilt sensor (50813GT) and somebody actually fitted it, that adds only one
+job to the calibration list: step 4 of the manufacturer's order, "Platform level sensor". That job needs
+firm level ground and the boom stowed; it says nothing about the axles, so it can be done at this yard.
+**If instead somebody changed "the turntable level sensor", then what they changed was the SCON module,
+and the Service Manual then requires the WHOLE machine to be calibrated in a fixed order (SM p.105) —
+and step 3 of that order must be done with the axles FULLY EXTENDED.** The axles here are retracted and
+the machine will not extend them in this yard, so that would be a shop job, not a yard job. **That is
+the yard-versus-shop decision this card settles.** It also settles whether the carton has anything to do
+with the seven faults: none of those seven names a level sensor, so the carton looks like a side issue.
+
+#### Safety
+
+- Main key OFF, key out, both E-stops pushed IN before you touch any plug. This card does not unplug J55
+  and does not unplug the SCON plugs.
+- Do not turn the bypass/recovery key switch, do not fit the calibration jumper wire, do not move the
+  calibration toggle switch. Calibration is restricted to "qualified technicians that have Genie factory
+  service training" and calibrating out of sequence can tip the machine over (SM p.105).
+- **Never bridge, jumper, tap or defeat the platform tilt sensor, the SCON, or any of their wires.** The
+  SCON's ±4.5 degree alarm and the platform sensor's ±10 degree cut-out are safety functions. **This plan
+  takes bypasses OUT; it never puts one in.**
+- Do not raise, extend or rotate the boom. The machine has live faults in the boom position and reach
+  limiting system, and the axles are retracted — the axle safety limit switches are correctly preventing
+  boom movement. **Leave them doing their job.**
+- Do not get into the platform of this machine. Do the platform-sensor inspection from the ground with
+  the boom stowed.
+- Wheels chocked, firm level ground, engine off. **Do not start the engine on this card** — if the
+  readings will not come up with the engine off, hand that on rather than starting a faulted machine.
+- **Do not replace the SCON on a hunch.** Fitting a new SCON forces full machine calibration in the
+  manufacturer's order, which needs the axles fully extended and so cannot be done in this yard, and the
+  fault-table recovery for level-sensor faults begins with "Check that SCON is grounded", not with
+  replacement.
+
+#### Sources
+
+- [V] "The platform level sensor is mounted to the side of the platform rotator… If a platform level sensor is replaced, it must be calibrated prior to machine operation." — SM p.42 (3656-3663)
+- [V] "8 50813GT SENSOR,TILT,PCON (PLASTIC)**** … 1" — PM p.199 (10053-10056)
+- [V] Mounting hardware items 9 (8914GT) and 10 (6638GT); **no quantity is printed for either** — PM p.199 (10057-10062)
+- [V] On PM fig 519.1, item 8 is a rectangular sensor box with a moulded connector receptacle on its outer face and NO cable, on a bracket beside the round rotator body (item 1) — figs/pm198-platform-rotator.png
+- [V] "1 88576GT ROTATOR,NON-JIB" — PM p.199 (10013-10015)
+- [V] "J55 6 pin Deutsch connector on platform tilt sensor" — SM p.205 (15477-15479)
+- [V] "J22 White 35 pin AMP connector on PCON" — SM p.205 (15453-15454) (the earlier citation to 15458-15459 was the J24 entry)
+- [V] J55 pinout 1-6 into a block labelled PLATFORM TILT SENSOR ASSEMBLY — figs/es-j55-platform-tilt.png; SM p.229 (17445-17447, 19320-19325)
+- [V] Schematic names at the PCON: P22-15 SAFE PL TILT OUT, 22-19 PL TILT SNSR GND, 22-20 PL TILT SNSR, 22-21 PL TILT SNSR PWR, 22-22 SAFE PL TILT GND, 22-23 SAFE PL TILT PWR — same figure; SM p.229 (17108-17129)
+- [V] PCON J22 pins 15, 19, 20, 21, 22, 23 — fig sm208-dcon-pcon-pins.png; SM p.208 (15833, 15841-15849)
+- [V] Circuits 83 GR/WH tilt signal X, 84 GR/BK tilt signal Y, 85 GR tilt sensor power — SM p.198 (14633-14641)
+- [V] Circuits 87 RD, 88 RD/BK, 89 BR — SM p.198 (14650-14658)
+- [V] "PTA Platform Tilt Alarm / PTS Platform Tilt Sensor" — SM p.194 (14128-14131); TAX, TAY, TTA, TTS — SM p.195 (14224-14247)
+- [V] "Platform Angle Sensor: … range ±20 degrees. The safety cutout is set at +/- 10 degrees from gravity and will disable the primary and secondary boom up/down functions and the platform level up/down functions." — SM p.203 (15308-15313)
+- [V] "Safety Controller (SCON): Redundant dual axis tilt sensors… Alarm sounds at ±4.5 degrees." — SM p.203 (15317-15320)
+- [V] "Full machine calibration must be completed in the proper sequence when the ALC-1000 circuit board (TCON)… has been replaced or the turntable level sensor (SCON) has been replaced." — SM p.105 (7974-7978)
+- [V] Calibration restricted to Genie-trained technicians; tip-over hazard — SM p.105 (7981-7989)
+- [V] Full calibration order, ten items, turntable level sensor 3rd and platform level sensor 4th — SM p.105 (8011-8039)
+- [V] Full machine calibration needs a digital level (kit 58351) and starts with the booms fully stowed and the axle retracted — SM p.105 (7992-7995, 8009-8010)
+- [V] "9-2 Turntable Level Sensor… Perform this procedure with the machine on a firm, level surface with the booms in the fully stowed position and **the axles fully extended**." — SM p.154 (10996-11029)
+- [V] The turntable procedure requires the calibration toggle, the bypass key position and the (plus)(enter)(enter)(plus) sequence — SM pp.154-155 (11030-11089)
+- [V] "Be sure that the bypass/recovery key switch is in the run position before attempting to operate the machine." — SM p.157 (11174-11180)
+- [V] The turntable procedure closes with a tip-over warning about removing the jumper, starting the engine, confirming no calibration faults, then the level sensor test — SM p.157 (11174-11215)
+- [V] **Platform level sensor calibration (SM pp.42-43) states only two conditions — firm level surface and boom stowed — and no axle condition at all** — SM p.42 (3664-3724), SM p.43 (3740-3771)
+- [V] SCON module parts 139647-SGT (to SN 1711) and 1258463GT (from SN 1712), both needing recalibration after a new module — PM p.55 (2778-2788)
+- [V] SCON mounting hardware items 20 (6638GT) and 21 (6091GT) called out beside item 22 — PM p.55 (2772-2777), fig pm054-scon.png
+- [V] Fig 304.1 drawing is PM p.54; its parts list is PM p.55 — PM (2666, 2675)
+- [F] Serial Z13513-1861 is above the 1712 break, so 1258463GT applies — case README line 1 with PM (2786-2787). **The serial comes from the case record, not a manual, and the manuals write serial breaks with a full prefix, so confirm against the module's own label.**
+- [V] "J121 12 pin Deutsch gray SCON connector / J122 12 pin Deutsch black SCON connector" — SM p.206 (15608-15611)
+- [V] **The Safety Controller Pin Legend lists no tilt-sensor wire on either SCON plug** — full J121 and J122 pin lists — fig sm209-scon-pins.png
+- [V] The SCON connector legend names no "safety-power output" pins and no group of six; the six switched power groups appear in the SM p.189 fault matrix — SM p.189 (13630-13640) cross-checked against fig sm209-scon-pins.png
+- [V] **CORRECTION:** TCON J12 pin 28 is C143DEL-BL/RD, not unused — fig sm210-tcon-pins.png; SM p.205 (15437-15438)
+- [V] "Turntable Controller Pin Legend … J12 Turntable Controller"; "the ALC-1000 circuit board (TCON) in the ground control box" — fig sm210-tcon-pins.png; SM p.105
+- [V] Inside the TCON block on ES0366J there are board-internal labels TT_TILT_SNSR_GND, TT_TILT_SNSR_PWR, TT_TILT_X_AXIS and TT_TILT_Y_AXIS on an internal P1-xx header — **none of these appears on the external J12 legend** — SM p.229 (17612-17620), fig es-tcon-tt-tilt-labels.png
+- [V] Fault table, turntable level sensor X direction: "Value at 5.0 V … Check that SCON is grounded"; value too high/low/0 V/out of tolerance: "Replace SCON" — SM p.180 (12867-12897)
+- [V] Turntable level sensor Y direction rows — SM p.181 (12986-13000), SM p.182 (13023-13040)
+- [V] Platform Level Sensor Y Direction: "Primary up and extend disabled, Alarm sounds / Check that SCON is grounded" — **this row offers no "Replace SCON" action** — SM p.182 (13041-13056)
+- [V] "SCON Tilt Sensor | Calibration check | Display X direction and Y direction not calibrated | Re-power after entering tilt x axis and y axis matrix information" — SM p.188 (13595-13600)
+- [V] The SCON fault matrix includes "Turntable tilt Y axis (+5°, secondary boom not stowed)" and "Turntable tilt angle (crosscheck SCON internal sensors 3 in a delta configuration)" — SM p.189 (13647, 13697-13698)
+- [V] The display's operator screens include Turntable level sensor X° and Y° direction and Platform level sensor degree; the enter or previous buttons scroll — SM p.106 (8070-8106)
+- [V] **OM "Test the Tilt Sensor" is steps 25, 26 and 27, and the step immediately before it, step 24, is "Start the engine."** — OM p.33 (1967-1985)
+- [M] Whether the three level-sensor screens show a reading with the engine OFF is likely but is not stated anywhere in the three manuals
+- [V] The software version is displayed when the E-stop is pulled out; 4.01+ = 2 Point, before 4.01 = 6 Point; a digital level is only required for the 6 Point procedure — SM p.83 (6491-6498)
+- [V] **The 2 Point / 6 Point choice belongs to the BOOM ANGLE SENSOR procedures only** (SM p.83 and SM p.89); a whole-file search for "2 Point Calibration" returns only lines inside those two sections
+- [V] "the ECM at the ground controls compares the difference in readings between the platform angle sensor and the turntable level sensor…" — SM p.39 (3419-3425)
+- [V] "In the event that the platform angle is greater than 10° from level, the boom angle and platform level functions are disabled… the normal operating envelope, ±4.5°." — SM p.100 (7629-7634)
+- [V] Secondary boom angle sensor calibration requires the turntable level sensor to be calibrated first if it has been replaced — SM p.89 (6973-6978); same for the jib bellcrank — SM p.58 (4758-4765)
+- [V] LSFA1ES and LSRA1ES prevent boom functions with the axles retracted — SM p.203 (15322-15329)
+- [V] "Do not depend on the tilt alarm as a level indicator. The tilt alarm sounds in the platform only when the machine is on a severe slope." — OM p.13 (827-832)
+- [V] **The Parts Manual lists no turntable tilt or level sensor as a separate part.** A whole-file search for "tilt" returns exactly two hits: decal 33952GT and the platform sensor 50813GT. A search for "level sensor" returns nothing. — PM (393-394, 10055)
+- [F] Field photo of the carton: the label, rotated and enlarged, shows "…LT SENSOR", "…10 DEGREE" and "…PCON)" plus a barcode. **The printed part number itself is not legible.** — photos/2026-09-12-white-wire-turntable-tilt-sensor-box.jpg
+- [F] Field photo near the turntable: a blue press-on tap is clamped across a WHITE wire and a RED wire; the red wire and an orange wire run right into a small black sealed plug that reads as TWO-way. **The connector family, the wire gauge, and where the white wire comes from cannot be determined from this photo.** — same photo
+- [V] For comparison: J154 is a SIX-way plug with tail colours 1 RD, 2 BK, 3 BL, 6 OR, 5 BR, 4 YL — fig es-j154-secondary-sensor.png
+- [F] **None of the seven faults currently on the display is a turntable or platform level sensor fault** — case README 154-161 (field record, not a manufacturer manual)
+- [F] The axles are currently retracted at 8 ft 1 in — case README 8-9 and the 2026-09-10 update at 149-152
+- [V] The manuals print no sensor-side wire colours for J55: ES0366J labels only the harness conductors and draws the sensor block with unlabelled internal conductors — fig es-j55-platform-tilt.png
+
+---
+
+### D4 — Read the software version and decide 2-point or 6-point calibration
+
+**(from card `d4-software`)**
+
+#### Where it is
+
+**Component.** The LCD readout screen on the ground control panel — the lid face of the ground control
+box. In the Parts Manual the window itself is the LCD lens, item 10, part 62374GT; the black button face
+beside and below it is the membrane decal, item 13, part 106510GT, which comes with the lid 107714GT.
+
+**Where on the machine.** On the turntable, on "the ground controls side of the machine" (SM p.75).
+Stand on the ground at the turntable, facing the box. **No cover needs to be opened and the box lid stays
+closed for this whole card.**
+
+**How to find it.** Look for the metal control box on the turntable with a blue-painted hinged lid. On
+the lid face: a roughly square grey LCD window **set directly into the blue painted metal in the middle
+of the lid — the window is NOT inside the black panel;** the black membrane decal panels sit to the
+right of it (boom and axle symbols) and below it (the buttons). Just below and to the left of the window
+is a block of four square membrane buttons in two rows: a down-arrow and a return-arrow on the top row,
+a plus and a minus on the bottom row. The Service Manual names the four LCD screen control buttons Plus,
+Minus, Previous and Enter. Above the screen is a white decal, number 1263541 A, ending "…Improper
+calibration can result in death or serious injury." The red mushroom E-stop and both key switches are on
+the same lid face.
+
+**What it looks like.** In the existing photo of this machine the LCD is a pale grey square window
+showing a black hourglass symbol and the hour meter reading 2162.4. The Operator's Manual says this one
+screen carries the low fuel, engine oil pressure, water temperature, auxiliary power and high engine rpm
+indicators and the hour meter. Fault messages and the software version appear as text and numbers in the
+same window.
+
+**Cite.** SM p.75, p.83, p.99, p.102, p.103; OM p.20, p.21, p.22, p.31; PM p.61, p.63, fig
+pm060-ground-controls.png; photo ground-display-hours.jpg; fig key-switch-decal.png.
+
+#### Set the machine to
+
+- **Battery:** connected. The display needs battery power. Nothing is unplugged on this card, so there
+  is no resistance test here.
+- **Engine:** OFF the whole time. **Do not press the engine start button.** The version shows with the
+  engine off.
+- **E-stops:** start with the ground red E-stop pushed IN. Pull it OUT only for the reading, then push it
+  back IN. Platform E-stop: leave it exactly as you found it (normally pushed in). Nobody is in the
+  platform.
+- **Key:** main key switch turned to GROUND for the reading; turned OFF and the key removed at the end.
+  **Bypass/recovery key switch: leave it in RUN and do not put a key in it.**
+- **Other:** machine on firm level ground, boom fully stowed, wheels chocked. Axles currently retracted —
+  fine for this card because no boom, drive or axle function is used. **Expect the function buttons to be
+  dead while the boom angle crosscheck faults are live — that is the safety controller doing its job, not
+  a new fault (SM p.189). Do not press any function button.** Nobody in the platform. Leave the modified
+  wiring at the primary boom sensor connector and the aftermarket toggle switch untouched on this card.
+
+#### Connector and wires
+
+**None. No connector is unplugged and no pin is probed on this card.** The reading is taken from the LCD
+screen with the box shut.
+
+For background only: the ground control box holds a replaceable membrane decal with touch-sensitive
+buttons, plus two printed circuit boards — the LCD circuit board, mounted inside the lid, which drives
+the display screen, and the ECM circuit board, which the manual calls "the main circuit board for the
+machine" and in which "all operating parameters and configuration of options for the machine are stored"
+(SM p.102). The manual does not spell out what the letters ECM stand for. Elsewhere the same main board
+is called "the ALC-1000 circuit board (TCON)" (SM p.105), so ECM, ALC-1000 and TCON are likely three
+names for this one board — **the manuals never say so in one sentence, so treat that equivalence as
+likely, not fact [M].**
+
+#### Do this
+
+1. **Preparation.** Machine on firm level ground, boom stowed, wheels chocked, nobody in the platform,
+   nobody near the boom. **Have a phone ready to video the LCD screen: the manuals never say how long the
+   version stays on screen, so film it rather than trust your eyes.**
+2. Walk to the ground control box. Confirm the ground red E-stop is pushed IN. Look at the lower key
+   switch, the bypass/recovery key switch: confirm there is no key in it and it points to RUN. **Do not
+   touch it.**
+3. Put the key in the upper 3-position main key switch and turn it to the GROUND position.
+4. **Start filming the LCD window.** Pull the red E-stop OUT to the on position. Watch the screen from
+   the first instant: "The software version is displayed on the LCD screen when the red Emergency Stop
+   button is pulled out to the on position" (SM p.83). In cold weather give the screen time — "In cold
+   climates, the LCD readout screen will need to warm up before the display appears" (OM p.31).
+5. **Write down the version exactly as shown, every digit** (for example 3.12 or 4.02), plus any prefix
+   text. If you missed it: push the E-stop IN, pause a few seconds, then pull it OUT again and film it
+   again. **No manual gives a required pause length, so a short pause is field practice, not a Genie
+   figure.** Pushing the E-stop in and pulling it out are the normal operating controls and repeating
+   this is safe. **Do NOT press engine start. Do NOT press any function button.**
+6. Leave the key on and let the screen run through its messages. **Write down every fault message word
+   for word, in the order shown, and the hour meter reading. Do not try to clear anything.**
+7. **Optional read-only record:** with the key still on, press the Plus and Minus buttons at the same
+   time. That opens the Machine Status screen (SM p.107). Write down what it shows for "Primary boom to
+   secondary boom angle", "Secondary boom angle", "Primary boom length", "Secondary boom length" and "Jib
+   bellcrank angle". **Most rows on this screen are readings only, but the last row, "DPF Regeneration
+   Mode (Auto / Force / Inhibit)", is a three-way selection — scroll past it and change nothing.** Genie
+   warns that "Some display menus are for informational purpose only, while others can be used to change
+   the machine operating parameters" (SM p.106). Do not press Enter to accept anything. **Do not use the
+   Plus-Enter-Enter-Plus, Minus-Minus-Previous-Previous or Minus-Previous-Previous-Minus button
+   sequences: those open setting menus and are for the calibration technician.**
+8. Push the red E-stop IN. Turn the main key switch OFF and remove the key.
+9. **Decide, using Genie's rule.** Version **4.01 or higher = 2 Point Calibration** procedures for the
+   primary and secondary boom angle sensors; no digital level is needed for those two sensors. Version
+   **before 4.01 = 6 Point Calibration**, and the calibration technician must bring the digital level
+   kit, Genie part number 58351, "a digital level with a magnetic base and cable harnesses". **Write on
+   the record that the turntable level sensor calibration and the jib boom bellcrank angle sensor
+   calibration need the digital level whichever version is fitted.**
+10. **Record also which fault-clearing menu this software has:** software 3.11 or lower and software 4.01
+    have "Delete Faults" inside the Default Reset menu; software 3.12 and 4.02 or higher have a separate
+    "Clear Faults" menu. **Do not open either menu on this card.** This is information for whoever clears
+    faults after the repairs are finished.
+11. **Hand the calibration technician:** the version number, the video, the full fault list word for
+    word, the hour meter reading, the Machine Status values, and these two reminders. **First,** every
+    boom angle sensor calibration must be done "with the machine on a firm, level surface with the booms
+    in the fully stowed position, in the drive enable zone and the axles fully extended" (SM p.83) — that
+    is Genie's wording — and separately the procedure itself requires the engine to be started so the
+    booms can be moved (SM p.84 step 15). The axles are retracted and propel is dead, so those repairs
+    must be finished before the calibration visit. **Second,** tell them this machine has non-Genie wiring
+    at the primary boom angle sensor connector and an aftermarket toggle switch in the platform box; both
+    must be put back to the factory arrangement before anything is calibrated. **Never leave a bridged or
+    jumpered safety signal in place.**
+
+#### You should see
+
+| Measurement | Expected | If OK it means | If not it means | Cite |
+|---|---|---|---|---|
+| LCD screen at the instant the ground red E-stop is pulled out (main key in GROUND, engine off, box closed) | The screen lights and shows the software version number, then the normal screens and any fault messages | Write the number down exactly. Then go to the next row to make the 2-point / 6-point decision. | If the screen stays blank after a warm-up wait in cold weather, or shows only the hour meter with no version text, you either missed the moment or the screen is not being powered. **Repeat once with the video running. If it is still blank, stop this card and go to the TCON power and ground card. Do not guess a calibration method.** | SM p.83 (6491-6496); OM p.31 (1829-1836) |
+| The software version number compared with 4.01 | Either 4.01 or higher, or lower than 4.01 | **4.01 or higher:** write "2 Point Calibration" on the record. The technician will answer PRIMARY BOOM FULLY LOWERED / FULLY RAISED and SECONDARY BOOM FULLY LOWERED / FULLY RAISED on the screen; no digital level is needed for the boom angle sensors. **Note on the record that the 2-point procedure still needs the box opened, the calibration toggle switch activated and the key in the bypass position (SM p.86), and the engine running to move the booms.** | **Lower than 4.01:** write "6 Point Calibration, bring kit 58351". The technician must read a digital level laid on top of the boom at six angles per sensor. Either way the turntable level sensor and the jib bellcrank sensor need the digital level. | SM p.83 (6491-6502); SM p.86 (6767-6790); SM p.87 (6818-6831); SM p.112 (8530, 8570-8607); SM p.113 (8658-8721); SM p.58; SM p.154 |
+| Fault messages shown after the version | The seven messages last read on this machine come back. **This list is a field observation off the owner's display, not a manual value.** | Write them down word for word and in order. **Nothing is fixed on this card. Expect the function buttons to do nothing while these faults are live** — the fault matrix shows Primary Boom angle (crosscheck) switching OFF P_38 propel, P_39 turntable rotate, P_10 primary boom extend, P_11 primary/secondary up and P_30 secondary extend/down. **A dead panel here is the machine protecting itself, not an extra fault.** | If different or extra messages appear, record those too. A message that does not come back after the E-stop has been cycled was a stored (latched) fault rather than a live one. **Do not clear anything here.** | case README 154-161; SM p.189, fig scon-fault-matrix.png; SM p.154; OM p.31 |
+| Hour meter on the LCD | 2162.4 h or a little higher. 2162.4 is the value photographed; the engine has been run on site since, so a slightly higher figure is normal. | Record it. It confirms you are reading the machine you think you are reading. | A wildly different reading — hundreds of hours out, or near zero — suggests the TCON control box has been swapped at some point. Note it, because Genie needs the model, the serial number and the software revision to supply a TCON box, and the version you have just read is the only way to know what is fitted. | photo ground-display-hours.jpg; case README 1, 148-151; OM p.22; PM p.61 |
+| Which fault-clearing menu this software has (record only, do not open it) | Software 3.11 or lower and 4.01: a Default Reset menu containing "Delete Faults" — "Delete faults will reset active latching faults. Delete faults will not clear fault history." Software 3.12 and 4.02 or higher: a separate "Clear Faults" menu — "Clear all safety switch faults". | Write the applicable menu name on the record for whoever clears faults after the repairs. | If the version you read is not inside either range the manual lists, write it down exactly and ask Genie Product Support which menu applies. **Do not experiment with button sequences.** | SM p.107 (8177-8201); SM p.108 (8241-8254) |
+
+#### Why we are doing this
+
+Genie's rule (SM p.83, repeated on p.89): **software 4.01 and higher uses the 2 Point Calibration
+procedure; software before 4.01 uses the 6 Point Calibration procedure.** The difference is the tool
+list. The 6-point method needs a digital level laid on top of the boom and read at six angles per sensor
+(primary boom 0, -50, -20, 10, 40 and 70 degrees; secondary boom -3.5, 20, 35, 50, 65 and 76 degrees),
+so the calibration technician must bring kit 58351 and plan a longer visit. The 2-point method does not
+need the digital level for the boom angle sensors. **Do not read "2-point" as "quick and toolless",
+though:** the 2-point procedure still requires the ground control box to be opened, the calibration
+toggle activated, a door fastener temporarily fitted, and the key moved into the bypass position, or
+"the angle sensor calibration values will not be saved correctly" (SM p.86). Both methods also need the
+engine running, because the booms have to be moved (SM p.84 step 15). Whichever version is fitted, the
+turntable level sensor calibration (SM p.154) and the jib boom bellcrank angle sensor calibration (SM
+p.58) always need the digital level. The version also decides which fault-clearing menu exists on this
+machine, and Genie requires the software revision when ordering a replacement TCON control box (PM
+p.61). **This card does not start the engine, does not touch the bypass/recovery key switch, does not
+open the box, does not fit any calibration toggle or jumper, and does not enter any menu that changes
+settings.**
+
+#### Safety
+
+- **Pulling the red E-stop out powers the machine up. Keep your hands off every function button.**
+- The engine stays OFF. Do not press the engine start button. Nobody in the platform, nobody under or
+  beside the boom. Machine on firm level ground, boom stowed, wheels chocked.
+- **Do not turn the bypass/recovery key switch and do not put a key in it.** Bypass is only for levelling
+  the platform when the display shows platform out of level (P22) and the platform level controls do not
+  work; Recovery "should only be used by trained and authorized personnel" (OM p.22).
+- **Do not open the ground control box, do not touch the calibration toggle switch at the top of the box,
+  do not fit a door fastener or any jumper, and do not enter the Sensor Calibration, Default Reset or
+  Clear Faults menus.** "Tip-over hazard. Calibration and parameter settings must be completed by a
+  person trained and qualified on the repair of this machine" and "The key switch must be in the off
+  position before entering the programming mode" (SM p.106).
+- **Never bypass, jumper or defeat any safety circuit, limit switch, angle sensor, tilt sensor or load
+  cell.** This card only reads a screen. If you find wiring that already bridges a safety signal — this
+  machine has non-Genie splices at the primary boom angle sensor connector and an aftermarket toggle
+  switch in the platform box — **photograph it, report it and leave it alone. It must be put back to the
+  factory arrangement before calibration, never left bridged.**
+- Expect the function buttons to be dead while the boom angle crosscheck faults are live (SM p.189). **Do
+  not interpret that as a reason to look for a way around the safety controller.**
+- Key OFF and E-stop IN before anyone opens the ground control box or unplugs any connector on a later
+  card; battery disconnected before any resistance test. This card keeps the box closed and the battery
+  connected.
+- Cold weather: the LCD needs to warm up before the display appears. Wait rather than assuming it is dead.
+
+#### Sources
+
+- [V] "For software versions 4.01 and higher, use the 2 Point Calibration procedure. For software versions before 4.01, use the 6 Point Calibration procedure. The software version is displayed on the LCD screen when the red Emergency Stop button is pulled out to the on position." — SM p.83 (6491-6496); repeated SM p.89 (6985-6990)
+- [V] "A digital level will only be required to perform the 6 Point Calibration procedure." — SM p.83 (6497-6498)
+- [V] "A kit is available through Genie Product Support (Genie part number 58351). This kit includes a digital level with a magnetic base and cable harnesses." — SM p.58 (4771-4774), p.83, p.89, p.105, p.154
+- [V] The jib boom bellcrank angle sensor calibration always requires a digital level (no version qualifier) — SM p.58 (4769-4770)
+- [V] The turntable level sensor calibration always requires a digital level and cites kit 58351 — SM p.154 (11010-11015)
+- [V] Full machine calibration requires a digital level and cites kit 58351 — SM p.105 (7990-7995)
+- [V] **58351 is not listed anywhere in the Parts Manual text; neither is the word "digital"** — PM, search, 0 hits
+- [V] The 2 Point procedure still requires the box opened, the calibration toggle activated, a door fastener fitted and the key in the bypass position, "or the angle sensor calibration values will not be saved correctly" — SM p.86 (6774-6790)
+- [V] LCD screen control buttons are named Plus, Minus, Previous and Enter — SM p.83 (6503-6513); same chart SM p.106
+- [V] Boom angle sensor calibration preconditions: firm level surface, booms fully stowed, in the drive enable zone and the axles fully extended. **This note does not itself mention the engine.** — SM p.83 (6514-6517)
+- [V] The engine requirement comes from the procedure body: "15 Start the engine from the ground controls." — SM p.84 (6601)
+- [V] Axle sensors, secondary boom angle sensor and turntable level sensor must be calibrated before the primary boom angle sensor if they were removed or replaced — SM p.83 (6478-6481)
+- [V] The 6-point primary procedure places a digital level on top of the primary boom and reads it at 0, -50, -20, 10, 40 and 70 degrees — SM pp.84-85 (6587-6687)
+- [V] "2 Point Calibration procedure … Use this procedure for software versions 4.01 and higher." / "6 Point Calibration procedure … before 4.01" — SM p.86 (6767-6769), SM p.83 (6518-6520)
+- [V] The 2-point primary procedure uses the boom stowed and fully raised at the end of the cylinder stroke, and takes no level reading — SM p.87 (6818-6831)
+- [V] "Be sure that the bypass/recovery key switch is in the run position before attempting to operate the machine." — SM p.87 (6849-6851)
+- [V] The Sensor Calibration menu for software before 4.01 lists six secondary angles (-3.5, 20, 35, 50, 65, 76) and six primary angles (0, -50, -20, 10, 40, 70) — SM p.112 (8522-8607)
+- [V] The Sensor Calibration menu for 4.01 and higher lists only fully lowered / fully raised entries — no angle targets — SM p.113 (8651-8721)
+- [V] The Sensor Calibration menu is entered with the key OFF, holding Enter, turning the key on, then (plus)(enter)(enter)(plus) — SM p.112 (8522-8527)
+- [V] "The key switch must be in the off position before entering the programming mode"; "Some display menus are for informational purpose only, while others can be used to change the machine operating parameters"; tip-over hazard for calibration and parameter settings — SM p.106 (8055-8060)
+- [V] Machine Status screen: key on, press (plus)(minus) together; it lists hydraulic pressure, primary-to-secondary boom angle, primary boom length, secondary boom angle, secondary boom length, jib bellcrank angle — **and ends with a selectable DPF Regeneration Mode (Auto / Force / Inhibit), which is a setting, not a reading** — SM p.107 (8128-8149)
+- [V] Software 3.11 or lower and 4.01 have a Default Reset menu, entered (minus)(minus)(previous)(previous), containing Delete Faults — SM p.107 (8177-8201)
+- [V] Software 3.12 and 4.02 or higher have a separate Clear Faults menu, entered (minus)(previous)(previous)(minus) — SM p.108 (8241-8254)
+- [V] Overload Recovery menu exists only from software V3.07 and later — SM p.107 (8171-8172)
+- [V] Software versions go back at least to 1.01: the recovery mode procedure applies to 1.11 and later — SM p.101 (7712-7715)
+- [V] TCON = turntable control box, the communication and operations centre; the box holds two key switches — SM p.99 (7569-7576)
+- [V] SCON = Safety Controller with redundant dual-axis tilt sensors and safety switch logic; alarm at ±4.5 degrees — SM p.203 (15317-15320); also SM p.154 (11000)
+- [V] The ground control box contains a replaceable membrane decal and two boards, the LCD board in the lid and the ECM board, "the main circuit board for the machine"; "When the ECM circuit board is replaced, the machine will need to be fully calibrated." **The manual does not expand the letters ECM.** — SM p.102 (7766-7781)
+- [M] The main board is also called "the ALC-1000 circuit board (TCON)" (SM p.105, SM p.103); **the manuals never state in one place that ECM, ALC-1000 and TCON are the same board** — the equivalence is inferred by elimination
+- [V] Full machine calibration starts with the booms fully stowed and the axle retracted and must run in a ten-item sequence; primary boom angle sensor is item 8, jib bellcrank item 9, "Select option configuration" last — SM p.105 (8009-8039)
+- [V] The side carrying the ground control box is called the ground controls side and has a fixed turntable cover — SM p.75 (5947-5950)
+- [V] OM ground control panel legend item 1 is the LCD readout screen with the low fuel, oil pressure, water temperature, auxiliary power and high rpm indicators and the hour meter — OM p.22 (1353-1366)
+- [V] Red E-stop: pushed in = off, stops all functions and turns the engine off; pulled out = on — OM p.22 (1367-1371)
+- [V] The main key switch has off / ground / platform positions — OM p.22 (1375-1381)
+- [V] The bypass/recovery key switch is item 11; bypass only for levelling an out-of-level platform (P22); recovery only for trained and authorized personnel — OM p.22 (1404-1411)
+- [V] Item 20 on the ground control panel is the LCD screen control buttons — OM p.23 (1465)
+- [V] "Turn the key switch to ground control… Pull out the red Emergency Stop button… Result: The LCD screen will come on and display no error messages… In cold climates, the LCD readout screen will need to warm up before the display appears." — OM p.31 (1829-1836)
+- [V] Replacement TCON control box: 106512GT to SN 1711, 237069GT from SN 1712; **Genie requires the model, serial number and software revision when ordering** — PM p.61 (3054-3065)
+- [V] Ground control box lid 107714GT includes the membrane decal item 13 — PM p.61 (3067-3070)
+- [V] The ground E-stop is a red mushroom-head push button, 66812GT — PM p.61 (3077-3079)
+- [V] The main key switch is a 3-position maintained key switch 66811GT supplied with two keys; the recovery key switch, item 14, is a different, momentary switch 88150GT — PM p.61 (3094-3097, 3163-3165)
+- [V] The LCD window is the LCD lens, item 10, 62374GT — PM p.61 (3118-3120)
+- [V] The membrane decal is item 13, 106510GT — PM p.63 (3155-3157)
+- [V] On this machine the LCD is a square pale grey window set directly into the blue-painted lid metal — **not inside the black membrane panel** — with the black decal to the right and below; the four buttons below-left are a down-arrow, a return-arrow, plus and minus; the white decal above reads "1263541 A … Improper calibration can result in death or serious injury."; the screen shows an hourglass and 2162.4 — photo ground-display-hours.jpg
+- [V] PM fig 305.1 shows the ground control box as a metal box with a hinged lid carrying the E-stop, both key switches and the LCD window — fig pm060-ground-controls.png
+- [V] The bypass/recovery key switch decal shows Run, Bypass (marked P22) and Recovery — fig key-switch-decal.png
+- [V] While a primary boom angle crosscheck fault is live the SCON switches OFF P_38, P_39, P_10, P_11 and P_30, so an unresponsive control panel is expected — fig scon-fault-matrix.png (SM p.189)
+- [V] Software before 3.0 shows different wording in some calibration menus ("RESET ALL STEER SENSORS", "RESET AXLE ANGLE SENSORS") — SM p.162 (11528-11529), SM p.168 (11937-11939)
+- [F] This machine's last recorded hour reading is 2162.4 h, but the engine has been run on site since — case README 1, 148-151, 166-168
+- [F] The seven fault messages expected to reappear are the owner's field observation, not manual text — case README 154-161
+- [F] This machine carries non-Genie wiring at the primary boom angle sensor connector and a generic aftermarket toggle switch in the platform control box; one listed hypothesis is a deliberate crosscheck defeat — case README 200-250
+- [M] The down-arrow button beside Plus, Minus and Enter is likely the button the manual calls "Previous"
+- [M] The exact on-screen wording of the version and how long it stays visible are not stated anywhere in the three manuals
+- [M] There is no Genie-specified waiting time for cycling the E-stop off and on again; "pause a few seconds" is field practice
+
+---
+
+### Two short survey items
+
+**Cable track inspection.** While the boom is stowed, walk its whole length from the platform end back
+to the primary pivot and open the cable-track tray covers. Look along every section for any further
+white wire, Scotchlok tap, butt splice, tape, chafed insulation or added conductor. The three sections
+are the jib boom cable track (PM fig 516.1, p.190), the primary boom cable track 61852GT, 27 links (PM
+fig 512.1, pp.172-173) and the secondary boom cable track 236168GT, 57 links, in tray 217431GT for
+serial 1854 and up (PM fig 507.1, pp.152-153) [V]. **That the boom harness physically runs inside those
+tracks is an inference from the figure titles and the harness diagram; the manuals never say it [M].**
+Photograph anything you find, record where it is with enough of the surroundings in frame to prove the
+location, and **change nothing.** Note in particular whether a second Scotchlok tap exists partway along
+the boom — the field note records "one Scotchlok tap en route" [F], but the two existing photographs
+appear to show a single joint from two distances, so a separate boom tap has NOT been proved.
+
+**Photograph the fault list.** At the end of the day, with the machine back in the state each card left
+it, put the key to GROUND, pull the ground E-stop out, wait about 20 seconds and photograph the full
+fault list again, scrolling through every message. Copy each line word for word, in the order shown,
+alongside the hour meter reading and the time. Compare it against the baseline taken in card 0 step 10
+and against the crosscheck card's reading. **Any message that has appeared, disappeared or changed
+wording during the day is itself a finding** — record which card was in progress when it changed. Then
+push the E-stop IN, turn the key OFF and remove it. **Do not press Delete Faults or Clear Faults: the
+fault list is the evidence this plan was built to gather** [V, SM p.107 / p.108 for the menus; the
+instruction not to use them is this plan's].
+
 
 ## E. Parts — every number checked
 
@@ -4082,5 +4433,7 @@ Read these before you trust a colour, a page number or a pin in the cards above.
 
 > The set is unusually disciplined on sourcing — nearly every statement is tagged, cited to a printed page, and several cards visibly caught their own earlier errors. The weaknesses are structural rather than factual. Three holes stand out. First, the plan never measures the quantity the fault set is about: no card reads the operational and safety angle signals live, so it can prove supply and ground are healthy and still say nothing about why the two controllers disagree. Second, there is no repair card — eight cards defer removal of the Scotchlok bridge, the frame bond, the butt splice and the aftermarket toggle to a card that does not exist, and nothing verifies the bypasses are gone or clears the latched faults afterwards, so the plan cannot close its own loop. Third, one of the seven live faults, the secondary boom switches, has no card at all even though it is the fault with the most complete recovery procedure in the manual. Add J20 (routed through by three cards, located by none), the harness continuity from connector to controller pin, and the CAN link that several cards reason from but none tests. The most urgent single item is the disagreement over the loose pin at J114: c5 and c3c4 read the blue conductor as the one hanging out, which makes it cavity 3, the safety signal to SCON J122-3, while c1 says the conductor cannot be identified. If c3c4 is right, a safety input is currently disconnected and several cards are still instructing power-ups and one is instructing a deliberate reconnection of the modified connector. Settle that photograph first, then write the missing signal-measurement, LSS1RS/LSS1RO, harness-continuity and removal/verification cards.
 
+
+---
 
 ---
