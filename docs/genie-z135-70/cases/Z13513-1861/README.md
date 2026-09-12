@@ -309,3 +309,65 @@ machine calibration anyway (SM p.154).
 Published artifact: https://claude.ai/code/artifact/8aeb0031-1151-45da-8128-c5c05d3a4562
 Sections: A stand down · B identify the toggle · C the `J114` circuit · D survey ·
 E parts to price · F calibration decision.
+
+## 2026-09-12 — Platform level DOWN inoperative at ground controls
+
+Symptom reported at the machine: at the ground control panel (decal `106510`),
+holding **high speed function enable** (circled lightning bolt + rabbit, OM item 14)
+together with **platform level down** (OM item 7) produces no motion; **platform
+level up** works. Ground control LCD mid-scroll showing `NSORS` (tail of a longer
+message). Battery volts previously read **9.3 V** in Machine Status — see below.
+
+### Panel identification (from owner photos, OM p.22–23) [V]
+
+| Photo feature | Identity |
+|---|---|
+| Circled lightning bolt + **rabbit** | High speed function enable (OM item 14) |
+| Circled lightning bolt + **turtle** | Low speed function enable (OM item 15) |
+| Up/down buttons under the platform icon | Platform level up/down (OM item 7) |
+| Key switch decal `1263544` marked **P22** | Bypass/recovery key switch (OM item 11) |
+
+### P22 — what it is [V]
+
+`P_22` is a safety-gated power rail appearing at the TCON 23-pin connector
+alongside `P_7`. The PCON's `P22` connector carries the platform level and
+platform tilt circuits:
+
+| Circuit | Function | Valve / connector |
+|---|---|---|
+| `V14PLU-OR` | Plat level UP | Y20 / `J80` |
+| `V15PLD-OR/BK` | Plat level DOWN | Y19 / `J81` |
+| `C88PTS-RD/BK` | Safe platform tilt out | — |
+| `C90PXS-RD/BK` | Prox kill command | — |
+| `P85PTS-GR` / `P85RET-BR` | Plat tilt sensor pwr / gnd | — |
+| `C56PTS-RD` / `C23PTS-WH` | Safe plat tilt gnd / pwr | — |
+
+Fault table (SM p.190) [V]:
+- **Safety Switch P22 — Fault Check** → LCD `P22 SAFETY SWITCH FAULT`.
+  Recovery: *"Re-level platform. Check for wiring damage on circuit `P56PRV`
+  (red/white)."*
+- **Safety Switch P22R — Fault Check** → LCD `P22R SAFETY SWITCH FAULT`.
+  Recovery: *"Re-level platform. Repair or replace PCON."*
+
+OM p.23 item 11 [V]: *"Bypass key position to be used to level the platform if
+ground control display shows platform out of level (P22) and platform level
+controls do not work."* Full bypass procedure at OM p.53–54. The separate
+`PLATFORM LEVEL > 15 DEGREES FAULT` (OM p.53) is a recovery-only condition.
+
+### Working hypotheses (unresolved)
+
+1. **Brownout.** Machine read 9.3 V. Solenoid pull-in current differs slightly
+   between coils, so a marginal supply commonly kills one direction and not the
+   other. **Resolve battery/charging before spending time here.**
+2. **Safety inhibit** — SCON holding `P_22` down because the platform level
+   sensor is out of range. Platform level sensor read 9.4°.
+3. **Open on the down leg** — `V15PLD-OR/BK`, the Y19 coil, or the PCON driver.
+   Note the PCON black 23-pin connector on this machine had heavily corroded
+   `P23PCON-BK`; the platform level circuits share that connector group.
+
+Discriminating test: unplug `J80`/`J81`, ohm both coils (3.5–10 Ω depending on
+valve type, SM p.150 — and UP vs DOWN should match within a few tenths), then
+measure volts at `J81` while commanding down.
+
+**Do not use the bypass key switch as a diagnostic shortcut** — it deliberately
+steps around the inhibit and would mask the condition being identified.
