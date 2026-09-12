@@ -438,3 +438,73 @@ damage at all** — which fits today's null result.
 2. Mechanical: both angle sensor actuating arms — slot position, tightness, free rotation.
 3. Re-measure resistance with **both** ends unplugged.
 4. Harness — only if 1–3 come back clean.
+
+## 2026-09-12 (late) — Boom stuck raised. Platform out-of-level lockout identified.
+
+Owner reports the boom is **stuck in the raised position and will not lower**.
+Charging system exonerated: after running the engine a few minutes the system
+read **13.8–14 V**, so the earlier 9.3 V was load-down during extended key-on
+testing, not a charging fault. (The measurements taken at 9.3 V remain
+untrustworthy, but the battery/separator is no longer a root-cause candidate.)
+
+### The 10 degree platform lockout — likely explains the whole symptom set [V]
+
+Service Manual p.100, *How to Use the Bypass Mode*:
+
+> *"The Bypass mode will allow the platform to be manually leveled when an
+> out-of-level condition exists. **In the event that the platform angle is
+> greater than 10° from level, the boom angle and platform level functions are
+> disabled.** Use of the Bypass mode will allow the platform to be manually
+> adjusted to within the normal operating envelope, ±4.5°. **Only auxiliary
+> power can be used to correct an out of level platform fault.**"*
+
+Machine Status reported **platform level sensor degree = 9.4** — within 0.6° of
+that threshold. This single specification accounts for:
+
+| Symptom | Explained by |
+|---|---|
+| Boom will not lower / boom angle functions dead | "boom angle … functions are disabled" above 10° |
+| Platform level DOWN inoperative | "platform level functions are disabled" |
+| Platform level UP still works | up is the direction that returns the platform toward level |
+
+**No wiring fault is required for any of it.** Caveat: 9.4° is below the stated
+10° trip, and the safety element may read a different value than the
+operational element shown on the display; the platform angle at the moment of
+lockout is unknown. Treat as the leading hypothesis, not established fact.
+
+### Recommended sequence
+
+1. **Remove every temporary jumper** and restore the machine to stock first.
+2. **Bypass mode** (SM p.100) — level the platform on auxiliary power. Main key
+   switch must stay in the ground control position; engine off; only the
+   auxiliary power unit will move it.
+3. Retry normal boom down at the ground controls.
+4. Only if that fails: **Recovery mode** (SM p.101).
+
+### Recovery mode reference (SM p.101) [V]
+
+Bypass/recovery key switch positions: **1 Run, 2 Bypass, 3 Recovery**. Located
+on the lower right side of the control box from SN Z13512-1712 (this machine is
+Z13513-1861, so lower right). Procedure requires software 1.11 or later.
+
+Held in the Recovery position, the auxiliary power unit runs and the machine
+sequences: primary boom retract → secondary boom retract → primary boom lower.
+The switch must be **held**.
+
+Critical notes from the manual:
+- *"If this procedure is performed with the main key switch in the off position
+  an active latched safety fault will be set and will have to be cleared."*
+- *"**If any boom safety limit switches are faulty, the boom will only retract
+  and not lower** and the operator will need to be recovered from that point."*
+  Given this machine's fault list, plan for this outcome.
+- Above ±15° platform out of level, all auxiliary-power functions are disabled
+  and `PLATFORM LEVEL > 15 DEGREES` is displayed.
+- Platform leveling is **not active** during recovery.
+
+### Controller condition
+
+No evidence of a failed TCON or SCON. The machine is disabling functions in the
+specific patterns the safety matrix prescribes (SM p.189) — that is the safety
+system operating correctly on bad input, not a board failing. Board replacement
+would also force a full recalibration (SM: *"When the ECM circuit board is
+replaced, the machine will need to be fully calibrated"*).
