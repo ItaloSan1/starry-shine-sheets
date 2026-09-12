@@ -371,3 +371,70 @@ measure volts at `J81` while commanding down.
 
 **Do not use the bypass key switch as a diagnostic shortcut** — it deliberately
 steps around the inhibit and would mask the condition being identified.
+
+## 2026-09-12 (evening) — Harness stripped, no damage found. Methodology correction.
+
+Owner stripped the loom from the front boom sensor back to the ground control
+box, pulled the panel to inspect behind it, and **found no broken or corroded
+conductors**. Also ran a jumper from the panel to the sensor. No improvement.
+
+### Correction: the resistance readings were probably not measuring the harness [M]
+
+Re-examining the two numbers this diagnosis was built on:
+
+| Reading | Value | Problem |
+|---|---|---|
+| `C124SBS` (wire 33, OR/BK) end to end | **24,950 Ω** | 24.9 kΩ is a standard E96 1% resistor value. A corroded or stretched conductor does not land on a catalogue value — an analog input divider does. |
+| `J154` cav 1 ↔ 6 | **5,846 Ω** | Cav 1 and 6 are the same net only because they join at TCON `J12-26`. With `J12` plugged in, that measurement runs through the board's 5 V output node, not through copper alone. |
+
+Neither reading was taken with **both** ends free. Disconnecting the batteries
+removes power but does NOT remove the board from the circuit — unpowered
+semiconductors, pull-downs and protection networks still conduct.
+
+**Correct method going forward:** unplug the sensor connector AND the controller
+connector, then ohm end to end. Anything other than ~1 Ω on a supply, ground or
+signal conductor is then real. Until that is redone, treat the "broken supply to
+`J154` cavity 6" conclusion as **unproven**.
+
+This also explains the null result from stripping the loom: there may be nothing
+there to find.
+
+### New findings from owner photos
+
+**Dual battery separator** — Sure Power Industries **model 1314A**, 12 V, 100 A
+continuous, ground negative. Terminals: START LAMP / START SIGNAL / GROUND /
+AUX BAT / MAIN BAT. Genie part **`237068GT` SEPARATOR, DUAL BATTERY, 100A**
+(Parts Manual 106877); service kits `214393GT` (ANSI/CSA), `215209GT` (CE),
+`215210GT` (AS). [V]
+
+The machine therefore has **two battery banks**. A separator that fails to close
+leaves one bank uncharged — a direct candidate for the **9.3 V** Machine Status
+reading. Untested.
+
+**TCON board LEDs** — board serial `12240816`. Photos show red, yellow and green
+LEDs lit along the bottom edge beside the DB9 diagnostic port (silkscreen `D65`,
+`D66`, `D67` visible). The fault tables for every boom angle sensor entry
+("Value at 0 V") end with: *"Check for 5.0 VDC at the sensor. Check for damaged
+wiring going to the sensor. **Check that the 5.0 VDC LED is lit on the TCON
+board.**"* [V] Which of the three is the 5.0 VDC indicator is not yet
+established.
+
+**Unidentified 3-pin Deutsch connector at a boom pivot** — photographed with
+badly sun-bleached, cracking insulation. **This is not `J114` or `J154`** — both
+boom angle sensors are 6-pin. Identity not yet established; do not assume it is
+an angle sensor.
+
+**Angle sensor actuating linkage** — photos show the rotary sensor driven by a
+rusty slotted link arm. The manual's recovery for *Value Too High / Value Too
+Low* on both the operational and safety boom angle sensors reads: *"Sensor is out
+of range. **Check sensor and actuating pin for proper installation.** Repair or
+replace sensor and recalibrate."* [V] A link that has slipped in its adjustment
+slot produces an out-of-range reading and a crosscheck fault with **no wiring
+damage at all** — which fits today's null result.
+
+### Revised priority order
+
+1. Power: battery banks, charging, and the separator.
+2. Mechanical: both angle sensor actuating arms — slot position, tightness, free rotation.
+3. Re-measure resistance with **both** ends unplugged.
+4. Harness — only if 1–3 come back clean.
