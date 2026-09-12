@@ -1,0 +1,702 @@
+<title>Z13513-1861 Work Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EDF1F5; --surface:#FFFFFF; --surface-2:#F6F8FA; --line:#D3DBE3; --line-soft:#E4EAF0;
+  --ink:#121A22; --ink-2:#43525F; --ink-3:#6B7A88;
+  --accent:#0B5EA8; --accent-soft:#E2EDF7;
+  --stop:#AF2318; --stop-soft:#FAE7E4;
+  --trace:#96620A; --trace-soft:#FBEFDC;
+  --plan:#1A6B48; --plan-soft:#E0F0E7;
+  --shadow:0 1px 2px rgba(18,26,34,.06),0 6px 18px rgba(18,26,34,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F141A; --surface:#181F27; --surface-2:#1E262F; --line:#2E3A46; --line-soft:#252E38;
+  --ink:#E3E9EF; --ink-2:#A7B4C0; --ink-3:#7E8C99;
+  --accent:#54A2E2; --accent-soft:#14273A;
+  --stop:#EC7466; --stop-soft:#331916;
+  --trace:#E0A64A; --trace-soft:#33260F;
+  --plan:#54C08C; --plan-soft:#11291E;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --bg:#0F141A; --surface:#181F27; --surface-2:#1E262F; --line:#2E3A46; --line-soft:#252E38;
+  --ink:#E3E9EF; --ink-2:#A7B4C0; --ink-3:#7E8C99;
+  --accent:#54A2E2; --accent-soft:#14273A;
+  --stop:#EC7466; --stop-soft:#331916;
+  --trace:#E0A64A; --trace-soft:#33260F;
+  --plan:#54C08C; --plan-soft:#11291E;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.55; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:920px; margin:0 auto; padding-inline:18px; padding-block:26px 72px}
+h1,h2,h3{font-family:Archivo,"IBM Plex Sans",system-ui,sans-serif; text-wrap:balance; margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+
+/* header */
+header{border-bottom:2px solid var(--ink); padding-bottom:18px; margin-bottom:26px}
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-3); margin:0 0 8px}
+h1{font-size:clamp(26px,6vw,38px); font-weight:700; letter-spacing:-.018em; line-height:1.1}
+.sub{color:var(--ink-2); margin:10px 0 0; max-width:62ch}
+.facts{display:flex; flex-wrap:wrap; gap:8px 10px; margin-top:16px; list-style:none; padding:0}
+.facts li{font-family:"IBM Plex Mono",monospace; font-size:12px; background:var(--surface);
+  border:1px solid var(--line); border-radius:4px; padding:4px 9px; color:var(--ink-2)}
+.facts b{color:var(--ink); font-weight:600}
+
+/* progress */
+.prog{display:flex; align-items:center; gap:12px; margin-top:18px}
+.bar{flex:1; height:6px; background:var(--line-soft); border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; width:0; background:var(--accent); transition:width .3s ease}
+#progText{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-2); white-space:nowrap}
+#saveState{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); min-height:1.3em; margin-top:6px}
+
+/* callout */
+.callout{border:1px solid var(--stop); border-left-width:5px; background:var(--stop-soft);
+  border-radius:5px; padding:16px 18px; margin:0 0 28px}
+.callout h2{font-size:16px; color:var(--stop); letter-spacing:-.005em; margin-bottom:8px}
+.callout p{margin:0 0 9px; color:var(--ink); max-width:66ch}
+.callout p:last-child{margin-bottom:0}
+
+/* verdict */
+.verdict{background:var(--surface); border:1px solid var(--line); border-radius:6px;
+  padding:20px 20px 6px; margin:0 0 32px; box-shadow:var(--shadow)}
+.verdict h2{font-size:19px; margin-bottom:4px; letter-spacing:-.01em}
+.verdict>p.lede{color:var(--ink-2); margin:0 0 18px; max-width:66ch}
+.finding{display:grid; grid-template-columns:auto 1fr; gap:3px 14px; padding:14px 0;
+  border-top:1px solid var(--line-soft)}
+.finding .n{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600;
+  color:var(--accent); padding-top:3px}
+.finding h3{font-size:14.5px; font-weight:600; grid-column:2}
+.finding p{grid-column:2; margin:4px 0 0; color:var(--ink-2); font-size:14px; max-width:62ch}
+
+/* sections */
+section{margin-bottom:34px}
+.sechead{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:4px}
+.sechead h2{font-size:20px; letter-spacing:-.012em}
+.tag{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; padding:3px 8px; border-radius:3px; font-weight:600}
+.tag.stop{background:var(--stop-soft); color:var(--stop)}
+.tag.trace{background:var(--trace-soft); color:var(--trace)}
+.tag.test{background:var(--accent-soft); color:var(--accent)}
+.tag.plan{background:var(--plan-soft); color:var(--plan)}
+.secnote{color:var(--ink-2); margin:0 0 16px; max-width:66ch; font-size:14px}
+
+/* task */
+.task{background:var(--surface); border:1px solid var(--line); border-radius:6px;
+  padding:15px 16px; margin-bottom:10px; border-left:4px solid var(--line)}
+.task[data-kind="stop"]{border-left-color:var(--stop)}
+.task[data-kind="trace"]{border-left-color:var(--trace)}
+.task[data-kind="test"]{border-left-color:var(--accent)}
+.task[data-kind="plan"]{border-left-color:var(--plan)}
+.task.done{opacity:.62}
+.task.done .t-title{text-decoration:line-through; text-decoration-color:var(--ink-3)}
+.t-top{display:grid; grid-template-columns:auto 1fr; gap:12px}
+.t-title{font-size:15px; font-weight:600; font-family:Archivo,sans-serif; line-height:1.35}
+.t-why{margin:6px 0 0; color:var(--ink-2); font-size:13.8px; max-width:64ch}
+.t-why code{font-family:"IBM Plex Mono",monospace; font-size:.92em; background:var(--surface-2);
+  border:1px solid var(--line-soft); border-radius:3px; padding:1px 4px}
+.cite{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px;
+  color:var(--ink-3); margin-top:7px}
+input[type=checkbox]{width:20px; height:20px; margin:2px 0 0; accent-color:var(--accent); cursor:pointer}
+.note{margin-top:10px; grid-column:2}
+.note label{display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); margin-bottom:4px}
+textarea{width:100%; min-height:44px; resize:vertical; background:var(--surface-2);
+  color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px 9px;
+  font-family:"IBM Plex Mono",monospace; font-size:13px; line-height:1.5}
+textarea::placeholder{color:var(--ink-3)}
+:is(input,textarea):focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+
+/* table */
+.tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:6px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:460px; font-size:13.5px}
+th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line-soft)}
+th{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink-3); background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.mono{font-variant-numeric:tabular-nums; white-space:nowrap}
+td.hit{color:var(--stop); font-weight:600}
+
+/* parts */
+.parts{list-style:none; padding:0; margin:0; display:grid; gap:8px}
+.parts li{display:grid; grid-template-columns:auto 1fr; gap:12px; background:var(--surface);
+  border:1px solid var(--line); border-radius:5px; padding:11px 13px}
+.parts .pn{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:13px; color:var(--accent)}
+.parts .pd{font-size:13.8px}
+.parts .pw{color:var(--ink-2); font-size:13px; margin-top:2px}
+
+footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
+  color:var(--ink-3); font-size:12.5px; max-width:66ch}
+@media (max-width:460px){
+  .t-top{grid-template-columns:auto 1fr; gap:9px}
+  .note{grid-column:1/-1}
+  .finding{grid-template-columns:1fr}
+  .finding h3,.finding p{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">Genie Z-135/70 &middot; Z13513-1861 &middot; 2162.4 h</p>
+  <h1>Work order for tomorrow</h1>
+  <p class="sub">Boom angle sensor circuit, the spliced <span class="mono">J114</span> connector, and an
+     aftermarket toggle switch of unknown function. Work the sections in order &mdash; each one
+     rules something out before you spend money on the next.</p>
+  <ul class="facts">
+    <li>Axles <b>retracted</b>, 8&nbsp;ft&nbsp;1&nbsp;in</li>
+    <li>Propel <b>dead</b> &mdash; SCON drops <span class="mono">P_38</span></li>
+    <li><b>7</b> faults, all boom angle</li>
+    <li>Serial <b>from SN 1854</b> parts group</li>
+  </ul>
+  <div class="prog">
+    <div class="bar"><i id="progBar"></i></div>
+    <span id="progText">0 of 20 done</span>
+  </div>
+  <div id="saveState"></div>
+</header>
+
+<div class="callout">
+  <h2>Before anyone gets in the basket</h2>
+  <p>There is a toggle switch in the platform control box, wired with generic 16&nbsp;GA white wire and
+     Scotchlok taps, running down to the turntable. It is a hardware-store switch rated
+     <span class="mono">10A 250VAC</span> &mdash; not the sealed 12&nbsp;V Genie
+     <span class="mono">128200GT</span> &mdash; with no boot, in a box we already know takes water.</p>
+  <p><b>Until you know what it switches, nobody rides this machine.</b> It can command or interrupt
+     something on the boom from the basket, and three of the circuits it could plausibly reach are
+     safety circuits. Identifying it is section B, and it is the first real work of the day.</p>
+</div>
+
+<div class="verdict">
+  <h2>What I think happened here</h2>
+  <p class="lede">Read together, the photos tell one story: parts were swapped, the calibration that
+     every one of those parts requires was never run, and when the faults stayed, the repairs
+     escalated into splices and bypasses.</p>
+
+  <div class="finding">
+    <span class="n">01</span>
+    <h3>The angle sensor was replaced and never calibrated</h3>
+    <p>The bright blue hardware at the pivot is the <span class="mono">217246GT</span> kit &mdash; the
+       parts manual says the old <span class="mono">94980GT</span> is no longer available and
+       "machine calibration is required after installation." One of your live faults is literally
+       <b>primary boom angle sensor not calibrated</b>. That is the fingerprint of a part fitted
+       without the procedure.</p>
+  </div>
+
+  <div class="finding">
+    <span class="n">02</span>
+    <h3>A calibration was started and abandoned</h3>
+    <p><b>TCON&ndash;SCON calibration inconsistent</b> means the two modules' stored calibration data
+       disagree. You get that from a partial or failed calibration attempt, not from a dead module.</p>
+  </div>
+
+  <div class="finding">
+    <span class="n">03</span>
+    <h3>Somebody found a ground problem</h3>
+    <p>The added green wire to a splice at the pivot is a bonding jumper. Nobody runs one of those for
+       fun &mdash; it means a previous tech suspected or measured a bad sensor ground. A high-resistance
+       <span class="mono">SNSR GND-BR</span> produces exactly the crosscheck and 0&nbsp;V faults on
+       your display, and it is shared between the primary and secondary sensors, which is why both
+       are complaining.</p>
+  </div>
+
+  <div class="finding">
+    <span class="n">04</span>
+    <h3>The toggle switch is a workaround for the failing membrane</h3>
+    <p>Your membrane panel already throws "both axle buttons pressed." Genie's own answer to that is
+       kit <span class="mono">237225GT</span>, a toggle-switch lid, and the service manual carries a
+       whole <b>Toggle Switch Aftermarket Kit</b> schematic for it. Someone improvised their own
+       version instead of buying the kit &mdash; which is why it is a hardware-store switch on
+       Scotchloks rather than a sealed one on Deutsch pins.</p>
+  </div>
+
+  <div class="finding">
+    <span class="n">05</span>
+    <h3>The TCON and SCON are probably fine &mdash; do not buy one yet</h3>
+    <p>The engine runs, so the SCON is powered, grounded and on the CAN bus: loss of CAN drops
+       <span class="mono">P_9B</span>, which is ignition and fuel, and the machine would die. All six
+       chassis sensor codes cleared the moment the axles moved, so the TCON's feed, the DCON and the
+       bus are all healthy. Dead modules do not fail this selectively. Replacing a SCON also forces a
+       full machine calibration anyway, so it fixes nothing you are not already facing.</p>
+  </div>
+</div>
+
+<section>
+  <div class="sechead"><h2>A. Stand down</h2><span class="tag stop">Do first</span></div>
+  <p class="secnote">Two minutes that keep tomorrow from becoming a bigger job.</p>
+
+  <article class="task" data-id="a1" data-kind="stop">
+    <div class="t-top">
+      <input type="checkbox" id="chk-a1" aria-labelledby="ttl-a1">
+      <div>
+        <div class="t-title" id="ttl-a1">Tag the toggle switch out and keep everyone out of the platform</div>
+        <p class="t-why">Write "DO NOT OPERATE &ndash; unidentified circuit" on it. Nobody operates from
+           the basket until section B is finished.</p>
+        <div class="note"><label for="note-a1">Note</label>
+          <textarea id="note-a1" placeholder="Tagged / who was told"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="a2" data-kind="stop">
+    <div class="t-top">
+      <input type="checkbox" id="chk-a2" aria-labelledby="ttl-a2">
+      <div>
+        <div class="t-title" id="ttl-a2">Photograph every splice before you touch it</div>
+        <p class="t-why">Both Scotchloks at <span class="mono">J114</span>, the loose pin, the green
+           bonding wire, the toggle's three terminals, and where the white wire enters and leaves each
+           loom. You are about to take apart somebody else's undocumented repair &mdash; you need to be
+           able to put it back.</p>
+        <div class="note"><label for="note-a2">Note</label>
+          <textarea id="note-a2" placeholder="Photos taken"></textarea></div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section>
+  <div class="sechead"><h2>B. Identify the toggle switch</h2><span class="tag trace">Highest value</span></div>
+  <p class="secnote">Battery disconnected for the resistance work. This is the one unknown that blocks
+     everything else, including deciding whether the machine is safe to move again.</p>
+
+  <article class="task" data-id="b1" data-kind="trace">
+    <div class="t-top">
+      <input type="checkbox" id="chk-b1" aria-labelledby="ttl-b1">
+      <div>
+        <div class="t-title" id="ttl-b1">Ohm the three terminals in both lever positions</div>
+        <p class="t-why">Tells you what kind of switch it is: which pole is common, whether it is
+           single-throw or double, and whether it is momentary or maintained. Genie's
+           <span class="mono">128200GT</span> is SPDT momentary; if yours is maintained, it was meant
+           to latch something on &mdash; which narrows the possibilities a lot.</p>
+        <div class="note"><label for="note-b1">Continuity, both positions</label>
+          <textarea id="note-b1" placeholder="Up: 1-2 = ___  1-3 = ___   Down: 1-2 = ___  1-3 = ___"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="b2" data-kind="trace">
+    <div class="t-top">
+      <input type="checkbox" id="chk-b2" aria-labelledby="ttl-b2">
+      <div>
+        <div class="t-title" id="ttl-b2">Ring out each white conductor end to end</div>
+        <p class="t-why">Buzz from each switch terminal to the far end. Note which terminal lands where.
+           One will likely be a feed and one a return &mdash; find out which.</p>
+        <div class="note"><label for="note-b2">Terminal &rarr; destination</label>
+          <textarea id="note-b2" placeholder="Terminal 1 &rarr; ...   Terminal 2 &rarr; ...   Terminal 3 &rarr; ..."></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="b3" data-kind="trace">
+    <div class="t-top">
+      <input type="checkbox" id="chk-b3" aria-labelledby="ttl-b3">
+      <div>
+        <div class="t-title" id="ttl-b3">Open both Scotchloks and record the host wire colour</div>
+        <p class="t-why">The tap tells you the circuit. Genie wire names carry their circuit number,
+           and the colour confirms it &mdash; so a green/white host is circuit 109 sensor power, an
+           orange/black host is circuit 64, and so on. Use the table below.</p>
+        <div class="note"><label for="note-b3">Host wire colour and printed name</label>
+          <textarea id="note-b3" placeholder="Boom tap: ___   Turntable tap: ___"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="b4" data-kind="stop">
+    <div class="t-top">
+      <input type="checkbox" id="chk-b4" aria-labelledby="ttl-b4">
+      <div>
+        <div class="t-title" id="ttl-b4">Check it against the stop-list &mdash; and stop if it hits one</div>
+        <p class="t-why">If the toggle touches the foot switch, operational switch power, the tilt
+           sensor, or either boom angle signal, it is defeating a safety function. That is not a repair
+           to preserve &mdash; it comes out, and the machine does not work until it does. Send me what
+           you find before you change anything.</p>
+        <div class="cite">Circuit numbers: SM pp.211&ndash;213 &middot; SCON matrix: SM p.189</div>
+        <div class="note"><label for="note-b4">Verdict</label>
+          <textarea id="note-b4" placeholder="Circuit identified as ..."></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <div class="tablewrap" style="margin-top:14px">
+    <table>
+      <thead><tr><th>Circuit</th><th>Colour</th><th>Function</th><th>If the toggle touches it</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">56</td><td class="mono">RD</td><td>Foot switch / TCON E-stop power</td><td class="hit">Stop &mdash; safety</td></tr>
+        <tr><td class="mono">64</td><td class="mono">OR/BK</td><td>Power for operational switches</td><td class="hit">Stop &mdash; safety</td></tr>
+        <tr><td class="mono">83/84/85</td><td class="mono">GR/WH, GR/BK, GR</td><td>Tilt signal X, Y, tilt sensor power</td><td class="hit">Stop &mdash; tip-over</td></tr>
+        <tr><td class="mono">109 / 110</td><td class="mono">GR/WH / BK</td><td>Sensor power / sensor return</td><td class="hit">Stop &mdash; this is your fault circuit</td></tr>
+        <tr><td class="mono">77</td><td class="mono">WH</td><td>Lower angle #1 operational</td><td class="hit">Stop &mdash; boom angle</td></tr>
+        <tr><td class="mono">60 / 61</td><td class="mono">GR/WH / GR</td><td>Axle extend / axle retract</td><td>Likely the membrane workaround</td></tr>
+        <tr><td class="mono">46</td><td class="mono">WH</td><td>Horn</td><td>Harmless &mdash; still remove it</td></tr>
+        <tr><td class="mono">94</td><td class="mono">WH</td><td>Load sensor</td><td class="hit">Stop &mdash; load cell</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><h2>C. The J114 boom angle circuit</h2><span class="tag test">The actual fault</span></div>
+  <p class="secnote">Key on and E-stop out for the voltage checks; battery off for resistance.
+     <span class="mono">J114</span> pins: 1 and 6 are 5&nbsp;V, 2 and 5 are sensor ground, 3 is the
+     safety signal to the SCON, 4 is the operational signal to the TCON.</p>
+
+  <article class="task" data-id="c1" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-c1" aria-labelledby="ttl-c1">
+      <div>
+        <div class="t-title" id="ttl-c1">Unplug J114, measure 5&nbsp;V on the harness side</div>
+        <p class="t-why">Pin&nbsp;1 to pin&nbsp;2, then pin&nbsp;6 to pin&nbsp;5. Both should read
+           <b>5.0&nbsp;V</b>. If either is missing, the problem is upstream of the sensor and the new
+           sensor was never the fault.</p>
+        <div class="cite">SM pp.177&ndash;178 recovery action</div>
+        <div class="note"><label for="note-c1">Volts</label>
+          <textarea id="note-c1" placeholder="Pin 1&ndash;2 = ___ V    Pin 6&ndash;5 = ___ V"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="c2" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-c2" aria-labelledby="ttl-c2">
+      <div>
+        <div class="t-title" id="ttl-c2">With J114 still unplugged, check J154 and re-read the faults</div>
+        <p class="t-why">The secondary sensor shares the same 5&nbsp;V and the same ground. <b>If the
+           secondary's 5&nbsp;V comes back and its "shorted / 0&nbsp;V" code clears while the primary
+           is unplugged, you have found the root cause</b> &mdash; the primary splice job is dragging
+           down the shared supply. This single test is worth more than any part you could order.</p>
+        <div class="note"><label for="note-c2">J154 volts and fault list</label>
+          <textarea id="note-c2" placeholder="J154 1&ndash;2 = ___ V   6&ndash;5 = ___ V   Codes now: ..."></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="c3" data-kind="stop">
+    <div class="t-top">
+      <input type="checkbox" id="chk-c3" aria-labelledby="ttl-c3">
+      <div>
+        <div class="t-title" id="ttl-c3">Ohm the Scotchlok loop &mdash; which two pins does it join?</div>
+        <p class="t-why">If it joins <b>pin 3 to pin 4</b>, someone bridged the safety signal to the
+           operational signal so the SCON and TCON would see one value instead of two. That is the
+           crosscheck defeat, it must come out, and no calibration will ever pass with it in place.</p>
+        <div class="note"><label for="note-c3">Pins joined</label>
+          <textarea id="note-c3" placeholder="Loop joins pin ___ to pin ___"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="c4" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-c4" aria-labelledby="ttl-c4">
+      <div>
+        <div class="t-title" id="ttl-c4">Identify the loose pin's cavity number</div>
+        <p class="t-why">Read the number moulded beside the empty cavity on the connector face, and buzz
+           the terminal back to the loom to see which circuit it belongs to. An open pin&nbsp;3 or
+           pin&nbsp;4 alone explains a crosscheck fault.</p>
+        <div class="note"><label for="note-c4">Cavity and circuit</label>
+          <textarea id="note-c4" placeholder="Cavity ___, wire ___"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="c5" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-c5" aria-labelledby="ttl-c5">
+      <div>
+        <div class="t-title" id="ttl-c5">Measure the sensor ground back to the TCON</div>
+        <p class="t-why">Battery off. From <span class="mono">J114</span> pin&nbsp;2 and pin&nbsp;5 to
+           TCON <span class="mono">J12-25</span>. You want <b>under 1&nbsp;&Omega;</b>. Anything higher
+           is your fault, and it explains why a previous tech added that green bonding wire instead of
+           fixing the real conductor.</p>
+        <div class="note"><label for="note-c5">Ohms</label>
+          <textarea id="note-c5" placeholder="Pin 2 &rarr; J12-25 = ___ &Omega;    Pin 5 &rarr; J12-25 = ___ &Omega;"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="c6" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-c6" aria-labelledby="ttl-c6">
+      <div>
+        <div class="t-title" id="ttl-c6">Confirm the 5&nbsp;V LED is lit on the TCON board</div>
+        <p class="t-why">The manual's own recovery action for every 0&nbsp;V sensor fault. Thirty
+           seconds, and it separates a module output problem from a harness problem.</p>
+        <div class="cite">SM pp.177&ndash;178</div>
+        <div class="note"><label for="note-c6">LED state</label>
+          <textarea id="note-c6" placeholder="Lit / not lit"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="c7" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-c7" aria-labelledby="ttl-c7">
+      <div>
+        <div class="t-title" id="ttl-c7">Trace the green bonding wire &mdash; what is it actually bridging?</div>
+        <p class="t-why">You said it looks like it just joins two pieces of metal. Ohm each end to
+           chassis and to <span class="mono">J114</span> pin&nbsp;2. If it is bridging a pivot joint,
+           someone was compensating for a ground path through a greased pin &mdash; a real problem,
+           badly fixed.</p>
+        <div class="note"><label for="note-c7">Both ends, ohms to chassis</label>
+          <textarea id="note-c7" placeholder="End A &rarr; chassis = ___ &Omega;   End B &rarr; chassis = ___ &Omega;"></textarea></div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section>
+  <div class="sechead"><h2>D. Survey while you are in there</h2><span class="tag test">Cheap information</span></div>
+  <p class="secnote">Everything here is free and answers a question you will otherwise have to come back for.</p>
+
+  <article class="task" data-id="d1" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-d1" aria-labelledby="ttl-d1">
+      <div>
+        <div class="t-title" id="ttl-d1">Which joystick is the new one, and what does it control?</div>
+        <p class="t-why">A replaced joystick needs its own calibration &mdash; it is step 2 of the
+           calibration sequence, before any sensor. If it was swapped without that, it is one more
+           uncalibrated part in the stack.</p>
+        <div class="cite">SM pp.30&ndash;33</div>
+        <div class="note"><label for="note-d1">Which one</label>
+          <textarea id="note-d1" placeholder="New joystick = drive/steer, primary, secondary, jib..."></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="d2" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-d2" aria-labelledby="ttl-d2">
+      <div>
+        <div class="t-title" id="ttl-d2">Is the tilt sensor in that box fitted, or still spare?</div>
+        <p class="t-why">There is a tilt sensor carton sitting at the turntable in your photo. Read the
+           part number off it and check whether the sensor on the machine matches. If it was fitted,
+           that is another part that demanded a calibration nobody ran.</p>
+        <div class="note"><label for="note-d2">Part number and status</label>
+          <textarea id="note-d2" placeholder="P/N ___, fitted / still in box"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="d3" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-d3" aria-labelledby="ttl-d3">
+      <div>
+        <div class="t-title" id="ttl-d3">Inspect the boom cable track for chafed conductors</div>
+        <p class="t-why">This is where this harness wears. A broken conductor in the track is the most
+           likely honest reason somebody started splicing in the first place &mdash; and if one is
+           broken, others are on their way.</p>
+        <div class="note"><label for="note-d3">Condition</label>
+          <textarea id="note-d3" placeholder="Track condition, any damaged loom"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="d4" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-d4" aria-labelledby="ttl-d4">
+      <div>
+        <div class="t-title" id="ttl-d4">Read the software version off the LCD</div>
+        <p class="t-why">It shows when you pull the E-stop out. <b>4.01 or higher</b> means the 2-point
+           calibrations and no digital level. <b>Below 4.01</b> means 6-point procedures and you must
+           have kit <span class="mono">58351</span>. This decides what the calibration visit costs.</p>
+        <div class="cite">SM p.105</div>
+        <div class="note"><label for="note-d4">Version</label>
+          <textarea id="note-d4" placeholder="Software version shown"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="d5" data-kind="test">
+    <div class="t-top">
+      <input type="checkbox" id="chk-d5" aria-labelledby="ttl-d5">
+      <div>
+        <div class="t-title" id="ttl-d5">Re-read and photograph the full fault list</div>
+        <p class="t-why">Capture it after all the unplugging, so we can see what moved. Faults that
+           appear and disappear as you disconnect things are the ones that point at wiring.</p>
+        <div class="note"><label for="note-d5">Codes now showing</label>
+          <textarea id="note-d5" placeholder="Full list"></textarea></div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section>
+  <div class="sechead"><h2>E. Price these, order nothing yet</h2><span class="tag plan">After B and C</span></div>
+  <p class="secnote">Get quotes tomorrow so you can move fast once the measurements tell you which of
+     these you actually need. The only ones you almost certainly need regardless are the Deutsch
+     repair terminals, so the Scotchloks can come out properly.</p>
+  <ul class="parts">
+    <li><span class="pn">73713GT<br>60443GT</span><span><span class="pd">Deutsch DT pin terminals and receptacle lock</span>
+      <span class="pw">So <span class="mono">J114</span> gets re-pinned the way Genie built it. Buy these whatever else happens.</span></span></li>
+    <li><span class="pn">237225GT</span><span><span class="pd">Kit, toggle switch platform box lid, ANSI (SN 779&ndash;2000)</span>
+      <span class="pw">The legitimate answer to the failed membrane panel, and the thing whoever fitted that hardware-store switch should have bought.</span></span></li>
+    <li><span class="pn">106509GT<br>82841GT</span><span><span class="pd">Membrane decal and overlay decal</span>
+      <span class="pw">The other route &mdash; repair the membrane instead of converting to toggles. <span class="mono">82841GT</span> is required whenever you replace <span class="mono">106509GT</span>.</span></span></li>
+    <li><span class="pn">62399GT</span><span><span class="pd">PCB, membrane / LED</span>
+      <span class="pw">Only if the board behind the membrane is also damaged.</span></span></li>
+    <li><span class="pn">81488GT</span><span><span class="pd">Platform control box gasket</span>
+      <span class="pw">The box has been taking water. This is why the membrane failed in the first place.</span></span></li>
+    <li><span class="pn">217246GT</span><span><span class="pd">Kit, Z135 primary angle sensor</span>
+      <span class="pw">Only if section C proves the sensor itself is bad. It probably is not &mdash; it is probably just uncalibrated.</span></span></li>
+    <li><span class="pn">58351</span><span><span class="pd">Digital level calibration kit</span>
+      <span class="pw">Needed only if task D4 shows software below 4.01. Your calibration tech may already carry one.</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sechead"><h2>F. The decision that ends this job</h2><span class="tag plan">Book it</span></div>
+  <p class="secnote">Nothing above makes the machine drive. Propel stays off until the crosscheck faults
+     clear, and those clear only when the wiring is right <em>and</em> a calibration has been run.</p>
+
+  <article class="task" data-id="f1" data-kind="plan">
+    <div class="t-top">
+      <input type="checkbox" id="chk-f1" aria-labelledby="ttl-f1">
+      <div>
+        <div class="t-title" id="ttl-f1">Restore J114 to factory before anyone calibrates</div>
+        <p class="t-why">Scotchloks out, proper Deutsch terminals in, every pin in its right cavity, the
+           bonding wire replaced by a repaired ground conductor. A calibration run over improvised
+           splices will either fail or store bad data &mdash; which is very likely how the
+           "calibration inconsistent" fault got there in the first place.</p>
+        <div class="note"><label for="note-f1">Note</label>
+          <textarea id="note-f1" placeholder="What was restored"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="f2" data-kind="plan">
+    <div class="t-top">
+      <input type="checkbox" id="chk-f2" aria-labelledby="ttl-f2">
+      <div>
+        <div class="t-title" id="ttl-f2">Book the Genie-trained tech with room to extend the axles</div>
+        <p class="t-why">The full calibration runs in a fixed order and the boom angle steps require the
+           axles <b>fully extended</b> &mdash; you cannot do it on a narrow track. Make sure wherever it
+           goes has firm, level ground and 13&nbsp;ft of width, or the visit is wasted.</p>
+        <div class="cite">SM p.105 &middot; steps 5&ndash;9</div>
+        <div class="note"><label for="note-f2">Who and when</label>
+          <textarea id="note-f2" placeholder="Shop, date, confirmed width available"></textarea></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="task" data-id="f3" data-kind="plan">
+    <div class="t-top">
+      <input type="checkbox" id="chk-f3" aria-labelledby="ttl-f3">
+      <div>
+        <div class="t-title" id="ttl-f3">Book the annual inspection for after the repair</div>
+        <p class="t-why">A CSA B354.4 annual inspection by a qualified person is required before this
+           machine goes back in service after control-system work. Given what has been done to it,
+           that inspection is the thing that protects you.</p>
+        <div class="note"><label for="note-f3">Note</label>
+          <textarea id="note-f3" placeholder="Inspector, date"></textarea></div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<footer>
+  Sourced from Operator's Manual 114474, Parts Manual 106877GT Rev H.04, and Service and Repair Manual
+  1268557GT. Pin assignments read off schematic sheet ES0366J; part numbers from parts figures 511.2
+  and 605.1. Where a reading is called for, the manual's number is quoted &mdash; where this page
+  reasons about why a modification was made, that is inference from the photographs, not
+  manufacturer fact. Never bridge a safety crosscheck, and never return this machine to service on
+  improvised wiring.
+</footer>
+</div>
+
+<script>
+(function(){
+  var IDS=["a1","a2","b1","b2","b3","b4","c1","c2","c3","c4","c5","c6","c7",
+           "d1","d2","d3","d4","d5","f1","f2","f3"];
+  var bar=document.getElementById("progBar"),
+      txt=document.getElementById("progText"),
+      state=document.getElementById("saveState");
+  var db=null, timers={}, applying=false;
+
+  function el(id){return document.getElementById(id);}
+  function card(id){return document.querySelector('.task[data-id="'+id+'"]');}
+
+  function paint(){
+    var done=0;
+    IDS.forEach(function(id){
+      var c=el("chk-"+id); if(!c) return;
+      if(c.checked){done++; card(id) && card(id).classList.add("done");}
+      else{card(id) && card(id).classList.remove("done");}
+    });
+    var pct=IDS.length?Math.round(done/IDS.length*100):0;
+    bar.style.width=pct+"%";
+    txt.textContent=done+" of "+IDS.length+" done";
+  }
+
+  function localKey(id){return "z13513-"+id;}
+  function readLocal(id){
+    try{var v=localStorage.getItem(localKey(id)); return v?JSON.parse(v):null;}catch(e){return null;}
+  }
+  function writeLocal(id,rec){
+    try{localStorage.setItem(localKey(id),JSON.stringify(rec));}catch(e){}
+  }
+
+  function apply(id,rec){
+    if(!rec) return;
+    applying=true;
+    var c=el("chk-"+id), n=el("note-"+id);
+    if(c && typeof rec.done==="boolean" && c.checked!==rec.done) c.checked=rec.done;
+    if(n && typeof rec.note==="string" && n.value!==rec.note && document.activeElement!==n) n.value=rec.note;
+    applying=false;
+  }
+
+  function save(id){
+    if(applying) return;
+    var c=el("chk-"+id), n=el("note-"+id);
+    var rec={done:!!(c&&c.checked), note:(n?n.value:""), updatedAt:new Date().toISOString()};
+    writeLocal(id,rec);
+    paint();
+    if(!db) return;
+    state.textContent="Saving…";
+    db.doc("checks/"+id).set(rec).then(function(){
+      state.textContent="Saved "+new Date().toLocaleTimeString();
+    }).catch(function(e){
+      state.textContent = e && e.code==="revoked"
+        ? "Saved on this device only."
+        : "Saved on this device only — sync unavailable.";
+    });
+  }
+
+  function bind(id){
+    var c=el("chk-"+id), n=el("note-"+id);
+    if(c) c.addEventListener("change",function(){save(id);});
+    if(n) n.addEventListener("input",function(){
+      paint();
+      clearTimeout(timers[id]);
+      timers[id]=setTimeout(function(){save(id);},700);
+    });
+  }
+
+  IDS.forEach(function(id){ apply(id,readLocal(id)); bind(id); });
+  paint();
+  state.textContent="Saved on this device.";
+
+  if(window.claude && window.claude.use){
+    window.claude.use("db").then(function(d){
+      if(!d) return;
+      db=d;
+      db.collection("checks").onSnapshot(function(snap){
+        snap.docs.forEach(function(doc){
+          var data=doc.data(); if(!data) return;
+          apply(doc.id,data); writeLocal(doc.id,data);
+        });
+        paint();
+        if(!snap.metadata.fromCache) state.textContent="Synced — readings shared and saved.";
+      },function(){
+        state.textContent="Saved on this device only — sync unavailable.";
+      });
+    }).catch(function(){});
+  }
+})();
+</script>

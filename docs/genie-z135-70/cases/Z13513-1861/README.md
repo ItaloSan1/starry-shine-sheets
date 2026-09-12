@@ -234,3 +234,65 @@ The 216061GT kit sensor's own pigtail colours are not in the three manuals `[M]`
 - Same at J154 with J114 still unplugged: if the secondary's 5 V and code recover,
   the primary splice job is dragging the shared supply down.
 - Ohm which two pins the Scotchlok loop joins, and which pin the loose terminal is.
+
+## Field observation 2026-09-12 (later): aftermarket toggle switch and white wire
+Photos `photos/2026-09-12-platform-*.jpg`, `-white-wire-*.jpg`, `-aftermarket-toggle-*.jpg`.
+
+- Platform control box holds a **generic AC-rated toggle switch** (`10A 250VAC / 15A 125VAC /
+  3/4HP`, moulded "9614", made in Mexico), three spade terminals, no boot, wired with plain
+  16 GA white wire and blue Scotchlok IDC taps. It is **not** Genie `128200GT`
+  (`SWITCH TOGGLE ASSY SPDT 3P MOM`).
+- The white wire leaves the platform box, runs down the boom (one Scotchlok tap en route) and
+  terminates near the turntable by the tilt sensor. **Function not yet identified.**
+- A tilt sensor carton is sitting at the turntable; fitted vs. spare unknown.
+- One joystick is visibly newer than the others.
+
+### The factory answer this was improvising
+- Service Manual sheet ES0366J carries a **TOGGLE SWITCH AFTERMARKET KIT SCHEMATIC**
+  (`figs/es-toggle-switch-aftermarket-kit.png`): individual toggles for generator, aux pump, start
+  assist, engine start, drive enable, **axle ext/ret (TS23)**, engine speed, drive speed, steer
+  mode ×2 and **SPARE #1** (`SPARE-WH`, pin 18), landing on `J24` 20-pin of the
+  LED/toggle switch interface PCB `[V]`.
+- Parts figure **605.1 Toggle Switch Lid Option** (PM p.215): `237224GT` to SN 778;
+  **`237225GT` ANSI from SN 779 to 2000** (this machine); `237226GT` CE; `237227GT` AUS.
+  Every switch in the kit is `128200GT` `[V]`.
+- Connector legend: `J23` = 10 pin ribbon PCON to LED driver board, `J24` = 20 pin Molex LED
+  driver board (SM p.206) `[V]`.
+- So the *existence* of a toggle switch is explained by the failing membrane panel
+  ("both axle buttons pressed", SM p.176). The kit is entirely inside the platform box, so it does
+  **not** explain a white wire running to the turntable.
+
+### Wire circuit numbers to test the white wire against (SM pp.211–213) `[V]`
+Genie wire names carry the circuit number (`P109ANG` = circuit 109 sensor power, GR/WH).
+
+| Circuit | Colour | Function |
+|---|---|---|
+| 56 | RD | Foot switch / TCON E-stop power |
+| 64 | OR/BK | Power for operational switches |
+| 60 / 61 | GR/WH / GR | Axle extend / axle retract |
+| 77 | WH | Lower angle #1 operational |
+| 83 / 84 / 85 | GR/WH, GR/BK, GR | Tilt signal X, tilt signal Y, tilt sensor power |
+| 94 | WH | Load sensor |
+| 109 / 110 | GR/WH / BK | Sensor power / sensor return |
+
+Any of 56, 64, 77, 83–85, 94 or 109/110 means the toggle is on a safety circuit — remove it.
+
+### Assessment: why the modifications exist `[M]`
+Parts were swapped and the calibration each one requires was never run; when the faults stayed,
+the repairs escalated into splices and a bypass switch. Supporting facts: "primary boom angle
+sensor **not calibrated**" is a live code on a machine whose sensor is visibly new;
+"TCON–SCON calibration inconsistent" is the signature of a partial/abandoned calibration; the
+added bonding wire says a previous tech suspected a bad `SNSR GND-BR`, which is shared between
+the primary and secondary sensors and so explains both complaining at once.
+
+**TCON/SCON are probably healthy — do not buy one yet** `[V]` reasoning:
+engine runs ⇒ SCON powered, grounded and on CAN (loss of CAN drops `P_9B` ignition+fuel,
+SM p.189); all six chassis sensor codes cleared when the axles moved ⇒ TCON feed, DCON and bus
+healthy; every remaining fault sits on one circuit group. Replacing the SCON forces a full
+machine calibration anyway (SM p.154).
+
+## Worklist for 2026-09-13
+`worklist-2026-09-13.html` — field checklist with saving readings (db capability).
+Published artifact: https://claude.ai/code/artifact/8aeb0031-1151-45da-8128-c5c05d3a4562
+Sections: A stand down · B identify the toggle · C the `J114` circuit · D survey ·
+E parts to price · F calibration decision.
