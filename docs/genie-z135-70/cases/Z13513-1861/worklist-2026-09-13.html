@@ -175,6 +175,31 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
      safety circuits. Identifying it is section B, and it is the first real work of the day.</p>
 </div>
 
+<div class="callout" style="border-color:var(--trace); background:var(--trace-soft)">
+  <h2 style="color:var(--trace)">Five corrections since yesterday &mdash; read before you start</h2>
+  <p>Every card in this plan was re-checked against the manuals by three independent reviewers. They
+     caught these, and two of them change what you do:</p>
+  <p><b>1. The toggle is a six-terminal switch, not a three-terminal one.</b> The body has two rows of
+     three tabs &mdash; a double-pole switch with only one row wired. So B1 also has to probe the three
+     bare tabs, and the "is it single or double throw" logic only holds for the wired row.</p>
+  <p><b>2. There is only one Scotchlok tap, and it is at the turntable.</b> I told you there was one
+     part-way down the boom as well. There is not &mdash; both your photos show the same splice, beside
+     the tilt sensor carton. The white wire runs platform to turntable with one tap at the far end.</p>
+  <p><b>3. That tap is on an orange/black wire</b>, with a red wire alongside, into a 2-pin black
+     Deutsch plug. Orange/black on this machine is <span class="mono">C64LS-OR/BK</span> (circuit 64,
+     power for operational switches) or <span class="mono">C124SBS-OR/BK</span> (the secondary boom
+     angle operational signal). <b>Both are on the stop-list.</b> Open this one first.</p>
+  <p><b>4. Your ground control box is <span class="mono">237069GT</span></b> (from SN 1712).
+     <span class="mono">106512GT</span> is SN 1711 and earlier &mdash; wrong part for this machine.</p>
+  <p><b>5. Solenoid coil range is 3.5&ndash;10 &Omega;</b>, not the 3.5&ndash;5.5 quoted on task B5.
+     Also now verified rather than guessed: <span class="mono">Y74</span>'s return is
+     <span class="mono">VLVRTN6-BR</span> from TCON <span class="mono">J14-30</span>.</p>
+  <p style="margin-top:12px"><b>Full detail:</b> the complete verified plan &mdash; every connector,
+     location, wire colour, expected value and its manual page &mdash; is in
+     <span class="mono">field-plan-2026-09-13.md</span> in the repo. This page is the short field
+     version for ticking off.</p>
+</div>
+
 <div class="verdict">
   <h2>What I think happened here</h2>
   <p class="lede">Read together, the photos tell one story: parts were swapped, the calibration that
@@ -271,13 +296,13 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
     <div class="t-top">
       <input type="checkbox" id="chk-b1" aria-labelledby="ttl-b1">
       <div>
-        <div class="t-title" id="ttl-b1">Ohm the three terminals in both lever positions</div>
+        <div class="t-title" id="ttl-b1">Ohm ALL SIX terminals in both lever positions</div>
         <p class="t-why">Tells you what kind of switch it is: which pole is common, whether it is
            single-throw or double, and whether it is momentary or maintained. Genie's
            <span class="mono">128200GT</span> is SPDT momentary; if yours is maintained, it was meant
            to latch something on &mdash; which narrows the possibilities a lot.</p>
         <div class="note"><label for="note-b1">Continuity, both positions</label>
-          <textarea id="note-b1" placeholder="Up: 1-2 = ___  1-3 = ___   Down: 1-2 = ___  1-3 = ___"></textarea></div>
+          <textarea id="note-b1" placeholder="Wired row up/down: ___   Bare row: ___   Any wired tab beeping to a bare tab? ___"></textarea></div>
       </div>
     </div>
   </article>
@@ -299,12 +324,12 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
     <div class="t-top">
       <input type="checkbox" id="chk-b3" aria-labelledby="ttl-b3">
       <div>
-        <div class="t-title" id="ttl-b3">Open both Scotchloks and record the host wire colour</div>
+        <div class="t-title" id="ttl-b3">Open the Scotchlok at the turntable &mdash; host wire is orange/black</div>
         <p class="t-why">The tap tells you the circuit. Genie wire names carry their circuit number,
            and the colour confirms it &mdash; so a green/white host is circuit 109 sensor power, an
            orange/black host is circuit 64, and so on. Use the table below.</p>
         <div class="note"><label for="note-b3">Host wire colour and printed name</label>
-          <textarea id="note-b3" placeholder="Boom tap: ___   Turntable tap: ___"></textarea></div>
+          <textarea id="note-b3" placeholder="Printed wire name under the tap: ___   (C64LS = stop. C124SBS = stop.)"></textarea></div>
       </div>
     </div>
   </article>
@@ -337,7 +362,7 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
            Y74 on, and a toggle in the basket wired down to the turntable is exactly that way.
            It also explains why your direct-to-solenoid trick worked when it did.</p>
         <p class="t-why"><b>Find it:</b> behind the medium pressure filter. Ohm the coil &mdash;
-           <b>3.5 to 5.5 &Omega;</b>. Do not go by connector number: the schematic labels it
+           <b>3.5 to 10 &Omega;</b>. Do not go by connector number: the schematic labels it
            <span class="mono">J166</span> but the connector legend says <span class="mono">J166</span>
            is the jib bellcrank sensor, so the manual contradicts itself here. The adjacent feed wire
            on the sheet reads <span class="mono">V155PSE-OR/RD</span> &mdash; an orange/red host wire
@@ -347,7 +372,7 @@ footer{border-top:1px solid var(--line); margin-top:40px; padding-top:16px;
            available at all times, regardless of what the safety system wanted. It comes out.</p>
         <div class="cite">SM p.135 &sect;8-7 &middot; coil spec SM p.150 &middot; sheet ES0366J</div>
         <div class="note"><label for="note-b5">Coil ohms and wire colour</label>
-          <textarea id="note-b5" placeholder="Y74 coil = ___ &Omega;   Scotchlok host colour = ___"></textarea></div>
+          <textarea id="note-b5" placeholder="Y74 coil = ___ &Omega; (spec 3.5-10)   Scotchlok host colour = ___"></textarea></div>
       </div>
     </div>
   </article>
