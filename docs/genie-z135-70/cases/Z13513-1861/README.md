@@ -1203,3 +1203,73 @@ Both boom angle sensor assemblies were disturbed during diagnosis, so both
 require calibration. Start with **secondary**, then **primary**, and check
 whether the fault list clears. If `TCON/SCON CALIBRATION INCONSISTENT` persists,
 work the full p.105 sequence — which will require the digital level kit.
+
+## 2026-09-13 — Axle indicator lights FLASHING at the platform; axles will not extend
+
+Owner reports both axle extend indicators **flashing** at the platform controls
+and no axle movement.
+
+### What flashing means [V]
+
+Operator's Manual p.27 item 24, *Axle extend/retract switch with indicator
+lights*:
+
+> *"The indicator light will **flash while the axles are extending** and **stay
+> on when the axles are fully extended**. The indicator light will flash while
+> the axles are retracting and **stay on when the axles are fully retracted**."*
+
+Repeated at p.28 items 30 and 31 for the separate extend and retract buttons.
+
+**Solid = at a defined end position. Flashing = in transit.**
+
+Both indicators flashing with no movement means **the machine believes the axles
+are partway — neither fully retracted nor fully extended.** The axles are
+physically fully retracted, so the machine's position information is wrong.
+
+### Why that locks everything
+
+SCON matrix (SM p.189) — an undefined axle position trips:
+
+| Row | Outputs dropped |
+|---|---|
+| Axle safety not stowed | `P_39`, `P_10`, `P_11`, `P_30` |
+| Axle crosscheck angle sensor versus safety switch | `P_39`, `P_10`, `P_11`, `P_30` |
+| Axle (not fully extended) and Turntable rotate | `P_38`, `P_39` |
+
+**The machine will not move axles whose position it cannot establish.**
+
+### Two concrete checks
+
+1. **The 4.2–4.4 V adjustment (SM p.167 steps 2–4).** With the axles physically
+   fully retracted, back-probe **pins 2 and 3** at each axle angle sensor and
+   rotate the sensor cover until the reading is **4.2 to 4.4 V DC**. This is the
+   step that defines "fully retracted" for the machine.
+2. **The axle extension limit switch.** The SCON crosschecks the angle sensor
+   *against this switch*. If the switch is not made with the axle fully in — bent
+   actuator, corrosion, backed-off mounting — the machine never sees "fully
+   retracted" no matter how good the sensor reading is. The switch sits under its
+   own cover on the axle (SM p.164 refers to removing the *axle extension limit
+   switch cover*).
+
+### Also check drive enable — free and quick
+
+An amber indicator is lit in the owner's photo. OM p.27 item 25, *Drive enable
+control with indicator light*:
+
+> *"**Light on indicates that the primary boom has moved past either circle-end
+> wheel and the drive function is turned off.** To drive, move the drive enable
+> switch or push the drive enable button and slowly move the drive/steer control
+> handle off center."*
+
+The axle extend procedure requires the **drive control handle to be moved**
+(OM p.49). If drive is disabled, that cannot happen and axle extend is
+unreachable.
+
+**Is the turntable rotated so the boom sits between the circle-end wheels?** If
+not, rotate it there first, then clear drive enable as above.
+
+### Suggested order
+
+1. Turntable between the circle-end wheels; clear drive enable (free, minutes)
+2. Axle angle sensor 4.2–4.4 V adjustment
+3. Axle extension limit switch inspection
