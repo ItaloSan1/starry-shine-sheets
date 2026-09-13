@@ -763,3 +763,67 @@ wiring:
 
 Do not fully disassemble unless prepared to fit `215728GT`, which is sold as a
 complete assembly.
+
+## 2026-09-13 — Boom will not lower on manual/recovery attempt
+
+Owner attempted to bring the boom down using the bypass/recovery key switch and
+reports no movement. Stated the attempt was made **"with the key on the bucket
+setting"** — i.e. the main key switch in the **platform** position.
+
+### Cause identified: main key switch in the wrong position [V]
+
+Both procedures require the main key switch in **ground controls** before the
+key is moved to the bypass/recovery switch:
+
+- Bypass (SM p.100): *"Turn the main key switch to ground controls. Remove the
+  key from the main key switch and insert the key into the bypass/recovery key
+  switch. **Note: The main key switch must remain in the ground control
+  position.**"*
+- Recovery (SM p.101): *"Turn the main key switch to ground controls. Remove the
+  key from the main key switch and insert the key into the bypass/recovery key
+  switch. **Note: If this procedure is performed with the main key switch in the
+  off position an active latched safety fault will be set and will have to be
+  cleared.**"*
+
+Key switch positions: **1 Run, 2 Bypass, 3 Recovery.**
+
+### Second cause: the switch must be HELD [V]
+
+*"Turn and **hold** the bypass/recovery key switch to the recovery position. The
+switch must be held in the recovery position."* … *"The key switch must be held
+in the recovery position until the recovery sequence is complete."*
+
+The sequence is primary boom retract → secondary boom retract → primary boom
+lower, driven by the **auxiliary power unit** — slow. Minutes, not seconds.
+
+### Third: the angle sensor was removed from the machine
+
+Assembly `215728GT` was unbolted for inspection in the previous session. With a
+boom angle sensor removed or unplugged, the SCON reads a dead sensor and holds
+the boom. **Reinstall and reconnect both sensor pigtails before any further
+recovery attempt.**
+
+### Fourth: the auxiliary power unit has its own batteries
+
+The scheduled maintenance lists carry a **"Battery – Auxiliary power units"**
+item, so the aux power unit is separately battery-fed. Recovery and bypass both
+run on it. Given this machine's electrical history those batteries should be
+checked and charged before assuming the recovery circuit is at fault.
+
+### Manual/mechanical lowering
+
+**No manual boom-lowering, hand-pump or manual descent valve procedure exists
+anywhere in Service Manual 1268557GT or Operator's Manual 114474.** Recovery
+mode on auxiliary power is the manufacturer's method. Do not improvise one.
+
+### Manual cautions for the attempt [V]
+
+- *"If any boom safety limit switches are faulty, the boom will only retract and
+  not lower and the operator will need to be recovered from that point."*
+- *"Platform leveling is not active when using recovery mode. The platform could
+  reach high out-of-level conditions."*
+- Above ±15° platform out of level, all auxiliary-power functions are disabled.
+- *"When using recovery mode, the platform may not fully lower to the ground."*
+
+Nobody in the platform. Area clear. Confirm axle position — a raised, extended
+boom over a retracted-axle chassis is a stability concern in its own right.
