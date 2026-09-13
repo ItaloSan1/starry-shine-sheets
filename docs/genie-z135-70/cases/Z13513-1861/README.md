@@ -665,3 +665,49 @@ to 511.2)."*
 - `pm511-1-primary-angle-sensor-to-sn1853.png`
 - `pm511-2-primary-angle-sensor-from-sn1854.png`
 - `pm511-2-parts-list-from-sn1854.png`
+
+## 2026-09-13 — Correction: the slotted arm is NOT an adjustment
+
+Owner photographed the assembly in situ: black sensor arm, slot at the upper
+end, rusty socket-head screw through the slot into a post on a small bracket,
+round sensor body bolted into a circular cutout in the plate below.
+
+**The screw through that slot is `217235GT` — "SCREW, **SHS**, 3/4 X 1.5 X
+5/8-11, ZAG".** SHS is a **shoulder screw**: a 3/4 inch shoulder, 1.5 inch long,
+on a 5/8-11 thread. A shoulder screw riding in a slot is a **sliding pivot**,
+part of the linkage geometry — it is meant to move as the boom angle changes.
+It is not a clamp and there is nothing to set there.
+
+**This retracts the previous note's suggestion to look for witness marks where
+"the arm slipped in its slot."** The slot is supposed to slide. That was wrong.
+
+**There is no adjustment procedure for these sensors anywhere in Service Manual
+1268557GT.** A search for adjustment language against sensor, arm, bracket or
+angle returns nothing. Genie's method is: assemble per the parts drawing, then
+**calibrate in software**. The displayed angle is corrected by calibration, not
+by moving hardware.
+
+### What the photograph does justify acting on
+
+1. **The shoulder screw is rusty.** It must slide freely in the slot. Seized or
+   dragging, the arm binds and the sensor is forced, giving a lagging or jumping
+   reading. Clean, verify free movement, lubricate lightly. Do **not**
+   overtighten — a shoulder screw bottoms on its shoulder and is not a clamp.
+2. **A cable tie is wrapped around the arm** where it meets the sensor body.
+   That is not in drawing 511.2. Establish what it is restraining.
+3. **The anchor bracket** (small plate, yellow-zinc hex bolt) carrying the post
+   must be tight and unmoved; if it has shifted, the whole linkage geometry
+   shifts with it.
+
+### Where clocking is actually established
+
+Inside assembly `215728GT`: the sensor `216061GT` (17) mounts to the holder
+`226492GT` (19) on M3 screws, and the arm `233116GT` (21) attaches with the M4
+screw `217219GT` (22). No "set to X degrees" specification is published for
+either joint — build to the drawing and calibrate.
+
+### Practical consequence
+
+Do not attempt to adjust. Confirm the linkage is free, tight and unbent; check
+the displayed angle against a digital level; if the reading is wrong with sound
+mechanics, the fault is calibration or the matched sensor/magnet pair.
