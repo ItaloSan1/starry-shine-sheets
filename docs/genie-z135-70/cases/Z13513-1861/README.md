@@ -711,3 +711,55 @@ either joint — build to the drawing and calibrate.
 Do not attempt to adjust. Confirm the linkage is free, tight and unbent; check
 the displayed angle against a digital level; if the reading is wrong with sound
 mechanics, the fault is calibration or the matched sensor/magnet pair.
+
+### Assembly `215728GT` internal stack — TWO sensors, one shared magnet race [V]
+
+The 511.2 exploded detail shows item **17 (`216061GT`) appearing twice**. The
+stack, in assembly order:
+
+| Position | Item | Part | Description |
+|---|---|---|---|
+| 1 | 14 | `217217GT` | SCREW, FHSCS, M4-0.7 X 14 |
+| 2 | 15 | `226489GT` | MACHINED, PRIMARY SENSOR BASE |
+| 3 | 16 | `226491GT` | MACHINED, **ANGLE SENSOR RACE** (carries the magnet) |
+| 4 | **17** | `216061GT` | **SENSOR, ANGLE, 180 DEG, CW** — first element |
+| 5 | 18 | `237242GT` | SCREW, FHS, **M3-0.5 X 8** |
+| 6 | 19 | `226492GT` | MACHINED, ANGLE SENSOR HOLDER |
+| 7 | 20 | `237241GT` | SCREW, FHS, **M3-0.5 X 14** |
+| 8 | **17** | `216061GT` | **SENSOR, ANGLE, 180 DEG, CW** — second element |
+| 9 | 21 | `233116GT` | MACHINED, SENSOR ARM |
+| 10 | 22 | `217219GT` | SCREW, SHC, M4-0.7 X 14 |
+
+**This is the dual-channel architecture in hardware:** two separate `216061GT`
+sensors, each with its own 3-pin pigtail, reading one shared magnet race. One
+feeds the TCON (operational), the other the SCON (safety).
+
+**This identifies the previously unknown 3-pin Deutsch connector** photographed
+at a boom pivot. It is one of the two angle sensor elements — not a 6-pin
+`J114`/`J154` connector, and not a mystery device.
+
+Failure modes this creates, all producing a **crosscheck fault** with sound
+wiring:
+- one element replaced and not the other
+- the magnet race `226491GT` not replaced with the sensors (the parts manual
+  warns *"Sensor and magnet are matched and must be replaced at the same time"*)
+- a CCW sensor fitted where CW is specified, or the stack assembled mirrored
+- the two M3 screws swapped — item 18 is **M3 x 8**, item 20 is **M3 x 14**
+
+### Bench test — the decisive check, now that the assembly is off the machine
+
+1. Rotate the arm through full travel by hand: smooth, no notchiness, binding or
+   dead spot.
+2. Check for backlash between arm and body — there should be effectively none.
+3. **Electrically, on the bench:** identify each 3-pin pigtail's supply, ground
+   and signal (verify, do not assume), apply **5.0 V** from a current-limited
+   supply, and read the signal while sweeping the arm slowly through its range.
+   Expect a smooth, monotonic sweep with no dropouts. **Test both elements and
+   compare.** Divergence, opposite directions, a dead zone, or one element flat
+   is the crosscheck fault reproduced on the bench with no machine interlocks in
+   the way.
+4. Inspect the magnet in the race: present, undamaged, seated, free of ferrous
+   debris.
+
+Do not fully disassemble unless prepared to fit `215728GT`, which is sold as a
+complete assembly.
