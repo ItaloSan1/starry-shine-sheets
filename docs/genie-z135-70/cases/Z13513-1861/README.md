@@ -1001,3 +1001,65 @@ them.
    refitted. A disconnected angle sensor alone can produce this state.
 4. Inspect the overload switch on the platform support — noting that the
    platform area already carries one unauthorised Scotchlok modification.
+
+## 2026-09-13 — Aux pump healthy; axles retracted with boom raised and extended
+
+Owner reports the **auxiliary pump now runs with a steady strong hum** (healthy,
+making pressure), **both angle sensors are refitted**, and **the axles are still
+in transport (retracted) position**.
+
+### The axle position is the urgent item
+
+The machine is currently boom **raised and extended** over **retracted axles**.
+Its own safety system is designed to make that impossible:
+
+- OM p.30, function test: *"The boom should not raise unless the axles are
+  extended."* … *"The primary boom should not extend unless the axles are
+  extended."*
+- OM p.49: *"The axles can only be retracted if the primary and secondary booms
+  are fully lowered and retracted and the platform is between the circle-end
+  wheels."*
+- SCON matrix (SM p.189): **"Axle safety not stowed"** drops `P_39`, `P_10`,
+  `P_11`, `P_30`; **"Axle (not fully extended) and Turntable rotate"** drops
+  `P_38`, `P_39`.
+
+This is the worst stability case the machine has, and it also independently
+explains the SCON cutting boom outputs. Treat as a tip-over hazard: nobody in or
+near the platform, nothing commanded that adds reach or height.
+
+### System relief valve location [V]
+
+Machine is SN 1861, so section **8-2 Function Manifold (after serial number
+439), SM p.124**.
+
+> *"The function manifold is mounted to the **turntable next to the ground
+> controls**."*
+
+| Index No. | Description | Schematic Item | Function | Torque |
+|---|---|---|---|---|
+| **11** | **Relief valve, 3100 psi / 214 bar** | **L** | **System relief** | 30–35 ft-lbs / 41–47 Nm |
+
+Other reliefs: primary boom extend 2600 psi (item on the same manifold, adjust
+per SM p.129); axle extend relief 2400 psi on the **steer and axle manifold**;
+traction manifold hot oil relief 250 psi.
+
+Adjustment procedures: **How to Adjust the System Relief Valve, SM p.128**;
+**How to Adjust the Primary Boom Extend Relief Valve, SM p.129**.
+
+### The aux operating method that may not have been tried
+
+The relief adjustment procedure (SM p.128) shows the normal way to work a
+function on auxiliary power, and it is **not** the recovery key:
+
+> *"Note: **Auxiliary power will be used to perform this procedure. Do not start
+> the engine.**"*
+>
+> *"**Simultaneously push and hold the auxiliary power button and the primary
+> boom retract button**…"*
+
+OM p.23 item 16 agrees: *"Simultaneously push the emergency/auxiliary power
+button and activate the desired function."*
+
+**Retract before lowering.** The recovery sequence itself runs primary retract →
+secondary retract → primary lower, because retracting reduces the overturning
+moment first. With the axles in, that order matters more, not less.
