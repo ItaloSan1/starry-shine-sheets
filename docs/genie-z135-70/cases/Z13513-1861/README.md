@@ -1120,3 +1120,55 @@ yard work:
 
 Machine remains boom raised and extended over retracted axles. Tagged out of
 service.
+
+## 2026-09-13 — Filter restriction gauge, not a pressure gauge
+
+Owner photographed a gauge on an orange filter housing, scaled **0–100 psi /
+0–7 bar** with a green band at the low end, and asked why it does not rise when
+hydraulics are applied.
+
+**It is a filter condition / restriction indicator**, reading the pressure drop
+**across the filter element**, not system pressure [M — from hydraulic practice;
+the manuals do not describe this gauge]. It will never show system pressure, so
+"it doesn't go up" is expected, not a fault in itself.
+
+### What is worth acting on
+
+- **The needle appears to sit well into the red**, around 5 bar. That reads as a
+  blocked element — or a stuck gauge. If it does not return to green with the
+  pump off, it is one or the other.
+- **The housing is marked `FEB/19  1253 HR  G.A.`** The machine is at
+  **2162.4 hours**. That element is roughly **six years and 900 hours** old.
+
+### Manual specifications [V]
+
+| Filter | Bypass pressure |
+|---|---|
+| High pressure filter | **102 psi / 7 bar** |
+| Medium pressure filter | **51 psi / 3.5 bar** |
+| Hydraulic tank return filter | 10 micron |
+
+A 0–100 psi / 0–7 bar gauge corresponds to the **high pressure filter**, whose
+bypass is at full scale.
+
+### There is an electrical restriction switch as well [V]
+
+Circuit **86**, **orange**, primary function *"Hydraulic Filter restricted."*
+The controller is told about a blocked filter, so this can contribute to the
+`FAULT` message currently on the ground control LCD — another reason the full
+display text needs recording.
+
+### Hydraulic tank
+
+Second photo shows the tank sight gauge with integral thermometer, and the decal
+**"Chevron Rando HD equivalent only — Call Genie Industries for list of
+equivalent and optional oils."** Check **oil level** (a low tank starves the
+auxiliary pumps) and **oil temperature** (flow has been dumping over relief
+during these attempts).
+
+### Bearing on the main fault
+
+A restricted filter does not by itself stop the boom — filters bypass, oil still
+flows. It does not change the diagnosis that the safety system is refusing to
+open a valve. It is another element of the neglect picture and a possible
+contributor to the active fault list.
