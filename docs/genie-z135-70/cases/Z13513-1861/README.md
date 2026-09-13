@@ -508,3 +508,88 @@ specific patterns the safety matrix prescribes (SM p.189) — that is the safety
 system operating correctly on bad input, not a board failing. Board replacement
 would also force a full recalibration (SM: *"When the ECM circuit board is
 replaced, the machine will need to be fully calibrated"*).
+
+## 2026-09-13 — Verification plan, and why the axles will not extend
+
+### Manual locations [V]
+
+| Procedure | Service Manual |
+|---|---|
+| Primary boom angle sensor — replace | section **4-8, p.81** |
+| Primary boom angle sensor — calibrate | p.82 |
+| Secondary boom angle sensor — replace | section **4-9, p.88** |
+| Secondary boom angle sensor — calibrate | p.89 |
+| Jib boom bellcrank angle sensor | p.56 / calibrate p.58 |
+| Platform level sensor — calibrate | p.42 |
+| Axle angle sensors | p.165 / calibrate p.167 |
+| Bypass / Recovery key switch | p.99–101 |
+| Machine Status menu | p.106–107 |
+| Valve coil resistance specification | p.150 |
+| SCON fault-to-output matrix | p.189 |
+
+### Verifying sensor clocking without removing anything and without WebGPI
+
+**Machine Status** (key switch on, press **(plus)** and **(minus)** together)
+displays live: primary boom angle to gravity, primary-to-secondary boom angle,
+secondary boom angle, turntable level X and Y, platform level degree, battery
+volts.
+
+**Test:** place a digital level on the boom, read the true angle, compare to the
+display. A sensor assembled **one hex flat off is ~60° out** — far too large to
+miss and far outside any calibration offset. Agreement within a few degrees
+means the clocking is right and the fault is elsewhere.
+
+**Second test:** move the boom and watch the number. It must change smoothly,
+monotonically, in the correct direction. Frozen, reversed or jumpy indicates a
+coupling problem.
+
+**Third:** the **secondary** sensor is on the turntable riser bulkhead, ground
+controls side, under a small cover — reachable from the ground with the boom
+raised. The **primary** sits inside the primary boom at the pivot pin behind the
+boom end cover. Start with the secondary. Inspect without disassembly: bracket
+seated in the machined pocket, sensor flat aligned to the flat on the pivot pin.
+
+**WebGPI is not required** for any of this. It would help with fault history and
+with identifying the TCON LEDs, but Machine Status supplies the live angles.
+
+### Why the axles will not extend [V]
+
+Operator's Manual p.49:
+
+> *"Drive, steer and **axle functions are not available from the ground
+> controls**."*
+>
+> *"**To Extend and Retract Axles** — 1 Turn the key switch to **platform
+> control**. 2 At the platform controls, **press down the foot switch and move
+> the drive control handle in either direction**. Activate the extend axle
+> function or the retract axle function."*
+
+Axle extend is a platform-control function requiring the foot switch **and** a
+drive command. Attempting it from the ground control box cannot work.
+
+That procedure needs the drive function live, and **`P_38` Propel is switched
+off by the primary boom angle crosscheck fault** (SM p.189). The related rows
+"Axle safety not stowed" and "Axle crosscheck angle sensor versus safety switch"
+each drop `P_39`/`P_10`/`P_11`/`P_30`, and the machine's own function test (OM
+p.30) states the boom should not raise and the primary boom should not extend
+unless the axles are extended.
+
+**The interlock loop:** invalid boom angle → no propel → no axle extend → no
+calibration → invalid boom angle. **It breaks at the sensors, not at the
+axles.**
+
+Note the asymmetry: axles can only be **retracted** with both booms fully
+lowered and retracted and the platform between the circle-end wheels. Extending
+carries no such stated requirement, so the raised boom is not necessarily what
+blocks extend.
+
+### Order of work
+
+1. Machine Status vs digital level on both booms; inspect the secondary sensor;
+   check the calibration toggle switch position.
+2. Reinstall any sensor found mis-clocked, per p.81 / p.88.
+3. Bring the boom down — Bypass to level the platform, normal down, then
+   Recovery if needed.
+4. With the boom stowed, extend the axles **from the platform controls**.
+5. Calibrate in order: axle angle sensors → turntable level sensor → secondary
+   boom angle sensor → primary boom angle sensor.
