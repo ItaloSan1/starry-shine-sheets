@@ -1,0 +1,3603 @@
+Service and Repair Manual
+
+Serial Number Range Z®-135/70
+
+from Z13505-101 to
+
+Z13513-2000 This manual includes:
+
+Repair procedures Fault Codes Electrical and Hydraulic Schematics
+
+For detailed maintenance procedures, refer to the appropriate Maintenance Manual for your machine.
+
+Part No. 1268557GT Rev A4 October 2018
+
+Service and Repair Manual October 2018 Introduction
+
+Intr oducti on Intr oducti on Important
+
+Technical Publications
+
+Read, understand and obey the safety rules and operating instructions in the appropriate Operator's Manual on your machine before attempting any procedure.
+
+Genie has endeavored to deliver the highest degree of accuracy possible. However, continuous improvement of our products is a Genie policy. Therefore, product specifications are subject to change without notice. This manual provides troubleshooting and repair procedures for qualified service professionals.
+
+Readers are encouraged to notify Genie of errors and send in suggestions for improvement. All Basic mechanical, hydraulic and electrical skills are
+
+communications will be carefully considered for required to perform most procedures. However,
+
+future printings of this and all other manuals. several procedures require specialized skills, tools, lifting equipment and a suitable workshop. In these instances, we strongly recommend that
+
+Contact Us: maintenance and repair be performed at an authorized Genie dealer service center.
+
+Internet: www.genielift.com E-mail: awp.techpub@terex.com
+
+Compliance
+
+Find a Manual for this Model
+
+Machine Classification
+
+Go to http://www.genielift.com
+
+Group B/Type 3 as defined by ISO 16368
+
+Use the links to locate Service Manuals, Maintenance Manuals, Service and Repair
+
+Machine Design Life
+
+Manuals, Parts Manuals and Operator's Manuals.
+
+Unrestricted with proper operation, inspection and scheduled maintenance.
+
+Copyright © 2015 by Terex Corporation
+
+1268557 Rev A, September 2015
+
+First Edition, First Printing
+
+Genie is a registered trademark of Terex South Dakota, Inc. in the U.S.A. and many other countries.
+
+“Z” is a trademark of Terex South Dakota, Inc.
+
+ii Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Introduction
+
+Revision History
+
+Revision Date Section Procedure / Page / Description
+
+A 9/2015 Initial Release
+
+A1 11/2015 Schematics Wire Color Legend
+
+A2 6/2016 Specifications Performance Specifications
+
+Repair Procedures 4-9, 6-1
+
+A3 3/2018 Repair Display Module
+
+A4 10/2018 Specifications Perfromance Specifications
+
+Reference Examples:
+
+Section – Repair Procedure, 4-2
+
+Electronic Version
+
+Section – Fault Codes, All charts
+
+Click on any content or procedure in the Table of Contents to view the update. Section – Schematics, Legends and schematics
+
+Part No. 1268557GT Z®-135/70 iii
+
+Service and Repair Manual October 2018 Introduction
+
+Serial Number Legend
+
+1 Model 2 Model year 3 Sequence number 4 Serial label (located under cover) 5 Serial number (stamped on chassis)
+
+iv Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Safety Rules
+
+Section 1 Safety R ules
+
+Danger
+
+Failure to obey the instructions and safety rules in this manual and the appropriate Operator's Manual on your machine will result in death or serious injury.
+
+Many of the hazards identified in the operator's manual are also safety hazards when maintenance and repair procedures are performed.
+
+Do Not Perform Maintenance Unless:
+
+R You are trained and qualified to perform
+
+maintenance on this machine. R You read, understand and obey:
+
+• manufacturer's instructions and safety rules
+
+• employer's safety rules and worksite regulations
+
+• applicable governmental regulations R You have the appropriate tools, lifting
+
+equipment and a suitable workshop.
+
+Part No. 1268557GT Z®-135/70 v
+
+Service and Repair Manual October 2018 Safety Rules
+
+Personal Safety
+
+Any person working on or around a machine must be aware of all known safety hazards. Personal safety and the continued safe operation of the machine should be your top priority.
+
+Read each procedure thoroughly. This manual and the decals on the machine, use signal words to identify the following:
+
+Safety alert symbol—used to alert personnel to potential personal injury hazards. Obey all safety messages that follow this symbol to avoid possible injury or death.
+
+Indicates a imminently hazardous situation which, if not avoided, will result in death or serious injury.
+
+Indicates a potentially hazardous situation which, if not avoided, could result in death or serious injury.
+
+Indicates a potentially hazardous situation which, if not avoided, may cause minor or moderate injury.
+
+Indicates a potentially hazardous situation which, if not avoided, may result in property damage.
+
+Be sure to wear protective eye wear and other protective clothing if the situation warrants it.
+
+Be aware of potential crushing hazards such as moving parts, free swinging or unsecured components when lifting or placing loads. Always wear approved steel-toed shoes.
+
+vi Z®-135/70 Part No. 1268557GT
+
+Workplace Safety
+
+Any person working on or around a machine must be aware of all known safety hazards. Personal safety and the continued safe operation of the machine should be your top priority.
+
+Be sure to keep sparks, flames and lighted tobacco away from flammable and combustible materials like battery gases and engine fuels. Always have an approved fire extinguisher within easy reach.
+
+Be sure that all tools and working areas are properly maintained and ready for use. Keep work surfaces clean and free of debris that could get into machine components and cause damage.
+
+Be sure any forklift, overhead crane or other lifting or supporting device is fully capable of supporting and stabilizing the weight to be lifted. Use only chains or straps that are in good condition and of ample capacity.
+
+Be sure that fasteners intended for one time use (i.e., cotter pins and self-locking nuts) are not reused. These components may fail if they are used a second time.
+
+Be sure to properly dispose of old oil or other fluids. Use an approved container. Please be environmentally safe.
+
+Be sure that your workshop or work area is properly ventilated and well lit.
+
+October 2018
+
+Table of Contents
+
+Introduction Introduction ........................................................................................................... ii Important Information ............................................................................................. ii
+
+Find a Manual for this Model .................................................................................. ii
+
+Serial Number Legend .......................................................................................... iv
+
+Section 1 Safety Rules .......................................................................................................... v General Safety Rules ............................................................................................. v
+
+Section 2 Specifications ....................................................................................................... 1 Machine Specifications ........................................................................................... 1
+
+Performance Specifications .................................................................................... 1
+
+Hydraulic Specification ........................................................................................... 2
+
+Hydraulic Component Specifications...................................................................... 5
+
+Deutz BF4L 2011 Engine Specifications ................................................................ 7
+
+Deutz TD2011L04i Engine Specifications .............................................................. 9
+
+Cummins B4.5L Engine Specifications ................................................................ 11
+
+Cummins B3.3T Engine Specifications ................................................................ 13
+
+Perkins 1104C-44 Engine Specifications ............................................................. 15
+
+Perkins 804D-33T Engine Specifications ............................................................. 17
+
+Machine Torque Specifications ............................................................................ 19
+
+Hydraulic Hose and Fitting Torque Specifications ............................................... 20
+
+Torque Procedure ................................................................................................ 21
+
+SAE and Metric Fasteners Torque Charts ........................................................... 23
+
+Part No. 1268557GT Z®-135/70 vii
+
+October 2018 Table of Contents
+
+Section 3 Repair Procedures ............................................................................................. 24 Introduction .......................................................................................................... 24
+
+Platform Controls ............................................................................................... 26 Platform Controls ................................................................................................. 26
+
+1-1 Platform Circuit Board .................................................................................... 27
+
+How to Remove the LED Circuit Board .......................................................... 28
+
+1-2 Membrane Decal ........................................................................................... 29
+
+1-3 Joysticks - How to Calibrate a Joystick ......................................................... 30
+
+How to Reset a Proportional Valve Coil Default ............................................. 34
+
+How to Set the Function Thresholds and Default Functions Speeds ............. 34
+
+How to Adjust the Function Speeds ............................................................... 36
+
+How to Adjust the Function Ramp Rate Setting ............................................. 37
+
+Platform Components ....................................................................................... 39 2-1 Platform Leveling Cylinder ............................................................................. 39
+
+2-2 Platform Rotator ............................................................................................. 40
+
+How to Bleed the Platform Rotator ................................................................. 41
+
+2-3 Platform Level Sensor - How to Calibrate the Platform Level Sensor ........... 42
+
+2-4 Platform Overload System (if equipped) ........................................................ 43
+
+Jib Boom Components ...................................................................................... 46 3-1 Jib Boom Cable Track ................................................................................... 47
+
+How to Repair the Cable Track....................................................................... 49
+
+3-2 Jib Boom ........................................................................................................ 50
+
+3-3 Jib Boom Lift Cylinder .................................................................................... 52
+
+3-4 Jib Boom Level Cylinder ................................................................................ 53
+
+3-5 Jib Boom Extension Cylinder ......................................................................... 54
+
+3-6 Jib Boom Bellcrank Angle Sensor ................................................................. 56
+
+How to Calibrate the Jib Boom Bellcrank Angle Sensor ................................ 58
+
+viii Z®-135/70 Part No. 1268557GT
+
+October 2018
+
+Table of Contents
+
+Boom Components ............................................................................................ 64 4-1 Primary Boom Cable Track ............................................................................ 65
+
+How to Repair the Primary Boom Cable Track ............................................... 67
+
+4-2 Secondary Boom Cable Track ....................................................................... 68
+
+How to Repair the Secondary Boom Cable Track .......................................... 70
+
+4-3 Primary Boom................................................................................................. 71
+
+4-4 Primary Boom Lift Cylinder ............................................................................ 73
+
+4-5 Secondary Boom Lift Cylinder ........................................................................ 74
+
+4-6 Primary Boom Extension Cylinder ................................................................. 78
+
+4-7 Secondary Boom Extension Cylinders ........................................................... 79
+
+4-8 Primary Boom Angle Sensor .......................................................................... 81
+
+How to Calibrate the Primary Boom Angle Sensor ......................................... 82
+
+4-9 Secondary Boom Angle Sensor ..................................................................... 88
+
+How to Calibrate the Secondary Boom Angle Sensor .................................... 89
+
+Engines ................................................................................................................ 95 5-1 RPM Adjustment ............................................................................................ 95
+
+5-2 Flex Plate ....................................................................................................... 95
+
+How to install a Type "A" Flex Plate ................................................................ 96
+
+How to install a Type "B" Flex Plate ................................................................ 98
+
+Ground Controls ................................................................................................. 99 6-1 Bypass/Recovery Key Switch ........................................................................ 99
+
+How to Use the Recovery Mode ................................................................... 101
+
+6-2 Circuit Boards ............................................................................................... 102
+
+6-3 Membrane Decal .......................................................................................... 104
+
+6-4 Full Machine Calibration ............................................................................... 105
+
+Display Module ................................................................................................. 106
+
+Part No. 1268557GT Z®-135/70 ix
+
+October 2018 Table of Contents
+
+Hydraulic Pumps .............................................................................................. 115 7-1 Function Pump ............................................................................................. 115
+
+How to Prime the Function Pump ................................................................. 116
+
+How to Adjust the Function Pump Standby Pressure................................... 116
+
+How to Adjust the Function Pump Pressure Compensator .......................... 117
+
+7-2 Drive Pump .................................................................................................. 118
+
+How to Prime the Drive Pump ...................................................................... 119
+
+Manifolds .......................................................................................................... 120 8-1 Function Manifold - (before serial number 440) ........................................... 120
+
+8-2 Function Manifold - (after serial number 439) .............................................. 124
+
+8-3 Valve Adjustments - Function Manifold ....................................................... 128
+
+How to Adjust the System Relief Valve ........................................................ 128
+
+How to Adjust the Primary Boom Extend Relief Valve ................................. 129
+
+8-4 Platform Manifold ......................................................................................... 131
+
+8-5 Jib Boom Manifold ....................................................................................... 132
+
+8-6 Flow Control Mainfold .................................................................................. 134
+
+8-7 Function Enable Valve ................................................................................. 135
+
+8-8 Turntable Rotation Manifold ......................................................................... 136
+
+8-9 Steer and Axle Manifold ............................................................................... 138
+
+8-10 Valve Adjustments - Steer and Axle Manifold ........................................... 142
+
+8-11 Traction Manifold ....................................................................................... 144
+
+8-12 Valve Adjustments - Traction Manifold ...................................................... 148
+
+8-13 Drive Oil Diverter Manifold (welder option) ................................................ 149
+
+8-14 Valve Coils ................................................................................................. 150
+
+Turntable Rotation Components .................................................................... 152 9-1 Turntable Rotation Assembly ....................................................................... 152
+
+How to Adjust the Turntable Rotation Gear Backlash .................................. 153
+
+9-2 Turntable Level Sensor - How to Calibrate the Turntable Level Sensor ..... 154
+
+x Z®-135/70 Part No. 1268557GT
+
+October 2018
+
+Table of Contents
+
+Axle Components ............................................................................................. 158 10-1 Steer Sensors ............................................................................................ 158
+
+How to Calibrate a Replacement Steer Sensor ............................................ 160
+
+How to Calibrate All Steer Sensors ............................................................... 161
+
+10-2 Steer Cylinders ........................................................................................... 163
+
+10-3 Axle Extension Cylinders ........................................................................... 164
+
+10-4 Axle Angle Sensors .................................................................................... 165
+
+How to Calibrate the Axle Angle Sensors ..................................................... 167
+
+Section 4 Fault Codes ....................................................................................................... 171 Introduction ......................................................................................................... 171
+
+Control System Fault Codes .............................................................................. 172
+
+Fault Matrix ......................................................................................................... 189
+
+Part No. 1268557GT Z®-135/70 xi
+
+October 2018 Table of Contents
+
+Section 5 Schematics ....................................................................................................... 191 Introduction ........................................................................................................ 191
+
+Wire Circuit Legend ........................................................................................... 192
+
+Wire Color Legend ............................................................................................. 196
+
+Limit Switches and Angle Sensors..................................................................... 201
+
+Circuit Connector Legend .................................................................................. 205
+
+Drive Chassis and Platform Controller Pin Legend ........................................... 208
+
+Safety Controller Pin Legend ............................................................................. 209
+
+Turntable Controller Pin Legend ........................................................................ 210
+
+Engine Relay and Fuse Panel Legend - Deutz BF4L 2011, TD2011L04i, Perkins
+
+1104C-44 and 804D-33T ........................................................................... 211
+
+Engine Relay and Fuse Panel Legend - Cummins B4.5L and B3.3T ................ 212
+
+Electrical Symbols Legend ................................................................................. 213
+
+Hydraulic Symbols Legend ................................................................................ 214
+
+Perkins 1104C-44 and 804D-33T Engine Electrical Schematic ........................ 216
+
+Cummins B4.5L and B3-3.3T Engine Electrical Schematic ............................... 217
+
+Generator Wiring Schematic .............................................................................. 220
+
+Hydraulic Generator (Welder Option) ................................................................ 221
+
+Hydraulic Schematic (before serial number 180, except for serial number 102)224
+
+Hydraulic Schematic (serial number 102 and from serial number 180 to 534).. 225
+
+Hydraulic Schematic (from serial number 535) .................................................. 227
+
+Electrical Schematic ........................................................................................... 229
+
+xii Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual
+
+This page intentionally left blank.
+
+Part No. 1268557GT Z®-135/70 13
+
+October 2018 Service and Repair Manual Specifications
+
+Section 2 Specifications Machine Specifications
+
+Performance Specifications
+
+Tires and wheels
+
+Drive speed, maximum
+
+Tire size 445/65D22.5, FF
+
+Stowed position, high speed 2.8 mph Tire ply rating 18 Tire weight, new foam-filled
+
+4.5 km/h
+
+815 lbs
+
+40 ft / 9.7 sec 12.2 m / 9.7 sec (minimum)
+
+370 kg
+
+Raised or extended 0.7 mph Overall tire diameter 46.5 in 118.1 cm
+
+1.1 km/h 40 ft / 40 sec Wheel diameter 22.5 in
+
+12.2 m / 40 sec 57.2 cm
+
+Primary and Secondary booms Wheel width 13 in 33 cm
+
+0.4 mph raised, and Primary and Jib
+
+0.6 km/h extended
+
+40 ft / 68.5 sec
+
+Wheel lugs Lug nut torque, dry Lug nut torque, lubricated Fluid capacities Fuel tank Hydraulic tank 10 @ 3/4 -16 420 ft-lbs 569.4 Nm
+
+Braking distance, maximum
+
+High range on paved surface 320 ft-lbs 433.9 Nm
+
+Gradeability 12.2 m / 68.5 sec 3 to 6 ft 1 to 2 m See Operator's Manual
+
+40 gallons 151.4 liters 65 gallons 246 liters
+
+Boom function speeds, maximum from platform controls
+
+Jib boom up/down 38 to 43 seconds Jib boom extend/retract 27 to 38 seconds
+
+Hydraulic system (including tank) 123 gallons 466 liters
+
+Primary boom up/down -60° to +70°
+
+Drive hubs 47 fl oz 1390 cc Turntable rotation drive hub 40 fl oz 1183 cc Drive hub oil type: SAE 90 multipurpose hypoid gear oil API service classification GL5
+
+Part No. 1268557GT Z®-135/70 1 110 to 125 seconds
+
+Primary boom extend/retract 35 to 48 seconds Secondary boom up/down 80 to 95 seconds Secondary boom extend/retract 88 to 98 seconds Turntable rotate, 360° fully stowed
+
+88 to 92 seconds
+
+Turntable rotate, 360°jib or primary booms extended
+
+160 to 180 seconds
+
+Turntable rotate, 360°jib and primary booms extended
+
+280 to 350 seconds
+
+For operational specifications, refer to the Operator's Manual.
+
+Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+Service and Repair Manual October 2018 Specifications
+
+Hydraulic Oil Specifications
+
+Do not top off with incompatible hydraulic fluids. Hydraulic fluids Hydraulic Fluid Specifications
+
+may be incompatible due to the
+
+Genie specifications require hydraulic oils which are designed to give maximum protection to hydraulic systems, have the ability to perform over a wide
+
+differences in base additive chemistry. When incompatible fluids are mixed, insoluble temperature range, and the viscosity index should
+
+materials may form and deposit exceed 140. They should provide excellent antiwear,
+
+in the hydraulic system, oxidation prevention, corrosion inhibition, seal conditioning, and foam and aeration suppression properties.
+
+plugging hydraulic lines, filters, control valves and may result in component damage. Cleanliness level,
+
+ISO 15/13 minimum
+
+Note: Do not operate the machine when the Water content, maximum
+
+ambient air temperature is consistently above 120°F / 49°C.
+
+Hydraulic Fluid Temperature Range
+
+Ambient air temperature
+
+1 Chevron hydraulic oil 5606A 2 Petro-Canada Environ MV 46 3 UCON Hydrolube HP-5046D 4 Chevron Rando HD premium oil MV
+
+2 Z®-135/70 Part No. 1268557GT
+
+250 ppm
+
+Recommended Hydraulic Fluid
+
+Hydraulic oil type Chevron Rando HD Premium Viscosity grade 32 Viscosity index 200 Optional Hydraulic Fluids
+
+Mineral based Shell Tellus S2 V 32 Shell Tellus S2 V 46 Shell Tellus S4 VX 32 Shell Shell Donax TG (Dexron III) Chevron 5606A
+
+Biodegradable Petro Canada Environ MV 46 Fire resistant UCON Hydrolube HP-5046 Note: Genie specifications require additional equipment and special installation instructions for the approved optional fluids. Consult Genie Product Support before use. Optional fluids may not have the
+
+same hydraulic lifespan and may result in component damage.
+
+Note: Extended machine operation can cause the hydraulic fluid temperature to increase beyond it's maximum allowable range. If the hydraulic fluid temperature consistently exceeds 200°F / 90°C an optional oil cooler may be required.
+
+October 2018 Service and Repair Manual Specifications
+
+Chevron Rando HD Premium Oil
+
+Chevron 5606A Hydraulic Oil MV Fluid Properties
+
+Fluid Properties
+
+ISO Grade 32
+
+ISO Grade 15 Viscosity index 200
+
+Viscosity index 300 Kinematic Viscosity
+
+Kinematic Viscosity cSt @ 200°F / 100°C
+
+7.5
+
+cSt @ 200°F / 100°C
+
+5.5 cSt @ 104°F / 40°C
+
+33.5
+
+cSt @ 104°F / 40°C
+
+15.0 Brookfield Viscosity
+
+cSt @ -40°F / -40°C
+
+510 cP @ -4°F / -20°C
+
+1040
+
+Flash point 180°F / 82°C cP @ -22°F / -30°C
+
+3310
+
+Pour point -81°F / -63°C Flash point 375°F / 190°C
+
+Maximum continuous operating
+
+124°F / 51°C Pour point -58°F / -50°C
+
+temperature Maximum continuous operating
+
+171°F / 77°C
+
+Note: Use of Chevron 5606A hydraulic fluid, or temperature
+
+equivalent, is required when ambient temperatures Note: A hydraulic oil heating system is recommended when the ambient temperature are consistently below 0°F / -17°C unless an oil
+
+is
+
+heating system is used. consistently below 0°F / -18°C.
+
+Continued use of Chevron Note: Do not operate the machine when the
+
+5606A hydraulic fluid, or ambient temperature is below -20°F / -29°C with
+
+equivalent, when ambient Rando HD Premium MV.
+
+temperatures are consistently above 32°F / 0°C may result in component damage
+
+Part No. 1268557GT Z®-135/70 3
+
+Service and Repair Manual October 2018 Specifications
+
+Petro-Canada Environ MV 46 Fluid Properties
+
+UCON Hydrolube HP-5046 Fluid
+
+ISO Grade 46
+
+Properties
+
+Viscosity index 154
+
+ISO Grade 46 Kinematic Viscosity
+
+Viscosity index 192 cSt @ 200°F / 100°C cSt @ 104°F / 40°C
+
+8.0 44.4
+
+Kinematic Viscosity cSt @ 149°F / 65°C 22 Flash point 482°F / 250°C
+
+cSt @ 104°F / 40°C
+
+46 Pour point -49°F / -45°C
+
+cSt @ 0°F / -18°C
+
+1300
+
+Maximum continuous operating
+
+180°F / 82°C
+
+Flash point None temperature
+
+Pour point -81°F / -63°C Maximum continuous operating
+
+189°F / 87°C Shell Tellus S4 VX Fluid
+
+temperature Properties
+
+ISO Grade 32 Viscosity index 300 Kinematic Viscosity cSt @ 200°F / 100°C
+
+9 cSt @ 104°F / 40°C
+
+33.8 Brookfield Viscosity cSt @ -4°F / -20°C cSt @ -13°F / -25°C cSt @ -40°F / -40°C
+
+4 Z®-135/70 Part No. 1268557GT
+
+481 702.4 2624 Flash point \>100 Pour point -76°F / -60°C Maximum continuous operating temperature
+
+103°F / 75°C
+
+October 2018 Service and Repair Manual Specifications
+
+Hydraulic Component
+
+Auxiliary Pump Specifications
+
+Type: fixed displacement gear pump
+
+Drive Pump
+
+Displacement per revolution 0.15 cu in 2.47 cc Type: bi-directional variable displacement piston pump
+
+Function manifold Displacement per revolution 2.8 cu in 46 cc
+
+System relief valve pressure, maximum (measured at test port)
+
+3100 psi 213.7 bar Flow rate @ 2350 rpm 28.5 gpm 108 L/min
+
+Primary boom extend relief pressure (measured at ptest port) Drive pressure, maximum 3625 psi 250 bar Charge Pump
+
+Type gerotor Displacement per revolution 0.85 cu in 13.9 cc
+
+Flow rate @ 2350 rpm 9 gpm 34 L/min
+
+Charge pressure @ 2350 rpm Neutral position
+
+Part No. 1268557GT Z®-135/70 5 2600 psi 179 bar Jib and platform manifolds
+
+Platform rotate and platform level flow regulator
+
+0.2 gpm 0.76 L/min Jib manifold flow regulator 2 gpm 7.6 L/min Steer/Axle Manifold
+
+Axle extend relief pressure 2400 psi 165 bar
+
+Function pump
+
+315 ps i21.7 bar
+
+Traction Manifold
+
+Hot oil relief pressure 250 psi 17.2 bar Type: variable displacement piston pump
+
+Hydraulic Filters Displacement per revolution Flow rate @ 2350 rpm Pressure, maximum Pressure compensator Standby pressure 0 to 2.75 cu in 0 to 45 cc 0 to 28 gpm 0 to 106 L/min 2900 psi 200 bar 2900 psi 200 bar 250 psi 17 bar
+
+High pressure filter: Beta 3 ≥ 200 High pressure filter bypass pressure 102 psi 7 bar Medium pressure filter Beta 3 ≥ 200 Medium pressure filter bypass pressure 51 psi 3.5 bar Hydraulic tank return filter 10 micron with 25 psi / 1.7 bar bypass Drive motor case drain return filter Beta 10 ≥ 2 Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+Service and Repair Manual October 2018 Specifications
+
+Brakes
+
+Manifold Component Specifications Brake relief pressure 190 psi
+
+Plug torque 13 bar
+
+SAE No. 2 36 in-lbs / 4 Nm Drive Motors (before serial number 180)
+
+SAE No. 4 10 ft-lbs / 13 Nm
+
+(see note below)
+
+SAE No. 6 14 ft-lbs / 19 Nm
+
+Displacement per revolution, high
+
+0.8 cu in
+
+SAE No. 8 38 ft-lbs / 51 Nm speed
+
+13.3 cc
+
+SAE No. 10 41 ft-lbs / 55 Nm Displacement per revolution, low speed (square end) Displacement per revolution, low speed (circle end)
+
+Drive Motors
+
+2.7 cu in 45 cc 1.5 cu in 25 cc
+
+SAE No. 12 Valve coil resistance specifications
+
+Proportional solenoid valve (schematic items N, P, R, T, V)
+
+56 ft-lbs / 76 Nm
+
+3.5 to 5.5Ω
+
+(after serial number 179)
+
+Displacement per revolution, high
+
+Solenoid valve, 3 position 4 way
+
+4 to 6Ω
+
+speed Displacement per revolution, low
+
+0.8 cu in 13.3 cc
+
+(schematic item B) Solenoid valve, 3 position 4 way
+
+7 to 9Ω
+
+speed (square end) Displacement per revolution, low
+
+2.7 cu in 45 cc
+
+(schematic items BN, BO, BP, BQ) Solenoid valve, 3 position 4 way (schematic item AH)
+
+speed (circle end)
+
+6 Z®-135/70 Part No. 1268557GT 8 to 10Ω
+
+1.5 cu in 25 cc Note: Serial number 102 is equipped with drive
+
+Proportional solenoid valve, 3 position 4 way (schematic items Y, AI)
+
+motors equal to those used on machines after serial number 179.
+
+8 to 10Ω
+
+Solenoid Valve, 2 position 3 way (schematic items F and AD)
+
+5.5 to 7.5Ω Solenoid Valve, 2 position 3 way (schematic items AE, AF)
+
+8 to 10Ω
+
+Solenoid valve, 2 position 2 way (schematic items H, J)
+
+3.5 to 5.5Ω Solenoid Valve, 2 position 3 way (schematic items C, D, G, I, K, AX, AY, BU, BT)
+
+7.5 to 9.5Ω Solenoid valve, 2 position 2 way (schematic item A)
+
+3.5 to 5.5Ω Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+October 2018 Service and Repair Manual Specifications
+
+Deutz BF4L 2011 Engine
+
+Lubrication system
+
+Displacement Number of cylinders 189.6 cu. in
+
+Oil pressure, hot (@ 2000 rpm) 3.1 liters
+
+4
+
+Oil capacity (including filter) 40 to 60 psi 2.8 to 4.1 bar 11 quarts 10.4 liters Bore and Stroke Horsepower net intermittent
+
+3.7 x 4.409 inches 94 x 112 mm
+
+Oil viscosity requirements
+
+\-22°F to 86°F / -30°C to 30°C Continuous @ 2500 rpm Net intermittent @ 2500 rpm
+
+\-4°F to 90°F / -20°C to 32°C 5W-30 69 hp / 51 kW 73 hp / 54 kW
+
+(synthetic) 10W-40
+
+Firing order 1 - 3 - 4 - 2
+
+Above 23°F / -5°C 20W-50
+
+Low idle High idle 1500 rpm 383 Hz
+
+2350 rpm 599 Hz
+
+Unit ships with 15W-40. Extreme operating temperatures may require the use of alternative engine oils. For oil requirements, refer to the Engine Operator Manual for your engine.
+
+Compression ratio 17.5:1
+
+Oil temperature switch
+
+Compression pressure pressure (psi or bar) of the
+
+Installation torque 8 - 18 ft-lbs lowest cylinder must be at least 75% of the highest
+
+11 - 24 Nm cylinder
+
+Temperature switch point 275°F Governor centrifugal
+
+135°C mechanical
+
+Oil Pressure switch Valve Clearance, cold
+
+Installation torque 8 - 18 ft-lbs Intake 0.012 in
+
+11 - 24 Nm 0.3 mm
+
+Pressure switch point 7 psi Exhaust 0.020 in
+
+0.48 bar 0.5 mm
+
+Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+Part No. 1268557GT Z®-135/70 7
+
+Service and Repair Manual October 2018 Specifications
+
+Deutz BF4L 2011 cont.
+
+Fuel injection system Motorpal Injection pump pressure, maximum
+
+8 Z®-135/70 Part No. 1268557GT
+
+15,000 psi 1034 bar Injector opening pressure 3046 psi 210 bar
+
+Fuel requirement
+
+For fuel requirements, refer to the engine Operator Manual for your engine. Starter motor Current draw, normal load 140 - 200A Cranking speed 200 - 250 rpm
+
+Battery – Auxiliary power units Type 6V DC Quantity 2 Battery capacity, maximum 285 AH Reserve capacity @ 25A rate 745 minutes
+
+Battery – Engine starting and control system Type 12V DC, Group 31 Quantity 1 Battery capacity, maximum 1000A Reserve capacity @ 25A rate 200 Minutes
+
+Alternator output 80A @ 14V DC
+
+Fan belt deflection 3/8 to 1/2 inch 9.5 to 12.5 mm Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+October 2018 Service and Repair Manual Specifications
+
+Deutz TD2011L04i Engine
+
+Lubrication system
+
+Displacement Number of cylinders 220.9 cu. in
+
+Oil pressure, hot (@ 2000 rpm) 3.62 liters
+
+4
+
+Oil capacity (including filter) 40 to 60 psi 2.8 to 4.1 bar 12.8 quarts 12.1 liters Bore and Stroke Horsepower net intermittent @ 2400 rpm Induction system Firing order Low idle 3.78 x 4.92 inches 96 x 125 mm
+
+Oil viscosity requirements
+
+\-22°F to 86°F / -30°C to 30°C 5W-30
+
+74 hp / 55 kW
+
+turbocharged
+
+\-4°F to 104°F / -20°C to 40°C Above 5°F / -15°C (synthetic) 10W-40 15W-40 1 - 3 - 4 - 2
+
+1500 rpm 383 Hz
+
+Unit ships with 15W-40. Extreme operating temperatures may require the use of alternative engine oils. For oil requirements, refer to the Engine High idle 2350 rpm
+
+Operator Manual for your engine. 599 Hz
+
+Compression ratio 17.5:1
+
+Oil temperature switch
+
+Compression pressure pressure (psi or bar) of the Installation torque lowest cylinder must be at least 75% of the highest
+
+8 - 18 ft-lbs 11 - 24 Nm
+
+cylinder
+
+Temperature switch point 275°F
+
+Governor centrifugal mechanical
+
+135°C
+
+Valve Clearance, cold
+
+Oil Pressure switch
+
+Intake 0.012 in
+
+Installation torque 0.3 mm
+
+8 - 18 ft-lbs 11 - 24 Nm
+
+Exhaust 0.020 in
+
+Pressure switch point 0.5 mm
+
+22 psi 1.5 bar Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+Part No. 1268557GT Z®-135/70 9
+
+Service and Repair Manual October 2018 Specifications
+
+Deutz TD2011L04i cont.
+
+Fuel injection system Motorpal Injection pump pressure, maximum
+
+10 Z®-135/70 Part No. 1268557GT
+
+15,000 psi 1034 bar Injector opening pressure 3046 psi 210 bar
+
+Fuel requirement
+
+For fuel requirements, refer to the engine Operator Manual for your engine. Starter motor Current draw, normal load 140 - 200A Cranking speed 250 - 350 rpm
+
+Battery – Auxiliary power units Type 6V DC Quantity 2 Battery capacity, maximum 285 AH Reserve capacity @ 25A rate 745 minutes
+
+Battery – Engine starting and control system Type 12V DC, Group 31 Quantity 1 Battery capacity, maximum 1000A Reserve capacity @ 25A rate 200 Minutes
+
+Alternator output 80A @ 14V DC
+
+Fan belt deflection 3/8 to 1/2 inch 9.5 to 12.5 mm Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+October 2018 Service and Repair Manual Specifications
+
+Cummins B4.5L Engine
+
+Lubrication system
+
+Displacement Number of cylinders 275 cu. in
+
+Oil pressure, hot (@ 2000 rpm) 4.5 liters
+
+4
+
+Oil capacity (including filter) 50 psi 3.45 bar 9.5 quarts 9 liters Bore and Stroke Horsepower net intermittent @ 2200 rpm 4.02 x 5.42 inches 102 x 138 mm
+
+Oil viscosity requirements
+
+Below 68°F / 20°C 80 hp / 60 kW
+
+\-10°F to 68°F / -23°C to 20°C 5W-30 10W-40
+
+Firing order 1 - 3 - 4 - 2
+
+Above 15°F / -9°C 15W-40
+
+Low idle High idle 1300 rpm 368 Hz
+
+2350 rpm 599 Hz
+
+Unit ships with 15W-40. Extreme operating temperatures may require the use of alternative engine oils. For oil requirements, refer to the Engine Operator Manual for your engine.
+
+Compression ratio 18:1
+
+Continuous improvement of our products is a Compression pressure pressure (psi or bar) of the lowest cylinder must be at least 75% of the highest
+
+Genie policy. Product specifications are subject to change without notice or obligation. cylinder
+
+Governor centrifugal mechanical Valve Clearance, cold
+
+Intake 0.010 in 0.254 mm Exhaust 0.020 in 0.508 mm
+
+Part No. 1268557GT Z®-135/70 11
+
+Service and Repair Manual October 2018 Specifications
+
+Cummins B4.5L cont.
+
+Fuel injection system Delphi Injection pump pressure, maximum
+
+12 Z®-135/70 Part No. 1268557GT
+
+3480 to 3680 psi 240 to 254 bar Injector opening pressure 3480 psi 240 bar
+
+Fuel requirement
+
+For fuel requirements, refer to the engine Operator Manual for your engine. Engine coolant Capacity 17 quarts 16 liters
+
+Coolant temperature switch
+
+Installation torque 8 - 18 ft-lbs 11 - 24 Nm Temperature switch point 230°F 110°C
+
+Starter motor
+
+Current draw, no load 125A Brush length, minimum 0.72 in 18.3 mm
+
+Battery – Auxiliary power units Type 6V DC Quantity 2 Battery capacity, maximum 285 AH Reserve capacity @ 25A rate 745 minutes
+
+Battery – Engine starting and control system Type 12V DC, Group 31 Quantity 1 Battery capacity, maximum 1000A Reserve capacity @ 25A rate 200 Minutes Alternator output 95A @ 12V DC
+
+Fan belt deflection 3/8 to 1/2 inch 9.5 to 12.5 mm Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+October 2018 Service and Repair Manual Specifications
+
+Cummins B3.3T Engine
+
+Lubrication system
+
+Displacement Number of cylinders 199 cu. in
+
+Oil pressure, hot (@ 2000 rpm) 3.26 liters
+
+4
+
+Oil capacity (including filter) 31 psi 72 bar 9 quarts 8.5 liters Bore and Stroke Horsepower net intermittent @ 2200 rpm 3.74 x 4.53 inches 95 x 115 mm
+
+Oil viscosity requirements
+
+Below 68°F / 20°C 80 hp / 60 kW
+
+\-10°F to 68°F / -23°C to 20°C 5W-30 10W-40
+
+Firing order 1 - 2 - 4 - 3
+
+Above 14°F / -10°C 15W-40
+
+Low idle High idle 1300 rpm 368 Hz
+
+2350 rpm 599 Hz
+
+Unit ships with 15W-40. Extreme operating temperatures may require the use of alternative engine oils. For oil requirements, refer to the Engine Operator Manual for your engine.
+
+Compression ratio 17:1
+
+Continuous improvement of our products is a Compression pressure pressure (psi or bar) of the lowest cylinder must be at least 75% of the highest
+
+Genie policy. Product specifications are subject to change without notice or obligation. cylinder
+
+Valve Clearance, cold Intake 0.014 in 0.35 mm Exhaust 0.020 in 0.508 mm
+
+Part No. 1268557GT Z®-135/70 13
+
+Service and Repair Manual October 2018 Specifications
+
+Cummins B3.3T cont.
+
+Fuel injection system Zexel Injection pump pressure, maximum
+
+14 Z®-135/70 Part No. 1268557GT
+
+12,000 psi 827 bar
+
+Fuel requirement
+
+For fuel requirements, refer to the engine Operator Manual for your engine. Engine coolant Capacity 9.1 quarts 8.6 liters
+
+Starter motor
+
+Current draw, maximum load 550A Cranking speed 130 rpm
+
+Battery – Auxiliary power units Type 6V DC Quantity 2 Battery capacity, maximum 285 AH Reserve capacity @ 25A rate 745 minutes
+
+Battery – Engine starting and control system Type 12V DC, Group 31 Quantity 1 Battery capacity, maximum 1000A Reserve capacity @ 25A rate 200 Minutes
+
+Alternator output 120A @ 12V DC
+
+Fan belt deflection 3/8 to 1/2 inch 9.5 to 12.5 mm Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+October 2018 Service and Repair Manual Specifications
+
+Perkins 1104C-44
+
+Lubrication system
+
+Displacement Number of cylinders 268.5 cu. in
+
+Oil pressure, hot (@ 2000 rpm) 4.4 liters
+
+4
+
+Oil capacity (including filter) 40 to 60 psi 2.8 to 4.1 bar 7.3 quarts 6.9 liters Bore and Stroke Horsepower net intermittent Gross intermittent @ 2400 rpm
+
+4.13 x 5 inches 105 x 127 mm
+
+Oil viscosity requirements
+
+Below 68°F / 20°C 10°F to 104°F / -12°C to 40°C 5W-20 86 hp / 64 kW
+
+10W-40 Net intermittent @ 2400 rpm
+
+83 hp / 62 kW
+
+Above 14°F / -10°C 15W-40 Firing order 1 - 3 - 4 - 2
+
+Unit ships with 15W-40. Extreme operating Low idle 1300 rpm 312 Hz
+
+temperatures may require the use of alternative engine oils. For oil requirements, refer to the Engine Operator Manual for your engine. High idle 2350 rpm 572 Hz
+
+Oil Pressure switch
+
+Compression ratio 18.2:1
+
+Installation torque 8 - 18 ft-lbs 11 - 24 Nm Compression pressure pressure (psi or bar) of the lowest cylinder must be at least 75% of the highest Pressure switch point cylinder
+
+8 psi 0.55 bar
+
+Governor mechanical centrifugal
+
+Fuel Injection injection pump system
+
+make Bosch
+
+Valve Clearance, cold Intake Injector opening pressure 2200 psi
+
+0.008 in 0.2 mm
+
+Fuel requirement
+
+152 bar
+
+Exhaust 0.018 in 0.45 mm
+
+For fuel requirements, refer to the engine Operator Manual for your engine. Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+Part No. 1268557GT Z®-135/70 15
+
+Service and Repair Manual October 2018 Specifications
+
+Perkins 1104C-44 cont.
+
+Starter motor
+
+Current draw, normal load 140 - 200A Cranking speed 200 - 250 rpm
+
+Battery – Auxiliary power units Type 6V DC Quantity 2 Battery capacity, maximum 285 AH Reserve capacity @ 25A rate 745 minutes
+
+Battery – Engine starting and control system Type 12V DC, Group 31 Quantity 1 Battery capacity, maximum 1000A Reserve capacity @ 25A rate 200 Minutes
+
+Engine coolant
+
+Capacity 14 quarts 13.2 liters
+
+Coolant temperature switch
+
+Installation torque 8 - 18 ft-lbs 11 - 24 Nm
+
+Temperature switch point 230°F 110°C
+
+Alternator output 85A @ 13.8V DC
+
+Fan belt deflection 3/8 inch 9.5 mm Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+16 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Specifications
+
+Perkins 804D-33T
+
+Lubrication system
+
+Displacement Number of cylinders 203 cu. in
+
+Oil pressure, hot (@ 2000 rpm) 3.33 liters
+
+4
+
+Oil capacity (including filter) 40 to 60 psi 2.8 to 4.1 bar 10.6 quarts 10 liters Bore and Stroke Horsepower net intermittent Gross intermittent @ 2200 rpm 3.7 x 4.72 inches 94 x 120 mm
+
+Oil viscosity requirements
+
+Below 86°F / 30°C 83 hp / 62 kW
+
+\-4°F to 104°F / -20°C to 40°C 5W-20 10W-30
+
+Induction system turbocharged
+
+Above 14°F / -10°C 15W-40
+
+Firing order 1 - 3 - 4 - 2
+
+Unit ships with 15W-40. Extreme operating temperatures may require the use of alternative engine Low idle 1300 rpm
+
+oils. For oil requirements, refer to the Engine Operator 316 Hz
+
+Manual for your engine. High idle 2350 rpm
+
+Oil Pressure switch 572 Hz
+
+Installation torque 8 - 18 ft-lbs Compression ratio 19.5:1
+
+11 - 24 Nm
+
+Compression pressure pressure (psi or bar) of the
+
+Pressure switch point 8 psi lowest cylinder must be at least 75% of the highest
+
+0.55 bar cylinder
+
+Fuel injection system Governor Valve Clearance, cold
+
+mechanical centrifugal
+
+Injection Injector opening pump make pressure Bosch 2200 psi 152 bar Intake Exhaust 0.0098 in 0.25 mm 0.0098 in 0.25 mm
+
+Fuel requirement
+
+For fuel requirements, refer to the engine Operator Manual for your engine. Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+Part No. 1268557GT Z®-135/70 17
+
+Service and Repair Manual October 2018 Specifications
+
+Perkins 804D-33T cont.
+
+Starter motor
+
+Current draw, normal load 200A Cranking speed 250 rpm
+
+Battery – Auxiliary power units Type 6V DC Quantity 2 Battery capacity, maximum 285 AH Reserve capacity @ 25A rate 745 minutes
+
+Battery – Engine starting and control system Type 12V DC, Group 31 Quantity 1 Battery capacity, maximum 1000A Reserve capacity @ 25A rate 200 Minutes
+
+Engine coolant
+
+Capacity 12.5 quarts 11.8 liters
+
+Coolant temperature switch
+
+Installation torque 8 - 18 ft-lbs 11 - 24 Nm
+
+Temperature switch point 230°F 110°C
+
+Alternator output 90A @ 12V DC
+
+Fan belt deflection 3/8 to 1/2 inch 9.5 to 12.5 mm Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+18 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Specifications
+
+Machine Torque Specifications
+
+Drive motors and hubs
+
+Platform Rotator
+
+Drive hub mounting bolts, lubricated 180 ft-lbs 217 Nm 1-8 center bolt, GR 5 480 ft-lbs 651 Nm
+
+Drive motor mounting bolts, dry 75 ft-lbs 102 Nm 3/8 -16 bolts, GR 8 44 ft-lbs 60 Nm
+
+Drive motor mounting bolts, lubricated 56 ft-lbs 76 Nm Turntable rotate assembly
+
+Engine vibration isolators Rotate bearing mounting bolts, lubricated (3/4 -10 SHC)
+
+320 ft-lbs 434 Nm
+
+Mounting bolts, dry 60 ft-lbs 81 Nm Rotate bearing mounting bolts, lubricated (5/8 -11 SHC)
+
+Mounting bolts, lubricated 45 ft-lbs 61 Nm Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+Part No. 1268557GT Z®-135/70 19
+
+180 ft-lbs 244 Nm Rotate drive hub mounting bolts, lubricated 80 ft-lbs 108 Nm Drive motor mounting bolts, dry 75 ft-lbs 102 Nm Drive motor mounting bolts, lubricated 56 ft-lbs 76 Nm Backlash plate mounting bolts, lubricated 320 ft-lbs 434 Nm
+
+Service and Repair Manual October 2018 Specifications
+
+Hydraulic Hose and Fitting Torque Specifications
+
+SAE O-ring Boss Port
+
+Your machine is equipped with Parker Seal-Lok™ ORFS or 37° JIC fittings and hose ends. Genie
+
+(tube fitting - installed into Aluminum) (all types)
+
+specifications require that fittings and hose ends be
+
+SAE Dash Size Torque torqued to specification when they are removed and
+
+\-4 14 ft-lbs / 19 Nm installed or when new hoses or fittings are installed.
+
+\-6 23 ft-lbs / 31.2 Nm
+
+Seal-Lok™ Fittings
+
+\-8 36 ft-lbs / 54.2 Nm -10 62 ft-lbs / 84 Nm (hose end - ORFS)
+
+\-12 84 ft-lbs / 114 Nm SAE Dash Size Torque
+
+\-16 125 ft-lbs / 169.5 Nm -4 10 ft-lbs / 13.6 Nm
+
+\-20 151 ft-lbs / 204.7 Nm -6 30 ft-lbs / 40.7 Nm
+
+\-24 184 ft-lbs / 249.5 Nm -8 40 ft-lbs / 54.2 Nm -10 60 ft-lbs / 81.3 Nm -12 85 ft-lbs / 115 Nm -16 110 ft-lbs / 150 Nm -20 140 ft-lbs / 190 Nm -24 180 ft-lbs / 245 Nm
+
+JIC 37° Fittings (swivel nut or hose connection)
+
+Adjustable Fitting Non-adjustable fitting
+
+1 jam nut
+
+SAE Dash Size Thread Size Flats
+
+\-4 7/16-20 2
+
+SAE O-ring Boss Port -6 9/16-18 1 ¼
+
+(tube fitting - installed into Steel) -8 3/4-16 1
+
+SAE Dash Size Torque -10 7/8-14 1
+
+\-4 ORFS / 37° (Adj) -12 1 1/16-12 1 -16 1 5/16-12 1
+
+ORFS (Non-adj) 37° (Non-adj)
+
+\-20 1 5/8-12 1 -24 1 7/8-12 1
+
+20 Z®-135/70 Part No. 1268557GT 15 ft-lbs / 20.3 Nm 26 ft-lbs / 35.3 Nm 22 ft-lbs / 30 Nm -6 ORFS (Adj / Non-adj)
+
+37° (Adj / Non-adj)
+
+35 ft-lbs / 47.5 Nm 29 ft-lbs / 39.3 Nm -8 ORFS (Adj / Non-adj)
+
+37° (Adj / Non-adj)
+
+60 ft-lbs / 81.3 Nm 52 ft-lbs / 70.5 Nm -10 ORFS (Adj / Non-adj)
+
+37° (Adj / Non-adj)
+
+100 ft-lbs / 135.6 Nm 85 ft-lbs / 115.3 Nm -12 (All types) 135 ft-lbs / 183 Nm -16 (All types) 200 ft-lbs / 271.2 Nm -20 (All types) 250 ft-lbs / 339 Nm -24 (All types) 305 ft-lbs / 413.5 Nm
+
+October 2018 Service and Repair Manual Specifications
+
+Torque Procedure
+
+JIC 37° fittings Seal-Lok™ fittings
+
+1 Align the tube flare (hex nut) against the nose
+
+1 Replace the O-ring. The O-ring must be
+
+replaced anytime the seal has been broken. The O-ring cannot be re-used if the fitting or
+
+of the fitting body (body hex fitting) and tighten the hex nut to the body hex fitting to hand tight, approximately 30 in-lbs / 3.4 Nm.
+
+hose end has been tightened beyond finger
+
+2 Using a permanent ink marker, make a tight.
+
+reference mark on one the flats of the hex nut
+
+Note: The O-ring in Parker Seal Lok™ fittings and hose end are custom-size O-rings. They are not
+
+and continue the mark onto the body of the hex fitting. Refer to Illustration 1.
+
+standard size O-rings. They are available in the O-ring field service kit (Genie part number 49612).
+
+2 Lubricate the O-ring before installation.
+
+3 Be sure the O-ring face seal is seated and
+
+retained properly.
+
+4 Position the tube and nut squarely on the face seal end of the fitting, and tighten the nut finger tight.
+
+5 Tighten the nut or fitting to the appropriate
+
+Illustration 1
+
+torque. Refer to the appropriate torque chart in
+
+1 hex nut this section.
+
+2 reference mark
+
+6 Operate all machine functions and inspect the
+
+3 body hex fitting hose, fittings and related components to confirm there are no leaks.
+
+Part No. 1268557GT Z®-135/70 21
+
+Service and Repair Manual October 2018 Specifications
+
+3 Working clockwise on the body hex fitting,
+
+make a second mark with a permanent ink marker to indicate the proper tightening position. Refer to Illustration 2.
+
+Note: Use the JIC 37° Fitting table in this section to determine the correct number of flats, for the proper tightening position.
+
+Note: The marks indicate the correct tightening positions have been determined. Use the second mark on the body hex fitting to properly tighten the joint after it has been loosened.
+
+Illustration 2
+
+1 body hex fitting 2 reference mark 3 second mark
+
+4 Tighten the hex nut until the mark on the hex
+
+nut is aligned with the second mark on the body hex fitting.
+
+5 Operate all machine functions and inspect the
+
+hose, fittings and related components to confirm there are no leaks.
+
+22 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Specifications
+
+T
+
+Part No. 1268557GT Z®-135/70 23
+
+Service and Repair Manual October 2018 Repair Procedures
+
+Section 3 Repair Pr oc edures
+
+Machine Configuration:
+
+R Unless otherwise specified, perform each
+
+repair procedure with the machine in the following configuration:
+
+• Machine parked on a firm, level surface
+
+Observe and Obey:
+
+• Key switch in the off position with the key removed R Repair procedures shall be completed by a
+
+• The red Emergency Stop button in the off person trained and qualified on the repair of this
+
+position at both the ground and platform machine.
+
+controls R Immediately tag and remove from service a
+
+• Wheels chocked damaged or malfunctioning machine. R Repair any machine damage or malfunction
+
+• All external AC power supply disconnected from the machine before operating the machine.
+
+• Boom in the stowed position
+
+Before Repairs Start:
+
+• Turntable secured with the turntable rotation lock R Read, understand and obey the safety rules and operating instructions in the appropriate operator's manual on your machine. R Be sure that all necessary tools and parts are
+
+available and ready for use. R Use only Genie approved replacement parts. R Read each procedure completely and adhere
+
+to the instructions. Attempting shortcuts may produce hazardous conditions.
+
+24 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Repair Procedures
+
+About This Section
+
+Most of the procedures in this section should only be performed by trained service professional in a suitably equipped workshop. Select the appropriate repair procedure after troubleshooting the problem.
+
+Perform disassembly procedures to the point where repairs can be completed. Then to re-assemble, perform the disassembly steps in reverse order.
+
+Symbols Legend Safety alert symbol—used to alert
+
+personnel to potential personal injury hazards. Obey all safety messages that follow this symbol to avoid possible injury or death.
+
+Indicates a imminently hazardous situation which, if not avoided, will result in death or serious injury.
+
+Indicates a potentially hazardous situation which, if not avoided, could result in death or serious injury.
+
+Indicates a potentially hazardous situation which, if not avoided, may cause minor or moderate injury.
+
+Indicates a potentially hazardous situation which, if not avoided, may result in property damage.
+
+Indicates that a specific result is expected after performing a series of steps.
+
+Indicates that an incorrect result has occurred after performing a series of steps.
+
+Part No. 1268557GT Z®-135/70 25
+
+Service and Repair Manual October 2018 Platform Controls
+
+Platform Controls
+
+The platform controls contains two printed circuit boards:
+
+The LED circuit board is mounted to the underside of the control box lid which contains the LEDs. The LED circuit board sends the input from the operator to the platform controls circuit board (PCON). The circuit board (PCON) sends the data to the turntable control box (TCON) for processing.
+
+The platform controls ECM circuit board communicates with the turntable controls. The joystick controllers at the platform controls utilize Hall Effect technology and require no adjustment. The operating parameters of the joysticks are stored in memory at the turntable controls. If a joystick controller error occurs or if a joystick is replaced, it will need to be calibrated before that particular machine function will operate. Refer to Repair Procedure, How to Calibrate a Joystick Controller.
+
+1 platform controls ALC-1000 circuit board 2 jib boom up/down, jib boom extend/retract
+
+and platform rotate left right joystick 3 secondary boom up/extend and
+
+down/retract joystick 4 drive/steer joystick controller 5 LED circuit board Each joystick controller should operate smoothly
+
+6 primary boom up/down, primary boom and provide proportional speed control over its entire range of motion.
+
+extend/retract and turntable rotate left/right joystick
+
+For further information or assistance, consult Genie Product Support.
+
+26 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Platform Controls
+
+1-1
+
+7 Attach a grounded wrist strap to the ground Platform Circuit Board
+
+screw inside the control box.
+
+Electrocution/burn hazard. Electrocution/burn hazard. Contact with electrically charged circuits could result in death or serious injury. Remove all rings, watches and other jewelry.
+
+Contact with electrically charged circuits could result in death or serious injury. Remove all rings, watches and other jewelry.
+
+Note: When the platform circuit board is replaced, jib bellcrank and platform level will need to be calibrated. Refer to Repair Procedures, How to Calibrate the Jib Boom Bellcrank Angle Sensor or How to Calibrate the Platform Level Sensor.
+
+Component damage hazard. Electrostatic discharge (ESD) can damage printed circuit board components. Maintain firm contact with a metal part of the machine that is grounded at all times when handling printed How to Remove the Circuit Board
+
+circuit boards OR use a grounded wrist strap. 1 Push in the red Emergency Stop button to the
+
+off position at both the ground and platform
+
+8 Tag and carefully disconnect the wire controls.
+
+connectors from the circuit board. 2 Locate the cables that connect to the bottom of
+
+9 Tag and disconnect the ribbon cable from the the control box. Number each cable and its
+
+LED circuit board. location at the control box.
+
+10 Remove the circuit board mounting fasteners. 3 Disconnect the cables from the bottom of the
+
+platform control box.
+
+11 Carefully remove the circuit board from the
+
+control box. 4 Remove the control cable receptacle retaining fasteners from the bottom of the platform control box.
+
+5 Remove the platform control box lid retaining
+
+fasteners. Open the control box lid.
+
+6 Locate the circuit board mounted to the inside
+
+of the platform control box.
+
+Part No. 1268557GT Z®-135/70 27
+
+Service and Repair Manual October 2018 Platform Controls
+
+How to R emove the LED Circui t Board
+
+How to Remove the LED Circuit Board
+
+1 Push in the red Emergency Stop button to the
+
+off position at both the ground and platform controls.
+
+2 Remove the platform control box lid retaining
+
+fasteners. Open the control box lid.
+
+3 Locate the circuit board mounted to the inside
+
+of the platform control box.
+
+Electrocution/burn hazard. Contact with electrically charged circuits could result in death or serious injury. Remove all rings, watches and other jewelry.
+
+Component damage hazard. Electrostatic discharge (ESD) can damage printed circuit board components. Maintain firm contact with a metal part of the machine that is grounded at all times when handling printed circuit boards OR use a grounded wrist strap.
+
+4 Tag and carefully disconnect the ribbon cables
+
+from the membrane circuit board.
+
+5 Remove the circuit board mounting fasteners.
+
+6 Carefully remove the LED circuit board from
+
+the platform control box lid. Do not lose the plastic spacers.
+
+Note: When installing the LED circuit board, be sure the plastic spacers are installed between the circuit board and the control box lid.
+
+28 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Platform Controls
+
+1-2 Membrane Decal
+
+8 Install the new membrane decal while guiding
+
+the ribbon cables through the control box lid.
+
+Note: Be sure that all LED locations on the
+
+How to Replace the Membrane
+
+membrane decal align with the LEDs on the membrane circuit board. Decal
+
+9 Install a new platform controls decal over the The membrane decal is a special decal that
+
+membrane decal. consists of a decal with an electronic membrane on
+
+10 Open the control box lid and carefully connect the backside. The membrane contains touch
+
+the ribbon cables from the membrane decal to sensitive areas that, when pushed, activate the
+
+the membrane circuit board. machine functions. The membrane contains touch sensitive areas that activate the machine functions.
+
+1 Push in the red Emergency Stop button to the
+
+off position at both the ground and platform controls.
+
+2 Remove the platform control box lid retaining
+
+fasteners. Open the control box lid.
+
+3 Tag and carefully disconnect the two ribbon
+
+cables from the membrane circuit board.
+
+Electrocution/burn hazard. Contact with electrically charged circuits could result in death or serious injury. Remove all rings, watches and other jewelry.
+
+Component damage hazard. Electrostatic discharge (ESD) can damage printed circuit board components. Maintain firm contact with a metal part of the machine that is grounded at all times when handling printed circuit boards OR use a grounded wrist strap.
+
+4 Close the control box lid.
+
+5 Remove the platform controls decal from the
+
+platform control box.
+
+6 Carefully remove the membrane decal from
+
+the control box lid while guiding the ribbon cables out of the control box lid.
+
+7 Remove any decal adhesive from the control
+
+box lid with a mild solvent.
+
+Note: Do not allow any solvent to come in contact with the membrane circuit board.
+
+Part No. 1268557GT Z®-135/70 29
+
+Service and Repair Manual October 2018 Platform Controls
+
+1-3 Joysticks
+
+5 Press the plus button to select YES, then
+
+press the enter button.
+
+6 Do not start the engine.
+
+How to Calibrate a Joystick
+
+7 Locate the drive/steer joystick.
+
+The joystick controllers on this machine utilize digital Hall Effect technology for proportional control. If a joystick controller is disconnected or replaced, it must be calibrated before that particular machine function will operate.
+
+8 Move the drive/steer joystick full stroke in the
+
+forward direction and hold for 5 seconds, then return to the center or neutral position.
+
+9 Move the drive/steer joystick full stroke in the
+
+reverse direction and hold for 5 seconds, then return to the center or neutral position. Note: The joystick must be calibrated before the threshold, max-out or ramping can be set.
+
+Result: The alarm at the ground controls
+
+Note: After each joystick is calibrated, check the display at the ground control box. There should be no calibration faults shown on the display. If calibration faults exist, repeat procedure for that joystick controlled function.
+
+Note: Perform this procedure with the engine off.
+
+Note: Use the following chart to identify the description of each LCD screen control button used in this procedure.
+
+Plus Minus Previous Enter Drive functions:
+
+1 Turn the key switch to the off position.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the minus button twice, then press the
+
+enter button twice.
+
+4 Use the scroll button to scroll through the
+
+menu until DELETE DRIVE JOYSTICK DEFAULTS is displayed.
+
+30 Z®-135/70 Part No. 1268557GT
+
+should sound for a successful calibration.
+
+October 2018 Service and Repair Manual Platform Controls
+
+Steer functions:
+
+1 Turn the key switch to the off position.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the minus button twice, then press the
+
+enter button twice.
+
+4 Use the scroll button to scroll through the
+
+menu until DELETE STEER JOYSTICK DEFAULTS is displayed.
+
+5 Press the plus button to select YES, then
+
+press the enter button.
+
+6 Do not start the engine.
+
+7 Locate the drive/steer joystick.
+
+8 Move the drive/steer joystick or thumb rocker switch (if equipped) full stroke in the left direction and hold for 5 seconds, then return to the center or neutral position.
+
+9 Move the drive/steer joystick or thumb rocker switch (if equipped) full stroke in the right direction and hold for 5 seconds, then return to the center or neutral position.
+
+Result: The alarm at the ground controls should sound for a successful calibration.
+
+Part No. 1268557GT Z®-135/70 31
+
+Secondary boom up/down and extend/retract functions:
+
+1 Turn the key switch to the off position.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the minus button twice, then press the
+
+enter button twice.
+
+4 Use the scroll button to scroll through the
+
+menu until DELETE SECONDARY BOOM JOYSTICK DEFAULTS is displayed.
+
+5 Press the plus button to select YES, then
+
+press the enter button.
+
+6 Do not start the engine.
+
+7 Locate the secondary boom up/down and
+
+extend/retract joystick.
+
+8 Move the secondary boom up/down and
+
+extend/retract joystick full stroke in the up/extend direction and hold for 5 seconds, then return to the center or neutral position.
+
+9 Move the secondary boom up/down and
+
+extend/retract joystick full stroke in the down/retract direction and hold for 5 seconds, then return to the center or neutral position.
+
+Result: The alarm at the ground controls
+
+should sound for a successful calibration.
+
+Service and Repair Manual October 2018 Platform Controls
+
+Primary boom extend/retract functions:
+
+1 Turn the key switch to the off position.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the minus button twice, then press the
+
+enter button twice.
+
+4 Use the scroll button to scroll through the
+
+menu until DELETE PRIMARY BOOM EXTEND/RETRACT JOYSTICK DEFAULTS is displayed.
+
+5 Press the plus button to select YES, then
+
+press the enter button.
+
+6 Do not start the engine.
+
+7 Locate the thumb rocker switch on top of the
+
+primary boom/turntable rotate joystick.
+
+8 Move the primary boom extend/retract thumb
+
+rocker switch full stroke in the extend direction and hold for 5 seconds, then return to thecenter or neutral position.
+
+9 Move the primary boom extend/retract thumb
+
+rocker switch full stroke in the retract direction and hold for 5 seconds, then return to the center or neutral position.
+
+Result: The alarm at the ground controls should sound for a successful calibration.
+
+32 Z®-135/70 Part No. 1268557GT
+
+Primary boom up/down functions:
+
+1 Turn the key switch to the off position.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the minus button twice, then press the
+
+enter button twice.
+
+4 Use the scroll button to scroll through the
+
+menu until DELETE PRIMARY BOOM UP/DOWN JOYSTICK DEFAULTS is displayed.
+
+5 Press the plus button to select YES, then
+
+press the enter button.
+
+6 Do not start the engine.
+
+7 Locate the primary boom/turntable rotate
+
+joystick.
+
+8 Move the boom/turntable rotate joystick full
+
+stroke in the up direction and hold for 5 seconds, then return to the center or neutral position.
+
+9 Move the boom/turntable rotate joystick full
+
+stroke in the down direction and hold for 5 seconds, then return to the center or neutral position.
+
+Result: The alarm at the ground controls
+
+should sound for a successful calibration.
+
+October 2018 Service and Repair Manual Platform Controls
+
+Jib boom up/down functions:
+
+1 Turn the key switch to the off position.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the minus button twice, then press the
+
+enter button twice.
+
+4 Use the scroll button to scroll through the
+
+menu until RESET JIB BOOM UP/DOWN JOYSTICK DEFAULTS is displayed.
+
+5 Press the plus button to select YES, then
+
+press the enter button.
+
+6 Do not start the engine.
+
+7 Locate the jib boom joystick.
+
+8 Move the jib boom joystick full stroke in the up direction and hold for 5 seconds, then return to the center or neutral position.
+
+9 Move the jib boom joystick full stroke in the
+
+down direction and hold for 5 seconds, then return to the center or neutral position.
+
+Result: The alarm at the ground controls should sound for a successful calibration.
+
+Part No. 1268557GT Z®-135/70 33
+
+Turntable rotate functions:
+
+1 Turn the key switch to the off position.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the minus button twice, then press the
+
+enter button twice.
+
+4 Use the scroll button to scroll through the
+
+menu until DELETE TURNTABLE ROTATE JOYSTICK DEFAULTS is displayed.
+
+5 Press the plus button to select YES, then
+
+press the enter button.
+
+6 Do not start the engine.
+
+7 Locate the primary boom/turntable rotate
+
+joystick.
+
+8 Move the boom/turntable joystick full stroke in
+
+the left direction and hold for 5 seconds, then return to the center or neutral position.
+
+9 Move the boom/turntable joystick full stroke in
+
+the right direction and hold for 5 seconds, then return to the center or neutral position.
+
+Result: The alarm at the ground controls
+
+should sound for a successful calibration.
+
+Service and Repair Manual October 2018 Platform Controls
+
+How to Reset a Proportional Valve Coil Default
+
+How to Reset a Proportional Valve Coil Default
+
+Note: Use the following chart to identify the description of each LCD screen control button used in this procedure.
+
+Plus Minus Previous Enter Note: This procedure only needs to be performed if a proportional valve has been replaced.
+
+Note: After the valve coil defaults have been set, each machine function threshold and default function speed must be set. Refer to Repair Procedure, How to Set the Function Thresholds and Default Function Speeds.
+
+1 Turn the key switch to the off position.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the minus button twice, then press the
+
+enter button twice.
+
+4 Use the previous button to scroll through the menu until the function valve that needs to be reset is displayed. Press the plus button to select yes, then press the enter button to save the setting.
+
+5 Press the enter or previous button on the
+
+LCD screen until EXIT is displayed.
+
+6 Press the plus button or minus button to
+
+select YES and then press the enter button.
+
+34 Z®-135/70 Part No. 1268557GT
+
+How to Set the Function Thresholds and Default Functions Speeds
+
+How to Set the Function Thresholds and Default Functions Speeds
+
+Note: Before the threshold and default function speeds can be set, the boom function proportional valve coil defaults must be set first. Refer to Repair Procedure, How to Reset a Proportional Valve Coil Default.
+
+Note: If a boom function proportional valve coil has not been replaced and just want to reset the function speed to original factory settings, proceed to Function speeds procedure.
+
+1 Start the engine from the platform controls.
+
+2 Press down the foot switch.
+
+Note: Be sure the engine rpm is set to foot switch activated high idle.
+
+Function threshold:
+
+3 Select a joystick controlled function that needs
+
+to have the threshold set.
+
+4 Slowly move the joystick off center in either
+
+direction just until the machine function starts to move, then move the joystick very slowly towards the neutral or center position just before the machine function stops. Do not let go of the joystick.
+
+5 While holding the joystick in position, press the
+
+engine start button at the platform controls to set the joystick controller threshold.
+
+October 2018 Service and Repair Manual Platform Controls
+
+6 Slowly move the joystick off center in the
+
+Function speeds: opposite direction just until the machine function starts to move, then move the joystick very slowly towards the neutral or center position just before the machine function
+
+Note: Be sure the machine is in the stowed position and the boom is rotated between the circle end tires. stops. Do not let go of the joystick.
+
+Note: Perform this procedure with the machine on a 7 While holding the joystick in position, press the
+
+firm, level surface that is free of obstructions. engine start button at the platform controls to set the joystick controller threshold.
+
+Note: Unless the LCD screen displays NOT CALIBRATED, it will be necessary to enter the 8 Repeat steps for each joystick controlled
+
+valve calibration menu. machine function:
+
+12 Start the engine from the platform controls.
+
+• Primary boom up/down
+
+13 Select a function that needs the function speed
+
+• Turntable rotate left/right
+
+set.
+
+• Primary boom extend/retract
+
+14 Primary boom up/down and extend/retract
+
+• Secondary up/down and extend/retract
+
+functions: Move the joystick full stroke in the up or extend direction. When the alarm
+
+• Drive forward/reverse
+
+9 Once the threshold has been set, press and
+
+hold the engine start button until the engine shuts off. Do not press the red Emergency Stop button.
+
+Note: Approximately 3 seconds after the engine shuts off, the alarm at the ground controls will sound to indicate the settings are being saved in memory.
+
+sounds, move the joystick in the opposite direction full stroke until the alarm sounds again. Return the joystick to center.
+
+Secondary boom up and down functions: Starting from the stowed position, move the joystick full stroke in the up direction. When the alarm sounds, move the joystick in the down direction full stroke until the alarm sounds again. Return the joystick to center.
+
+Turntable rotate function, fully retracted: 10 At the ground controls, turn the key switch to
+
+Move the rotate joystick full stroke in either the the off position, wait a moment and then turn
+
+left or right direction until the alarm sounds. the key switch to platform controls.
+
+Return the joystick to center. 11 Check the display at the ground controls to be
+
+sure there are no calibration faults.
+
+Note: There should be no calibration faults shown on the display. If calibration faults exist, repeat this procedure.
+
+Part No. 1268557GT Z®-135/70 35
+
+Service and Repair Manual October 2018 Platform Controls
+
+How to Adj ust the Functi on Speeds Turntable rotate function, primary boom extended: Extend the primary boom approximately 4 ft / 1.2 m. Move the rotate joystick full stroke in either the left or right
+
+How to Adjust the Function Speeds direction until the alarm sounds. Return the joystick to center.
+
+Note: Perform this procedure with the boom in the stowed position. Turntable rotate function, primary and jib booms extended: With the primary boom extended approximately 4 ft / 1.2 m, extend the jib boom approximately 1 ft / 0.3 m. Move
+
+Note: Use the following chart to identify the description of each LCD screen control button used in this procedure. the rotate joystick full stroke in either the left or right direction until the alarm sounds. Return the joystick to center.
+
+15 Once the function speeds have been set,
+
+press and hold the engine start button until the engine shuts off. Do not press the red Emergency Stop button.
+
+Note: Approximately 3 seconds after the engine shuts off, the alarm at the ground controls will sound to indicate the settings are being saved in memory.
+
+Plus Minus Previous Enter 1 Pull out the red Emergency Stop button to the
+
+on position at both the ground and platform controls.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for 16 At the ground controls, turn the key switch to
+
+approximately 5 seconds. the off position, wait a moment and then turn the key switch to platform controls.
+
+3 Press the plus button twice, then press the
+
+minus button twice. 17 Check the display at the ground controls to be
+
+sure there are no calibration faults.
+
+4 Press the previous button until the function to
+
+be adjusted is displayed. Note: There should be no calibration faults shown on the display. If calibration faults exist, repeat this procedure.
+
+5 Press the plus button to increase the speed or press the minus button to decrease the speed.
+
+36 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Platform Controls
+
+How to Adj ust the Functi on R amp R ate Setti ng 6 Press the enter button to save the setting in
+
+memory.
+
+How to Adjust the Function Ramp 7 Press the enter or previous button on the
+
+LCD screen until EXIT is displayed.
+
+Rate Setting
+
+8 Press the plus button or minus button to
+
+select YES and then press the enter button.
+
+The ramp rate setting of a joystick controls the time at which it takes for the joystick to reach maximum output, when moved out of the neutral position. The 9 Continue to perform this procedure until the
+
+ramp rate settings of a joystick can be changed to machine function speed meets specification.
+
+compensate for hydraulic pump wear to maintain Refer to Specifications, Performance
+
+peak performance from the machine. Specifications.
+
+Note: Perform this procedure with the boom in the stowed position.
+
+Note: Use the following chart to identify the description of each LCD screen control button used in this procedure.
+
+Plus Minus Previous Enter 1 Pull out the red Emergency Stop button to the
+
+on position at both the ground and platform controls.
+
+2 Press and hold the enter button on the ground
+
+control panel while turning the key switch to platform controls. Hold the enter button for approximately 5 seconds.
+
+3 Press the plus button twice, then press the
+
+previous button twice.
+
+Part No. 1268557GT Z®-135/70 37
+
+Service and Repair Manual October 2018 Platform Controls
+
+4 Press the previous button until the function to
+
+be adjusted is displayed.
+
+5 Press the plus button to increase the ramp
+
+rate or press the minus button to decrease the ramp rate.
+
+6 Press the enter button to save the setting in
+
+memory.
+
+7 Press the enter or previous button on the
+
+LCD screen until EXIT is displayed.
+
+8 Press the plus button or minus button to
+
+select YES and then press the enter button.
+
+38 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Platform Components
+
+2-1 Platform Leveling Cylinder
+
+4 Place a block under the platform leveling
+
+cylinder for support.
+
+5 Remove the external snap rings from the The platform leveling cylinder keeps the platform
+
+barrel-end pivot pin. Use a soft metal drift to level through the entire range of boom motion. The
+
+remove the barrel-end pivot pin. platform is maintained level to the turntable. To accomplish this, the ECM at the ground controls compares the difference in readings between the
+
+6 Support the rod end of the platform level
+
+cylinder. platform angle sensor and the turntable level
+
+7 Remove the pin retaining fasteners from the sensor, which then sends a signal to the platform
+
+platform leveling cylinder rod-end pivot pin. controls to open or close the appropriate platform
+
+Use a soft metal drift to remove the barrel-end level proportional valve on the platform manifold to
+
+pivot pin. maintain a level platform. The platform leveling cylinder is equipped with counterbalance valves to prevent movement in the event of a hydraulic line
+
+8 Carefully pull the platform leveling cylinder out
+
+of the boom to access the hydraulic hoses. failure.
+
+9 Tag, disconnect and plug the hydraulic hoses
+
+from the platform leveling cylinder. Cap the How to Remove the Platform
+
+fittings on the cylinder. Leveling Cylinder
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and Note: When removing a hose assembly or fitting,
+
+burn skin. Loosen hydraulic the O-ring (if equipped) on the fitting and/or hose
+
+connections very slowly to allow end must be replaced. All connections must be
+
+the oil pressure to dissipate torqued to specification during installation. Refer to
+
+gradually. Do not allow oil to Specifications, Hydraulic Hose and Fitting Torque
+
+squirt or spray. Specifications.
+
+1 Extend the jib boom until the platform leveling cylinder barrel-end pivot pin is accessible.
+
+10 Remove the platform leveling cylinder from the
+
+machine.
+
+2 Raise the jib boom slightly and place blocks
+
+under the platform.
+
+Crushing hazard. The platform leveling cylinder may fall if not properly supported when 3 Lower the jib boom until the platform is resting
+
+removed from the machine. on the blocks just enough to support the platform.
+
+Note: Do not rest the entire weight of the boom on the blocks.
+
+Part No. 1268557GT Z®-135/70 39
+
+Service and Repair Manual October 2018 Platform Components
+
+2-2
+
+3 Remove the platform angle sensor retaining Platform Rotator
+
+fasteners. Remove the platform angle sensor from the platform rotator. The platform rotator is a hydraulically activated helical gear assembly used to rotate the platform 160 degrees.
+
+Component damage hazard. The platform angle sensor is a very sensitive instrument. It can be damaged internally if is dropped How to Remove the Platform Rotator
+
+or sustains any physical shock, even if the damage is not visible.
+
+Component damage hazard. Mark the platform mounting weldment and the rotator flange
+
+4 Tag, disconnect and plug the hydraulic hoses
+
+from the platform rotator manifold. Cap the fittings on the manifold.
+
+before removing the platform
+
+Bodily injury hazard. Spraying mounting weldment. The
+
+hydraulic oil can penetrate and platform mounting weldment
+
+burn skin. Loosen hydraulic must be replaced in the exact
+
+connections very slowly to allow same position on the rotator
+
+the oil pressure to dissipate flange as it was before removal.
+
+gradually. Do not allow oil to If a new rotator is installed or the
+
+squirt or spray. rotator is disassembled, proper alignment can be achieved by
+
+5 Tag, disconnect and plug the hydraulic hoses rotating the rotator all the way to
+
+from the platform manifold. Cap the fittings on the left and then installing the
+
+the manifold. platform mounting weldment all the way in the left position.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and Note: When removing a hose assembly or fitting, the O-ring (if equipped) on the fitting and/or hose end must be replaced. All connections must be torqued to specification during installation. Refer to Specifications, Hydraulic Hose and Fitting Torque
+
+burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray. Specifications.
+
+6 Remove the power to platform electrical outlet 1 Remove the platform. Refer to Repair
+
+box bracket mounting fasteners. Do not Procedure, How to Remove the Platform.
+
+disconnect the wiring. 2 Tag and disconnect the electrical connector
+
+from the platform angle sensor.
+
+40 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Platform Components
+
+How to Bleed the Pl atfor m R otator 7 Remove the hose and cable guide retaining
+
+fasteners and remove the guide from the platform support.
+
+How to Bleed the Platform Rotator
+
+8 Remove the weld cable from the platform (if
+
+equipped).
+
+Note: Do not start the engine. Use auxiliary power for all machine functions in this procedure.
+
+Electrocution/burn hazard. Contact with electrically charged circuits could result in death or
+
+1 Rotate the platform full right, then full left until
+
+air is completely out of the rotator. Bleeding the valve is not necessary.
+
+serious injury. Remove all rings, watches and other jewelry.
+
+9 Support the platform mounting weldment, but
+
+do not apply any lifting pressure.
+
+10 Remove the eight mounting bolts from the
+
+platform mounting weldment.
+
+11 Remove the center bolt and slide the platform mounting weldment off of the platform rotator.
+
+Crushing hazard. The platform mounting weldment may become unbalanced and fall if it is not properly supported.
+
+12 Support the platform rotator with a suitable
+
+lifting device. Do not apply any lifting pressure.
+
+13 Place a block under the platform leveling
+
+cylinder for support.
+
+14 Remove the pin retaining fasteners from the
+
+platform leveling cylinder rod-end pivot pin. Do not remove the pin.
+
+15 Remove the pin retaining fasteners from the jib boom to platform rotator pivot pin. Do not remove the pin.
+
+16 Use a soft metal drift to remove both pins and remove the platform rotator from the machine.
+
+Crushing hazard. The platform rotator could fall when removed from the machine if not properly supported.
+
+Part No. 1268557GT Z®-135/70 41
+
+Service and Repair Manual October 2018 Platform Components
+
+2-3
+
+Before serial number 321: Platform Level Sensor
+
+4 Locate the 2 pin connector in the lower left
+
+The platform level sensor is mounted to the side of the platform rotator. The platform level sensor is monitored by the control system to maintain a level platform through boom range of motion. If a
+
+hand area of the ground control box.
+
+5 Remove the connector plug and insert a jumper wire between the two pins of the connector. platform level sensor is replaced, it must be calibrated prior to machine operation.
+
+After serial number 320:
+
+6 Locate the calibration toggle switch at the top How to Calibrate the Platform Level Sensor
+
+of the ground control box. Activate calibration mode by moving the toggle switch in the left direction.
+
+Note: Perform this procedure with the machine on a firm, level surface.
+
+7 Temporarily install a control box door retaining fastener between the door and the box to prevent the control box door from moving the Note: Perform this procedure with the boom in the
+
+toggle switch while calibrating the machine. stowed position.
+
+All models: Note: Use the following chart to identify the description of each LCD screen control button used in this procedure.
+
+8 Insert the key into the bypass/recovery key
+
+switch and turn it to the bypass position.
+
+Note: The angle sensor calibration values will not be saved correctly unless the key switch is in the bypass position and the calibration toggle switch is activated.
+
+Plus Minus Previous Enter 1 Secure a digital level to one of the side railings
+
+of the platform.
+
+9 Press and hold the enter button on the ground
+
+control panel while turning the key switch to ground controls. Hold the enter button for approximately 5 seconds. 2 Start the machine and level the platform to
+
+gravity. Turn the machine off.
+
+10 Enter sensor calibration mode by pressing the
+
+buttons at the ground controls in the following 3 Open the ground control box.
+
+sequence: (plus)(enter)(enter)(plus).
+
+42 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Platform Components
+
+11 Press the enter or previous button on the
+
+2-4 LCD screen until SET PLATFORM LEVEL SENSOR TO GRAVITY is displayed.
+
+12 Press the plus button to select YES, then
+
+Platform Overload System (if equipped)
+
+press the enter button to accept.
+
+Proper calibration of the platform overload system 13 Press the enter or previous button on the
+
+LCD screen until EXIT is displayed.
+
+14 Press the plus button to select YES, then
+
+press the enter button to accept.
+
+is essential to safe machine operation. Continued use of an improperly calibrated platform overload system could result in the system failing to sense an overloaded platform. The stability of the machine is compromised and it could tip over. Before serial number 321:
+
+15 Remove the wire jumper from the 2 pin
+
+connector in the lower left hand area of the
+
+How to Calibrate the Platform Overload System (if equipped) ground control box that was installed in step 5. Install the connector plug.
+
+Note: Perform this procedure with the machine on a firm, level surface. Tip-over hazard. Failure to remove the jumper wire will
+
+1 Level the platform. result in an unsafe configuration which will compromise machine stability. Operating the machine in this configuration will result in the machine tipping over, resulting in death or serious injury. The jumper wire must be
+
+2 Determine the maximum platform capacity.
+
+Refer to the machine serial plate.
+
+3 Using a suitable lifting device, place an
+
+appropriate test weight equal to that of the maximum platform capacity at the center of the platform floor. removed before operating the machine.
+
+16 Close the ground control box and install the
+
+door retaining fasteners.
+
+After serial number 320:
+
+17 Remove the fastener that was temporarily
+
+installed. Close the control box door and install the door retaining fasteners.
+
+Note: When the control box door is closed, the calibration toggle switch is automatically activated to exit out of calibration mode.
+
+Part No. 1268557GT Z®-135/70 43
+
+Service and Repair Manual October 2018 Platform Components
+
+Determine the limit switch trigger point:
+
+4 Gently move the platform up and down by
+
+hand, so it bounces approximately 1 to 2 inches / 2.5 to 5 cm. Allow the platform to settle.
+
+Result: The overload indicator light and the alarm is on. Slowly tighten the load spring adjustment nut by turning it clockwise just until the overload indicator light and alarm turns off.
+
+Note: The platform will need to be moved up and down and allowed to settle in between adjustments.
+
+Note: There may be a 2 second delay before the overload indicator lights flash and the alarm sounds.
+
+Result: The overload indicator light and alarm is off. Slowly loosen the load spring adjustment nut by turning it counterclockwise just until the overload indicator light and alarm turn on.
+
+Note: There may be a 2 second delay before the overload indicator lights flash and the alarm sounds.
+
+Note: The platform will need to be moved up and down and allowed to settle in between adjustments.
+
+44 Z®-135/70 Part No. 1268557GT
+
+Confirm the setting:
+
+5 Start the engine from the platform controls.
+
+6 Lift the test weight off the platform floor using a
+
+suitable lifting device.
+
+7 Place the test weight back onto the center of
+
+the platform floor using a suitable lifting device.
+
+Result: The alarm should be off. The platform
+
+overload indicator light should be off at the platform controls and there should be no error message on the LCD display at the ground controls.
+
+Note: There may be an 2 second delay before the overload indicator lights and alarm turn off.
+
+8 Add an additional 15 lbs / 6.8 kg test weight to
+
+the original test weight to overload the platform.
+
+Result: The alarm should be sounding. The
+
+platform overload indicator light should be flashing at the platform controls and platform overload should be displayed on the LCD screen at the ground controls.
+
+Note: There may be a 2 second delay before the overload indicator lights flash and the alarm sounds.
+
+October 2018 Service and Repair Manual Platform Components
+
+9 Test all machine functions from the platform
+
+controls.
+
+Result: All platform control functions should not operate.
+
+10 Turn the key switch to ground controls.
+
+11 Test all machine functions from the ground
+
+controls.
+
+Result: All ground control functions should not operate.
+
+Part No. 1268557GT Z®-135/70 45
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+1 primary extension boom
+
+7 jib boom 2 jib boom manifold
+
+8 jib extension boom 3 bellcrank
+
+9 hose and cable junction box 4 cable track tube
+
+10 jib boom lift cylinder 5 platform rotator
+
+11 jib boom cable track 6 platform leveling cylinder
+
+12 jib boom leveling cylinder
+
+46 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+3-1
+
+4 Tag, disconnect and plug the two hydraulic Jib Boom Cable Track
+
+hoses from the jib boom manifold that lead to the platform manifold. Cap the fittings on the The jib boom cable track guides the cables and
+
+manifold. hoses running up the jib boom. It can be repaired link by link without removing the cables and hoses that run through it. Removing the entire jib boom cable track is only necessary when performing major repairs that involve removing the jib boom.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to How to Remove the Jib Boom
+
+squirt or spray. Cable Track
+
+Note: The jib boom manifold is located at the
+
+Note: When removing a hose assembly or fitting,
+
+platform end of the primary extension boom.
+
+the O-ring (if equipped) on the fitting and/or hose end must be replaced. All connections must be torqued to specification during installation. Refer to Specifications, Hydraulic Hose and Fitting Torque Specifications.
+
+5 Pull the hoses out of the plastic hose guide
+
+located on the primary extension boom near the jib boom manifold.
+
+6 Tag, disconnect and plug the jib boom lift
+
+cylinder hydraulic hoses. Cap the fittings on 1 Raise the jib boom to a horizontal position.
+
+the cylinder. Turn the machine off.
+
+2 Remove the cover from the hose and cable
+
+junction box under the jib boom cable track.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and burn skin. Loosen hydraulic 3 Tag and disconnect the electrical connectors
+
+inside the cable track junction box.
+
+connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray.
+
+7 Remove the hose and cable clamp retaining fasteners from the jib boom cable track junction box. Remove the clamps.
+
+8 Pull the jib boom lift cylinder hydraulic hoses
+
+out of the jib boom cable track junction box.
+
+Part No. 1268557GT Z®-135/70 47
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+9 Remove the hose and cable clamp retaining fasteners at the platform end of the jib boom cable track tube. Remove the clamps.
+
+10 Tag and disconnect the electrical connectors
+
+from the platform manifold.
+
+11 Tag and disconnect the electrical connectors
+
+from the platform box.
+
+12 Tag and disconnect the electrical connector
+
+from the foot switch.
+
+13 Tag and disconnect the electrical connector
+
+from the platform angle sensor.
+
+14 Tag, disconnect and plug the hydraulic hoses from the "P" and "T" ports on the platform manifold.
+
+15 Pull the two hydraulic hoses just removed and
+
+all of the cables through the hose and cable guide at the platform support.
+
+Component damage hazard. Cables and hoses can be damaged if they are kinked or pinched.
+
+16 Remove the cotter pin from the upper cable
+
+track tube at the platform end of the jib boom. Do not discard the washer.
+
+Note: Always replace the cotter pin with a new one.
+
+48 Z®-135/70 Part No. 1268557GT
+
+17 Remove the fasteners from the cable track
+
+tube guide at the platform end of the jib boom. Remove the cable track tube guide from the jib boom.
+
+18 Place blocks between the upper and lower
+
+cable tracks and secure the upper and lower tracks together. Crushing hazard. If the upper and lower cable tracks are not properly secured together, the cable track could become unbalanced and fall when removed from the machine.
+
+19 Attach a lifting strap from an overhead crane to
+
+the cable track.
+
+20 Remove the mounting fasteners that attach the
+
+lower cable track to the jib boom.
+
+21 Carefully remove the cable track from the
+
+machine and lay it on a structure capable of supporting it.
+
+Crushing hazard. The cable track could become unbalanced and fall if not properly attached to the overhead crane.
+
+Component damage hazard. Cables and hoses can be damaged if they are kinked or pinched.
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+How to R epair the C abl e Tr ac k
+
+6 Lift up the hoses and cables and carefully How to Repair the Cable Track
+
+insert the new 4-link section of cable track.
+
+Component damage hazard. The boom cable track can be damaged if it is twisted.
+
+Component damage hazard. Cables and hoses can be damaged if they are kinked or pinched. Note: A cable track repair kit is available through the Genie Service Parts Department.
+
+7 Connect the ends of the replacement cable
+
+track section to the existing cable track using 1 Visually inspect the cable track and determine
+
+the pins and snap rings. which 4-link section needs to be replaced.
+
+8 Install the rollers onto the new section of cable 2 Carefully remove the snap rings and pins from
+
+track. each end of the damaged section of cable track.
+
+9 Operate the jib boom extend/retract function
+
+through a full cycle to ensure smooth operation 3 Remove the retaining fasteners from the upper
+
+of the new section of cable track. black rollers from the 4-link section of cable track to be replaced. Remove the rollers.
+
+4 Lift up the hoses and cables and carefully
+
+remove the damaged 4-link section of cable track.
+
+Component damage hazard. Cables and hoses can be damaged if they are kinked or pinched.
+
+5 Remove the upper rollers from the
+
+replacement section of cable track.
+
+Part No. 1268557GT Z®-135/70 49
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+3-2
+
+2 Tag, disconnect and plug the two hydraulic Jib Boom
+
+hoses from the jib boom manifold that lead to the platform manifold. Cap the fittings on the manifold. How to Remove the Jib Boom
+
+Bodily injury hazard. Spraying Bodily injury hazard. This procedure requires specific repair skills, lifting equipment and a suitable workshop. Attempting this procedure without these skills and tools could result in death or
+
+hydraulic oil can penetrate and burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray. serious injury and significant component damage. Dealer service is strongly recommended.
+
+3 Tag, disconnect and plug the jib boom lift
+
+cylinder hydraulic hoses from the jib boom manifold. Cap the fittings on the manifold. Note: Perform this procedure with the boom in the stowed position.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and Note: When removing a hose assembly or fitting, the O-ring (if equipped) on the fitting and/or hose end must be replaced. All connections must be torqued to specification during installation. Refer to Specifications, Hydraulic Hose and Fitting Torque
+
+burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray. Specifications.
+
+4 Remove the cotter pin from the upper cable 1 Remove the platform mounting weldment and
+
+track tube at the platform end of the jib boom. the platform rotator. Refer to Repair Procedure, How to Remove the Platform
+
+Note: Always replace the cotter pin with a new one.
+
+Rotator.
+
+5 Remove the cable track guide fasteners from
+
+the cable track guide at the platform end of the jib boom and remove the cable track guide from the jib boom.
+
+50 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+6 Place blocks between the upper and lower
+
+cable tracks and secure the upper and lower tracks together. Crushing hazard. If the upper and lower cable tracks are not properly secured together, the cable track could become unbalanced and fall when removed from the machine.
+
+7 Attach a lifting strap from an overhead crane to
+
+the cable track.
+
+8 Remove the mounting fasteners that attach the
+
+lower cable track to the jib boom.
+
+9 Remove the cable track from the machine and lay to the side. Crushing hazard. The cable
+
+track could become unbalanced and fall if not properly attached to the overhead crane.
+
+Component damage hazard. Cables and hoses can be damaged if they are kinked or pinched.
+
+10 Disconnect the electrical connector from the jib
+
+boom angle sensor located at the jib boom pivot pin on the engine side of the machine.
+
+11 Remove the cover retaining fasteners from the jib boom angle sensor. Remove the cover.
+
+Part No. 1268557GT Z®-135/70 51
+
+12 Remove the jib boom angle sensor mounting
+
+bracket fasteners from the side of the primary extension boom.
+
+13 Carefully remove the bracket and sensor
+
+assembly. Note the location of the springs. Do not lose the springs.
+
+Note: There is one spring inside the jib boom pivot pin and one inside the angle sensor.
+
+Note: When the jib boom is installed, the jib boom angle sensor will need to be calibrated. Refer to repair procedure, Jib Boom Bellcrank Angle Sensor for the calibration procedure.
+
+14 Attach a lifting strap from an overhead crane to
+
+the platform end of the jib boom.
+
+15 Support the barrel end of the jib boom lift
+
+cylinder with another suitable lifting device.
+
+16 Remove the pin retaining fasteners from the jib
+
+boom lift cylinder barrel-end pivot pin.
+
+17 Use a soft metal drift to remove the jib boom lift
+
+cylinder barrel-end pivot pin.
+
+Crushing hazard. The jib boom could fall when the barrel-end pivot pin is removed if not properly supported by the overhead crane.
+
+Crushing hazard. The jib boom lift cylinder may become unbalanced and fall when it is removed from the machine if it is not properly supported by the overhead crane.
+
+18 Secure the jib boom lift cylinder to the jib boom
+
+with a strap or other suitable device.
+
+19 Raise the jib boom to a horizontal position
+
+using the overhead crane.
+
+20 Attach a second lifting strap from the overhead
+
+crane to the pivot end of the jib boom.
+
+21 Remove the pin retaining fastener from the jib
+
+boom pivot pin. Do not remove the pin.
+
+22 Place a block under the jib boom level cylinder
+
+for support. Protect the cylinder rod from damage.
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+23 Use a soft metal drift to tap the pin halfway out
+
+in one direction and lower one side of the jib boom bellcrank. Tap the pin in the other
+
+3-3 Jib Boom Lift Cylinder direction and lower the other side of the jib boom bellcrank.
+
+24 Use a soft metal drift to remove the jib boom pivot pin. Remove the jib boom from the
+
+How to Remove the Jib Boom Lift Cylinder
+
+machine and place it on a structure capable of supporting it.
+
+Note: Perform this procedure with the boom in the stowed position.
+
+Crushing hazard. The jib boom may become unbalanced and fall when it is removed from the machine if it is not properly supported by the overhead crane.
+
+Note: When removing a hose assembly or fitting, the O-ring (if equipped) on the fitting and/or hose end must be replaced. All connections must be torqued to specification during installation. Refer to Specifications, Hydraulic Hose and Fitting Torque Specifications.
+
+1 Raise the jib boom slightly and place blocks
+
+under the platform mounting weldment. Lower the jib boom until the platform is resting on the blocks just enough to support the platform.
+
+Note: Do not rest the entire weight of the boom on the blocks.
+
+2 Tag, disconnect and plug the jib boom lift
+
+cylinder hydraulic hoses. Cap the fittings on the cylinder.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray.
+
+3 Support the rod end of the jib boom lift cylinder
+
+with a suitable lifting device.
+
+52 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+4 Remove the pin retaining fasteners from the jib
+
+3-4 boom lift cylinder rod-end pivot pin. Use a soft metal drift to remove the pin and let the
+
+Jib Boom Level Cylinder
+
+cylinder hang down.
+
+5 Attach a lifting strap from an overhead crane to
+
+the barrel end of jib boom lift cylinder.
+
+How to Remove the Jib Boom Level Cylinder 6 Remove the pin retaining fasteners from the jib
+
+boom lift cylinder barrel-end pivot pin. Use a soft metal drift to remove the pin.
+
+Note: Perform this procedure with the boom in the stowed position.
+
+7 Remove the jib boom lift cylinder from the
+
+machine.
+
+Note: When removing a hose assembly or fitting, the O-ring (if equipped) on the fitting and/or hose end must be replaced. All connections must be Crushing hazard. The jib boom lift cylinder may become unbalanced and fall when it is
+
+torqued to specification during installation. Refer to Specifications, Hydraulic Hose and Fitting Torque Specifications. removed from the machine if it is not properly supported by the overhead crane.
+
+1 Extend the primary boom until the jib boom
+
+level cylinder barrel-end pivot pin is accessible.
+
+2 Raise the jib boom above horizontal.
+
+3 Attach an overhead crane to the jib boom
+
+assembly for support.
+
+4 Place a block under the jib boom level cylinder
+
+for support. Protect the cylinder rod from damage.
+
+5 Remove the pin retaining fasteners from the jib
+
+boom level cylinder rod-end pivot pin. Use a soft metal drift to remove the pin.
+
+Crushing hazard. The jib boom could fall if not properly supported when the jib boom level cylinder rod-end pivot pin is removed.
+
+Part No. 1268557GT Z®-135/70 53
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+6 Remove the external snap rings from the jib
+
+3-5 boom level cylinder barrel-end pivot pin. Use a soft metal drift to remove the pin.
+
+Jib Boom Extension Cylinder
+
+7 Tag, disconnect and plug the jib boom level
+
+cylinder hydraulic hoses from the jib boom manifold. Cap the fittings on the manifold.
+
+How to Remove the Jib Boom Extension Cylinder
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray.
+
+Bodily injury hazard. This procedure requires specific repair skills, lifting equipment and a suitable workshop. Attempting this procedure without these skills and tools could result in death or serious injury and significant
+
+8 Attach an overhead crane or other suitable
+
+device to the jib boom level cylinder for
+
+component damage. Dealer service is strongly recommended.
+
+support.
+
+Note: Perform this procedure with the boom in the 9 Carefully remove the jib boom level cylinder
+
+stowed position. from the machine.
+
+Note: When removing a hose assembly or fitting, Crushing hazard. The jib boom level cylinder could become unbalanced and fall when removed from the machine if not properly supported.
+
+the O-ring (if equipped) on the fitting and/or hose end must be replaced. All connections must be torqued to specification during installation. Refer to Specifications, Hydraulic Hose and Fitting Torque Specifications.
+
+1 Remove the jib boom lift cylinder. Refer to Repair Procedure, How to Remove the Jib Boom Lift Cylinder.
+
+2 Attach a lifting strap from an overhead crane to
+
+the platform end of the jib boom for support. Raise the jib boom to a horizontal position using the overhead crane.
+
+54 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+3 Extend the jib boom until the jib boom extension cylinder rod-end pivot pin is accessible.
+
+4 Tag, disconnect and plug the two hydraulic
+
+hoses from the jib boom manifold that lead to the platform manifold. Cap the fittings on the manifold.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray.
+
+5 Tag, disconnect and plug the jib boom lift
+
+cylinder and jib boom extension cylinder hydraulic hoses from the jib boom manifold. Cap the fittings on the manifold.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray.
+
+6 Remove the cover from the lower jib boom
+
+cable track.
+
+7 Tag and disconnect the electrical connectors
+
+inside the lower cable track.
+
+8 Remove the hose and cable clamp retaining fasteners from lower cable track at the pivot end of the jib boom. Remove the clamps.
+
+Part No. 1268557GT Z®-135/70 55 9 Pull the electrical cables out of the lower cable
+
+track that lead to the primary boom.
+
+10 Attach a lifting strap from a second overhead crane to the pivot end of the jib boom for support. Do not apply any lifting pressure.
+
+11 Place a block under the jib boom level cylinder
+
+for support. Protect the cylinder rod from damage.
+
+12 Remove the pin retaining fastener from the jib
+
+boom pivot pin. Do not remove the pin.
+
+13 Use a soft metal drift to tap the pin halfway out
+
+in one direction and lower one side of the jib boom bellcrank. Tap the pin in the other direction and lower the other side of the jib boom bellcrank.
+
+14 Use a soft metal drift to remove the jib boom pivot pin. Remove the jib boom from the machine and place it on a structure capable of supporting it.
+
+Crushing hazard. The jib boom may become unbalanced and fall when it is removed from the machine if it is not properly supported by the overhead crane.
+
+15 Remove the pin retaining fasteners from the jib
+
+boom extension cylinder rod-end pivot pin. Use a soft metal drift to remove the pin.
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+16 Attach a lifting strap from an overhead crane to
+
+3-6 the barrel end of the jib boom extension cylinder.
+
+Jib Boom Bellcrank Angle Sensor
+
+17 Remove the pin retaining fasteners from the jib
+
+boom extension cylinder barrel-end pivot pin.
+
+The jib boom bellcrank angle sensor is monitored by the control system to keep the jib boom bellcrank Use a soft metal drift to remove the pin.
+
+vertical and to help maintain a level platform
+
+18 Carefully slide the jib boom extension cylinder
+
+out of the jib boom and place it on a structure capable of supporting it.
+
+through boom range of motion. If a jib boom bellcrank angle sensor is replaced, it must be calibrated prior to machine operation. The jib boom bellcrank angle sensor is mounted to the bellcrank Crushing hazard. The jib boom
+
+pivot pin on the engine side of the machine. extension cylinder could become unbalanced and fall when removed from the jib boom if not properly supported.
+
+How to Replace the Jib Boom Bellcrank Angle Sensor
+
+Note: During removal, the overhead crane strap will need to be adjusted for proper balancing.
+
+Note: Perform this procedure with the machine on a firm, level surface with the boom in the stowed position.
+
+1 Locate the jib boom bellcrank angle sensor
+
+where the jib boom bellcrank connects to the primary boom.
+
+2 Disconnect the electrical connector from the
+
+sensor. Remove any tie wraps securing the wiring.
+
+3 Remove the retaining fasteners from the angle sensor guard. Remove the guard from the machine.
+
+56 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+4 Remove the angle sensor cover retaining
+
+fastener. Remove the cover.
+
+5 Remove the angle sensor mounting bracket
+
+retaining fasteners.
+
+6 Remove the angle sensor and bracket
+
+assembly. Do not lose the two springs or the hex-shaped key.
+
+7 Remove the sensor retaining fasteners from
+
+the mounting bracket. Remove the angle sensor.
+
+Note: Note the sensor orientation on the bracket during removal so the new sensor will be installed in the same position.
+
+8 Install the new angle sensor onto the mounting
+
+bracket.
+
+9 Install one spring, removed in step 6, into the
+
+hex-shaped hole in the angle sensor. Install the other spring into the hex-shaped hole in the center of the boom pivot pin.
+
+10 Insert the hex-shaped key into the angle
+
+sensor.
+
+Part No. 1268557GT Z®-135/70 57 11 Align the side of the sensor with flat area of the
+
+boom pivot pin as shown below.
+
+1 flat area 2 angle sensor 3 hex-shaped hole 12 Insert the hex-shaped key into the bellcrank
+
+pivot pin allowing free clockwise rotation of the angle sensor mounting bracket.
+
+Note: Be sure the hex-shaped key remains engaged in the sensor.
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+How to C alibr ate the Jib Boom Bellcrank Angle Sensor 13 Rotate the angle sensor mounting bracket,
+
+while holding the key in the sensor, clockwise until the mounting bracket fits into the machined pocket.
+
+How to Calibrate the Jib Boom Bellcrank Angle Sensor
+
+14 Install the angle sensor bracket retaining
+
+Note: If the primary boom or secondary boom angle fasteners.
+
+sensors have been removed or replaced, or the
+
+15 Install the angle sensor cover and install the
+
+cover retaining fasteners.
+
+turntable level sensor has been replaced, they must be calibrated before the jib boom bellcrank angle sensor. Refer to Repair Procedures, How to 16 Connect the electrical connector to the new
+
+Calibrate the Primary Boom Angle Sensor or How sensor.
+
+to Calibrate the Secondary Boom Angle Sensor or
+
+17 Install the angle sensor guard over the angle
+
+How to Calibrate the Turntable Level Sensor.
+
+sensor.
+
+Note: Perform this procedure with the machine on a
+
+18 Calibrate the jib boom bellcrank angle sensor.
+
+Refer to Repair Procedure, How to Calibrate
+
+firm, level surface and in the stowed position with the axles extended. the Jib Boom Bellcrank Angle Sensor.
+
+Note: A digital level will be required to perform this procedure.
+
+Note: A kit is available through Genie Product Support (Genie part number 58351). This kit includes a digital level with a magnetic base and cable harnesses.
+
+58 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+Note: Use the following chart to identify the
+
+Before serial number 321: description of each LCD screen control button used in this procedure.
+
+5 Locate the 2 pin connector in the lower left
+
+hand area of the ground control box.
+
+6 Remove the connector plug and insert a jumper wire between the two pins of the connector.
+
+Plus Minus Previous Enter
+
+After serial number 320:
+
+Digital levels with alternate zero function:
+
+7 Locate the calibration toggle switch at the top
+
+1 Prepare the digital level by placing it vertically
+
+on a known surface that is perpendicular to gravity. Zero out the level with the alternate zero function.
+
+Note: When the level is calibrated correctly, it should read 0° on a vertical surface.
+
+of the ground control box. Activate calibration mode by moving the toggle switch in the left direction.
+
+8 Temporarily install a control box door retaining fastener between the door and the box to prevent the control box door from moving the toggle switch while calibrating the machine.
+
+Digital levels without alternate zero function:
+
+All models:
+
+Note: If your digital level does not have an alternate
+
+9 Remove the key from the main key switch. zero function, it will read 90° on a vertical surface.
+
+Insert the key into the bypass/recovery key During calibration, the measured value will need to
+
+switch and turn it to the bypass position. be subtracted from 90 degrees to get the correct number to enter into the system.
+
+Note: The angle sensor calibration values will not be saved correctly unless the key switch is in the 2 Raise the jib boom to a slightly less than
+
+bypass position. horizontal position.
+
+10 Press and hold the enter button on the ground 3 Push in the ground controls red Emergency
+
+control panel while pulling out the ground Stop button to the off position. Do not turn the
+
+controls red Emergency Stop button to the on key switch to the off position.
+
+position. Hold the enter button for
+
+4 Open the ground control box.
+
+approximately 5 seconds and then release it.
+
+Part No. 1268557GT Z®-135/70 59
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+11 Enter sensor calibration mode by pressing the
+
+buttons at the ground controls in the following sequence: (plus)(enter)(enter)(plus).
+
+12 Press the enter or previous button on the
+
+LCD screen until DELETE JIB LEVEL ANGLE SENSOR CALIBRATION is displayed.
+
+13 Press the plus button to select YES, then
+
+press the enter button to accept.
+
+14 At the jib level calibration deg 60.0deg screen,
+
+start the engine.
+
+Note: If the system exits out of calibration mode when the engine is started, repeat step 7 and continue to step 12.
+
+15 Press and hold a function enable/speed select
+
+button and the platform level up button. Fully extend the jib boom level cylinder.
+
+Note: When in service/bypass mode, the platform level buttons are used to adjust the jib boom level cylinder.
+
+Note: With the jib boom level cylinder is fully extended, the jib boom bellcrank angle should be at approximately 60 ± 2 degrees.
+
+60 Z®-135/70 Part No. 1268557GT
+
+16 Attach the digital level to the surface of the jib
+
+boom bellcrank as shown.
+
+1 jib boom angle sensor 2 jib boom bellcrank 3 place level on this surface
+
+17 At the ground controls, press the plus button
+
+or minus button to adjust the display to the exact value shown on the digital level and press the enter button.
+
+Note: If the measured angle already matches the angle shown on the display at the ground controls, press the plus button or minus button to change the angle and then change back to the measured value. The system must detect a change in displayed value to record the calibrated value.
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+18 Press and hold a function enable/speed select button and the platform level down button until the digital level displays approximately 34 ± 2 degrees.
+
+19 At the ground controls, press the plus button
+
+or minus button to adjust the display to the exact value shown on the digital level and press the enter button.
+
+Note: If the measured angle already matches the angle shown on the display at the ground controls, press the plus button or minus button to change the angle and then change back to the measured value. The system must detect a change in displayed value to record the calibrated value.
+
+20 Press and hold a function enable/speed select button and the platform level down button until the digital level displays approximately 8 ± 2 degrees.
+
+21 At the ground controls, press the plus button
+
+or minus button to adjust the display to the exact value shown on the digital level and press the enter button.
+
+Note: If the measured angle already matches the angle shown on the display at the ground controls, press the plus button or minus button to change the angle and then change back to the measured value. The system must detect a change in displayed value to record the calibrated value.
+
+Part No. 1268557GT Z®-135/70 61 22 Press and hold a function enable/speed select button and raise the jib boom above horizontal to provide additional ground clearance for the remaining calibration points.
+
+23 Press and hold a function enable/speed select button and the platform level down button until the digital level displays approximately 18 ± 2 degrees.
+
+Calibration angles
+
+24 At the ground controls, press the plus button
+
+or minus button to adjust the display to the exact value shown on the digital level and press the enter button.
+
+Note: Be sure the number entered at the ground controls is a negative number.
+
+Note: If the measured angle already matches the angle shown on the display at the ground controls, press the plus button or minus button to change the angle and then change back to the measured value. The system must detect a change in displayed value to record the calibrated value.
+
+Service and Repair Manual October 2018 Jib Boom Components
+
+25 Press and hold a function enable/speed select
+
+28 At the ground controls, press the plus button button and the platform level down button until
+
+or minus button to adjust the display to the the digital level displays approximately 44 ±
+
+exact value shown on the digital level and 2 degrees.
+
+press the enter button.
+
+26 At the ground controls, press the plus button
+
+Note: Be sure the number entered at the ground or minus button to adjust the display to the
+
+controls is a negative number. exact value shown on the digital level and press the enter button.
+
+Note: Be sure the number entered at the ground controls is a negative number.
+
+Note: If the measured angle already matches the angle shown on the display at the ground controls, press the plus button or minus button to change the angle and then change back to the measured
+
+Note: If the measured angle already matches the angle shown on the display at the ground controls,
+
+value. The system must detect a change in displayed value to record the calibrated value.
+
+press the plus button or minus button to change the angle and then change back to the measured value. The system must detect a change in displayed value to record the calibrated value.
+
+Note: With the jib boom level cylinder fully retracted, the jib boom bellcrank angle should be at approximately 70 degrees.
+
+27 Press and hold a function enable/speed select button and the platform level down button until the digital level displays approximately 70 ± 2 degrees. The jib boom level cylinder should be fully retracted at this point.
+
+29 Press and hold the engine start button for
+
+approximately 5 seconds to shut off the engine and to save the calibration settings.
+
+Note: Do not turn the engine off with the key switch or red Emergency Stop button or all calibration points or values will not be saved.
+
+30 Press the enter or previous button on the
+
+LCD screen until EXIT is displayed.Press the plus button to select YES, then press the enter button to accept.
+
+31 Turn the key back to the run position and
+
+remove the key from the bypass/recovery key switch. Insert the key into the main key switch and turn it to ground controls.
+
+Note: Be sure that the bypass/recovery key switch is in the run position before attempting to operate the machine.
+
+32 Wait approximately 20 seconds and turn the machine off by pressing the red Emergency Stop button in.
+
+62 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Jib Boom Components
+
+Before serial number 321:
+
+After serial number 320: 33 Remove the wire jumper from the 2 pin
+
+connector in the lower left hand area of the ground control box that was installed in step 6. Install the connector plug.
+
+35 Remove the fastener that was temporarily
+
+installed. Close the control box door and install the door retaining fasteners.
+
+Note: When the control box door is closed, the Tip-over hazard. Failure to
+
+calibration toggle switch is automatically activated remove the jumper wire will
+
+to exit out of calibration mode. result in an unsafe configuration which will compromise machine
+
+All models: stability. Operating the machine in this configuration will result in the machine tipping over, resulting in death or serious injury. The jumper wire must be
+
+36 Pull out the red Emergency Stop button. Start the engine and lower the boom to the stowed position. Be sure there are no calibration faults shown on the display.
+
+removed before operating the machine.
+
+34 Close the ground control box and install the
+
+door retaining fasteners.
+
+Part No. 1268557GT Z®-135/70 63
+
+Service and Repair Manual October 2018 Boom Components
+
+1 upper primary boom lift cylinder linkage arm
+
+8 primary boom lift cylinder 2 primary boom
+
+9 number 1 secondary boom tube 3 cable track
+
+10 number 2 secondary boom tube 4 primary extension boom
+
+11 number 3 secondary boom tube 5 jib boom manifold
+
+12 lower primary boom lift cylinder linkage arm 6 secondary boom lift cylinder
+
+13 number 4 secondary boom tube 7 secondary boom cable track (inside of
+
+secondary boom)
+
+64 Z®-135/70 Part No. 1268557GT
+
+October 2018 Service and Repair Manual Boom Components
+
+4-1
+
+4 Pull the electrical cables out of the lower cable Primary Boom Cable Track
+
+track that lead to the primary boom.
+
+The primary boom cable track guides the cables and hoses running up the boom. It can be repaired link by link without removing the cables and hoses
+
+Component damage hazard. Cables can be damaged if they are kinked or pinched.
+
+that run through it. Removing the entire primary boom cable track is only necessary when performing major repairs that involve removing the primary boom.
+
+5 Tag and disconnect the electrical connectors from the jib boom manifold located at the platform end of the primary extension boom.
+
+6 Tag, disconnect and plug the two hydraulic How to Remove the Primary
+
+hoses from the jib boom manifold that lead to the platform manifold. Cap the fittings on the Boom Cable Track
+
+manifold.
+
+Note: When removing a hose assembly or fitting, the O-ring (if equipped) on the fitting and/or hose end must be replaced. All connections must be torqued to specification during installation. Refer to Specifications, Hydraulic Hose and Fitting Torque Specifications.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray. Note: Perform this procedure with the machine on a firm, level surface.
+
+7 Remove the retaining fasteners from the hose
+
+Note: Perform this procedure with the boom in the stowed position.
+
+and cable guide at the platform end of the primary boom. Remove the hose and cable guide. 1 Remove the cover from the lower jib boom
+
+cable track.
+
+8 Tag and disconnect the electrical connector
+
+from the limit switch on the side of the primary 2 Tag and disconnect the electrical connectors
+
+boom. Do not remove the limit switch. inside the lower cable track.
+
+9 Remove the cotter pin from the upper cable 3 Remove the hose and cable clamp retaining fasteners from lower cable track at the pivot
+
+track tube at the platform end of the primary extension boom. end of the jib boom. Remove the clamps.
+
+Note: Always replace the cotter pin with a new one.
+
+Part No. 1268557GT Z®-135/70 65
+
+Service and Repair Manual October 2018 Boom Components
+
+10 Remove the retaining fasteners from the cable
+
+track guide at the platform end of the boom. Remove the cable track guide from the machine.
+
+11 Place blocks between the upper and lower
+
+cable tracks and secure the upper and lower tracks together. Crushing hazard. If the upper
+
+and lower cable tracks are not properly secured together, the cable track could become unbalanced and fall when removed from the machine.
+
+12 Remove the hose and cable clamps from the
+
+primary boom lift cylinder.
+
+13 At the counterweight end of the secondary
+
+boom, support and secure the secondary boom lower end cover to a suitable lifting device.
+
+14 Remove the cover retaining fasteners and remove the cover from the end of the secondary boom.
+
+Crushing hazard. The secondary boom lower end cover could become unbalanced and fall when removed from the secondary boom if not properly supported and secured to the lifting device.
+
+66 Z®-135/70 Part No. 1268557GT 15 Locate the two hydraulic hoses inside the end
+
+of the secondary boom that lead to the primary boom cable track.
+
+16 Tag, disconnect and plug the hydraulic hoses
+
+from the unions. Cap the fittings on the unions.
+
+Bodily injury hazard. Spraying hydraulic oil can penetrate and burn skin. Loosen hydraulic connections very slowly to allow the oil pressure to dissipate gradually. Do not allow oil to squirt or spray.
+
+17 Disconnect the electrical connectors for the
+
+electrical cables that lead to the cable track at the end of the secondary boom.
+
+18 Pull all hydraulic hoses and electrical cables
+
+that lead to the cable track out of the secondary boom riser.
+
+Component damage hazard. Cables and hoses can be damaged if they are kinked or pinched.
+
+19 Attach a lifting strap to each end of the cable
+
+track from an overhead crane for support. Do not apply any lifting pressure.
+
+<http://www.genielift.com/en/service-support/manuals/index.htm>   
+[\#2](#2)   
+[\#2](#2)   
+[\#2](#2)   
+[\#4](#4)   
+[\#5](#5)   
+[\#5](#5)   
+[\#15](#15)   
+[\#15](#15)   
+[\#15](#15)   
+[\#16](#16)   
+[\#19](#19)   
+[\#21](#21)   
+[\#23](#23)   
+[\#25](#25)   
+[\#27](#27)   
+[\#29](#29)   
+[\#31](#31)   
+[\#33](#33)   
+[\#34](#34)   
+[\#35](#35)   
+[\#37](#37)   
+[\#38](#38)   
+[\#38](#38)   
+[\#40](#40)   
+[\#40](#40)   
+[\#41](#41)   
+[\#42](#42)   
+[\#43](#43)   
+[\#44](#44)   
+[\#48](#48)   
+[\#48](#48)   
+[\#50](#50)   
+[\#51](#51)   
+[\#53](#53)   
+[\#53](#53)   
+[\#54](#54)   
+[\#55](#55)   
+[\#56](#56)   
+[\#57](#57)   
+[\#60](#60)   
+[\#61](#61)   
+[\#63](#63)   
+[\#64](#64)   
+[\#66](#66)   
+[\#67](#67)   
+[\#68](#68)   
+[\#70](#70)   
+[\#72](#72)   
+[\#78](#78)   
+[\#79](#79)   
+[\#81](#81)   
+[\#82](#82)   
+[\#84](#84)   
+[\#85](#85)   
+[\#87](#87)   
+[\#88](#88)   
+[\#92](#92)   
+[\#93](#93)   
+[\#95](#95)   
+[\#96](#96)   
+[\#102](#102)   
+[\#103](#103)   
+[\#109](#109)   
+[\#109](#109)   
+[\#109](#109)   
+[\#110](#110)   
+[\#112](#112)   
+[\#113](#113)   
+[\#113](#113)   
+[\#115](#115)   
+[\#116](#116)   
+[\#118](#118)   
+[\#119](#119)   
+[\#120](#120)   
+[\#129](#129)   
+[\#129](#129)   
+[\#130](#130)   
+[\#130](#130)   
+[\#131](#131)   
+[\#132](#132)   
+[\#133](#133)   
+[\#134](#134)   
+[\#134](#134)   
+[\#138](#138)   
+[\#142](#142)   
+[\#142](#142)   
+[\#143](#143)   
+[\#145](#145)   
+[\#146](#146)   
+[\#148](#148)   
+[\#149](#149)   
+[\#150](#150)   
+[\#152](#152)   
+[\#156](#156)   
+[\#158](#158)   
+[\#162](#162)   
+[\#163](#163)   
+[\#164](#164)   
+[\#166](#166)   
+[\#166](#166)   
+[\#167](#167)   
+[\#168](#168)   
+[\#172](#172)   
+[\#172](#172)   
+[\#174](#174)   
+[\#175](#175)   
+[\#177](#177)   
+[\#178](#178)   
+[\#179](#179)   
+[\#181](#181)   
+[\#185](#185)   
+[\#185](#185)   
+[\#186](#186)   
+[\#203](#203)   
+[\#205](#205)   
+[\#205](#205)   
+[\#206](#206)   
+[\#210](#210)   
+[\#215](#215)   
+[\#219](#219)   
+[\#222](#222)   
+[\#223](#223)   
+[\#224](#224)   
+[\#225](#225)   
+[\#225](#225)   
+[\#226](#226)   
+[\#227](#227)   
+[\#228](#228)   
+[\#230](#230)   
+[\#231](#231)   
+[\#234](#234)   
+[\#235](#235)   
+[\#238](#238)   
+[\#239](#239)   
+[\#241](#241)   
+[\#243](#243)   
