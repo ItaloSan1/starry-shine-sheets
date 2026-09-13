@@ -187,3 +187,68 @@ secondary boom to that reading on the digital level and matching the display
 with **plus**/**minus**, then **enter**.
 
 Primary boom 6-point points: −50°, −20°, +10°, +40°, fully raised ≈ 70°.
+
+---
+
+## Axles will not extend — the axle angle sensor calibration is the way out
+
+**SM p.167, How to Calibrate the Axle Angle Sensors.** [V]
+
+> *"Perform this procedure with the **axles fully retracted** and the boom in the
+> stowed position."*
+> *"**Two people will be required** to perform this procedure."*
+
+This routine is also **before** the boom angle sensors in the p.105 order, so it
+is the correct next step regardless.
+
+### Part 1 — mechanical set against a voltage spec
+
+1. Key switch to **platform controls**; pull out the red Emergency Stop at
+   **both** ground and platform controls.
+2. **Loosen** the axle angle sensor cover retaining fasteners — do not remove the
+   fasteners or the cover.
+3. Voltmeter on DC, **back-probe the sensor connector at pins 2 and 3**.
+   *"If available, WebGPI can also be used for this procedure."*
+4. **Rotate the sensor cover clockwise or counterclockwise until the reading is
+   between 4.2 and 4.4 V DC.** Tighten the cover fasteners.
+5. Repeat for the other axle angle sensor.
+
+**This is a genuine mechanical adjustment with a published number** — 4.2–4.4 V
+with the axles fully retracted. A reading outside that band means the machine
+has been told the axles are somewhere they are not, which by itself blocks axle
+motion.
+
+### Part 2 — the software calibration, and where the axles finally move
+
+6. Push the ground controls E-stop **in**; open the ground control box.
+7. Calibration toggle switch (top of box) → **left**; fit the door fastener.
+8. Key from the main switch → **bypass/recovery** switch → **Bypass**.
+9. Hold **enter** while pulling the E-stop **out**; hold ~5 s, release.
+10. Press **(plus)(enter)(enter)(plus)**.
+11. Scroll to `DELETE AXLE ANGLE SENSORS CALIBRATION` → **plus** = YES →
+    **enter**.
+    *(Before software 3.0 this screen reads `RESET AXLE ANGLE SENSORS`.)*
+12. At `AXLE ANGLES FULLY RETRACTED` → **plus** = YES → **enter**.
+13. At `AXLE ANGLES FULLY EXTENDED` → **"start the engine and fully extend the
+    axles."**
+
+**Step 13 breaks the interlock loop.** Inside this routine, in Bypass, the
+machine expects the axles to be extended and permits it.
+
+*"If the system exits out of calibration mode when the engine is started, repeat
+step 13"* (the enter-hold / E-stop pull).
+
+### If the axles still will not move at step 13
+
+Measure at the axle extend valve **Y99**, connector **`J99`**, circuit
+**`V60AXEX-GR/WH`**, on the **steer and axle manifold**:
+
+| Result | Meaning |
+|---|---|
+| **Volts at the coil, no motion** | Hydraulic — coil, the **2400 psi axle extend relief** on the steer/axle manifold, or mechanically seized axle slides. A machine parked outside for years can have axles rusted solid. |
+| **No volts** | Still interlocked — work the SCON matrix rows for axle safety and axle crosscheck. |
+
+Related parts: `94985GT` SENSOR, AXLE POSITION. The axle circuit also carries an
+**axle extension limit switch**, and the SCON crosschecks *"Axle crosscheck angle
+sensor versus safety switch"* — sensor and switch disagreeing drops `P_39`,
+`P_10`, `P_11` and `P_30`.
