@@ -959,3 +959,45 @@ of mismatched sensor parts, this machine has been materially modified by a
 previous owner. The work in front of the owner is **restoration to factory
 condition**, not a repair. Until every modification is found and reversed the
 machine should be treated as unsafe and tagged out of service.
+
+## 2026-09-13 — What disables the auxiliary power system
+
+Owner reports the machine and platform are **physically level**, so the ±15°
+lockout appears not to apply. The distinction that matters: **the machine acts
+on what the sensor reports, not on what is true.**
+
+### Causes that disable or restrict auxiliary power [V]
+
+| Cause | Manual text | Check |
+|---|---|---|
+| **Platform level sensor reads beyond ±15°** | *"If the event the platform becomes out of level ± 15°, all functions using auxiliary power will be disabled, `PLATFORM LEVEL > 15 DEGREES` will be displayed on the ground control LCD screen"* (SM p.101) | Machine Status → **platform level sensor degree**. A sensor reading >15° on a physically level platform disables aux with nothing visibly wrong. |
+| **Platform Overload** | *"Display message on LCD. **Disable all functions from PCON. Limit functions at TCON to AUX Power. FUEL POWER P9B FAULT**"* — recovery: *"Check for an overload in the platform. **Check the overload switch mounted on the platform support**."* (SM p.—, Fault Codes) | Overload limit switch `LSP1OLS` on the platform support |
+| **Loss of CAN** | Drops all six SCON outputs including `P_9B` Ignition/Fuel (SM p.189) | |
+| **Platform out of level >10°** | Boom angle and platform level functions disabled (SM p.100) | |
+| E-stop pushed in at either station | | |
+| Aux batteries, start solenoids `62412GT`, 2 GA cables, grounds | | Separate battery bank near the hydraulic tank |
+
+### Platform Overload latches and needs a passcode
+
+Display Module menu, **software V3.07 and later**:
+
+> **Overload Recovery** → **Clear Overload Recovery (YES/NO)** —
+> *"**A passcode is required to clear the message**"*
+
+If Platform Overload has latched on this machine it cannot be cleared without
+that passcode from Genie Product Support. Another reason to open a case with
+them.
+
+### Immediate checks
+
+1. **Machine Status** (key on, press **(plus)** and **(minus)** together) →
+   read **platform level sensor degree**. Physically level but reading high is
+   the answer.
+2. **Let the ground control LCD finish scrolling.** It was last seen mid-message
+   showing `NSORS`; the full string was never recorded. If it reads
+   `PLATFORM LEVEL > 15 DEGREES`, the cause is on the screen.
+3. **Confirm the primary boom angle sensor is reinstalled and both pigtails
+   connected.** It was removed for inspection and has not been confirmed
+   refitted. A disconnected angle sensor alone can produce this state.
+4. Inspect the overload switch on the platform support — noting that the
+   platform area already carries one unauthorised Scotchlok modification.
