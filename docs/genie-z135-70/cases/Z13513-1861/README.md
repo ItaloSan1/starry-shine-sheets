@@ -827,3 +827,75 @@ mode on auxiliary power is the manufacturer's method. Do not improvise one.
 
 Nobody in the platform. Area clear. Confirm axle position — a raised, extended
 boom over a retracted-axle chassis is a stability concern in its own right.
+
+## 2026-09-13 — Auxiliary power units identified; hot batteries, no movement
+
+Owner held recovery ~90 seconds. No boom movement, and **the batteries became
+hot**. Treated as a hard stop — current at that level means a stalled motor,
+a short, or a shorted cell, and hot lead-acid batteries vent hydrogen.
+
+### The two auxiliary power units [V]
+
+Labels read `GENIE INDUSTRIES / CUSTOMER NO. 101361 / MODEL NO. S203*4962 /
+DATE CODE T6`. Parts Manual 106877GT:
+
+| Part No. | Description | Qty |
+|---|---|---|
+| `101361GT` | **POWER UNIT, AUX PUMP 12 VDC** | **2** |
+| `58489GT` | PUMP ASSY, AUX. POWER UNIT 89617 | — |
+| `62412GT` | **SOLENOID, MOTOR START, 60511, APU** | — |
+| `101682GT` | CABLE ASSY NEG **2 GA** BLACK AUX#1 (31 in) | — |
+| `101683GT` | CABLE ASSY NEG **2 GA** BLACK AUX#2 (34 in) | — |
+
+These are schematic items **DB** (auxiliary pump #1) and **DC** (auxiliary
+pump #2), each behind its own check valve. Pump type: fixed displacement gear,
+**0.15 cu in / 2.47 cc per revolution** (SM p.—, Specifications). 2 GA cabling
+means starter-motor currents.
+
+### Hydraulic tank shut-off valves — first free check
+
+A decal in the owner's photo warns that the hydraulic shutoff valves must be
+open before starting the engine. SM confirms: *"Close the **two** hydraulic tank
+shut-off valves at the hydraulic tank"* with a component damage hazard note that
+the engine must not be started with them closed.
+
+**Both must be open.** This machine has had several people working on it; a
+closed suction valve starves a pump. Free to check, checks in minutes.
+
+### Valve manifold hand-labelled by a previous technician
+
+Blue marker on the solenoid coils: `P.U.D` (primary up/down), `P.E.R` (primary
+extend/retract), `S.E.R` (secondary extend/retract), `S.U.D` (secondary
+up/down), `T.L.` (turntable left). Further evidence of prior diagnostic work by
+others. These are the valves the recovery sequence must operate.
+
+### The observation that splits the diagnosis
+
+**Did the motors make any noise?** Not yet reported.
+
+| Observed | Reading |
+|---|---|
+| Silence + hot batteries | Stalled motor, seized pump, welded solenoid, or a dead short |
+| Whine / grind, no boom movement | Hydraulic — starved suction, or the directional valve is not shifting |
+| Click then nothing | Start solenoid pulling in, motor not turning |
+
+A starved gear pump cavitates and draws **less** current, so heat with no noise
+points at mechanical stall or a short rather than starvation alone.
+
+**Both units failing simultaneously is unlikely**, so if neither did anything
+suspect something common to both: the shut-off valves, the auxiliary battery
+bank, a shared ground, or the command itself.
+
+### Start solenoid `62412GT` — check for a welded contact
+
+Each motor carries one. **A solenoid welded closed holds its motor energised
+continuously regardless of the key**, which would cook the batteries exactly as
+described. With the key released, confirm no voltage remains at the motor post
+and nothing is still drawing.
+
+### Position unchanged
+
+Boom still raised and extended. Machine to be tagged out of service; boom weight
+to be supported mechanically; Genie Product Support to be engaged. No
+improvised hydraulic release — no manual descent procedure exists in either
+manual.
