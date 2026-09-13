@@ -144,3 +144,46 @@ displayed value with **plus**/**minus** to match the level at each point.
 > ground controls, press the plus button or minus button to change the angle and
 > then change back to the measured value. The system must detect a change in
 > displayed value to record the calibrated value."*
+
+---
+
+## Turntable level sensor X and Y axes [V]
+
+From *How to Calibrate the Turntable Level Sensor*, SM p.154–157:
+
+| Axis | Meaning | Sign convention |
+|---|---|---|
+| **X axis** | **Side slope**, across the machine | positive degree side slope / negative degree side slope |
+| **Y axis** | **Fore and aft slope**, along the machine | **positive degree = downhill**, **negative degree = uphill** |
+
+Manual illustrations are drawn looking from the **platform end** of the machine.
+
+**On a firm, level surface both X and Y read approximately 0.0°.** That is why
+every calibration procedure specifies a firm level surface as a prerequisite.
+
+The Y axis directly drives the boom envelope: primary boom maximum angle is 68°
+at 0° slope and falls to 43° at 5° **downhill** (positive Y). A wrong Y reading
+shrinks or wrongly widens the operating envelope.
+
+### The reference differs between the two procedures — easy to get wrong
+
+| Procedure | Digital level zeroed to |
+|---|---|
+| Turntable level sensor (SM p.156) | *"a digital level that has been calibrated to **gravity**"*, placed on the X axis then the Y axis of the turntable |
+| Boom angle sensors, 6-point (SM p.89 step 13) | *"a digital level that has been calibrated to the **Y axis of the turntable**"*, placed on top of the boom |
+
+Boom angles are referenced to the **chassis**, not to the earth — Machine Status
+labels secondary boom angle *"referenced to chassis tilt angle."* Zero the level
+on the turntable Y axis before placing it on the boom, or every boom angle
+entered carries the turntable's tilt as an error.
+
+This is also why the turntable level sensor is calibrated **before** the boom
+angle sensors in the p.105 sequence.
+
+### 6-point secondary boom angle points
+
+−3.5° (stowed screen value), then 20°, 35°, 50° … each set by raising the
+secondary boom to that reading on the digital level and matching the display
+with **plus**/**minus**, then **enter**.
+
+Primary boom 6-point points: −50°, −20°, +10°, +40°, fully raised ≈ 70°.
