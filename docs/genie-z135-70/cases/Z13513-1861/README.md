@@ -1063,3 +1063,60 @@ button and activate the desired function."*
 **Retract before lowering.** The recovery sequence itself runs primary retract →
 secondary retract → primary lower, because retracting reduces the overturning
 moment first. With the axles in, that order matters more, not less.
+
+## 2026-09-13 — Aux power + any function button: no response at all
+
+Engine off, auxiliary power applied (pump runs, steady strong hum), **no
+function on the ground control pad responds — nothing at all**. LCD shows
+`FAUL…` mid-scroll.
+
+### What "nothing on any button" means
+
+The aux pump running proves the aux power path works. If no valve energises on
+any function, the **SCON has dropped its output power rails**, not just selected
+ones. Given the active conditions — axle safety not stowed, axle not fully
+extended, plus the boom angle faults — `P_38`, `P_39`, `P_10`, `P_11` and `P_30`
+would all be off simultaneously. That is the observed behaviour.
+
+### The single biggest unknown, still unread after days
+
+**The ground control LCD has never been read in full.** It has been photographed
+showing `NSORS` and now `FAUL…`, always mid-scroll. The machine is stating its
+own fault list and it has not been recorded.
+
+Stand at the panel, let the display cycle completely, and write down every
+message word for word. Use the **down arrow** and **enter** buttons to page the
+fault list rather than waiting on the scroll.
+
+### Platform Emergency Stop — unchecked, and currently unreachable
+
+There are **two** E-stops, ground and platform. **A platform E-stop pushed in
+disables the machine from every station.** The platform is at height and its
+E-stop state has never been confirmed. Check it with binoculars or a phone
+zoom.
+
+Also confirm the **ground** E-stop is fully pulled out, and that the **main key
+switch is in the ground control position** — required for both bypass and
+recovery, and photographs suggest keys are present in both switches.
+
+### Field methods now exhausted
+
+| Method | Result |
+|---|---|
+| Normal controls, engine running | No boom functions |
+| Auxiliary power button + function button, engine off | No response, any function |
+| Recovery key switch held | No movement; batteries overheated on one attempt |
+
+All three sanctioned field routes have been tried. The remaining steps are not
+yard work:
+
+1. **WebGPI** on the DB9 port — the one diagnostic tool not yet used. Reads the
+   complete fault list and live sensor data.
+2. **Genie Product Support** — holds the passcode required for Clear Overload
+   Recovery, can interpret the fault string, and can advise a controlled
+   recovery for a machine in this configuration.
+3. **A crane** to take the boom's weight for a controlled retraction and
+   lowering.
+
+Machine remains boom raised and extended over retracted axles. Tagged out of
+service.
