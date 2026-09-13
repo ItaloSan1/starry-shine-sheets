@@ -899,3 +899,63 @@ Boom still raised and extended. Machine to be tagged out of service; boom weight
 to be supported mechanically; Genie Product Support to be engaged. No
 improvised hydraulic release — no manual descent procedure exists in either
 manual.
+
+## 2026-09-13 — Second unauthorised modification found, at the platform
+
+Owner photographed the underside of the platform near the AC power boxes.
+Visible, and none of it factory:
+
+- A **blue Scotchlok / insulation-displacement quick-splice** clamped onto a
+  Genie harness conductor
+- A **white two-conductor cord of domestic type** (lamp/thermostat grade) run
+  loose through the boom, coiled around a hydraulic hose, not in any loom
+- A **cut, frayed, unterminated conductor end** hanging free with exposed
+  copper strands
+
+Same method as the Scotchlok tap previously found at the turntable. This is the
+**second** such modification on this machine, alongside the wiring work already
+recorded.
+
+### If this is on the foot switch circuit the machine must not be operated
+
+The foot switch (`FTS` — Foot Switch Signal; `FOOTSW (FS1)` at PCON `P22`, with
+`P85RET-BR` foot switch return) is the operator-presence interlock. A jumper
+across it makes every platform function live with no foot on the pedal.
+
+**Operator's Manual p.35, Test the Foot Switch** — no tools required [V]:
+
+> 40. Push in the platform red Emergency Stop button to the off position.
+> 41. Pull out the red Emergency Stop button to the on position **but do not
+>     start the engine**.
+> 42. **Press down the foot switch and attempt to start the engine.**
+>     *Result: The engine should not start.*
+> 43. Do not press down the foot switch and restart the engine.
+> 44. **Do not press down the foot switch and test each machine function.**
+>     *Result: No machine functions should operate.*
+
+Step 44 is decisive. Any function that operates with the foot off the pedal
+means the interlock is defeated.
+
+Step 42 is safe to perform now. **Defer step 44 until the boom is down** — do
+not command functions with the boom raised and extended.
+
+### The frayed end may explain the wandering faults
+
+An unterminated conductor loose inside a boom, intermittently contacting
+structure, produces exactly the come-and-go fault behaviour recorded throughout
+this case, and is a candidate for the current that heated the auxiliary
+batteries. **Establish what energises it before touching it.**
+
+### Document before removing
+
+Photograph in place, trace both ends, and record the Scotchlok's host conductor
+colour and circuit number before cutting anything out. What was being defeated
+matters, and on a machine with this history the modifications are evidence.
+
+### Disposition
+
+Between this tap, the turntable tap, the non-factory wiring and the possibility
+of mismatched sensor parts, this machine has been materially modified by a
+previous owner. The work in front of the owner is **restoration to factory
+condition**, not a repair. Until every modification is found and reversed the
+machine should be treated as unsafe and tagged out of service.
