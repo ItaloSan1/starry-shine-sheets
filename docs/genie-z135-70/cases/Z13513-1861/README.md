@@ -593,3 +593,75 @@ blocks extend.
 4. With the boom stowed, extend the axles **from the platform controls**.
 5. Calibrate in order: axle angle sensors → turntable level sensor → secondary
    boom angle sensor → primary boom angle sensor.
+
+## 2026-09-13 — IMPORTANT: serial break at SN 1854 changes the sensor design
+
+Parts Manual 106877GT (July 2024) carries **two** drawings for this assembly:
+
+- **511.1** Primary Boom Angle Sensor and Retract Limit Switch **(to SN 1853)**
+- **511.2** Primary Boom Angle Sensor and Retract Limit Switch **(from SN 1854)**
+
+**This machine is Z13513-1861 — it falls under 511.2, the newer design.**
+
+The Service Manual (1268557GT, October 2018) replacement procedure on p.81/p.88
+describes the **older** arrangement: two springs, a hex-shaped key
+(`101599GT` KEY, BALL POINT HEX) and a `101715GT` primary rotary sensor pin,
+with the sensor flat aligned to a flat on the boom pivot pin. Those part numbers
+belong to **511.1**.
+
+### What 511.2 actually uses [V]
+
+| Item | Part No. | Description |
+|---|---|---|
+| 8 | `233118GT` | WLDT, SENSOR ROTATOR #2 |
+| 9 | `218757GT` | WLDT., PRIMARY SENSOR PIN |
+| 10 | `215728GT` | **ASSY, ANGLE SEN., Z135 PRIMARY (Complete)** — includes items 14–22; *"Calibration required after replacement"* |
+| 13 | `217235GT` | SCREW, SHS, 3/4 X 1.5 X 5/8-11, ZAG |
+| 15 | `226489GT` | MACHINED, PRIMARY SENSOR BASE |
+| 16 | `226491GT` | MACHINED, ANGLE SENSOR RACE |
+| 17 | `216061GT` | **SENSOR, ANGLE, 180 DEG, CW** — *"Sensor and magnet are matched and must be replaced at the same time. Machine calibration is required after installation."* |
+| 19 | `226492GT` | MACHINED, ANGLE SENSOR HOLDER |
+| 21 | `233116GT` | **MACHINED, SENSOR ARM** |
+| 22 | `217219GT` | SCREW, SHC, M4-0.7X14 DIN912, 12.9, ZAB |
+| 23 | `94814GT` | PIN, 2.25 DIA X 5.10 LG, THREADED |
+
+Supersession note in the parts manual against the old `94980GT` SENSOR, DUAL
+OUTPUT, ANGLE: *"Older sensor part 94980 is no longer available for Boom Angle
+Sensor after SN 12853. For first time replacement order **kit `217246`** (refer
+to 511.2)."*
+
+### Consequences for this diagnosis
+
+1. **The hex-key / 60°-per-flat theory applies to 511.1, not to this machine.**
+   The owner's photograph of a **slotted arm with a socket-head clamp screw**
+   matches 511.2 (`233116GT` sensor arm, `217235GT` screw). Correct the earlier
+   note accordingly.
+2. On 511.2 the adjustment is **continuous, not indexed**. The failure mode is
+   the arm slipping or being clamped at the wrong position in its slot,
+   producing an **arbitrary** angular offset rather than a discrete 60° step.
+   That still yields *Value Too Low* and a crosscheck fault with sound wiring,
+   and it fits the rusty, weathered arm in the photo better than a hex misindex.
+3. **`216061GT` is a magnetic sensor with a matched magnet.** If a previous shop
+   replaced the sensor without its matched magnet, or fitted a magnet from
+   another assembly, the readings would be wrong by design. The parts manual
+   warns about this explicitly.
+4. The sensor is specified **180 DEG, CW**. A CCW part, or the assembly built
+   mirrored, would read backwards.
+5. `215728GT` is the complete assembly (items 14–22) — the sane replacement if
+   any of the internals are suspect.
+
+### Revised inspection for the arm
+
+- Witness marks showing the arm has rotated in its slot
+- Clamp screw `217235GT` tight, and the arm not free to move by hand
+- Arm position matched against the opposite/reference assembly
+- Magnet present and matched to the sensor
+- Rotation direction of the assembly consistent with a CW sensor
+
+### Figures extracted to `figs/`
+
+- `sm81-primary-sensor-replace-p81.png`, `sm82-...-p82.png`
+- `sm88-secondary-sensor-replace-p88.png`, `sm89-...-p89.png`
+- `pm511-1-primary-angle-sensor-to-sn1853.png`
+- `pm511-2-primary-angle-sensor-from-sn1854.png`
+- `pm511-2-parts-list-from-sn1854.png`
