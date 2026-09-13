@@ -1172,3 +1172,34 @@ A restricted filter does not by itself stop the boom — filters bypass, oil sti
 flows. It does not change the diagnosis that the safety system is refusing to
 open a valve. It is another element of the neglect picture and a possible
 contributor to the active fault list.
+
+## 2026-09-13 — Boom recovered and stowed; software version 4.01 confirmed
+
+Boom is **down and stowed**, machine on a level surface. Ground control LCD
+reports software version **4.01**.
+
+> *"For software versions **4.01 and higher**, use the **2 Point Calibration**
+> procedure. For software versions before 4.01, use the 6 Point Calibration
+> procedure."* (SM p.83) [V]
+
+**4.01 qualifies for 2-point.** No digital level is required for the boom angle
+sensors.
+
+Note: the *turntable level sensor* procedure (SM p.154) states *"A digital level
+will be required to perform this procedure"* with no version split, so if the
+full p.105 sequence becomes necessary, kit `58351` will still be needed.
+
+### Outstanding prerequisite
+
+Calibration requires *"the booms in the fully stowed position, in the drive
+enable zone and the **axles fully extended**."* The axles were last recorded
+**retracted**. With the boom now stowed they should extend — from the **platform
+controls**, foot switch down, drive handle moved (OM p.49; axle functions are
+not available from the ground controls).
+
+### Recommended scope
+
+Both boom angle sensor assemblies were disturbed during diagnosis, so both
+require calibration. Start with **secondary**, then **primary**, and check
+whether the fault list clears. If `TCON/SCON CALIBRATION INCONSISTENT` persists,
+work the full p.105 sequence — which will require the digital level kit.
