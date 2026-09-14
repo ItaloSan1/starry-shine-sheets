@@ -1588,3 +1588,19 @@ justified only as a shelf spare or if confidence in the second sensor is low.
 Suggest **two** activators (one per axle sensor, and the part is trivially
 cheap), and consider `101499GT` WASHER, THRUST 2.5 × 5.5 × .250 from the same
 stack.
+
+### Parts sourcing comparison
+
+| Part | gciron.com | zumasales.com |
+|---|---|---|
+| `60618GT` ACTIVATOR, STEER SENSOR | $9.15 | **$8.71** (list $9.89) |
+| `94985GT` SENSOR, AXLE POSITION | $408.01 | **$315.80** (list $358.70) |
+
+Zuma is **$92.21 cheaper** on the sensor. Compare shipping cost and lead time
+before ordering.
+
+**The Zuma product photograph for `60618GT` supports the identification**: it
+shows a small round black disc with screw holes and a raised centre feature,
+matching the plate secured by two Phillips screws on the axle pivot boss in the
+owner's photograph. The broken splined piece found loose in the pocket is the
+drive tang from that plate's centre.
