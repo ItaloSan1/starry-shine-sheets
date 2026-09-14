@@ -1,0 +1,3627 @@
+114474c25.cdr 
+
+Genie
+
+A TEREX BRAND
+
+®
+
+Operator's Manual Second Edition • Fifth Printing
+
+Important
+
+Read, understand and obey these safety rules and operating instructions before operating this machine. Only trained and authorized personnel shall be permitted to operate this machine. This manual should be considered a permanent part of your machine and should remain with the machine at all times. If you have any questions, call Genie.
+
+Contents
+
+Page Introduction ................................................................ 1 Symbols and Hazard Pictorials Definitions ................. 3 General Safety ........................................................... 5 Personal Safety ........................................................ 11 Work Area Safety...................................................... 12 Legend ...................................................................... 20 Controls .................................................................... 21 Inspections ............................................................... 29 Operating Instructions ............................................... 46 Transport and Lifting Instructions .............................. 58 Maintenance ............................................................. 61 Specifications ........................................................... 64
+
+Contact us:
+
+Internet: http://www.genielift.com e-mail: awp.techpub@terex.com
+
+Z-135/70 Part No. 114474
+
+Copyright © 2005 by Terex Corporation
+
+Second Edition: Fifth Printing, September 2015
+
+"Genie" and "Z" are registered trademarks of Terex South Dakota in the U.S.A. and many other countries.
+
+These machines comply with ANSI/SIA 92.5 CAN B.354.4
+
+Printed on recycled paper
+
+Printed in U.S.A.
+
+Operator's Second Edition · Fifth Printing Manual Owners, Users and Operators:
+
+Genie appreciates your choice of our machine for your application. Our number one priority is user safety, which is best achieved by our joint efforts. We feel that you make a major contribution to safety if you, as the equipment users and operators:
+
+1 Comply with employer, job site and
+
+governmental rules.
+
+2 Read, understand and follow the instructions in this and other manuals supplied with this machine.
+
+3 Use good safe work practices in a
+
+commonsense way.
+
+4 Only have trained/certified operators, directed by informed and knowledgeable supervision, running the machine.
+
+If there is anything in this manual that is not clear or which you believe should be added, please contact us.
+
+Part No. 114474 Z-135/70 1
+
+Introduction
+
+Danger
+
+Failure to obey the instructions and safety rules in this manual will result in death or serious injury.
+
+Do Not Operate Unless:
+
+You learn and practice the principles of safe machine operation contained in this operator's manual.
+
+1 Avoid hazardous situations.
+
+Know and understand the safety rules before going on to the next section.
+
+2 Always perform a pre-operation inspection.
+
+3 Always perform function tests prior to use.
+
+4 Inspect the workplace.
+
+5 Only use the machine as it was intended.
+
+You read, understand and obey the manufacturer's instructions and safety rules— safety and operator's manuals and machine decals.
+
+You read, understand and obey employer's safety rules and work site regulations.
+
+You read, understand and obey all applicable governmental regulations.
+
+You are properly trained to safely operate the machine.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Introduction
+
+Hazard Classification
+
+Genie uses symbols, color coding and signal words to identify the following:
+
+Safety alert symbol—used to alert you to potential personal injury hazards. Obey all safety messages that follow this symbol
+
+Safety Sign Maintenance
+
+to avoid possible injury or death.
+
+Replace any missing or damaged safety signs.
+
+Red
+
+2 Z-135/70 Part No. 114474
+
+Indicates a hazardous situation which, if not avoided, will result in death or serious injury.
+
+Indicates a hazardous situation
+
+Keep operator safety in mind at all times. Use mild soap and water to clean safety signs. Do not use solvent-based cleaners because they may damage the safety sign material.
+
+Orange
+
+which, if not avoided, could result in death or serious injury.
+
+Indicates a hazardous situation
+
+Yellow
+
+which, if not avoided, could result in minor or moderate injury.
+
+Indicates a hazardous situation which, if not avoided, could result Blue
+
+in property damage.
+
+Intended Use
+
+This machine is intended to be used only to lift personnel, along with their tools and materials to an aerial work site.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Symbol and Hazard Pictorials Definitions
+
+Crush Hazard Keep away from
+
+moving parts.
+
+Electrocution Hazard
+
+Disconnect battery.
+
+Fall Hazard
+
+Keep off this surface.
+
+Crush Hazard
+
+Keep away from path of moving platform.
+
+Tip-over Hazard
+
+Read the operator’s manual.
+
+Tip-over Hazard Rated capacity
+
+platform
+
+Electrocution Hazard
+
+Maintain required clearance.
+
+Read service Explosion Hazard
+
+No smoking.
+
+manual
+
+Only trained No flame.
+
+maintenance Stop engine.
+
+personnel should access compartments
+
+Recovery procedure if tilt alarm sounds while elevated.
+
+3
+
+Tip-over Hazard
+
+3
+
+Explosion Hazard
+
+Do not use ether or other high
+
+Platform uphill:
+
+Platform downhill: 1 Lower primary
+
+1 Retract primary 2 Retract/lower
+
+2 Retract/lower secondary
+
+secondary
+
+energy starting aids on machines equipped with glow plugs.
+
+3 Retract primary
+
+3 Lower primary
+
+Part No. 114474 Z-135/70 3
+
+Operator's Manual Second Edition · Fifth Printing
+
+Symbol and Hazard Pictorials Definitions
+
+Lanyard
+
+Wheel load Voltage rating for
+
+Pressure rating for
+
+Tire specification attachment point
+
+power to platform
+
+air line to platform
+
+Avoid contact. Tie-down
+
+Wind speed instructions
+
+Accesss by No step. Do not jump-start
+
+trained and this battery.
+
+authorized personnel only
+
+4 Z-135/70 Part No. 114474
+
+Tie-down
+
+Weight of welder instructions
+
+reduces capacity
+
+Fire Hazard
+
+Fire extinguisher
+
+Operator's Second Edition · Fifth Printing
+
+Manual General Safety
+
+Safety signs and locations
+
+28177
+
+1263543 114258 97865
+
+114390 82237
+
+97602
+
+28161
+
+97715 or 229356 or 230977
+
+28177
+
+WARNING
+
+Crush Hazard Death or serious injury may result from platform crushing
+
+Improper operation or maintenance of
+
+Access by trained and personnel against boom.
+
+1263543
+
+97715 or 229356 or 230977
+
+97715 or 229356 or 230977
+
+1263543 DANGER
+
+Lug Nut Torque Dry bolts:
+
+WARNING Tip-over Hazard Failure to replace tires with tires of same specification will result in death or serious injury.
+
+Do not use air-filled tires.
+
+420 ft-lbs / 569.5 Nm Lubricated bolts:
+
+320 ft-lbs / 433.9 Nm
+
+Foam-filled tires are critical to machine stability.
+
+this equipment can result in death or
+
+authorized personnel only. Do not replace factory-installed serious injury.tires with tires of different specification or ply rating. Tire Size 445/65 D22.5, 18 ply Foam-filled
+
+97715 B
+
+Keep away from path of moving platform. 114258
+
+DANGER
+
+114390
+
+DANGER
+
+28177 C
+
+28161
+
+WARNING
+
+Burn Hazard
+
+No smoking. No
+
+Crush Hazard Fuel and fumes
+
+flame. Stop
+
+Contact with moving parts can can explode
+
+engine.
+
+result in death or serious and burn.
+
+injury.114258 A
+
+82237
+
+DANGER
+
+97602
+
+Keep away from moving parts.
+
+28161 C
+
+Electrocution Hazard Contact with energized components can result in death or
+
+Part No. 114474 Z-135/70 5
+
+Avoid contact with energized components.
+
+serious injury. 82237 B
+
+Electrocution/Burn Hazard Failure to disconnect all the batteries before performing service on this machine may result in
+
+Explosion Hazard
+
+death or serious injury.
+
+Death or serious injury can
+
+Disconnect all the batteries result from the use of ether or
+
+before performing service on other high energy starting
+
+this machine.
+
+aids. 97602 B
+
+97865 WARNING
+
+Do not use ether or other high energy starting aids on machines equipped with glow plugs.
+
+WARNING97865 B
+
+Operator's Manual Second Edition · Fifth Printing
+
+General Safety
+
+Safety signs and locations
+
+WARNING
+
+Bodily Injury Hazard Failure to use pipe cradle assembly according to instructions and safety rules below and in operator's and responsibilities manual could result in death or serious injury. Do not exceed rated platform capacity.
+
+Secure load to platform. Pipe cradle assembly and weight in pipe cradles will reduce rated platform capacity and must be factored into total platform load.
+
+6 Z-135/70 Part No. 114474
+
+Do not obstruct entrance/exit of platform. Do not obstruct ability to operate platform controls or Emergency Stop button.
+
+Pipe cradle assembly weighs 25 lbs (11kg). Maximum capacity of pipe cradle assembly is 200 lbs (91 kg).
+
+Do not operate unless you are adequately instructed and are aware of all hazards associated with movement of platform with overhanging load. Weight of pipe cradle assembly and load in pipe cradles may limit maximum number of occupants in platform.
+
+Do not cause a horizontal force or side load to machine by raising or lowering a fixed or overhanging load. Center load within perimeter of platform.
+
+72875 C
+
+WARNING
+
+Bodily Injury
+
+Failure to use panel cradles according to instructions and safety rules Hazard
+
+below and in operator's and responsibilities manual could result in death or serious injury. Do not exceed rated platform
+
+Weight of panel cradles and load
+
+Do not cause a horizontal force capacity. Combined weight
+
+in panel cradles may limit
+
+or side load to machine by of cradles, panels,
+
+maximum number of occupants
+
+raising or lowering a fixed or occupants, tools and any
+
+in platform to one person.
+
+overhanging load. other equipment must not exceed rated capacity.
+
+Secure cradles to platform. Secure panel(s) to platform
+
+Maximum vertical height of panels: 4 ft / 1.2 m Panel cradle assembly weighs 30 lbs / 13.6 kg.
+
+railing using straps provided.
+
+Maximum wind speed: Do not operate unless you are
+
+15 mph / 6.7 m/sec Maximum capacity of panel cradles is 250 lbs / 113 kg.
+
+adequately instructed and are aware of all hazards associated with lifting panels.
+
+Maximum panel area: 32 sq. ft / 3 m2
+
+DANGER
+
+3
+
+• Stop all movement.
+
+Platform uphill: 1 Lower primary boom. 2 Retract/lower secondary boom. 3 Retract primary boom.
+
+Tip-over Hazard
+
+3
+
+If tilt-alarm sounds, unit is on
+
+• Read operator's
+
+Platform downhill: a severe slope.
+
+manual before
+
+1 Retract primary boom. Death or serious
+
+attempting to move
+
+2 Retract/lower secondary boom. injury will result.
+
+machine.
+
+133236 A
+
+3 Lower primary boom.
+
+Operator's Second Edition · Fifth Printing
+
+Manual General Safety
+
+Safety signs and locations
+
+31788
+
+28177
+
+52865
+
+97865 WARNING
+
+WARNINGCrush Hazard
+
+Electrocution/Burn Hazard Failure to disconnect all Death or serious injury may result
+
+the batteries before performing service on this machine may result in from platform
+
+death or serious injury.
+
+crushing personnel
+
+Disconnect all the batteries before performing service on this machine. against boom.
+
+97865 B
+
+Keep away from path of moving platform.
+
+28177 C 11439031060
+
+DANGER
+
+DANGER
+
+Tip-over Hazard Altering or disabling limit switches can result in machine tip-over. Machine tip-over will result in death or serious injury.
+
+Do not alter or disable limit switch(s).
+
+31060 C
+
+97875
+
+1263543
+
+WARNING
+
+28161Improper operation or maintenance of
+
+Access by trained and this equipment can result in death or
+
+authorized personnel only. serious injury.WARNING
+
+97715 or 229356 or 230977
+
+82237
+
+DANGER
+
+Crush Hazard Contact with moving parts can result in death or serious Electrocution injury.Hazard Contact with energized components can result in death or
+
+Avoid contact with energized components.
+
+serious injury. 82237 B
+
+Keep away from moving parts.
+
+28161 C
+
+31060
+
+1263543
+
+97715 or or 229356 230977
+
+Part No. 114474 Z-135/70 7
+
+97865
+
+1263543
+
+82314
+
+28161 114389
+
+114390
+
+1263543 28181 28177 31060 52865
+
+97875
+
+31788 82237
+
+DANGER
+
+Tip-over Hazard Failure to replace tires with tires of same specification will result in death or serious injury.
+
+Do not use air-filled tires. Foam-filled tires are critical to machine stability.
+
+Do not replace factory-installed tires with tires of different specification or ply rating. Tire Size 445/65 D22.5, 18 ply Foam-filled
+
+97715 B
+
+DANGER
+
+Explosion / Burn Hazard Ignition of explosive gases or contact with corrosive acid will cause death, burns or blindnessKeep all open flames and sparks away. Wear personal protective equipment, including face shield, gloves and long sleeve shirt.
+
+READ MANUALS Read all manuals prior to operation.
+
+DO NOT OPERATE equipment if you do not understand the information in the manuals.
+
+Consult your supervisor, the owner or the manufacturer.
+
+31788 C
+
+Lug Nut Torque Dry bolts:
+
+420 ft-lbs / 569.5 Nm Lubricated bolts:
+
+320 ft-lbs / 433.9 Nm
+
+82314
+
+97715 or 229356 or 230977
+
+114389 WARNING
+
+28181
+
+WARNING
+
+Fall Hazard Death or serious injury may result from climbing or riding on boom.Keep off this surface.
+
+28181 C
+
+DANGER
+
+Tip-over Hazard Altering or disabling angle sensor can result in machine tip-over. Machine tip-over will result in death or serious injury.
+
+Do not move, alter or disable angle sensor.
+
+82314 B
+
+DANGER
+
+Operator's Manual Second Edition · Fifth Printing
+
+General Safety
+
+Safety signs and locations
+
+82548
+
+114251 133079 133067 1263542
+
+1263542 82472
+
+114249
+
+114249
+
+114251
+
+1263542
+
+82472
+
+114251 A
+
+82472 B
+
+133079
+
+133067
+
+133179 A
+
+82548
+
+114249
+
+114249 A
+
+8 Z-135/70 Part No. 114474
+
+Operator's Second Edition · Fifth Printing
+
+Manual General Safety
+
+Safety signs and locations
+
+82546 B
+
+Part No. 114474 Z-135/70 9
+
+272 kg
+
+\+\< = 272 kg
+
+Operator's Manual Second Edition · Fifth Printing
+
+General Safety
+
+Safety signs and locations
+
+114247 82548 133079
+
+114252
+
+114252 A
+
+133179 A
+
+1263542
+
+82487
+
+82487 B
+
+133180 133067
+
+8248182481 B
+
+133180 A
+
+114249
+
+82472114249 A
+
+82472 B
+
+133079 133180 1263542
+
+114252 114252 114252
+
+82472
+
+82487
+
+82487
+
+82487
+
+1263542
+
+133067
+
+114249
+
+1263542 114247 82548 82481
+
+114249
+
+10 Z-135/70 Part No. 114474
+
+Operator's Second Edition · Fifth Printing
+
+Manual Personal Safety
+
+Fall Protection
+
+Personal fall protection equipment (PFPE) is required when operating this machine.
+
+Occupants must wear a safety belt or harness in accordance with governmental regulations. Attach the lanyard to the anchor provided in the platform.
+
+Operators must comply with employer, job site and governmental rules regarding the use of personal protective equipment.
+
+All PFPE must comply with applicable governmental regulations, and must be inspected and used in accordance with the PFPE manufacturer’s instructions.
+
+Part No. 114474 Z-135/70 11
+
+Operator's Manual Second Edition · Fifth Printing
+
+Work Area Safety
+
+Electrocution Hazards
+
+This machine is not electrically insulated and will not provide protection from contact with or proximity to electrical current.
+
+Maintain safe distances from electrical power lines and apparatus in accordance with applicable governmental regulations and the following chart.
+
+Line Voltage Required Clearance
+
+0 to 50KV 10 ft 3.0 m
+
+50 to 200KV 15 ft 4.6 m
+
+200 to 350KV 20 ft 6.1 m
+
+350 to 500KV 25 ft 7.6 m
+
+500 to 750KV 35 ft 10.6 m
+
+750 to 1000KV 45 ft 13.7 m
+
+12 Z-135/70 Part No. 114474
+
+Allow for platform movement, electrical line sway or sag and beware of strong or gusty winds.
+
+Keep away from the machine if it contacts energized power lines. Personnel on the ground or in the platform must not touch or operate the machine until energized power lines are shut off.
+
+Do not use the machine as a ground for welding.
+
+Do not operate the machine during lightning or storms.
+
+Before performing service on this machine, disconnect the batteries under both turntable covers.
+
+Tip-over Hazards
+
+Occupants, equipment and materials shall not exceed the maximum platform capacity.
+
+Maximum platform capacity 600 lbs 272 kg
+
+Maximum occupants 2
+
+The weight of options and accessories, such as pipe cradles, panel cradles and welders, will reduce the rated platform capacity and must be subtracted from the platform capacity. See the decals with the options and accessories.
+
+If using accessories, read, understand and obey the decals, manuals and instructions with the accessory.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Do not raise or extend the boom unless the machine is on a firm, level surface.
+
+Do not depend on the tilt alarm as a level indicator. The tilt alarm sounds in the platform only when the machine is on a severe slope.
+
+If the tilt alarm sounds while the boom is lowered: Do not extend, rotate or raise the boom above horizontal. Move the machine to a firm, level surface before raising the platform.
+
+If the tilt alarm sounds when the platform is raised: Use extreme caution. Identify the condition of the boom on the slope as shown below. Follow the steps to lower the boom before moving to a firm, level surface. Do not rotate the boom while lowering.
+
+If the tilt alarm sounds with the platform uphill:
+
+1 Lower the primary boom.
+
+2 Retract/lower the secondary
+
+boom.
+
+3 Retract the primary boom.
+
+If the tilt alarm sounds with the platform downhill:
+
+1 Retract the primary
+
+boom.
+
+2 Retract/lower the
+
+secondary boom.
+
+3 Lower the primary boom.
+
+Part No. 114474 Z-135/70 13
+
+Do not raise the boom when wind speeds may exceed 28 mph / 12.5 m/s. If wind speeds exceed 28 mph / 12.5 m/s when the boom is raised, lower the boom and do not continue to operate the machine.
+
+Do not operate the machine in strong or gusty winds. Do not increase the surface area of the platform or the load. Increasing the area exposed to the wind will decrease machine stability.
+
+Use extreme care and slow speeds while driving the machine in the stowed position across uneven terrain, debris, unstable or slippery surfaces and near holes and drop- offs.
+
+Do not drive the machine on or near uneven terrain, unstable surfaces or other hazardous conditions with the boom raised or extended.
+
+The recovery mode should only be used by trained and authorized personnel.Work Area Safety
+
+Operator's Manual Second Edition · Fifth Printing
+
+Work Area Safety
+
+Do not use the machine as a crane.
+
+Do not use air-filled tires. These machines are
+
+Do not push the machine or other objects with the boom.
+
+14 Z-135/70 Part No. 114474
+
+equipped with foam-filled tires. Wheel weight is critical to stability.
+
+Do not contact adjacent structures with the boom.
+
+Do not modify or alter an aerial work platform without prior written permission from the Do not tie the boom or platform to adjacent structures.
+
+manufacturer. Mounting attachments for holding tools or other materials onto the platform, toeboards or guard rail system can increase the weight in the Do not place loads outside the platform perimeter.
+
+platform and the surface area of the platform or the
+
+Do not push off or pull
+
+load.
+
+toward any object outside
+
+Do not place or attach of the platform.
+
+overhanging loads to any part of this Maximum allowable
+
+machine. side force - ANSI & CSA 150 lbs / 667 N
+
+Do not place ladders or scaffolds in the Maximum allowable
+
+platform or against any manual force - Australia
+
+part of this machine. 90 lbs / 400 N
+
+Do not transport tools and materials unless
+
+Do not alter or disable machine components that in any way affect safety and stability.
+
+they are evenly distributed and can be safely handled by Do not replace items critical to machine stability with items of different weight or specification.
+
+person(s) in the platform.
+
+Do not replace factory-installed tires with tires of different specification or ply rating.
+
+Do not use the machine on a moving or mobile surface or vehicle. Do not use the platform controls to free a platform that is caught, snagged or otherwise prevented from normal motion by an adjacent structure. All
+
+Be sure all tires are in good condition and lug nuts are properly tightened. personnel must be removed from the platform before attempting to free the platform using the ground controls.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Operation on Slopes Hazards
+
+Do not drive the machine on a slope that exceeds the maximum uphill, downhill or side slope rating of the machine. Slope rating applies only to machines in the stowed position.
+
+Maximum slope rating, stowed position
+
+Platform downhill 45% (24°)
+
+Platform uphill 30% (17°)
+
+Side slope 25% (14°)
+
+Note: Slope rating is subject to ground conditions and adequate traction. See Driving on a Slope in the Operating Instructions Section.
+
+Part No. 114474 Z-135/70 15
+
+Fall Hazards
+
+Occupants must wear a safety belt or harness in accordance with governmental regulations. Attach the lanyard to the anchor provided in the platform.
+
+Do not sit, stand or climb on the platform guard rails. Maintain a firm footing on the platform floor at all times.
+
+Do not climb down from the platform when raised.
+
+Keep the platform floor clear of debris.
+
+Lower the platform entry mid-rail or close the entry gate before operating.
+
+Do not enter or exit the platform unless the machine is in the stowed position and the platform is at ground level.
+
+Work Area Safety
+
+Operator's Manual Second Edition · Fifth Printing
+
+Work Area Safety
+
+Collision Hazards
+
+Be aware of limited sight distance and blind spots when driving or operating.
+
+Be aware of the boom position and tailswing when rotating the turntable.
+
+Be aware of machine length when operating. The machine is 42 ft 5 inches / 12.9 m long.
+
+Check the work area for overhead obstructions or other possible hazards.
+
+Be aware of crushing hazards when grasping the platform guard rail.
+
+Operators must comply with employer, job site and governmental rules regarding the use of personal protective equipment.
+
+Observe and use the color-coded direction arrows on the platform controls and drive chassis for drive and steer functions.
+
+Do not operate a boom in the path of any crane unless the controls of the crane have been locked out and/or precautions have been taken to prevent any potential collision.
+
+16 Z-135/70 Part No. 114474
+
+No stunt driving or horseplay while operating a machine.
+
+Do not lower the boom unless the area below is clear of personnel and obstructions.
+
+Limit travel speed according to the condition of the ground surface, congestion, slope, location of personnel, and any other factors which may cause collision.
+
+Bodily Injury Hazard
+
+Do not operate the machine with a hydraulic oil or air leak. An air leak or hydraulic leak can penetrate and/or burn skin.
+
+Always operate the machine in a well-ventilated area to avoid carbon monoxide poisoning.
+
+Improper contact with components under any cover will cause serious injury. Only trained maintenance personnel should access compartments. Access by the operator is only advised when performing a pre-operation inspection. All compartments must remain closed and secured during operation.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Work Area Safety
+
+Explosion and Fire Hazards
+
+Do not start the engine if you smell or detect liquid petroleum gas (LPG), gasoline, diesel fuel or other explosive substances.
+
+Do not refuel the machine with the engine running.
+
+Refuel the machine and charge the battery only in an open, well-ventilated area away from sparks, flames and lighted tobacco.
+
+Do not operate the machine in hazardous locations or locations where potentially flammable or explosive gases or particles may be present.
+
+Do not spray ether into engines equipped with glow plugs.
+
+Damaged Machine Hazards
+
+Do not use a damaged or malfunctioning machine.
+
+Conduct a thorough pre-operation inspection of the machine and test all functions before each work shift. Immediately tag and remove from service a damaged or malfunctioning machine.
+
+Be sure all maintenance has been performed as specified in this manual and the appropriate Genie service manual.
+
+Be sure all decals are in place and legible.
+
+Be sure the operator’s, safety and responsibilities manuals are complete, legible and in the storage container located on the platform.
+
+Part No. 114474 Z-135/70 17 Component Damage Hazards
+
+Do not use any battery or charger greater than 12V to jump-start the engine. Apply jumper cables to the starter and controls battery, not the auxiliary power batteries.
+
+Do not use the machine as a ground for welding unless the machine is equipped with the weld line to platform option and it is properly connected.
+
+Battery Safety
+
+Burn Hazards
+
+Batteries contain acid. Always wear protective clothing and eye wear when working with batteries.
+
+Avoid spilling or contacting battery acid. Neutralize battery acid spills with baking soda and water.
+
+Explosion HazardKeep sparks, flames
+
+and lighted tobacco away from batteries. Batteries emit explosive gas. Electrocution Hazard
+
+Avoid contact with electrical terminals.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Work Area Safety
+
+Pipe Cradle Safety
+
+Read, understand and obey all warnings and instructions provided with the pipe cradles.
+
+Do not exceed the rated platform capacity. The pipe cradle assembly and the weight in the pipe cradles will reduce rated platform capacity and must be factored into total platform load.
+
+The pipe cradle assembly weighs 21 lbs / 9.5 kg.
+
+The maximum capacity of the pipe cradle assembly is 200 lbs / 91 kg.
+
+The weight of the pipe cradle assembly and the load in the pipe cradles may limit the maximum number of occupants in platform.
+
+Center the load within the perimeter of the platform.
+
+Secure the load to the platform.
+
+Do not obstruct the entrance or the exit of the platform.
+
+Do not obstruct the ability to operate the platform controls or the red Emergency Stop button.
+
+Do not operate unless you are adequately instructed and are aware of all of the hazards associated with movement of the platform with an overhanging load.
+
+Do not cause a horizontal force or side load to the machine by raising or lowering a fixed or overhanging load.
+
+Electrocution Hazard: Keep pipes away from all energized electrical conductors.
+
+18 Z-135/70 Part No. 114474
+
+Panel Cradle Safety
+
+Read, understand and obey all warnings and instructions provided with the panel cradles.
+
+Do not exceed the rated platform capacity. The combined weight of the cradles, panels, occupants, tools and any other equipment must not exceed rated capacity.
+
+The panel cradle assembly weighs 30 lbs / 13.6 kg.
+
+The maximum capacity of the panel cradles is 250 lbs / 113 kg.
+
+The weight of the panel cradles and the load in the panel cradles may limit the maximum number of occupants in platform to one person.
+
+Secure the cradles to the platform. Secure the panel(s) to the platform railing using the straps provided.
+
+Do not operate unless you are adequately instructed and are aware of all hazards associated with lifting panels.
+
+Do not cause a horizontal force or side load to machine by raising or lowering a fixed or overhanging load.
+
+Maximum vertical height of panels: 4 ft / 1.2 m
+
+Maximum wind speed: 15 mph / 6.7 m/sec
+
+Maximum panel area: 32 sq. ft / 3 m2
+
+Operator's Second Edition · Fifth Printing
+
+Manual Welder Safety
+
+Read, understand and obey all warnings and instructions provided with the welding power unit.
+
+Do not connect weld leads or cables unless the welding power unit is turned off at the platform controls.
+
+Do not operate unless the weld cables are properly connected and the welder is properly grounded.
+
+The weight of the welder will reduce the rated platform capacity and must be factored into the total platform load. The welder power supply weighs 75 lbs / 34 kg.
+
+Do not operate the welder unless a fire extinguisher is immediately available for instant use, per OSHA regulation 1926.352(d).
+
+Part No. 114474 Z-135/70 19
+
+Work Area Safety
+
+Weld Line to Platform Safety
+
+Read, understand and obey all warnings and instructions provided with the welding power unit.
+
+Do not connect weld leads or cables unless the welding power unit is turned off at the platform controls.
+
+Do not operate unless the weld cables are properly connected.
+
+Connect the positive lead to the twist-lock connector at the turntable and platform.
+
+Clamp the negative lead to the ground post at the turntable and platform.
+
+Lockout After Each Use
+
+1 Select a safe parking location—firm level
+
+surface, clear of obstruction and traffic.
+
+2 Retract and lower the boom to the stowed
+
+position.
+
+3 Rotate the turntable so that the boom is between
+
+the non-steer wheels.
+
+4 Turn the key switch to the off position and
+
+remove the key to secure from unauthorized use.
+
+5 Chock the wheels.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Legend
+
+1 Square-end tire
+
+2 Ground controls
+
+3 Secondary boom
+
+4 Primary boom
+
+5 Jib boom
+
+6 Platform
+
+7 Platform controls
+
+20 Z-135/70 Part No. 114474
+
+8 Sliding mid-rail
+
+9 Manual storage container
+
+10 Lanyard anchorage point
+
+11 Foot switch
+
+Operator's Second Edition · Fifth Printing
+
+Manual Controls
+
+1
+
+Z-135 machines will have one of these
+
+STOP two styles of ground
+
+2 control panel. The descriptions in this 3section and the 21instructions in the Function Test and 2045Operating Instructions sections
+
+19 apply to both panels,
+
+7 unless specifically noted.
+
+817
+
+1016
+
+15 14 12
+
+STOP
+
+17
+
+Part No. 114474 Z-135/70 21
+
+6
+
+18
+
+9
+
+13
+
+Run
+
+Bypass 1
+
+Recovery
+
+2016
+
+1422
+
+12 18
+
+6 7 2 3452421
+
+23
+
+8
+
+149
+
+1013
+
+11
+
+11Run
+
+Bypass
+
+Recovery
+
+Operator's Manual Second Edition · Fifth Printing
+
+Controls
+
+Ground Control Panel
+
+1 LCD readout screen
+
+a b c d e f a low fuel indicator b engine oil pressure indicator c water temperature indicator d auxiliary power indicator e high engine rpm indicator f hour meter 2 Red Emergency Stop button
+
+Push in red Emergency Stop button to the off position to stop all functions and turn the engine off. Pull out the red Emergency Stop button to the on position to operate the machine.
+
+3 Glow plug button
+
+Push the glow plug button and hold for 3 to 5 seconds.
+
+4 Key switch for off/ground/platform selection
+
+Turn the key switch to the off position and the machine will be off. Turn the key switch to the ground position and the ground controls will operate. Turn the key switch to the platform position and the platform controls will operate.
+
+5 Engine start button
+
+Push the engine start button and the engine will start. 6 Jib boom up/down buttons
+
+Push the jib boom up button and the jib boom will raise. Push the jib boom down button and the jib boom will lower.
+
+22 Z-135/70 Part No. 114474
+
+7 Platform level up/down buttons
+
+Push the platform level up button and the level of the platform will raise. Push the platform level down button and the level of the platform will lower. 8 Primary boom extend/retract buttons
+
+Push the primary boom extend button and the primary boom will extend. Push the primary boom retract button and the primary boom will retract. 9 20A circuit breaker for system circuit 10 Alarm 11 Bypass/recovery key switch
+
+Bypass key position to be used to level the platform if ground control display shows platform out of level (P22) and platform level controls do not work. Refer to the operating instructions. Recovery key position should only be used by trained and authorized personnel. 12 Platform rotate left/right buttons
+
+Push the platform rotate left button and the platform will rotate to the left. Push the platform rotate right button and the platform will rotate to the right. 13 Jib boom extend/retract buttons
+
+Push the jib boom extend button and the jib boom will extend. Push the jib boom retract button and the jib boom will retract. 14 High speed function enable button
+
+Push the high speed function enable switch to enable the functions on the ground control panel to operate at high speed.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Controls
+
+15 Low speed function enable button
+
+Push the low speed function enable switch to enable the functions on the ground control panel to operate at low speed. 16 Emergency/Auxiliary power button
+
+Use emergency/auxiliary power if the primary power source (engine) fails. Simultaneously push the emergency/auxiliary power button and activate the desired function.
+
+17 Turntable rotate left/right buttons
+
+Push the turntable rotate left button and the turntable will rotate to the left. Push the turntable rotate right button and the turntable will rotate to the right. 18 Secondary boom up/extend and down/retract
+
+buttons Push the secondary boom up/extend button and the secondary boom will raise and then extend. Push the secondary boom down/retract button and the secondary boom will retract and then lower. 19 Primary boom up/down buttons
+
+Push the primary boom up button and the primary boom will raise. Push the primary boom down button and the primary boom will lower. 20 LCD screen control buttons
+
+Part No. 114474 Z-135/70 23
+
+21 Engine speed select button
+
+Push the engine speed select button to select the engine speed. When the arrow above the rabbit is lit, the engine is in high idle speed. When the arrow above the turtle is lit, the engine is in low idle speed. 22 Primary boom down button
+
+Push the primary boom down button and the primary boom will lower. 23 Primary boom up button
+
+Push the primary boom up button and the primary boom will raise. 24 Not used
+
+Operator's Manual Second Edition · Fifth Printing
+
+Controls
+
+Z-135 machines will have one of these two styles of platform control panel. The descriptions in this section and the instructions in the Function Test and Operating Instructions sections apply to both panels, unless specifically noted.
+
+24 Z-135/70 Part No. 114474
+
+Operator's Manual Second Edition · Fifth Printing
+
+Part No. 114474 Z-135/70 25
+
+Controls
+
+Operator's Manual Second Edition · Fifth Printing
+
+Controls
+
+Platform Control Panel
+
+1 Horn button
+
+Press the button and the horn will sound. Release the button and the horn will stop.
+
+2 Platform not level indicator light
+
+Level the platform until the light is off. The switch will only work in the direction that will level the platform.
+
+3 Machine on incline indicator light
+
+Light on indicates all functions have stopped. See the instructions in the Operating Instructions section.
+
+4 Lower primary boom indicator light
+
+Lower the primary boom until the light is off.
+
+5 Lower / retract secondary boom indicator light
+
+Lower/retract the secondary boom until the light is off.
+
+6 Used for optional equipment
+
+7 Generator control with indicator light
+
+(if equipped)
+
+Move the switch or push the button to turn the generator on. Move the switch again or release the button to turn the generator off.
+
+8 Emergency/Auxiliary power control with indicator
+
+light
+
+Use emergency/auxiliary power if the primary power source (engine) fails.
+
+Move and hold the switch, or push and hold the button. Activate the desired function. The indicator light will be on when emergency/ auxiliary power is being used.
+
+26 Z-135/70 Part No. 114474
+
+9 Glow plug control with indicator light
+
+Move the switch or push the button to activate the glow plugs.
+
+10 Engine start control with indicator light
+
+Move the switch or push the button and the engine will start. The indicator light will be on when the switch is moved or the button is pushed.
+
+11 Engine idle control with indicator light
+
+Move the switch or push the button to select engine idle setting. The indicator light next to the current engine idle setting will be on.
+
+12 Not used
+
+13 Power indicator light
+
+Light on indicates the machine is on.
+
+14 Check engine indicator light
+
+Light on indicates an engine fault.
+
+15 Low fuel indicator light
+
+Light on indicates the machine is low on fuel.
+
+16 Fault indicator light
+
+Light on indicates a system fault.
+
+17 Red Emergency Stop button
+
+Push in the red Emergency Stop button to the off position to stop all functions and turn the engine off. Pull out the red Emergency Stop button to the on position to operate the machine.
+
+Operator's Second Edition · Fifth Printing Manual 18 Dual axis proportional control handle for drive
+
+and steer functions OR Proportional control handle for drive function and thumb rocker for steer function.
+
+Move the control handle in the direction indicated by the blue arrow on the control panel and the machine will drive forward. Move the control handle in the direction indicated by the yellow arrow and the machine will drive backwards. Move the control handle in the direction indicated by the blue triangle and the machine will steer to the left. Move the control handle in the direction indicated by the yellow triangle and the machine will steer to the right.
+
+ORMove the control handle in the direction indicated by the blue arrow on the control panel and the machine will drive forward. Move the control handle in the direction indicated by the yellow arrow and the machine will drive backwards. Press the left side of the thumb rocker and the machine will steer to the left. Press the right side of the thumb rocker and the machine will steer to the right.
+
+19 Steer mode control with indicator lights
+
+Move the switch or push the button to choose steer mode.
+
+The indicator light next to the current steer mode will be on.
+
+20 Single axis proportional control handle for
+
+secondary boom up/extend and down/retract function
+
+Move the control handle up and the secondary boom will raise and then extend. Move the control handle down and the secondary boom will retract and then lower.
+
+Part No. 114474 Z-135/70 27
+
+21 Drive control with indicator lights
+
+Move the switch or push the button to choose the drive setting. The indicator light next to the current setting will be on.
+
+22 Thumb rocker for jib boom extend/retract
+
+function
+
+Push the top of the rocker switch and the jib boom will retract. Push the bottom of the rocker switch and the jib boom will extend.
+
+23 Dual axis proportional control handle for jib boom
+
+up/down and platform rotate left/right functions
+
+Move the control handle up and the jib boom will raise. Move the control handle down and the jib boom will lower. Move the control handle to the left and the platform will rotate to the left. Move the control handle to the right and the platform will rotate to the right.
+
+24 Axle extend/retract switch with indicator lights
+
+Move the axle select switch to chose an axle setting. The indicator light will flash while the axles are extending and stay on when the axles are fully extended. The indicator light will flash while the axles are retracting and stay on when the axles are fully retracted.
+
+25 Drive enable control with indicator light
+
+Light on indicates that the primary boom has moved past either circle-end wheel and the drive function is turned off. To drive, move the drive enable switch or push the drive enable button and slowly move the drive/steer control handle off center.
+
+Controls
+
+Operator's Manual Second Edition · Fifth Printing
+
+Controls
+
+26 Thumb rocker switch for primary boom extend/
+
+retract function
+
+Push the top of the rocker switch and primary boom will retract. Push the bottom of the rocker switch and the primary boom will extend.
+
+27 Dual axis proportional control handle for primary boom up/down and turntable rotate left/right functions
+
+Move the control handle up and the primary boom will raise. Move the control handle down and the primary boom will lower. Move the control handle to the left and the turntable will rotate to the left. Move the control handle to the right and the turntable will rotate to the right.
+
+28 Platform level switch
+
+Move the switch up and the level of the platform will raise. Move the switch down and the level of the platform will lower.
+
+29 Not used
+
+30 Axle extend button with indicator light
+
+Push the axle extend button to extend the axles. The indicator light will flash while the axles are extending and stay on when the axles are fully extended.
+
+31 Axle retract button with indicator light
+
+Push the axle retract button to retract the axles. The indicator light will flash while the axles are retracting and stay on when the axles are fully retracted.
+
+28 Z-135/70 Part No. 114474
+
+Operator's Second Edition · Fifth Printing
+
+Manual Inspections
+
+Do Not Operate Unless:
+
+You learn and practice the principles of safe machine operation contained in this operator's manual.
+
+1 Avoid hazardous situations.
+
+2 Always perform a pre-operation
+
+inspection.
+
+Know and understand the pre-operation inspection before going on to the next section.
+
+3 Always perform function tests prior to use.
+
+4 Inspect the workplace.
+
+5 Only use the machine as it was intended.
+
+Part No. 114474 Z-135/70 29
+
+Pre-operation Inspection Fundamentals
+
+It is the responsibility of the operator to perform a pre-operation inspection and routine maintenance.
+
+The pre-operation inspection is a visual inspection performed by the operator prior to each work shift. The inspection is designed to discover if anything is apparently wrong with a machine before the operator performs the function tests.
+
+The pre-operation inspection also serves to determine if routine maintenance procedures are required. Only routine maintenance items specified in this manual may be performed by the operator.
+
+Refer to the list on the next page and check each of the items.
+
+If damage or any unauthorized variation from factory delivered condition is discovered, the machine must be tagged and removed from service.
+
+Repairs to the machine may only be made by a qualified service technician, according to the manufacturer's specifications. After repairs are completed, the operator must perform a pre-operation inspection again before going on to the function tests.
+
+Scheduled maintenance inspections shall be performed by qualified service technicians, according to the manufacturer's specifications and the requirements listed in the responsibilities manual.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Inspections
+
+Pre-operation Inspection
+
+□ Be sure that the operator’s, safety and responsibilities manuals are complete, legible and in the storage container located in the platform.
+
+□ Be sure that all decals are legible and in place. See Inspections for Decals section.
+
+□ Check for engine oil leaks and proper oil level. Add oil if needed. See Maintenance section.
+
+□ Check for hydraulic oil leaks and proper oil level. Add oil if needed. See Maintenance section.
+
+□ Check for engine coolant leaks and proper level of coolant. Add coolant if needed. See Maintenance section.
+
+□ Check for battery fluid leaks and proper fluid level. Add distilled water if needed. See Maintenance section.
+
+Check the following components or areas for damage, improperly installed or missing parts and unauthorized modifications:
+
+□ Electrical components, wiring and electrical cables
+
+□ Hydraulic hoses, fittings, cylinders and manifolds
+
+□ Fuel and hydraulic tanks
+
+□ Drive and turntable motors and drive hubs
+
+□ Boom wear pads
+
+□ Tires and wheels
+
+□ Engine and related components
+
+□ Limit switches and horn
+
+□ Rotation sensors
+
+30 Z-135/70 Part No. 114474
+
+□ Steer and axle sensors
+
+□ Alarms and beacons (if equipped)
+
+□ Nuts, bolts and other fasteners
+
+□ Platform entry mid-rail or gate
+
+Check entire machine for:
+
+□ Cracks in welds or structural components
+
+□ Dents or damage to machine
+
+□ Excessive rust, corrosion or oxidation
+
+□ Be sure that all structural and other critical components are present and all associated fasteners and pins are in place and properly tightened.
+
+□ After you complete your inspection, be sure that all compartment covers are in place and latched.
+
+Operator's Second Edition · Fifth Printing Manual Do Not Operate Unless:
+
+You learn and practice the principles of safe machine operation contained in this operator's manual.
+
+1 Avoid hazardous situations.
+
+2 Always perform a pre-operation
+
+inspection.
+
+3 Always perform function tests prior to
+
+use.
+
+Know and understand the function tests before going on to the next section.
+
+4 Inspect the workplace.
+
+5 Only use the machine as it was intended.
+
+Function Test Fundamentals
+
+The function tests are designed to discover any malfunctions before the machine is put into service. The operator must follow the step-by-step instructions to test all machine functions.
+
+A malfunctioning machine must never be used. If malfunctions are discovered, the machine must be tagged and removed from service. Repairs to the machine may only be made by a qualified service technician, according to the manufacturer's specifications.
+
+After repairs are completed, the operator must perform a pre-operation inspection and function tests again before putting the machine into service.
+
+Part No. 114474 Z-135/70 31
+
+Inspections
+
+1 Select a test area that is firm, level and free of
+
+obstruction. At the Ground Controls
+
+2 Turn the key switch to ground control.
+
+3 Pull out the red Emergency Stop button to
+
+the on position.
+
+Result: The LCD screen will come on and display no error messages. The beacon (if equipped) should flash.
+
+Note: In cold climates, the LCD readout screen will need to warm up before the display appears.
+
+4 Start the engine. See Operating Instructions
+
+section.
+
+Test Emergency Stop
+
+5 Push in the red Emergency Stop button to the
+
+off position.
+
+Result: The engine should turn off and no functions should operate.
+
+6 Pull out the red Emergency Stop button to the on position and restart the engine.
+
+Test the Extendable Axles
+
+Note: Start this test with the axles retracted.
+
+7 At the ground controls, push and hold a function
+
+enable/speed select button and push the primary boom up button.
+
+Result: The primary boom should not raise. On the LCD screen, the arrow next to the extend axle symbol will flash. The boom should not raise unless the axles are extended.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Inspections
+
+8 Push and hold a function enable/speed select
+
+button and press the secondary boom raise/ extend button.
+
+Result: The secondary boom should not raise. On the LCD screen, the arrow next to the extend axle symbol will flash. The secondary boom should not raise unless the axles are extended.
+
+9 Push and hold a function enable/speed select button and press the primary boom extend button.
+
+Result: The primary boom should not extend. On the LCD screen, the arrow next to the extend axle symbol will flash. The primary boom should not extend unless the axles are extended.
+
+10 Push and hold a function enable/speed select
+
+button and push the turntable rotate left button.
+
+Result: The turntable should rotate 15° and then stop. The turntable should not rotate more than 15° unless the axles are extended.
+
+11 Push and hold a function enable/speed select
+
+button and push the turntable rotate right button.
+
+Result: The turntable should return to center, rotate 15° to the right and then stop. The turntable should not rotate more than 15° unless the axles are extended.
+
+32 Z-135/70 Part No. 114474
+
+12 Turn the key switch to platform control. At the
+
+platform controls, press and hold the foot switch and move the drive control handle in the forward direction.
+
+13 Activate the extend axle function.
+
+Result: The machine should drive and the axles should extend. The indicator light will flash while the axles are moving and stay on when the axles are fully extended.
+
+14 Return to the ground controls. Turn the key
+
+switch to ground control.
+
+15 Push and hold a function enable/speed select
+
+button and push the primary boom up button and then the primary boom down button.
+
+Result: The primary boom should raise and lower normally.
+
+16 Push and hold a function enable/speed select
+
+button and push the secondary boom raise/ extend button and then the secondary boom lower/retract button.
+
+Result: The secondary boom should raise and extend and retract and lower normally.
+
+17 Push and hold a function enable/speed select button and push the primary boom extend button and then the primary boom retract button.
+
+Result: The primary boom should extend and retract normally.
+
+18 Push and hold a function enable/speed select
+
+button and push the turntable rotate left button and then the turntable rotate right button.
+
+Result: The turntable should rotate normally.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Inspections
+
+Test the Machine Functions
+
+19 Do not press and hold a function enable/speed
+
+select button. Attempt to activate each boom and platform function button.
+
+Result: No boom and platform functions should operate.
+
+20 Press and hold a function enable /speed select button and activate each boom and platform function button.
+
+Result: All boom and platform functions should operate through a full cycle. The descent alarm (if equipped) should sound while the boom is lowering.
+
+Test Emergency/Auxiliary Controls
+
+21 Push in the red Emergency Stop button to the
+
+off position to turn off the engine.
+
+22 Pull out the red Emergency Stop button to the
+
+on position.
+
+23 Simultaneously push and hold the emergency/auxiliary power button and push each boom function button.
+
+Note: To conserve battery power, test each function through a partial cycle.
+
+Result: All boom functions should operate.
+
+24 Start the engine.
+
+Part No. 114474 Z-135/70 33
+
+Test the Tilt Sensor
+
+25 Push one of the LCD
+
+screen control buttons until TURNTABLE LEVEL SENSOR X-DIRECTION appears.
+
+Result: The LCD screen should display the angle in degrees.
+
+26 Push one of the LCD screen control buttons until
+
+TURNTABLE LEVEL SENSOR Y-DIRECTION appears.
+
+Result: The LCD screen should display the angle in degrees.
+
+27 Push one of the LCD screen control buttons until
+
+PLATFORM LEVEL SENSOR DEGREES appears.
+
+Result: The LCD screen should display the angle in degrees.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Inspections
+
+Test the Operating Envelope
+
+28 Push one of the LCD screen
+
+control buttons shown until PRI BOOM ANGLE TO GRAVITY is displayed.
+
+29 Raise the primary boom and observe the LCD
+
+screen.
+
+Result: The primary boom should raise and the LCD screen should display the primary boom angle in degrees.
+
+30 Lower the primary boom.
+
+31 Simultaneously push the 2
+
+LCD screen control buttons shown to activate status mode.
+
+32 Push one of the LCD screen
+
+control buttons shown until SEC BOOM ANGLE is displayed.
+
+33 Push and hold the secondary boom up/extend
+
+button.
+
+Result: The secondary boom should raise and the LCD screen should display the secondary boom angle in degrees.
+
+The secondary boom should raise and then extend. The secondary boom should not extend until it is fully raised.
+
+34 Push and hold the secondary boom down/retract
+
+button.
+
+Result: The secondary boom should fully retract and then lower. The secondary boom should not lower unless it is fully retracted.
+
+34 Z-135/70 Part No. 114474
+
+At the Platform Controls
+
+Test Emergency Stop
+
+35 Turn the key switch to platform control.
+
+36 Push in the platform red Emergency Stop button
+
+to the off position.
+
+Result: The engine should turn off and no functions should operate.
+
+37 Pull out the red Emergency Stop button and
+
+restart the engine.
+
+Test the Horn
+
+38 Push the horn button.
+
+Result: The horn should sound.
+
+Test the Tilt Sensor Alarm
+
+39 Push a button or move a switch, such as the
+
+engine idle control.
+
+Result: The alarm should sound at the platform controls.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Inspections
+
+Test the Foot Switch
+
+40 Push in the platform red Emergency Stop button
+
+to the off position.
+
+41 Pull out the red Emergency Stop button to the on position but do not start the engine.
+
+42 Press down the foot switch and attempt to start
+
+the engine.
+
+Result: The engine should not start.
+
+43 Do not press down the foot switch and restart
+
+the engine.
+
+44 Do not press down the foot switch and test each
+
+machine function.
+
+Result: No machine functions should operate.
+
+Test Machine Functions
+
+45 Press down the foot switch.
+
+46 Activate each machine function control handle,
+
+toggle switch or button.
+
+Result: All functions should operate through a full cycle.
+
+Part No. 114474 Z-135/70 35
+
+Test the Steering
+
+47 Select square-end (blue arrow) steer. Push the square-end (blue arrow) steer button or move the steer mode switch.
+
+48 Press down the foot switch.
+
+49 Slowly move the drive/steer control handle in the direction indicated by the blue triangle on the control panel OR press the thumb rocker switch in the direction indicated by the blue triangle.
+
+Result: The square-end wheels should turn in the direction that the blue triangles point on the drive chassis.
+
+50 Slowly move the drive/steer control handle in
+
+the direction indicated by the yellow triangle on the control panel OR press the thumb rocker switch in the direction indicated by the yellow triangle.
+
+Result: The square-end wheels should turn in the direction that the yellow triangles point on the drive chassis.
+
+51 Select circle-end (yellow arrow) steer.
+
+Push the circle-end (yellow arrow) steer button or move the steer mode switch.
+
+52 Press down the foot switch.
+
+53 Slowly move the drive/steer control handle in
+
+the direction indicated by the yellow triangle on the control panel OR press the thumb rocker switch in the direction indicated by the yellow triangle.
+
+Result: The circle-end wheels should turn in the direction that the blue triangles point on the drive chassis.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Inspections
+
+54 Slowly move the drive/steer control handle in the direction indicated by the blue triangle on the control panel OR press the thumb rocker switch in the direction indicated by the blue triangle.
+
+Result: The circle-end wheels should turn in the direction that the yellow triangles point on the drive chassis.
+
+55 Select crab steer. Push the crab steer
+
+button or move the steer mode switch.
+
+56 Press down the foot switch.
+
+57 Slowly move the drive/steer control handle in the direction indicated by the blue triangle on the control panel OR press the thumb rocker switch in the direction indicated by the blue triangle.
+
+Result: All wheels should turn in the direction that the blue triangles point on the drive chassis.
+
+58 Slowly move the drive/steer control handle in
+
+the direction indicated by the yellow triangle on the control panel OR press the thumb rocker switch in the direction indicated by the yellow triangle.
+
+Result: All wheels should turn in the direction that the yellow triangles point on the drive chassis.
+
+36 Z-135/70 Part No. 114474
+
+59 Select coordinated steer. Push the
+
+coordinated steer button or move the steer mode switch.
+
+60 Press down the foot switch.
+
+61 Slowly move the drive/steer control handle in the direction indicated by the blue triangle on the control panel OR press the thumb rocker switch in the direction indicated by the blue triangle.
+
+Result: The square-end wheels should turn in the direction that the blue triangles point on the drive chassis. The circle-end wheels should turn in the direction that the yellow triangles point on the drive chassis.
+
+62 Slowly move the drive/steer control handle in the
+
+direction indicated by the yellow triangle on the control panel OR press the thumb rocker switch in the direction indicated by the yellow triangle.
+
+Result: The square-end wheels should turn in the direction that the yellow triangles point on the drive chassis. The circle-end wheels should turn in the direction that the blue triangles point on the drive chassis.
+
+Operator's Second Edition · Fifth Printing Manual Test Drive and Braking
+
+63 Press down the foot switch.
+
+64 Slowly move the drive/steer control handle in the
+
+direction indicated by the blue arrow on the control panel until the machine begins to move, then return the handle to the center position.
+
+Result: The machine should move in the direction that the blue arrow points on the drive chassis, then come to an abrupt stop.
+
+65 Slowly move the drive/steer control handle in the direction indicated by the yellow arrow on the control panel until the machine begins to move, then return the handle to the center position.
+
+Result: The machine should move in the direction that the yellow arrow points on the drive chassis, then come to an abrupt stop.
+
+Note: The brakes must be able to hold the machine on any slope it is able to climb.
+
+Test the Drive Enable System
+
+66 Press down the foot switch and lower the booms
+
+to the stowed position.
+
+67 Rotate the turntable until the primary boom moves past one of the circle-end tires.
+
+Result: The drive enable indicator light should come on while the boom is anywhere in the range shown.
+
+68 Move the drive/steer control handle off center.
+
+Result: No drive function should operate.
+
+69 Push the drive enable button or move the drive enable switch, and slowly move the drive/steer control handle off center.
+
+Result: The drive function should operate.
+
+Part No. 114474 Z-135/70 37
+
+Inspections
+
+Note: When the drive enable system is in use, the machine may drive in the opposite direction that the drive and steer control handle is moved.
+
+Use the color-coded direction arrows on the
+
+Blue
+
+platform controls and the drive chassis to identify the direction of travel.
+
+Yellow
+
+If the drive/steer control handle is not moved within two seconds of pushing the drive enable button, the drive function will not operate.
+
+Test Limited Drive Speed
+
+70 Press down the foot switch.
+
+71 Raise the primary boom to 5° above horizontal.
+
+72 Slowly move the drive control handle to the full
+
+drive position.
+
+Result: The maximum achievable drive speed with the primary boom raised should not exceed 1 foot / 30 cm per second.
+
+Note: The machine will travel 40 feet / 12 m in 40 seconds.
+
+73 Lower the primary boom to the stowed position.
+
+74 Extend the primary boom 4 feet / 1.2 m.
+
+75 Slowly move the drive control handle to the full
+
+drive position.
+
+Result: The maximum achievable drive speed with the primary boom extended should not exceed 1 foot / 30 cm per second.
+
+Note: The machine will travel 40 feet / 12 m in 40 seconds.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Inspections
+
+76 Retract the primary boom to the stowed position.
+
+77 Raise the secondary boom to 5° above
+
+horizontal.
+
+78 Slowly move the drive control handle to the full
+
+drive position.
+
+Result: The maximum achievable drive speed with the secondary boom raised should not exceed 1 foot / 30 cm per second.
+
+Note: The machine will travel 40 feet / 12 m in 40 seconds.
+
+79 Lower the secondary boom to the stowed
+
+position.
+
+80 Extend the jib boom 1 foot / 30 cm.
+
+81 Slowly move the drive control handle to the full
+
+drive position.
+
+Result: The maximum achievable drive speed with the jib boom extended should not exceed 1 foot / 30 cm per second.
+
+If the drive speed with the primary or secondary boom raised or extended or the jib boom extended exceeds 1 foot / 30 cm per second, immediately tag and remove the machine from service.
+
+82 Extend the primary boom 4 feet / 1.2 m.
+
+83 Slowly move the drive control handle to the full
+
+drive position.
+
+Result: The maximum achievable drive speed with the jib boom extended and the primary boom extended should not exceed 6 inches / 15 cm per second.
+
+If the drive speed with the jib boom extended and the primary boom extended exceeds 6 inches / 15 cm per second, immediately tag and remove the machine from service.
+
+84 Retract the primary boom and the jib boom.
+
+38 Z-135/70 Part No. 114474
+
+Test Emergency/Auxiliary Controls
+
+85 Push in the red Emergency Stop button to the
+
+off position to shut off the engine.
+
+86 Pull out the red Emergency Stop button to
+
+the on position.
+
+87 Press down the foot switch.
+
+88 Activate the emergency/auxiliary controls. Move and hold the switch or push and hold the button. Activate each function control handle, switch or button.
+
+Note: To conserve battery power, test each function through a partial cycle.
+
+Result: All boom and steer functions should operate.
+
+Test Aircraft Protection Package (if equipped)
+
+89 Move the gray bumper at the bottom of the
+
+platform 4 inches / 10 cm in any direction.
+
+90 Activate each function control handle or toggle
+
+switch or button.
+
+Result: All boom and steer functions should not operate.
+
+91 Activate the function override. Move and hold
+
+the switch or push and hold the button.
+
+92 Activate each function control handle or toggle
+
+switch or button.
+
+Result: All boom and steer functions should operate.
+
+Operator's Second Edition · Fifth Printing Manual Do Not Operate Unless:
+
+You learn and practice the principles of safe machine operation contained in this operator's manual.
+
+1 Avoid hazardous situations.
+
+2 Always perform a pre-operation
+
+inspection.
+
+3 Always perform function tests prior to use.
+
+4 Inspect the workplace.
+
+Know and understand the workplace inspection before going on to the next section.
+
+5 Only use the machine as it was intended.
+
+Fundamentals
+
+The workplace inspection helps the operator determine if the workplace is suitable for safe machine operation. It should be performed by the operator prior to moving the machine to the workplace.
+
+It is the operator's responsibility to read and remember the workplace hazards, then watch for and avoid them while moving, setting up and operating the machine.
+
+Part No. 114474 Z-135/70 39
+
+Workplace Inspection
+
+Be aware of and avoid the following hazardous situations:
+
+· drop-offs or holes
+
+· bumps, floor obstructions or debris
+
+· sloped surfaces
+
+· unstable or slippery surfaces
+
+· overhead obstructions and high voltage conductors
+
+· hazardous locations
+
+· inadequate surface support to withstand all load forces imposed by the machine
+
+· wind and weather conditions
+
+· the presence of unauthorized personnel
+
+· other possible unsafe conditions
+
+Inspections
+
+Operator's Manual Second Edition · Fifth Printing
+
+Inspections
+
+Inspection for Decals with Words
+
+Determine whether the decals on your machine have words or symbols. Use the appropriate inspection to verify that all decals are legible and in place.
+
+Part No. Description Quantity
+
+Part No. Description Quantity 25994 Caution - Component Damage Hazard 1
+
+52865 Warning - Annual Inspection 1 27204 Arrow - Blue 2
+
+65278 Caution - No Step 2 27205 Arrow - Yellow 2
+
+72875 Warning - Pipe Cradle (option) 1 27206 Triangle - Blue 2
+
+82237 Danger - Electrocution Hazard (option) 4 27207 Triangle - Yellow 2
+
+82314 Danger - Tip-over Hazard 1 28159 Label - Diesel 1
+
+82366 Label - Chevron Rykon 1 28161 Warning - Crushing Hazard 2
+
+82410 Warning - Panel Cradle (option) 2 28165 Notice - Foot Switch 1
+
+82422 Label - Driving Lights 1 28174 Label - Power to Platform, 230V 2
+
+82841 Platform Control Panel 1 28176 Notice - Missing Manuals 1
+
+82862 Danger - Fire Hazard (welder) 1 28177 Warning - Collision Hazard 2
+
+97576 Notice - Engine Specifications, Deutz 1 28181 Warning - No Step or Ride 1
+
+97579 Danger - Tip-over Hazard (welder) 1 28235 Label - Power to Platform, 115V 2
+
+97602 Warning - Explosion Hazard 1 28236 Warning - Failure To Read . . . 1
+
+97603 Notice - Engine Specifications, Perkins 1 31060 Danger - Tip-over Hazard 2
+
+97705 Cosmetic - Genie Z-135/70 1 31788 Danger - Battery Safety 1
+
+97708 Label - Fuse and Relay Panel Layout 1 32998 Notice - Max. Capacity, 600 lbs / 272 kg 1
+
+97715 Danger/Notice - Tire Specifications 4 40434 Label - Lanyard Anchorage 3
+
+97716 Label - Wheel Load 4 44981 Label - Air Line to Platform (option) 2
+
+97757 Label - Hydraulic Oil Level 1 44986 Notice - Max. Manual Force,
+
+90 lbs / 400 N, Australia 1
+
+Decal inspection continues on following page.
+
+Shading indicates decal is hidden from view, i.e. under covers.
+
+40 Z-135/70 Part No. 114474
+
+Operator's Second Edition · Fifth Printing
+
+Manual Inspections
+
+28177
+
+97889 28159 11425897865 114390 12635431000257
+
+97705 97708 1000083 82237
+
+1263543
+
+97602 or or 102188 128953 97576 or or or 122043 128974 97603 40434
+
+28161 97716 97716
+
+97715 or 229356 or 230977
+
+97715 or 229356 or 230977 27207
+
+133163 82422
+
+82841 or 233130 27205
+
+97885 65278
+
+114389
+
+27207
+
+27204
+
+28236 27204
+
+97579
+
+27206
+
+82862
+
+27205 27206 97757 1263545 1263543 1263556 or 230985
+
+31060 82366
+
+97875
+
+1263543
+
+31788
+
+133236 97815
+
+1000257
+
+28176 or 28174 28235 65278
+
+28165 32998 44981
+
+97887 or 44986
+
+97715 229356 230977 or or 1263543 97716
+
+97875
+
+25994 97865
+
+82314
+
+97891 28174 or 28235
+
+97716
+
+114390
+
+97715 229356 230977
+
+or or 44981
+
+28181
+
+82237
+
+28177 40434
+
+Part No. 114474 Z-135/70 41
+
+1000084
+
+1263544
+
+31060
+
+28161 114389 97885
+
+82410
+
+72875
+
+& 52865 label
+
+serial 97889
+
+Operator's Manual Second Edition · Fifth Printing
+
+Inspections
+
+Inspection for Decals with Words
+
+Determine whether the decals on your machine have words or symbols. Use the appropriate inspection to verify that all decals are legible and in place.
+
+Decal inspection continued from preceding page.
+
+Part No. Description Quantity
+
+Part No. Description Quantity
+
+97815 Label - Lower Mid-rail 1
+
+133163 Label - Function Override
+
+97865 Warning - Electrocution Hazard 2
+
+(Aircraft Protection Package) 1
+
+97875 Warning - Weld Lines to Platform 2
+
+133236 Danger - Tip-over Hazard 1
+
+97885 Notice - Operating Instructions 2
+
+229356 Danger - Tire Specifications, Low Profile 4
+
+97887 Notice - Max. Side Force, 150 lbs / 667 N,
+
+230977 Danger - Tire Specifications, Solid Rubber 4
+
+ANSI & CSA 1
+
+230985 Ground Control Panel 1
+
+97889 Cosmetic - Z-135 2
+
+233130 Platform Control Panel 1
+
+97891 Cosmetic - Genie Z-135 1
+
+1000083 Notice - Start and Controls Battery 1
+
+102188 Notice - Engine Specifications, Cummins 1
+
+1000084 Caution - Auxiliary Batteries 1
+
+114258 Label - No Smoking 1
+
+1000257 Label - Transport Diagram 2
+
+114389 Danger - General Safety 2
+
+1263543 Warning - Compartment Access 5
+
+114390 Danger - Electrocution Hazard 2
+
+1263544 Bypass Key Switch 1
+
+122043 Instructions - Cummins Specifications 1
+
+1263545 Label - Bypass Key Switch 1
+
+128953 Instructions - Deutz Specifications 1
+
+1263556 Ground Control Panel 1
+
+128974 Instructions - Perkins Specifications 1
+
+Shading indicates decal is hidden from view, i.e. under covers.
+
+42 Z-135/70 Part No. 114474
+
+Operator's Second Edition · Fifth Printing
+
+Manual Inspections
+
+28177
+
+97889 28159 11425897865 114390 12635431000257
+
+97705 97708 1000083 82237
+
+1263543
+
+97602 or or 102188 128953 97576 or or or 122043 128974 97603 40434
+
+28161 97716 97716
+
+97715 or 229356 or 230977
+
+97715 or 229356 or 230977 27207
+
+133163 82422
+
+82841 or 233130 27205
+
+97885 65278
+
+114389
+
+27207
+
+27204
+
+28236 27204
+
+97579
+
+27206
+
+82862
+
+27205 27206 97757 1263545 1263543 1263556 or 230985
+
+31060 82366
+
+97875
+
+1263543
+
+31788
+
+133236 97815
+
+1000257
+
+28176 or 28174 28235 65278
+
+28165 32998 44981
+
+97887 or 44986
+
+97715 229356 230977 or or 1263543 97716
+
+97875
+
+25994 97865
+
+82314
+
+97891 28174 or 28235
+
+97716
+
+114390
+
+97715 229356 230977
+
+or or 44981
+
+28181
+
+82237
+
+28177 40434
+
+Part No. 114474 Z-135/70 43
+
+1000084
+
+1263544
+
+31060
+
+28161 114389 97885
+
+82410
+
+72875
+
+& 52865 label
+
+serial 97889
+
+Operator's Manual Second Edition · Fifth Printing
+
+Inspections
+
+Inspection for Decals with Symbols
+
+Determine whether the decals on your machine have words or symbols. Use the appropriate inspection to verify that all decals are legible and in place.
+
+Part No. Description Quantity
+
+27204 Arrow - Blue 2
+
+27205 Arrow - Yellow 2
+
+27206 Triangle - Blue 2
+
+27207 Triangle - Yellow 2
+
+28159 Label - Diesel 1
+
+28174 Label - Power to Platform, 230V 2
+
+28235 Label - Power to Platform, 115V 2
+
+40434 Label - Lanyard Anchorage 3
+
+44981 Label - Air Line to Platform 2
+
+65278 Label - No Step 2
+
+82422 Label - Driving Lights 1
+
+82472 Label - Crushing Hazard 2
+
+82481 Label - Battery Safety 1
+
+82487 Label - Read the Manual 2
+
+82487 Label - Read the Manual, Pipe Cradle 1
+
+82487 Label - Read the Manual, Panel Cradle 1
+
+82546 Notice - Max. Capacity, 272 kg 1
+
+82548 Label - Platform Rotate 2
+
+82602 Label - Max. Side Force, 667 N, ANSI 1
+
+44 Z-135/70 Part No. 114474
+
+Part No. Description Quantity
+
+82841 Platform Control Panel 1
+
+97705 Cosmetic - Genie Z-135/70 1
+
+97716 Label - Wheel Load 4
+
+97757 Label - Hydraulic Oil Level 1
+
+97815 Label - Lower Mid-Rail 1
+
+97889 Cosmetic - Z-135 2
+
+97891 Cosmetic - Genie Z-135 1
+
+114247 Label - Fall Hazard 1
+
+114248 Label - Tip-over Hazard 1
+
+114249 Label - Tire Specifications 4
+
+114251 Label - No Smoking 1
+
+114252 Label - Tip-over Hazard 3
+
+133067 Label - Electrocution Hazard 2
+
+133180 Label - Battery Damage 1
+
+133205 Label - Electrocution/Burn Hazard 2
+
+230985 Ground Control Panel 1
+
+233130 Platform Control Panel 1
+
+1000054 Label - Drive Enable Patch 1
+
+1000257 Label - Transport Diagram 2
+
+1263542 Label - Compartment Access 5
+
+1263544 Ground Control Panel Key Switch 1
+
+1263545 Label - Bypass Key Switch 1
+
+1263556 Ground Control Panel 1
+
+Shading indicates decal is hidden from view, i.e. under covers.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Inspections
+
+82548
+
+97889 28159 114251 133205 133067 1263542 1000257
+
+97705 1263542
+
+40434
+
+82472 97716 97716 114249 114249 27207
+
+82422 1000054 82841 or 233130 27205
+
+82487 65278
+
+114248 97815 27207
+
+27204 65278 27204
+
+27206
+
+82546
+
+27205 27206
+
+97757 1263545
+
+1263556 or 230985 1263544 114252
+
+97891
+
+97716 82481
+
+1000257
+
+40434
+
+Part No. 114474 Z-135/70 45
+
+or 28174 28235
+
+44981 82602
+
+114249 1263542 97716
+
+114249 133079 1263542
+
+114252
+
+28174 or 28235
+
+1263542
+
+44981
+
+133180
+
+97889
+
+114252
+
+82472
+
+82487
+
+82487
+
+82487
+
+133067
+
+serial label
+
+114247
+
+82548
+
+Operator's Manual Second Edition · Fifth Printing
+
+Operating Instructions
+
+Do Not Operate Unless:
+
+You learn and practice the principles of safe machine operation contained in this operator's manual.
+
+1 Avoid hazardous situations.
+
+2 Always perform a pre-operation
+
+inspection.
+
+3 Always perform function tests prior to use.
+
+4 Inspect the workplace.
+
+5 Only use the machine as it was intended.
+
+46 Z-135/70 Part No. 114474
+
+Fundamentals
+
+The Operating Instructions section provides instructions for each aspect of machine operation. It is the operator's responsibility to follow all the safety rules and instructions in the operator's, safety and responsibilities manuals.
+
+Using the machine for anything other than lifting personnel, along with their tools and materials, to an aerial work site is unsafe and dangerous.
+
+Only trained and authorized personnel should be permitted to operate a machine. If more than one operator is expected to use a machine at different times in the same work shift, they must all be qualified operators and are all expected to follow all safety rules and instructions in the operator's, safety and responsibilities manuals. That means every new operator should perform a pre-operation inspection, function tests, and a workplace inspection before using the machine.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Operating Instructions
+
+Starting the Engine
+
+1 At the ground controls, turn the key switch to
+
+the desired position.
+
+Deutz models
+
+2 Activate the glow plugs. Push the button or
+
+move the switch. The glow plugs will turn on for 30 seconds.
+
+3 Start the engine. Press the button
+
+or move the switch.
+
+The engine start button can be pressed at any time while the glow plugs are on.
+
+Perkins and Cummins models
+
+2 Activate the glow plugs for 3-5 seconds. Push
+
+and hold the button or move and hold the switch.
+
+3 Start the engine. Press the button or move and
+
+hold the switch.
+
+If the engine fails to start or dies, the restart delay will disable the start switch for 3 seconds.
+
+If the engine fails to start after 15 seconds of cranking, determine the cause and repair any malfunction. Wait 60 seconds before trying to start again.
+
+In cold conditions, 20°F / -6°C and below, warm the engine for 5 minutes before operating to prevent hydraulic system damage.
+
+In extreme cold conditions, 0°F / -18°C and below, machines should be equipped with optional cold start kits. Attempting to start the engine when temperatures are below 0°F / -18°C may require the use of a booster battery.
+
+Part No. 114474 Z-135/70 47
+
+If the machine is stored for long periods of time in low temperatures (below 32°F / 0°C) with the secondary boom raised and extended, the engine may not start due to a system fault.
+
+To remove the fault, use the emergency controls and raise the secondary boom up until the secondary boom begins extending.
+
+Emergency Stop
+
+Push in either the ground or platform red Emergency Stop button to the off position to stop all functions and turn the engine off.
+
+Repair any function that operates when the red Emergency Stop button is pushed in to the off position.
+
+Selecting and operating the ground controls will override the platform red Emergency Stop button.
+
+Emergency/Auxiliary Power
+
+Use emergency/auxiliary power if the primary power source (engine) fails.
+
+1 Turn the key switch to ground or platform
+
+control.
+
+2 Pull out the red Emergency Stop button to the
+
+on position.
+
+3 Press down the foot switch when operating the
+
+emergency/auxiliary controls from the platform.
+
+4 Move and hold the switch or push
+
+and hold the button. Activate the desired function. The indicator light will be on when emergency power is being used.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Operating Instructions
+
+To Extend and Retract Axles
+
+To Position Platform
+
+1 Turn the key switch to platform control.
+
+1 Push and hold a function enable/speed select
+
+button. 2 At the platform controls, press down the foot
+
+switch and move the drive control handle in either direction. Activate the extend axle function or the retract axle function. Move the switch or push the button.
+
+2 Push the appropriate function button according
+
+to the markings on the control panel.
+
+Drive, steer and axle functions are not available
+
+The indicator light will flash while the axles are
+
+from the ground controls.
+
+moving and stay on when the axles are fully extended or retracted.
+
+Operation from Platform
+
+The axles can only be retracted if the primary and
+
+1 Turn the key switch to platform control. secondary booms are fully lowered and retracted and the platform is between the circle-end wheels.
+
+2 Pull out both ground and platform red
+
+Emergency Stop buttons to the on position. Operation from Ground
+
+3 Start the engine. Do not press down the foot
+
+switch when starting the engine. 1 Turn the key switch to ground control.
+
+To Position Platform 2 Pull out the red Emergency Stop button to
+
+the on position.
+
+1 Press down the foot switch.
+
+3 Start the engine.
+
+2 Slowly move the appropriate function control
+
+handle or toggle switch or press the appropriate button according to the markings on the control panel.
+
+48 Z-135/70 Part No. 114474
+
+Operator's Second Edition · Fifth Printing
+
+Manual Operating Instructions
+
+To Steer
+
+1 Press down the foot switch.
+
+2 Select the steer mode. Move the switch or push the button. The indicator light next to the current steer mode will be on.
+
+3 Slowly move the drive/steer
+
+control handle in the direction indicated by the blue or yellow triangles OR press the thumb rocker switch located on top of the drive control handle.
+
+Use the color-coded direction arrows on the platform controls and the drive chassis to identify the direction the wheels will turn.
+
+Part No. 114474 Z-135/70 49
+
+To Drive
+
+1 Press down the foot switch.
+
+2 Increase speed: Slowly move the drive/ steer control handle in the direction indicated by the blue or yellow arrows.
+
+Decrease speed: Slowly move the drive/steer control handle toward center.
+
+Stop: Return the drive/steer control handle to center or release the foot switch.
+
+Use the color-coded direction arrows on the platform controls and the drive chassis to identify the direction the machine will travel.
+
+Machine travel speed is restricted when the boom is raised or extended.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Operating Instructions
+
+Driving on a slope
+
+To determine the slope grade:
+
+Determine the uphill, downhill and side slope ratings
+
+Measure the slope with a digital inclinometer OR for the machine and determine the slope grade.
+
+use the following procedure.
+
+Maximum slope rating,
+
+You will need: counterweight uphill (gradeability): 45% (24°)
+
+carpenter’s level
+
+Maximum slope rating,
+
+straight piece of wood, at least 3 feet / 1 m long
+
+counterweight downhill:
+
+tape measure 30% (17°)
+
+Lay the piece of wood on the slope.
+
+Maximum side slope rating: 25% (14°)
+
+At the downhill end, lay the level on the top edge of the piece of wood and lift the end until the piece of wood is level.
+
+Note: Slope rating is subject to ground conditions and adequate traction. The term gradeability applies to the counterweight uphill configuration only.
+
+50 Z-135/70 Part No. 114474
+
+While holding the piece of wood level, measure the vertical distance from the bottom of the piece of wood to the ground.
+
+Be sure the boom is below horizontal and the platform is between the circle-end wheels.
+
+Divide the tape measure distance (rise) by the length of the piece of wood (run) and multiply by 100. Select the machine on incline drive setting.
+
+Example:
+
+run
+
+rise
+
+Piece of wood = 144 inches (3.6 m)
+
+Run = 144 inches (3.6 m)
+
+Rise = 12 inches (0.3 m)
+
+12 in  144 in = 0.083 x 100 = 8.3% grade
+
+0.3 m  3.6 m = 0.083 x 100 = 8.3% grade
+
+If the slope exceeds the maximum uphill, downhill or side slope rating, then the machine must be winched or transported up or down the slope. See the Transport and Lifting section.
+
+Operator's Second Edition · Fifth Printing Manual Drive Enable
+
+Light on indicates that the primary boom has moved past either circle-end wheel and the drive function is turned off.
+
+To drive, activate the drive enable function and slowly move the drive/steer control handle off center. Push the drive enable button or move the drive enable switch.
+
+If the drive/steer control handle is not moved within two seconds of activating the drive enable function, the drive function will not operate. Release and activate the drive enable function again.
+
+Be aware that the machine may move in the opposite direction that the drive and steer controls are moved.
+
+Always use the color-coded direction arrows on the platform controls and the drive chassis to identify the direction the machine will travel.
+
+When the drive enable light is on, the axles cannot retract.
+
+Part No. 114474 Z-135/70 51
+
+Operating Instructions
+
+Engine Idle Select (rpm)
+
+Select the engine idle (rpm) setting. Move the switch or push the button. The indicator light next to the current setting will be on.
+
+· Rabbit and foot switch symbol: foot switch activated high idle
+
+· Turtle symbol: low idle
+
+· Rabbit symbol: high idle
+
+Check Engine Light
+
+Light on and engine stopped: Tag the machine and remove from service.
+
+Light on and engine still running: Contact service personnel within 24 hours.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Operating Instructions
+
+Operating Envelope Indicator
+
+If the tilt alarm sounds with the platform uphill: Lights
+
+1 Lower the primary boom.
+
+The operating envelope indicator lights will come on to notify the operator that a function has been
+
+52 Z-135/70 Part No. 114474
+
+2 Retract/lower boom.
+
+the secondary
+
+interrupted and/or an action is required by the operator.
+
+3 Retract the primary boom.
+
+If the tilt alarm sounds with the Lower/Retract Secondary Boom
+
+platform downhill: indicator light flashing: Lower/ retract the secondary boom until
+
+1 Retract the primary the indicator light is off.
+
+boom.
+
+Lower Primary Boom indicator light flashing: Lower the primary
+
+2 Retract/lower the
+
+secondary boom. boom until the indicator light is off.
+
+3 Lower the primary
+
+boom.
+
+Machine Not Level indicator light
+
+Platform Not Level indicator flashing: The tilt alarm will be
+
+light flashing: The tilt alarm sounding when this light is
+
+will be sounding when this flashing. Move the machine to a
+
+light is flashing. The Platform firm, level surface.
+
+Level toggle switch will only work in the direction that will level the platform. Level the platform until the indicator light is off.
+
+Generator (if equipped)
+
+To operate the generator, press the generator button or move the generator switch. The indicator light will come on and the engine will continue to run.
+
+Plug power tools into the power to platform GFCI outlet.
+
+To turn off the generator, push the generator button or move the switch. The indicator light will turn off.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Operating Instructions
+
+Platform Out of Level (P22 code)
+
+Bypass key position to be used to level the platform if ground control display shows platform out of level (P22) and platform level controls do not work.
+
+To operate:
+
+1 Turn the engine off.
+
+2 Turn the main key switch to ground control.
+
+Remove the key from the main key switch and insert the key into the bypass/recovery key switch.
+
+3 Turn the bypass/recovery key switch to the bypass position.
+
+4 Using auxiliary/emergency
+
+power, operate the platform level buttons to level the platform.
+
+5 Turn the bypass/recovery key switch to the run
+
+position.
+
+6 Remove the key from the bypass/recovery key switch and insert the key into the main key switch.
+
+7 Push in and then pull out the red Emergency
+
+Stop button.
+
+8 If the P22 code is still visible, tag and remove
+
+the machine from service until the fault has been corrected by a qualified service technician.
+
+Part No. 114474 Z-135/70 53
+
+Platform Out of Level (Platform Level \> 15 Degrees Fault)
+
+If ground controls display shows PLATFORM LEVEL \> 15 DEGREES FAULT and the platform level controls do not work, the machine will need to be recovered by trained and authorized personnel or a qualified service technician.
+
+Aircraft Protection Package (if equipped)
+
+If the platform bumper comes into contact with an object, the machine will shut down and no functions will operate.
+
+1 Start the engine.
+
+2 Press down the foot switch.
+
+3 Activate the function override function. Move the
+
+switch or push the button.
+
+4 Activate the appropriate function button, control handle or toggle switch to move the machine away from aircraft components. After Each Use
+
+1 Select a safe parking location—firm level
+
+surface, clear of obstruction and traffic.
+
+2 Retract and lower the boom to the stowed
+
+position.
+
+3 Rotate the turntable so that the boom is between
+
+the circle-end wheels.
+
+4 Turn the key switch to the off position and
+
+remove the key to secure from unauthorized use.
+
+5 Chock the wheels.
+
+Operator's Manual Second Edition · Fifth Printing
+
+Operating Instructions
+
+Pipe Cradle Instructions
+
+The pipe cradle assembly consists of 2 pipe cradles positioned at either side of the platform and mounted to the guardrails with U-bolts.
+
+a strap
+
+b U-bolts
+
+c pipe cradle mount
+
+d upper platform
+
+railing
+
+54 Z-135/70 Part No. 114474
+
+e pipe cradle
+
+weldment
+
+f middle platform
+
+railing
+
+g flat washers
+
+h 3/8-inch nylock nuts
+
+Observe and Obey:
+
+Pipe cradles must be installed on the inside of the platform.
+
+Pipe cradles must not obstruct the platform controls or the platform entrance.
+
+The bottom of the pipe cradle tube must rest on the platform floor.
+
+Be sure the platform is level before installing a pipe cradle. Pipe Cradle Installation
+
+1 Install a pipe cradle on each side of the
+
+platform. Refer to the illustration on the left. Make sure the bottom of the pipe cradle tube rests on the platform floor.
+
+2 Install two U-bolts from the outside of the
+
+platform rails through each pipe cradle mount.
+
+3 Secure each U-bolt with 2 washers and 2 nuts.
+
+Operator's Second Edition · Fifth Printing Manual Pipe Cradle Operation
+
+1 Be sure the pipe cradle assembly and
+
+installation instructions have been followed properly and that the pipe cradles are secured to the platform railings. 2 Place the load so that it rests in both pipe
+
+cradles. The length of the load should be parallel with the length of the platform. 3 Center the load in the pipe cradles. 4 Secure the load to each pipe cradle. Pass the nylon strap over the load. Depress the buckle and slide the strap through. Tighten the strap. 5 Gently push and pull on the load to make sure
+
+the pipe cradles and load are secure. 6 Keep the load secured when the machine is
+
+moving. Tip-over hazard. The weight of the pipe cradle assembly and the load in the pipe cradles will reduce the rated platform capacity of the machine and must be factored into the total platform load.
+
+Tip-over hazard. The weight of the pipe cradle assembly and the load in the pipe cradles may limit the maximum number of occupants in the platform.
+
+Maximum Pipe Cradle Capacity
+
+All models 200 lbs 90.7 kg
+
+Pipe Cradle Assembly Weight 21 lbs 9.5 kg
+
+Part No. 114474 Z-135/70 55
+
+Operating Instructions
+
+Operator's Manual Second Edition · Fifth Printing
+
+Operating Instructions
+
+Panel Cradle Assembly
+
+1 Apply the warning decal to the front of each
+
+panel cradle (if needed).
+
+2 Install rubber bumper 1 in the panel cradle base.
+
+See the illustration.
+
+3 Secure the bumper with 2 high profile lock nuts
+
+and 2 washers.
+
+Panel Cradle Installation
+
+1 Insert the hook piece through the slots in the
+
+panel cradle base.
+
+2 Hook the panel cradle to the bottom platform
+
+tube in the desired location.
+
+3 Install rubber bumper 2 through the panel cradle
+
+base and the hook piece. See the illustration.
+
+4 Secure with 2 low profile lock nuts.
+
+5 If the panel cradle is installed at a platform floor support tube, insert the U-bolt through the floor, around the tube and into the panel cradle base.
+
+6 Secure the U-bolt with 2 nuts and 2 washers.
+
+Proceed to step 9.
+
+7 If the panel cradle is not installed at a platform
+
+floor support tube, use the aluminum tube provided.
+
+8 Place the tube between the panel cradle and the platform floor. Insert the U-bolt through the floor, around the tube and into the panel cradle base.
+
+9 Repeat above for the second set of parts.
+
+56 Z-135/70 Part No. 114474
+
+Installation of Padding
+
+1 Install the 2 pieces of padding on the platform
+
+rails. Position the padding to protect the panels from contact with the platform rails. Installation of Strap
+
+1 Open the clamp and install it around a vertical
+
+platform rail tube.
+
+2 Insert a bolt with a washer through one side of
+
+the clamp.
+
+3 Install the strap assembly end plate onto the
+
+bolt.
+
+4 Insert the bolt through the other side of the
+
+clamp.
+
+5 Secure with a washer and a nut. Do not over-
+
+tighten. The strap assembly end plate should be able to slide on the platform rail.
+
+Operator's Second Edition · Fifth Printing Manual Panel Cradle Operation
+
+1 Secure both panel cradles to the platform.
+
+2 Place the load so that it rests in both panel
+
+cradles.
+
+3 Center the load on the platform.
+
+4 Secure the load to the platform using the strap.
+
+Tighten the strap.
+
+Part No. 114474 Z-135/70 57
+
+rubber bumper 2
+
+panel cradle base
+
+hook piece
+
+U-bolt mounting rubber
+
+slots bumper 1
+
+decal
+
+padding
+
+clamp
+
+hook
+
+Operating Instructions
+
+Operator's Manual Second Edition · Fifth Printing
+
+Transport and Lifting Instructions
+
+Observe and Obey:
+
+Genie provides this securement information as a recommendation. Drivers are solely responsible for making sure machines are properly secured and the correct trailer is selected pursuant to US Department of Transportation regulations, other localized regulations, and their company
+
+Free-wheel Configuration for policy.
+
+Winching Genie customers needing to containerize any lift or Genie product should source a qualified freight forwarder with expertise in preparing,
+
+58 Z-135/70 Part No. 114474
+
+Chock the wheels to prevent the machine from rolling. loading and securing construction and lifting equipment for international shipment.
+
+Release the wheel brakes by turning Only qualified aerial lift operators should move the machine on or off the truck.
+
+The transport vehicle must be parked on a level
+
+over all four drive hub disconnect caps.
+
+surface.
+
+Be sure the winch line is properly secured to the
+
+The transport vehicle must be secured to prevent rolling while the machine is being
+
+drive chassis tie points and the path is clear of all obstructions.
+
+loaded.
+
+Reverse the procedures described to re-engage the
+
+Be sure the vehicle capacity, loading surfaces
+
+brakes.
+
+and chains or straps are sufficient to withstand the machine weight. See the serial label for the machine weight.
+
+Note: The pump free-wheel valve should always remain closed.
+
+Be sure the turntable is secured with the turntable rotation lock before transporting. Be sure to unlock the turntable for operation.
+
+Do not drive the machine on a slope that exceeds the slope or side slope rating. See Driving on a Slope in the Operating Instructions section.
+
+If the slope of the transport vehicle bed exceeds the uphill or downhill maximum slope rating, the machine must be loaded and unloaded using a winch as described.
+
+Disengage
+
+Engage
+
+Operator's Second Edition · Fifth Printing
+
+Manual Transport and Lifting Instructions
+
+Securing to Truck or Trailer for
+
+Securing the Platform Transit
+
+Place a block under the platform rotator. Do not
+
+Always use the turntable rotation lock pin each time
+
+allow the block to contact the platform cylinder.
+
+the machine is transported.
+
+Secure the platform with a nylon strap placed
+
+Turn the key switch to the off position and remove the key before transporting.
+
+through the lower platform support. Do not use excessive downward force when securing the boom section. Inspect the entire machine for loose or unsecured items.
+
+Securing the Chassis
+
+Use chains of ample load capacity.
+
+Use a minimum of 6 chains.
+
+Adjust the rigging to prevent damage to the chains.
+
+Truck Bed
+
+Secondary boom width:
+
+Jib boom width: 26 in
+
+16 in 66 cm
+
+42 ft 5 in
+
+41 cm 12.97 m
+
+10 ft 3.07 m 4 ft 4 in 1.31 m
+
+10 ft 10 in
+
+19 ft 2 in
+
+14 ft 3.3 m
+
+5.84 m 25 ft 1 in
+
+4.25 m
+
+7.65 m
+
+Part No. 114474 Z-135/70 59
+
+Operator's Manual Second Edition · Fifth Printing
+
+Transport and Lifting Instructions
+
+Lifting Instructions
+
+Fully lower and retract the primary and secondary boom. Fully lower and retract the jib boom. Remove all loose items on the machine.
+
+Determine the center of gravity of your machine Observe and Obey:
+
+using the picture on this page.
+
+Only qualified riggers should rig and lift the machine.
+
+Attach the rigging only to the designated lifting points on the machine. There are four lifting points on the chassis. Be sure the crane capacity, loading surfaces and straps or lines are sufficient to withstand the machine weight. See the serial label for the
+
+Adjust the rigging to prevent damage to the machine and to keep the machine level.
+
+machine weight.
+
+59.5 in 1.5 m
+
+56 in 1.4 m
+
+60 Z-135/70 Part No. 114474
+
+Operator's Second Edition · Fifth Printing
+
+Manual Maintenance
+
+Observe and Obey:
+
+Only routine maintenance items specified in this manual shall be performed by the operator.
+
+Scheduled maintenance inspections shall be completed by qualified service technicians, according to the manufacturer's specifications and the requirements specified in the responsibilities manual.
+
+Use only Genie approved replacement parts.
+
+Maintenance Symbols Legend
+
+The following symbols have been used in this manual to help communicate the intent of the instructions. When one or more of the symbols appear at the beginning of a maintenance procedure, it conveys the meaning below.
+
+Indicates that tools will be required to perform this procedure.
+
+Indicates that new parts will be required to perform this procedure.
+
+Indicates that a cold engine is required before performing this procedure.
+
+Part No. 114474 Z-135/70 61
+
+Check the Engine Oil Level
+
+Maintaining the proper engine oil level is essential to good engine performance and service life. Operating the machine with an improper oil level can damage engine components.
+
+Note: Check the oil level with the engine off.
+
+1 Check the engine oil dipstick. Add oil as
+
+needed.
+
+Perkins 1104C-44 and 804D-33T Engine
+
+Oil type 15W-40
+
+Oil type - cold conditions, 1104C 10W-30
+
+Oil type - cold conditions, 804D 5W-40
+
+Deutz BF4L2011 and TD2011L04i Engine
+
+Oil type 15W-40
+
+Oil type - cold conditions 5W-30
+
+Cummins B4.5C80 and B3.3C80 Engine
+
+Oil type 15W-40
+
+Oil type - cold conditions 10W-30
+
+Operator's Manual Second Edition · Fifth Printing
+
+Maintenance
+
+Check the Hydraulic Oil Level
+
+Maintaining the hydraulic oil at the proper level is essential to machine operation. Improper hydraulic oil levels can damage hydraulic components. Daily checks allow the inspector to identify changes in the oil level that might indicate the presence of hydraulic system problems.
+
+1 Be sure that the engine is off and the boom is in
+
+the stowed position.
+
+2 Visually inspect the sight gauge located on the
+
+side of the hydraulic oil tank.
+
+Result: The hydraulic oil level should be between the two marks on the decal next to the sight gauge. Add oil as needed.
+
+Maximum oil level
+
+Minimum oil level
+
+Hydraulic oil specifications
+
+Hydraulic oil type Chevron Rykon® Premium MV equivalent
+
+62 Z-135/70 Part No. 114474
+
+Check the Batteries
+
+Proper battery condition is essential to good engine performance and operational safety. Improper fluid levels or damaged cables and connections can result in engine component damage and hazardous conditions.
+
+Electrocution hazard. Contact with hot or live circuits may result in death or serious injury. Remove all rings, watches and other jewelry.
+
+Bodily injury hazard. Batteries contain acid. Avoid spilling or contacting battery acid. Neutralize battery acid spills with baking soda and water.
+
+1 Put on protective clothing and eye wear.
+
+2 Be sure that the battery cable connections are
+
+tight and free of corrosion.
+
+3 Be sure that the battery hold-down bar is in
+
+place and secure.
+
+4 Remove the battery vent caps.
+
+5 Check the battery acid level. If needed,
+
+replenish with distilled water to the bottom of the battery fill tube. Do not overfill.
+
+6 Install the vent caps.
+
+Note: Adding terminal protectors and a corrosion preventative sealant will help eliminate corrosion on the battery terminals and cables.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Maintenance
+
+Check the Engine Coolant Level - Liquid Cooled Models
+
+Maintaining the engine coolant at the proper level is essential to engine service life. An improper coolant level will affect the engine's cooling capability and damage engine components. Daily checks will allow the inspector to identify changes in coolant level that might indicate cooling system problems.
+
+1 Check the fluid level in the coolant recovery
+
+tank. Add fluid as needed.
+
+Result: The fluid level should be in the NORMAL range.
+
+Bodily injury hazard. Fluids in the radiator are under pressure and extremely hot. Use caution when removing cap and adding fluids.
+
+Scheduled Maintenance Maintenance performed quarterly, annually and every two years must be completed by a person trained and qualified to perform maintenance on this machine according to the procedures found in the service manual for this machine.
+
+Machines that have been out of service for more than three months must receive the quarterly inspection before they are put back into service.
+
+Part No. 114474 Z-135/70 63
+
+Operator's Manual Second Edition · Fifth Printing
+
+Specifications
+
+Z-135/70
+
+Platform leveling self-leveling
+
+Height, working maximum 141 ft 42.9 m
+
+Platform rotation 160°
+
+Height, platform maximum 135 ft 41.1 m
+
+AC outlet in platform standard
+
+Height, stowed maximum 10 ft 1 in 3.1 m
+
+Hydraulic pressure, maximum 2900 psi (boom functions) 203 bar Horizontal reach, maximum 69 ft 9 in 21.3 m
+
+Hydraulic pressure, maximum 3100 psi Width, axles retracted 8 ft 1 in 2.5 m
+
+(auxiliary power unit) 218 bar
+
+Width, axles extended 12 ft 11 in 3.9 m
+
+System voltage 12V
+
+Length, stowed 42 ft 5 in 12.9 m
+
+Tire size 18-22.5, 18 ply FF
+
+Maximum load capacity 600 lbs 272 kg
+
+or 445D50/710, 18 ply FF
+
+Maximum wind speed 28 mph 12.5 m/s
+
+Fuel tank capacity 40 gallons 151 liters
+
+Weight See Serial Label Wheelbase, axles extended 13 ft 6 in 4.1 m
+
+(Machine weights vary with option configurations)
+
+Wheelbase, axles retracted 15 ft 6 in 4.7 m
+
+Maximum slope rating, stowed position
+
+Ground clearance 20 in 51 cm
+
+Counterweight uphill 45% (24°)
+
+Turning radius, axles extended
+
+Counterweight downhill 30% (17°) inside outside 64 Z-135/70 Part No. 114474
+
+7 ft 6 in 18 ft 6 in 2.3 m 5.6 m
+
+Side slope 25% (14°)
+
+Turning radius, axles retracted inside 18 ft 1 in Note: Slope rating is subject to ground conditions and
+
+5.5 m
+
+adequate traction.
+
+outside 25 ft 6 in 7.8 m
+
+Floor loading information
+
+Turntable rotation 360° continuous
+
+Tire load, maximum 25,000 lbs 11,336 kg
+
+Turntable tailswing,
+
+Tire contact pressure 130 psi 9.14 kg/cm2 secondary boom lowered 14 ft 4.3 m
+
+896 kPa
+
+Turntable tailswing,
+
+Occupied floor pressure 204 psf 996 kg/m2 secondary boom raised 2 ft 7 in 78 cm
+
+9.76 kPa
+
+Drive speed, stowed 3.0 mph 4.8 km/h
+
+Note: Floor loading information is approximate and 40 ft/9.1 sec 12.2 m/9.1 sec
+
+does not incorporate different option configurations. It should be used only with adequate safety factors. Drive speed, 0.7 mph 1.1 km/h raised or extended 40 ft/40 sec 12.2 m/40 sec
+
+Drive speed, 0.4 mph 0.6 km/h raised and extended 40 ft/68 sec 12.2 m/68 sec
+
+Controls 12V DC proportional
+
+Platform dimensions, 6 foot 72 in x 30 in (length x width) 1.8 m x 76 cm
+
+Platform dimensions, 8 foot (length x width) 96 in x 36 in
+
+2.4 m x 91 cm Continuous improvement of our products is a Genie policy. Product specifications are subject to change without notice or obligation.
+
+Operator's Second Edition · Fifth Printing
+
+Manual Specifications
+
+Z-135/70 Range of Motion
+
+Part No. 114474 Z-135/70 65
