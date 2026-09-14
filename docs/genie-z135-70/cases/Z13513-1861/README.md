@@ -1604,3 +1604,30 @@ shows a small round black disc with screw holes and a raised centre feature,
 matching the plate secured by two Phillips screws on the axle pivot boss in the
 owner's photograph. The broken splined piece found loose in the pocket is the
 drive tang from that plate's centre.
+
+### WebGPI — no part number exists in the manuals
+
+Searched both Service Manual 1268557GT and Parts Manual 106877GT. **WebGPI has
+no part number.** It appears only as references:
+
+> *"If available, WebGPI can also be used for this procedure."* (×3)
+> *"Use TCON display menu or laptop with WebGPI to clear faults."* (×2)
+
+It is Genie's diagnostic **software**, distributed through Genie Product Support
+and the dealer channel — not a catalogue spare part. The laptop interface cable
+for the DB9 / RS-232 port on the TCON board likewise carries no part number in
+the parts manual.
+
+**The only tool part number published anywhere in these manuals is `58351`** —
+the digital level kit with magnetic base and cable harnesses, available through
+Genie Product Support. It is required for:
+
+- All 6-point calibrations (software below 4.01 — not this machine)
+- **The turntable level sensor calibration**, which states *"A digital level will
+  be required"* with **no version exemption**
+
+So `58351` becomes necessary if the full p.105 sequence is needed.
+
+Genie Product Support is therefore the single call for: WebGPI access, the
+laptop interface cable, kit `58351`, and the **Clear Overload Recovery passcode**
+if platform overload has latched.
