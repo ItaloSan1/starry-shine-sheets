@@ -1478,3 +1478,43 @@ At valve **index 12 / schematic BT — axle extend**:
 |---|---|
 | **~12 V** | Command is arriving. Fault is hydraulic or the axle slides are mechanically seized after years in transport width |
 | **0 V** | Command still blocked — interlock |
+
+## 2026-09-14 — Axles are NOT seized; owner manually activated the solenoids for transport
+
+Owner reports the axles were retracted for transport by **manually activating
+the solenoid valves**. This is decisive:
+
+- The axle cylinders, slides, pump and hydraulic circuit all **work**
+- The valves themselves **work**
+- **The only thing missing is the electrical command**
+
+The entire hydraulic and mechanical branch of the diagnosis is closed.
+
+### Immediate unblock — manual override to complete the calibration
+
+The machine at the `AXLE ANGLES FULLY EXTENDED` screen only requires the axles to
+be **physically extended**; it does not care how they got there. Manually
+activating the **axle extend** solenoid achieves this and lets the calibration
+complete.
+
+**Valve:** Steer and Axle Manifold, **index 12, schematic item `BT` — Axle
+extend** (index 11, `BU`, is Axle retract). Solenoid valve, 2 position 3 way.
+Torque 30–35 ft-lbs / 41–47 Nm. Coil resistance **7.5–9.5 Ω** (SM p.150).
+
+**Location (SM p.138):** *"The steer and axle manifold is mounted inside the
+manifold box at the **yellow triangle side of the machine**."*
+
+Conditions: boom **stowed**, machine on level ground, **engine running** for
+pump flow, nobody near the wheels as they travel outward. Extending is the
+stability-increasing direction.
+
+Then at `AXLE ANGLES FULLY EXTENDED`: **plus** = YES → **enter**, scroll to
+`EXIT` → **plus** = YES → **enter**, and **hold the engine start button ~5
+seconds** to save.
+
+### Still to resolve
+
+Why the command never reaches `BT`. Measure DC volts at the `BT` coil while
+extend is commanded from the platform — **0 V confirms the interlock** is still
+blocking, which remains a fault to find even once the axles are out and the
+calibration is complete.
