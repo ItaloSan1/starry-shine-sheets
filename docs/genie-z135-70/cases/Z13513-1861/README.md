@@ -1552,3 +1552,39 @@ The mirrored assembly is **205.1 Chassis Components, Blue Triangle Side**
 **Unresolved:** which part the broken piece belongs to cannot be established
 from the photograph alone. Match it against the 204.1 exploded drawing before
 ordering.
+
+### Correction on the activator part number
+
+An earlier note warned against `60618GT` **ACTIVATOR, STEER SENSOR** as "a
+different part." That warning was probably wrong.
+
+Evidence that `60618GT` is the right part for the broken piece:
+
+- The Service Manual's own term is *"sensor **activator** pin"* (SM p.165), and
+  `60618GT` is the **only** part in the list named ACTIVATOR.
+- At **$9.15** it is a small moulded component, matching the small black splined
+  piece photographed.
+- Genie demonstrably shares parts between the steer and axle sensor assemblies in
+  this same drawing: item 18 is **`60609GT` COVER, STEERING SENSOR** yet it is
+  the cover used on the **axle** sensor. The naming is legacy, not functional.
+
+By contrast `107536GT` **WELDMENT**, PIN, AXLE SENSOR is fabricated steel — far
+more likely the mounting pin or boss than the small broken piece.
+
+**Still worth confirming against the 204.1 exploded drawing, or with the
+supplier quoting the serial number, before ordering.**
+
+### Commercial note on the cart
+
+Cart contains `60618GT` ×1 ($9.15) and `94985GT` SENSOR, AXLE POSITION ×1
+($408.01).
+
+**The `94985GT` may not be needed.** Both axle angle sensors were subsequently
+brought within the 4.2–4.4 V spec without a part being replaced. A **broken
+activator pin** fully explains the fault — the sensor was never being turned, so
+it read a fixed value regardless of axle position. Buying the sensor is
+justified only as a shelf spare or if confidence in the second sensor is low.
+
+Suggest **two** activators (one per axle sensor, and the part is trivially
+cheap), and consider `101499GT` WASHER, THRUST 2.5 × 5.5 × .250 from the same
+stack.
