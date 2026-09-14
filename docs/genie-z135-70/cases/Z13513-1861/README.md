@@ -1518,3 +1518,37 @@ Why the command never reaches `BT`. Measure DC volts at the `BT` coil while
 extend is commanded from the platform — **0 V confirms the interlock** is still
 blocking, which remains a fault to find even once the axles are out and the
 calibration is complete.
+
+### Broken part at the axle angle sensor mounting
+
+Owner photographed the axle sensor pocket with the sensor removed: a **broken
+black splined component** lying in the recess, and the pivot boss centre bore
+looking damaged. This matches the manual's warning (SM p.165):
+
+> *"Inspect the sensor **activator pin** to make sure it is not broken or
+> twisted."*
+> *"If the sensor activator pin needs to be replaced, install the new activator
+> pin **parallel with the drive chassis side plate**."*
+
+### Parts — Parts Manual 106877GT, **204.1 Chassis Components, Yellow Triangle Side** (p.32–35)
+
+| Item | Part No. | Description | Qty |
+|---|---|---|---|
+| 17 | **`107536GT`** | **WELDMENT, PIN, AXLE SENSOR** | 2 |
+| 17- | `101499GT` | WASHER, THRUST, 2.5 × 5.5 × .250 (not shown) | 2 |
+| 18 | **`60609GT`** | **COVER, STEERING SENSOR** | 2 |
+| 19 | **`94985GT`** | **SENSOR, AXLE POSITION** *(calibration required after replacement)* | 2 |
+
+Connector parts for item 19: `119067GT` CONN RECEP 4 WAY DEUTSCH DT ENDCAP,
+`60443GT` LOCK RECEP 4WAY 14-18GA, `60757GT` PLUG SEAL 12-18GA, `75633GT`
+TERM GOLD PIN 14/16 GA.
+
+Note `60618GT` **ACTIVATOR, STEER SENSOR** (item 20, qty 2) is a **different
+part** — it serves the steer sensors, not the axle sensors.
+
+The mirrored assembly is **205.1 Chassis Components, Blue Triangle Side**
+(p.36 onward). `107536GT` is listed once at qty 2, covering both sides.
+
+**Unresolved:** which part the broken piece belongs to cannot be established
+from the photograph alone. Match it against the 204.1 exploded drawing before
+ordering.
