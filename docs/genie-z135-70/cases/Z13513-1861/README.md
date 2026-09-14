@@ -1338,3 +1338,28 @@ mistake.
 Whichever sensor has had its cover off and its element turned by hand has lost
 its set position and will need the **4.2–4.4 V adjustment** and the axle angle
 sensor **calibration** regardless of the outcome.
+
+### Suspect axle angle sensor — removed, photographed
+
+Assembly in hand shows:
+
+- **Slotted mounting holes** around the perimeter of the black cover — this is
+  the adjustment mechanism the manual means by *"rotate the sensor cover
+  clockwise or counterclockwise."*
+- Sensor body marked **`141031`** and **`REV D 1225`**. `141031` does not appear
+  anywhere in Parts Manual 106877 — it is the sensor manufacturer's own marking.
+  Order by the Genie number: **`94985GT` SENSOR, AXLE POSITION**, qty **2**,
+  *"(calibration required after replacement)"*.
+- Two Phillips screws securing the sensor to the bracket, each carrying an
+  **orange paint witness mark** extending onto the surrounding plate.
+- A keyed rotary hub at the centre — the axle pivot **activator pin** drives this.
+
+**Check the orange witness marks.** Factory paint marks run continuously from
+fastener head onto the adjacent surface. Still aligned means the sensor has not
+been moved on its bracket; broken or offset means someone repositioned it.
+
+Also inspect the centre hub bore for rounding or stripping, and the activator pin
+on the chassis for damage — SM p.165: *"Inspect the sensor activator pin to make
+sure it is not broken or twisted"* and *"Be sure the actuator pin is engaged into
+the sensor."* Note this cannot explain the low voltage, since rotating the
+element by hand directly also failed to raise the output.
