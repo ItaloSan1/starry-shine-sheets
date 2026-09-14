@@ -1380,3 +1380,45 @@ Before: both axle indicators at the platform **flashing** (machine believed the
 axles were between end positions).
 After a successful calibration: the indicator should go **solid** with the axles
 fully retracted, and solid again when fully extended (OM p.27).
+
+## 2026-09-14 — Axle calibration reached the FULLY EXTENDED screen; axles still will not move
+
+Progress: `DELETE AXLE ANGLE SENSORS CALIBRATION` accepted, `AXLE ANGLES FULLY
+RETRACTED` accepted. At `AXLE ANGLES FULLY EXTENDED` the axles will not extend
+from the platform controls.
+
+**State warning:** the axle angle sensor calibration is now **deleted with only
+the retracted point captured**. Until the extended point is recorded the axle
+sensors are uncalibrated. The procedure can be re-entered and re-run.
+
+### Check list, in order
+
+1. **Main key switch physical position.** It must be at **platform controls**.
+   This was an *inference* from the procedure — step 1 sets it to platform and
+   no later step returns it to ground — not an explicit instruction. It is the
+   first thing to verify, and the easiest to have lost when the key moved to the
+   bypass/recovery switch.
+2. **Engine running.** Step 17 reads *"start the engine and fully extend the
+   axles."*
+3. **Full platform sequence** (OM p.49): platform E-stop out → **foot switch
+   down** → **drive control handle moved off centre** → then axle extend. The
+   drive command is not optional.
+4. **Drive enable.** OM p.27 item 25: the indicator on means the primary boom has
+   moved past a circle-end wheel and drive is off. Turntable must be positioned
+   with the boom **between the circle-end wheels**.
+5. **Axle indicator lights** — record what they are doing now. They may have
+   changed after the retracted point was captured.
+6. **Any new fault text on the ground control LCD.**
+
+### The decisive measurement
+
+At the **steer and axle manifold**, axle extend valve **Y99**, connector
+**`J99`**, circuit **`V60AXEX-GR/WH`**, while someone commands extend:
+
+| Result | Meaning |
+|---|---|
+| **Volts at the coil, no motion** | Hydraulic or mechanical — valve coil, the **2400 psi axle extend relief**, or seized axle slides on a machine that has sat outdoors |
+| **No volts** | Command still blocked — interlock, not hydraulics |
+
+This separates the remaining possibilities in one reading and should be taken
+before any further attempts.
