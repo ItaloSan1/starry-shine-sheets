@@ -1422,3 +1422,59 @@ At the **steer and axle manifold**, axle extend valve **Y99**, connector
 
 This separates the remaining possibilities in one reading and should be taken
 before any further attempts.
+
+### The `Ⓞ|` indicator is POWER, not a fault [V]
+
+Operator's Manual p.26, Platform Control Panel item **13**:
+
+> *"**Power indicator light.** Light on indicates the machine is on."*
+
+The circle-with-a-bar is the standard IEC power symbol. Lit is correct.
+
+For reference, the neighbouring indicators in that cluster:
+
+| Item | Indicator |
+|---|---|
+| 13 | Power — machine is on |
+| 14 | Check engine — engine fault |
+| 15 | Low fuel |
+| **16** | **Fault indicator — "Light on indicates a system fault"** |
+
+**Item 16 appears dark in the owner's photographs.** Worth confirming: no system
+fault reported at the platform is a meaningful data point.
+
+### Axle indicators still flashing is expected mid-procedure
+
+Calibration values are not committed until the procedure completes through
+`EXIT` **and** the engine is shut off by holding the **engine start button**. The
+retracted point entered so far is uncommitted, so the indicators have not
+changed. This is not a failure of the calibration.
+
+### Steer and Axle Manifold — location and valve identification [V]
+
+SM p.138: *"The steer and axle manifold is mounted **inside the manifold box at
+the yellow triangle side of the machine**."*
+
+| Index | Description | Schematic | Function | Torque |
+|---|---|---|---|---|
+| 10 | Flow regulator valve, 7 gpm / 26.5 L/min | BS | Axle extend/retract circuit | 20–25 ft-lbs |
+| 11 | Solenoid valve, 2 position 3 way | **BU** | **Axle retract** | 30–35 ft-lbs |
+| 12 | Solenoid valve, 2 position 3 way | **BT** | **Axle extend** | 30–35 ft-lbs |
+| 13 | Pressure reducing valve | BR | Axle extend/retract circuit | 30–35 ft-lbs |
+
+Coil resistance for schematic items **BT** and **BU** (2 position 3 way, group
+C/D/G/I/K/AX/AY/BU/BT): **7.5 to 9.5 Ω** at 68°F / 20°C (SM p.150).
+
+### The test that must happen next
+
+At valve **index 12 / schematic BT — axle extend**:
+
+1. **Coil resistance**, connector off: expect **7.5–9.5 Ω**. Open or far out of
+   band means a dead coil.
+2. **DC volts at the coil**, connector on, engine running, extend commanded from
+   the platform:
+
+| Reading | Meaning |
+|---|---|
+| **~12 V** | Command is arriving. Fault is hydraulic or the axle slides are mechanically seized after years in transport width |
+| **0 V** | Command still blocked — interlock |
