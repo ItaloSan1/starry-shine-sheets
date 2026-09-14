@@ -1363,3 +1363,20 @@ on the chassis for damage — SM p.165: *"Inspect the sensor activator pin to ma
 sure it is not broken or twisted"* and *"Be sure the actuator pin is engaged into
 the sensor."* Note this cannot explain the low voltage, since rotating the
 element by hand directly also failed to raise the output.
+
+## 2026-09-14 — Both axle angle sensors brought into spec
+
+Both axle angle sensors now read within **4.2–4.4 V DC** with the axles fully
+retracted. The earlier low-reading side was resolved during the swap testing —
+consistent with contact resistance at a connector rather than a failed sensor;
+no part was replaced.
+
+Next: the axle angle sensor **calibration** (SM p.167–169), which is also the
+step that permits the axles to extend.
+
+### Expected proof of success
+
+Before: both axle indicators at the platform **flashing** (machine believed the
+axles were between end positions).
+After a successful calibration: the indicator should go **solid** with the axles
+fully retracted, and solid again when fully extended (OM p.27).
