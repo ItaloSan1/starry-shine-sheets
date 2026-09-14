@@ -1631,3 +1631,33 @@ So `58351` becomes necessary if the full p.105 sequence is needed.
 Genie Product Support is therefore the single call for: WebGPI access, the
 laptop interface cable, kit `58351`, and the **Clear Overload Recovery passcode**
 if platform overload has latched.
+
+### WebGPI part number found — `215336GT` [S]
+
+Owner located it in the Genie parts catalogue (not in either manual):
+
+**`215336GT` — FLASH DRIVE, WEB GPI** — $164.18 at zumasales.com (list $186.48)
+
+This corrects the previous note, which stated no part number exists. Accurate as
+far as the **manuals** go — neither 1268557GT nor 106877GT lists it — but it is a
+catalogue part. Tagged `[S]` (other Genie publication / supplier listing) rather
+than `[V]`.
+
+**Open questions before relying on it:** whether the flash drive is usable
+standalone or requires a licence/account activation through Genie, and which
+interface cable connects a laptop to the TCON board's DB9 / RS-232 port. Neither
+is answered by the manuals. Ask the supplier or Genie Product Support.
+
+### Cart review (zumasales.com, 4 items ≈ $594)
+
+| Part | Description | Price | Assessment |
+|---|---|---|---|
+| `215336GT` | FLASH DRIVE, WEB GPI | $164.18 | Worth having; confirm licence and cable |
+| `97705GT` | DECAL, COSMETIC, GENIE Z-135/70 | $105.65 | **Cosmetic only** — not required by any repair |
+| `60618GT` | ACTIVATOR, STEER SENSOR | $8.71 | **Increase to qty 2** |
+| `94985GT` | SENSOR, AXLE POSITION | $315.80 | Optional — both sensors read in spec |
+
+**Not in the cart but possibly needed:** the DB9 interface cable, and kit
+`58351` (digital level, magnetic base, cable harnesses) if the full p.105
+sequence becomes necessary — the turntable level sensor calibration requires a
+digital level regardless of software version.
