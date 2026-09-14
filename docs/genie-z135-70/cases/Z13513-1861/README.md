@@ -1661,3 +1661,44 @@ is answered by the manuals. Ask the supplier or Genie Product Support.
 `58351` (digital level, magnetic base, cable harnesses) if the full p.105
 sequence becomes necessary — the turntable level sensor calibration requires a
 digital level regardless of software version.
+
+### Digital level — kit `58351` quoted at ~$1,600; aftermarket substitution
+
+Owner intends to substitute a commercial digital level. Assessment:
+
+**Where a level is actually required on this machine (software 4.01):**
+
+| Procedure | Level needed? |
+|---|---|
+| Boom angle sensors, **2-point** | **No** |
+| Boom angle sensors, 6-point | Yes — but not applicable at 4.01 |
+| **Turntable level sensor** | **Yes**, no version exemption |
+| Platform level sensor | Yes |
+
+So the level is only needed if the **full p.105 sequence** becomes necessary.
+**Do the axle and boom calibrations first** — the level may not be needed at all.
+
+**What the instrument is actually doing:** reading the turntable X and Y angles
+so the technician types the value into the ground controls with plus/minus. Any
+sufficiently accurate instrument performs that function.
+
+**Specification to look for:**
+
+- Accuracy **±0.1° or better**; ±0.05° preferred
+- Resolution **0.1°** (the display works in tenths)
+- **Magnetic base**
+- **Relative-zero / reference-zero function** — essential, because the boom
+  procedure requires a level *"calibrated to the **Y axis of the turntable**"*,
+  not to gravity
+
+**Verification before use — the reversal check:** place the level on a surface
+and note the reading; rotate it 180° in the same spot and note the reading. The
+two should be equal and opposite. If they are not, the average is the true
+angle and half the difference is the instrument's internal offset.
+
+**Risk statement:** this is a tip-over safety calibration. SM: *"Tip-over
+hazard. Failure to properly calibrate the machine could cause the machine to tip
+over resulting in death or serious injury."* Substituting a non-specified
+instrument places responsibility for the accuracy of that calibration on the
+technician. A verified, accurate instrument is a defensible substitution; an
+unverified one is not.
