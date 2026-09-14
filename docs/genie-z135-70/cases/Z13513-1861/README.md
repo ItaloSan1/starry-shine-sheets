@@ -1273,3 +1273,68 @@ not, rotate it there first, then clear drive enable as above.
 1. Turntable between the circle-end wheels; clear drive enable (free, minutes)
 2. Axle angle sensor 4.2–4.4 V adjustment
 3. Axle extension limit switch inspection
+
+## 2026-09-14 — Axle angle sensors: one in spec, one cannot reach 4 V
+
+Readings with axles fully retracted:
+
+| Sensor | Reading |
+|---|---|
+| One side | **4.2 V** — in spec (4.2–4.4 V) |
+| Other side | **under 1 V**, and **never exceeds ~1 V** when the element is rotated by hand through both extremes with the cover off |
+
+### Not yet proof of a bad sensor — output is a ratio of supply
+
+A ratiometric angle sensor outputs a fraction of whatever supply it receives.
+Fed 5 V, a full sweep covers most of 0–5 V. **Fed 1.2 V, the maximum obtainable
+output is 1.2 V regardless of rotation.** A starved supply and a dead element
+look identical at the signal pin.
+
+The in-spec side proves the 4.2–4.4 V target is achievable on this machine and
+that at least one supply path is healthy — a good reference.
+
+### Measure at the suspect sensor's connector, powered
+
+| Measurement | Expected |
+|---|---|
+| Supply pin → sensor ground pin | **~5.0 V** |
+| Sensor ground pin → battery negative | ~0 V, millivolts |
+| Signal pin → sensor ground pin | the value being read |
+
+The manual specifies probing **pins 2 and 3** but does not label pin functions.
+Identify them by comparing against the known-good sensor on the opposite corner.
+
+### The decisive test — swap sides
+
+Swap the two axle angle sensors end for end.
+
+| Result | Conclusion |
+|---|---|
+| Fault **follows the sensor** | Sensor is bad. Part `94985GT` SENSOR, AXLE POSITION |
+| Fault **stays at the same corner** | Supply, ground or harness on that corner. Sensor is fine |
+
+Free, and definitive.
+
+### Bench test — cleanest answer
+
+Disconnect from the machine, feed the suspect sensor a known **5.0 V** from a
+current-limited bench supply across its own supply and ground pins, and sweep it
+by hand. A clean, smooth, monotonic sweep across most of 0–5 V means the sensor
+is sound and the fault is upstream. Still capped near 1 V on a good 5 V supply
+means the sensor is dead.
+
+### Context
+
+This machine has a documented history of harness interference — two Scotchlok
+taps, a cut unterminated conductor in the boom, a bridged sensor circuit,
+domestic-grade cord run through the structure. A loaded 5 V rail or a
+high-resistance ground would produce exactly this reading with a perfectly good
+sensor. Measure the supply **at the sensor, under load**, not at the controller —
+the earlier resistance readings in this case were invalidated by exactly that
+mistake.
+
+### Note
+
+Whichever sensor has had its cover off and its element turned by hand has lost
+its set position and will need the **4.2–4.4 V adjustment** and the axle angle
+sensor **calibration** regardless of the outcome.
